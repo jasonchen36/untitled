@@ -6,7 +6,9 @@ NPM and Bower install project dependencies (only needed once).  Grunt builds the
 
 After cloning the repo:
 ```
+cp .env_example .env
 npm install
+npm install foreman -g
 bower install
 grunt build
 ```
