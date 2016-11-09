@@ -8,14 +8,6 @@ Use helper classes to style elements that otherwise wouldn't need to have a full
 
 //main styles
 //-----------------------------
-html,body,p,a,blockquote {
-  @extend .f--helvetica-neue;
-}
-
-h1,h2,h3,h4,h5 {
-  @extend .f--agenda-medium;
-}
-
 img {
   max-width: 100%;
 }
@@ -49,7 +41,9 @@ img {
   text-transform: uppercase;
 }
 
+
 //visibility
+//-----------------------------
 .hide-for-small {
   @include mobile {
     display: none;
