@@ -1,5 +1,4 @@
 const express = require('express'),
-    requestPromise = require('request-promise'),
     handlebars = require('express-handlebars'),
     cookieParser = require('cookie-parser'),
     cors = require('cors'),
@@ -13,6 +12,14 @@ const express = require('express'),
     bookshelf = require('./app/services/bookshelf'),
     logger = require('./app/services/logger'),
     handlebarsHelpers = require('./app/services/handlebars'),
+    errorService = require('./app/services/errors'),
+    http = require('./app/services/http'),
+    environment = require('./app/services/environment'),
+// routes
+    errorRoutes = require('./app/routes/errors'),
+    userRoutes = require('./app/routes/user'),
+//controllers
+    errorController = require('./app/controllers/errors'),
 //variables
     port = process.env.NODE_PORT || 3000,
 //main declaration
@@ -59,7 +66,7 @@ app.engine('.hbs', handlebars({
 }));
 
 app.set('view engine', '.hbs');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(__dirname, 'webapp/views'));
 
 
 /**
@@ -74,14 +81,6 @@ app.use(cookieSession({
         process.env.NODE_COOKIE_KEY2
     ]
 }));
-
-app.use(function (req, res, next) {
-    // Update views
-    req.session.views = (req.session.views || 0) + 1;
-
-    // Write response
-    res.end(req.session.views + ' views')
-});
 
 
 /**
@@ -102,11 +101,51 @@ app.use(compression({
  */
 app.use(express.static(path.join(__dirname, 'webapp/public'),{
     index: false,
-    maxAge: process.env.NODE_ENV.toLowerCase() === 'production'?'7 days':0
+    maxAge: environment.isProduction()?'7 days':0
 }));
 
 //for debugging included libs
 app.use('/bower_components', express.static(path.join(__dirname, 'webapp/bower_components')));
+
+
+/**
+ * routes
+ */
+app.use('/', userRoutes);
+app.use('/', errorRoutes);
+
+
+/**
+ * error handlers
+ */
+app.use(function (req, res, next) {
+    //404 handler
+    logger.info('not found - '+req.method+' '+req.originalUrl);
+    next(new errorService.NotFoundError());
+});
+
+app.use(function (err, req, res, next) {
+    //general error handler
+    logger.error(err);
+    if (err && err.statusCode){
+        switch(err.statusCode){
+            case http.status.notFound:
+                errorController.get404Page(req, res, next);
+                break;
+            case http.status.unauthorized:
+                res.redirect('/login');
+                break;
+            case http.status.badRequest:
+                errorController.get500Page(req, res, next);
+                break;
+            case http.status.internalServerError:
+                errorController.get500Page(req, res, next);
+                break;
+        }
+    } else {
+        errorController.get500Page(req, res, next);
+    }
+});
 
 
 /**
