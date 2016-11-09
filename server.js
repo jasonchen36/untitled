@@ -13,8 +13,7 @@ const express = require('express'),
     logger = require('./app/services/logger'),
     handlebarsHelpers = require('./app/services/handlebars'),
     errorService = require('./app/services/errors'),
-    http = require('./app/services/http'),
-    environment = require('./app/services/environment'),
+    util = require('./app/services/util'),
 // routes
     errorRoutes = require('./app/routes/errors'),
     userRoutes = require('./app/routes/user'),
@@ -101,7 +100,7 @@ app.use(compression({
  */
 app.use(express.static(path.join(__dirname, 'webapp/public'),{
     index: false,
-    maxAge: environment.isProduction()?'7 days':0
+    maxAge: util.environment.isProduction()?'7 days':0
 }));
 
 //for debugging included libs
@@ -129,16 +128,16 @@ app.use(function (err, req, res, next) {
     logger.error(err);
     if (err && err.statusCode){
         switch(err.statusCode){
-            case http.status.notFound:
+            case util.http.status.notFound:
                 errorController.get404Page(req, res, next);
                 break;
-            case http.status.unauthorized:
+            case util.http.status.unauthorized:
                 res.redirect('/login');
                 break;
-            case http.status.badRequest:
+            case util.http.status.badRequest:
                 errorController.get500Page(req, res, next);
                 break;
-            case http.status.internalServerError:
+            case util.http.status.internalServerError:
                 errorController.get500Page(req, res, next);
                 break;
         }

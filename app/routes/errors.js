@@ -1,11 +1,11 @@
 const express = require('express'),
     router = express.Router(),
     //services
-    environment = require('../services/environment'),
+    util = require('../services/util'),
 //controllers
     errorController = require('../controllers/errors');
 
-if(!environment.isProduction()){
+if(!util.environment.isProduction()){
     router.route('/500')
         .get(errorController.get500Page);
 
