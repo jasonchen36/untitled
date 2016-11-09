@@ -1,0 +1,24 @@
+{
+  "name": "taxplan.web",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nf start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://mstumpf818@bitbucket.org/ellefsontech/taxplan.web.2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/ellefsontech/taxplan.web.2#readme",
+  "engines": {
+    "node": "6.3.1"
+  },
+  "dependencies": {
+    "foreman": "2.0.0"
+  }
+}

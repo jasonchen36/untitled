@@ -1,0 +1,28 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
+.grunt
+
+# Compiled files
+build/Release
+
+# Dependency directories
+node_modules
+bower_components
+
+# Optional npm cache directory
+.npm
+
+# config
+.env
+
+# environment
+.idea
