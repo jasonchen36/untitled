@@ -7,7 +7,8 @@ const express = require('express'),
     helmet = require('helmet'),
     bodyParser = require('body-parser'),
     path = require('path'),
-    compression =require('compression'),
+    compression = require('compression'),
+    cookieSession = require('cookie-session'),
 //services
     bookshelf = require('./app/services/bookshelf'),
     logger = require('./app/services/logger'),
@@ -59,6 +60,28 @@ app.engine('.hbs', handlebars({
 
 app.set('view engine', '.hbs');
 app.set('views', path.join(__dirname, 'views'));
+
+
+/**
+ *  cookie session
+ */
+app.set('trust proxy', 1); // trust first proxy
+
+app.use(cookieSession({
+    name: 'session',
+    keys: [
+        process.env.NODE_COOKIE_KEY1,
+        process.env.NODE_COOKIE_KEY2
+    ]
+}));
+
+app.use(function (req, res, next) {
+    // Update views
+    req.session.views = (req.session.views || 0) + 1;
+
+    // Write response
+    res.end(req.session.views + ' views')
+});
 
 
 /**
