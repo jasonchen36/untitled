@@ -1,6 +1,6 @@
 # Logs
-logs
 *.log
+*.log.*
 npm-debug.log*
 
 # Runtime data
@@ -12,14 +12,15 @@ pids
 .grunt
 
 # Compiled files
-build/Release
+webapp/public
 
 # Dependency directories
 node_modules
 bower_components
 
-# Optional npm cache directory
+# caches
 .npm
+.sass-cache
 
 # config
 .env

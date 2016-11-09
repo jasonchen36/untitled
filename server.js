@@ -98,7 +98,7 @@ app.use(compression({
 /**
  *  static files directory
  */
-app.use(express.static(path.join(__dirname, 'webapp/public'),{
+app.use('/public', express.static(path.join(__dirname, 'webapp/public'),{
     index: false,
     maxAge: util.environment.isProduction()?'7 days':0
 }));

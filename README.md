@@ -1,6 +1,5 @@
 # dev #
-npm start
-
+foreman start -f Procfile_dev
 
 # notes #
 Organize your Files Around Features, Not Roles 
