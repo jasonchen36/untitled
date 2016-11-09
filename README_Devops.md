@@ -13,6 +13,13 @@ The service is set to spawn on server start and automatically respawn itself.  Y
 sudo service taxplanweb start
 ```
 
+## Foreman (Daemonizing for production) ##
+
+You can use Foreman to export the config env files for production using:
+```
+sudo nf export -o /etc/init
+```
+
 
 ## TODO ##
 
