@@ -22,7 +22,7 @@
 
     this.getBaseUrl = function(){
         //http://stackoverflow.com/questions/5817505/is-there-any-method-to-get-url-without-query-string-in-java-script
-        return [location.protocol, '//', location.host, location.pathname].join('')
+        return [location.protocol, '//', location.host, location.pathname].join('');
     };
 
     this.getUrlParameters = function(){
@@ -35,8 +35,8 @@
         return params;
     };
     
-    this.isIndexPage = function(){
-        return bodyElement.attr('id') === 'index-page';
-    };
+    // this.isIndexPage = function(){
+    //     return bodyElement.attr('id') === 'index-page';
+    // };
     
 }).apply(app.helpers);

@@ -161,7 +161,7 @@ module.exports = function(grunt){
                     'webapp/public/app.base.min.js': [
                         'webapp/bower_components/jquery/dist/jquery.min.js',
                         'webapp/bower_components/bluebird/javascript/browser/bluebird.min.js',
-                        'webapp/bower_components/store-javascript/store.min.js',
+                        'webapp/bower_components/store-js/store.min.js',
                         'webapp/bower_components/handlebars/handlebars.min.js',
                         'webapp/bower_components/moment/min/moment.min.js',
                         'webapp/bower_components/velocity/velocity.min.js',

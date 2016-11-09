@@ -47,9 +47,9 @@ var app = {
 
         
         //templates
-        if(helpers.isIndexPage){
-            app.templates.index.init();
-        }
+        // if(helpers.isIndexPage){
+        //     app.templates.index.init();
+        // }
     }
 };
 
