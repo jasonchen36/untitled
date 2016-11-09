@@ -19,6 +19,7 @@
     "node": "6.3.1"
   },
   "dependencies": {
+    "bluebird": "3.4.6",
     "body-parser": "1.15.2",
     "bookshelf": "0.10.2",
     "bower": "1.8.0",
