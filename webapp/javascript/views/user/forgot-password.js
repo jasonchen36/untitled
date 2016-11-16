@@ -18,7 +18,8 @@
             }
             if (!helpers.formHasErrors(loginForm)) {
                 console.log('submit forgot password');
-                forgotPasswordSubmit.addClass(disabledClass);
+                alert('reset password');
+                // forgotPasswordSubmit.addClass(disabledClass);
             }
         }
     }

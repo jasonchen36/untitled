@@ -21,8 +21,23 @@
                 registerPasswordInput.addClass(errorClass);
             }
             if (!helpers.formHasErrors(registerForm)) {
-                console.log('submit register');
                 registerSubmit.addClass(disabledClass);
+                app.ajax.ajax(
+                    'POST',
+                    '/register',
+                    {
+                        email: formData.email,
+                        password: formData.password
+                    },
+                    'json'
+                )
+                    .then(function(){
+                        window.location.href = '/questionnaire/page1';
+                    })
+                    .catch(function(){
+                        alert('error');
+                        registerSubmit.removeClass(disabledClass);
+                    });
             }
         }
     }
