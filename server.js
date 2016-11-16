@@ -113,9 +113,9 @@ app.use('/bower_components', express.static(path.join(__dirname, 'webapp/bower_c
 /**
  * routes
  */
-app.use('/', userRoutes);
 app.use('/', errorRoutes);
-app.use('/questionnaire', authenticationMiddleware.isUserLoggedIn, questionnaireRoutes);
+app.use('/', userRoutes);
+app.use('/questionnaire', authenticationMiddleware.redirectWithoutSession, questionnaireRoutes);
 
 /**
  * error handlers

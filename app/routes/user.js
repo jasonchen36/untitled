@@ -1,5 +1,9 @@
-const express = require('express'),
+const //services
+    express = require('express'),
     router = express.Router(),
+    //middleware
+    authenticationMiddleware = require('../middleware/authentication'),
+    //controllers
     userController = require('../controllers/user');
 
 router.route('/').get(function(req, res, next) {
@@ -7,15 +11,15 @@ router.route('/').get(function(req, res, next) {
 });
 
 router.route('/login')
-    .get(userController.getLoginPage)
+    .get(authenticationMiddleware.redirectWithSession,userController.getLoginPage)
     .put(userController.actionLoginUser);
 
 router.route('/register')
-    .get(userController.getRegisterPage)
+    .get(authenticationMiddleware.redirectWithSession,userController.getRegisterPage)
     .post(userController.actionRegisterUser);
 
 router.route('/forgot-password')
-    .get(userController.getForgotPasswordPage)
+    .get(authenticationMiddleware.redirectWithSession,userController.getForgotPasswordPage)
     .put(userController.actionForgotPassword);
 
 router.route('/logout')

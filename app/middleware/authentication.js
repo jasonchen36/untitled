@@ -4,11 +4,19 @@ const //services
 
 var authenticationMiddleware = {};
 
-authenticationMiddleware.isUserLoggedIn = function(req, res, next){
+authenticationMiddleware.redirectWithoutSession = function(req, res, next){
     if (session.getUserLoggedIn(req)){
         next();
     } else {
         res.redirect('/login');
+    }
+};
+
+authenticationMiddleware.redirectWithSession = function(req, res, next){
+    if (session.getUserLoggedIn(req)){
+        res.redirect('/questionnaire/page1');
+    } else {
+        next();
     }
 };
 
