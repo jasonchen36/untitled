@@ -18,4 +18,8 @@ router.route('/forgot-password')
     .get(userController.getForgotPasswordPage)
     .put(userController.actionForgotPassword);
 
+router.route('/logout')
+    .get(userController.getLogoutPage)
+    .put(userController.actionLogoutUser);
+
 module.exports = router;

@@ -1,6 +1,7 @@
 const //services
     bookshelf = require('../services/bookshelf'),
-    util = require('../services/util');
+    util = require('../services/util'),
+    session = require('../services/session');
 
 var userPages = {};
 
@@ -32,7 +33,11 @@ userPages.getLoginPage = function(req, res, next){
 };
 
 userPages.actionLoginUser = function(req, res, next){
-    res.json({'action': 'login'});
+    session.actionStartUserSession(req);
+    res.status(util.http.status.ok).json({
+        action: 'login',
+        result: 'success'
+    });
 };
 
 /************ register ************/
@@ -46,7 +51,11 @@ userPages.getRegisterPage = function(req, res, next){
 };
 
 userPages.actionRegisterUser = function(req, res, next){
-    res.json({'action': 'register'});
+    session.actionStartUserSession(req);
+    res.status(util.http.status.accepted).json({
+        action: 'register',
+        result: 'success'
+    });
 };
 
 /************ forgot password ************/
@@ -60,7 +69,21 @@ userPages.getForgotPasswordPage = function(req, res, next){
 };
 
 userPages.actionForgotPassword = function(req, res, next){
-    res.json({'action': 'forgot password'});
+    res.status(util.http.status.accepted).json({
+        action: 'forgot password',
+        status: 'success'
+    });
+};
+
+/************ logout ************/
+
+userPages.getLogoutPage = function(req, res, next) {
+    session.actionDestroyUserSession(req);
+    res.redirect('/login');
+};
+
+userPages.actionLogoutUser = function(req, res, next) {
+    session.actionDestroyUserSession(req);
 };
 
 module.exports = userPages;

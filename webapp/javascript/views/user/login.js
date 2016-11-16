@@ -21,8 +21,23 @@
                 loginPasswordInput.addClass(errorClass);
             }
             if (!helpers.formHasErrors(loginForm)) {
-                console.log('submit login');
                 loginSubmit.addClass(disabledClass);
+                app.ajax.ajax(
+                    'PUT',
+                    '/login',
+                    {
+                        email: formData.email,
+                        password: formData.password
+                    },
+                    'json'
+                )
+                    .then(function(){
+                        window.location.href = '/questionnaire/page1';
+                    })
+                    .catch(function(){
+                        alert('error');
+                        loginSubmit.removeClass(disabledClass);
+                    });
             }
         }
     }

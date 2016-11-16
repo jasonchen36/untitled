@@ -20,6 +20,8 @@ const express = require('express'),
     questionnaireRoutes = require('./app/routes/questionnaire'),
 //controllers
     errorController = require('./app/controllers/errors'),
+//middleware
+    authenticationMiddleware = require('./app/middleware/authentication'),
 //variables
     port = process.env.NODE_PORT || 3000,
 //main declaration
@@ -113,7 +115,7 @@ app.use('/bower_components', express.static(path.join(__dirname, 'webapp/bower_c
  */
 app.use('/', userRoutes);
 app.use('/', errorRoutes);
-app.use('/questionnaire', questionnaireRoutes);
+app.use('/questionnaire', authenticationMiddleware.isUserLoggedIn, questionnaireRoutes);
 
 /**
  * error handlers
