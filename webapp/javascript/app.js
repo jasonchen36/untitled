@@ -16,40 +16,41 @@ var app = {
     helpers: {},
     state: {},
     mediaQueries: {},
-    
+
     //modules
     carousel: {},
 
     //templates
-    templates: {
-        index: {}
+    views: {
+        user: {
+            login: {},
+            register: {}
+        }
     },
 
     //functions
     init: function(){
-        var $ = jQuery,
-            cookies = app.cookies,
-            helpers = app.helpers,
-            carousel = app.carousel;
+        var cookies = app.cookies,
+            carousel = app.carousel,
+            views = app.views;
 
-        
-        //helpers
+
+        //services
         if (!cookies.areCookiesEnabled()) {
             alert('Cookies are not supported by your browser. Please disable "Private Mode" or upgrade to a modern browser in order to use this website.');
         }
         app.handlebars.applyHelpers();
 
-        
+
         //modules
         if (carousel.hasCarousels()){
             carousel.init();
         }
 
-        
+
         //templates
-        // if(helpers.isIndexPage){
-        //     app.templates.index.init();
-        // }
+        views.user.login.init();
+        views.user.register.init();
     }
 };
 

@@ -1,8 +1,7 @@
 (function(){
     
     var $ = jQuery,
-        that = app.helpers,
-        bodyElement = $('body');
+        that = app.helpers;
 
     this.sizeOfObject = function(data){
         if (data){
@@ -34,9 +33,5 @@
             );
         return params;
     };
-    
-    // this.isIndexPage = function(){
-    //     return bodyElement.attr('id') === 'index-page';
-    // };
     
 }).apply(app.helpers);
