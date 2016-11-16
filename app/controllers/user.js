@@ -32,7 +32,7 @@ userPages.getLoginPage = function(req, res, next){
 };
 
 userPages.actionLoginUser = function(req, res, next){
-    res.json({"action": "login"});
+    res.json({'action': 'login'});
 };
 
 /************ register ************/
@@ -46,7 +46,21 @@ userPages.getRegisterPage = function(req, res, next){
 };
 
 userPages.actionRegisterUser = function(req, res, next){
-    res.json({"action": "register"});
+    res.json({'action': 'register'});
+};
+
+/************ forgot password ************/
+userPages.getForgotPasswordPage = function(req, res, next){
+    res.render('user/forgot-password', {
+        meta: {
+            pageTitle: util.globals.metaTitlePrefix + 'Forgot Password'
+        },
+        data: {}
+    });
+};
+
+userPages.actionForgotPassword = function(req, res, next){
+    res.json({'action': 'forgot password'});
 };
 
 module.exports = userPages;

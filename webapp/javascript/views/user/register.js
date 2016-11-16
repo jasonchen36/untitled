@@ -4,7 +4,7 @@
         that = app.views.user.register;
 
     this.init = function(){
-        if ($('#user-register').length > 0){
+        if ($('#page-user-register').length > 0){
             console.log('register page');
         }
     };

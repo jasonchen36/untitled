@@ -24,7 +24,8 @@ var app = {
     views: {
         user: {
             login: {},
-            register: {}
+            register: {},
+            forgotPassword: {}
         }
     },
 
@@ -51,6 +52,7 @@ var app = {
         //templates
         views.user.login.init();
         views.user.register.init();
+        views.user.forgotPassword.init();
     }
 };
 

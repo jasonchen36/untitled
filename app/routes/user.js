@@ -14,4 +14,8 @@ router.route('/register')
     .get(userController.getRegisterPage)
     .post(userController.actionRegisterUser);
 
+router.route('/forgot-password')
+    .get(userController.getForgotPasswordPage)
+    .put(userController.actionForgotPassword);
+
 module.exports = router;

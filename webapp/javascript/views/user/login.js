@@ -23,7 +23,7 @@
     }
 
     this.init = function(){
-        if ($('#user-login').length > 0){
+        if ($('#page-user-login').length > 0){
 
             //listeners
             loginForm.on('submit',function(event){

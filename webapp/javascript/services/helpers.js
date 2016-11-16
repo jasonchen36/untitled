@@ -4,6 +4,7 @@
         that = app.helpers;
 
     this.errorClass = 'error';
+    this.disabledClass = 'disabled';
     
     this.sizeOfObject = function(data){
         if (data){
