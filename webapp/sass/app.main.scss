@@ -29,7 +29,7 @@ $susy: (
 
 //theme
 //-----------------------------
-@import "theme/main";
+@import "theme/shared";
 @import "theme/grid";
 @import "theme/header";
 @import "theme/footer";
@@ -37,4 +37,6 @@ $susy: (
 
 //templates
 //-----------------------------
-@import "templates/index";
+@import "templates/errors";
+@import "templates/user/login";
+@import "templates/user/register";

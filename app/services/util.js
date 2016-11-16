@@ -23,4 +23,8 @@ util.environment = {
     }
 };
 
+util.globals = {
+    metaTitlePrefix: 'Taxplan | '
+};
+
 module.exports = util;
