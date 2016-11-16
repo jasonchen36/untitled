@@ -32,4 +32,4 @@
 ## How to Deploy ##
 
 * Use Jenkins
-* For further information see README_Devops.md
+* For further information see README_Deploy.md

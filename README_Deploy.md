@@ -1,4 +1,4 @@
-# TaxPlan Web - Devops #
+# TaxPlan Web - Deploy #
 
 ## Software Architecture (High Level) ##
 
