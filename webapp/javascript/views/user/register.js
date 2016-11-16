@@ -17,7 +17,7 @@
             if (!helpers.isValidEmail(formData.email)) {
                 registerEmailInput.addClass(errorClass);
             }
-            if (formData.password.length < 1){
+            if (!helpers.isValidPassword(formData.password)){
                 registerPasswordInput.addClass(errorClass);
             }
             if (!helpers.formHasErrors(registerForm)) {
