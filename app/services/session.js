@@ -1,26 +1,28 @@
 const session = {};
 
-session.actionStartUserSession = function(req){
+session.actionStartAccountSession = function(req){
     //todo, communicate with api
-    req.session.user = {
-        isLoggedIn: true
+    //todo, store account id in cookie
+    //todo, add expiry timestamp 1 week
+    req.session.account = {
+        id: true
     }
 };
 
-session.actionDestroyUserSession = function(req){
+session.actionDestroyAccountSession = function(req){
     //todo, communicate with api
-    req.session.user = {};
+    req.session.account = {};
 };
 
-session.getUserLoggedIn = function(req){
-    //todo, add expiry timestamp and validation
-    return req.session.user && req.session.user.isLoggedIn;
+session.getAccountSession = function(req){
+    //todo, timestamp validation
+    return req.session.account && req.session.account.id;
 };
 
-session.getUserObject = function(req){
-    if (session.getUserLoggedIn(req)){
+session.getAccountObject = function(req){
+    if (session.getAccountSession(req)){
         return {
-            isLoggedIn: true
+            hasSession: true
         };
     } else {
         return {};   

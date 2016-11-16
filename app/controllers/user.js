@@ -21,7 +21,7 @@ userPages.getLoginPage = function(req, res, next){
                 meta: {
                     pageTitle: util.globals.metaTitlePrefix+'Login'
                 },
-                user: session.getUserObject(req),
+                account: session.getAccountObject(req),
                 data: {
                     name: user.toJSON().name,
                     views: req.session.views
@@ -34,7 +34,7 @@ userPages.getLoginPage = function(req, res, next){
 };
 
 userPages.actionLoginUser = function(req, res, next){
-    session.actionStartUserSession(req);
+    session.actionStartAccountSession(req);
     res.status(util.http.status.ok).json({
         action: 'login',
         result: 'success'
@@ -47,13 +47,13 @@ userPages.getRegisterPage = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Register'
         },
-        user: session.getUserObject(req),
+        account: session.getAccountObject(req),
         data: {}
     });
 };
 
 userPages.actionRegisterUser = function(req, res, next){
-    session.actionStartUserSession(req);
+    session.actionStartAccountSession(req);
     res.status(util.http.status.accepted).json({
         action: 'register',
         result: 'success'
@@ -66,7 +66,7 @@ userPages.getForgotPasswordPage = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Forgot Password'
         },
-        user: session.getUserObject(req),
+        account: session.getAccountObject(req),
         data: {}
     });
 };
@@ -81,12 +81,12 @@ userPages.actionForgotPassword = function(req, res, next){
 /************ logout ************/
 
 userPages.getLogoutPage = function(req, res, next) {
-    session.actionDestroyUserSession(req);
+    session.actionDestroyAccountSession(req);
     res.redirect('/login');
 };
 
 userPages.actionLogoutUser = function(req, res, next) {
-    session.actionDestroyUserSession(req);
+    session.actionDestroyAccountSession(req);
 };
 
 module.exports = userPages;

@@ -1,6 +1,6 @@
 <header class="grid-container">
     <nav>
-        {{#if user.isLoggedIn}}
+        {{#if account.hasSession}}
             <a href="/logout">Logout</a>
         {{else}}
             <a href="/login">Login</a>
