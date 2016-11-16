@@ -1,5 +1,6 @@
 const //services
-    util = require('../services/util');
+    util = require('../services/util'),
+    session = require('../services/session');
 
 var questionnairePrefix = 'Question ',
     questionnairePages = {};
@@ -10,6 +11,7 @@ questionnairePages.getPage1 = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + questionnairePrefix + '1'
         },
+        user: session.getUserObject(req),
         data: {}
     });
 };

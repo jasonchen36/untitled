@@ -1,5 +1,6 @@
 const //services
-    util = require('../services/util');
+    util = require('../services/util'),
+    session = require('../services/session');
 
 var errorPages = {};
 
@@ -8,6 +9,7 @@ errorPages.get404Page = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + '404 Not Found'
         },
+        user: session.getUserObject(req),
         data: {},
         layout: 'layout-error'
     });
@@ -18,6 +20,7 @@ errorPages.get500Page = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + '500 Error'
         },
+        user: session.getUserObject(req),
         data: {},
         layout: 'layout-error'
     });

@@ -1,11 +1,11 @@
 const //services
-    util = require('../services/util');
+    util = require('../services/util'),
+    session = require('../services/session');
 
 var authenticationMiddleware = {};
 
 authenticationMiddleware.isUserLoggedIn = function(req, res, next){
-    if (req.session.user && req.session.user.isLoggedIn){
-        //todo, add expiry timestamp and validation
+    if (session.getUserLoggedIn(req)){
         next();
     } else {
         res.redirect('/login');

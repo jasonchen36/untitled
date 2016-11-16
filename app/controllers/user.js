@@ -21,6 +21,7 @@ userPages.getLoginPage = function(req, res, next){
                 meta: {
                     pageTitle: util.globals.metaTitlePrefix+'Login'
                 },
+                user: session.getUserObject(req),
                 data: {
                     name: user.toJSON().name,
                     views: req.session.views
@@ -46,6 +47,7 @@ userPages.getRegisterPage = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Register'
         },
+        user: session.getUserObject(req),
         data: {}
     });
 };
@@ -64,6 +66,7 @@ userPages.getForgotPasswordPage = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Forgot Password'
         },
+        user: session.getUserObject(req),
         data: {}
     });
 };
