@@ -5,7 +5,7 @@
 
     this.errorClass = 'error';
     this.disabledClass = 'disabled';
-    
+
     this.sizeOfObject = function(data){
         if (data){
             return Object.keys(data).length;
@@ -13,7 +13,7 @@
             return 0;
         }
     };
-    
+
     this.resetForm = function(formElement, clearInputValue){
         formElement.find('input').each(function(){
             $(this).removeClass(that.errorClass);
@@ -29,6 +29,16 @@
             data[$(this).attr('name')] = $(this).val();
         });
         return data;
+    };
+
+    this.formHasErrors = function(formElement){
+        var errorCount = 0;
+        formElement.find('input').each(function(){
+            if($(this).hasClass(that.errorClass)){
+                errorCount++;
+            }
+        });
+        return errorCount > 0;
     };
 
     this.getBaseUrl = function(){

@@ -4,22 +4,27 @@
         that = app.views.user.login,
         helpers = app.helpers,
         loginForm = $('#user-login-form'),
-        forgotPasswordForm = $('#forgot-password-form'),
-        forgotPasswordEmailInput = $('#forgot-password-email'),
-        errorClass = app.helpers.errorClass;
-
-    function submitForgotPassword(){
-        var formData = helpers.getFormData(forgotPasswordForm);
-        helpers.resetForm(forgotPasswordForm);
-        if (!helpers.isValidEmail(formData.email)){
-            forgotPasswordEmailInput.addClass(errorClass);
-        } else {
-            console.log('submit forgot password');
-        }
-    }
+        loginSubmit = $('#login-form'),
+        loginEmailInput = $('#login-email'),
+        loginPasswordInput = $('#login-password'),
+        errorClass = app.helpers.errorClass,
+        disabledClass = app.helpers.disabledClass;
 
     function submitLogin(){
-        console.log('submit login');
+        if (!loginSubmit.hasClass(disabledClass)) {
+            var formData = helpers.getFormData(loginForm);
+            helpers.resetForm(loginForm);
+            if (!helpers.isValidEmail(formData.email)) {
+                loginEmailInput.addClass(errorClass);
+            }
+            if (formData.password.length < 1){
+                loginPasswordInput.addClass(errorClass);
+            }
+            if (!helpers.formHasErrors(loginForm)) {
+                console.log('submit login');
+                loginSubmit.addClass(disabledClass);
+            }
+        }
     }
 
     this.init = function(){
@@ -29,11 +34,6 @@
             loginForm.on('submit',function(event){
                 event.preventDefault();
                 submitLogin();
-            });
-
-            forgotPasswordForm.on('submit',function(event){
-                event.preventDefault();
-                submitForgotPassword();
             });
         }
     };

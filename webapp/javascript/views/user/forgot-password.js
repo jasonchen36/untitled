@@ -15,7 +15,8 @@
             helpers.resetForm(forgotPasswordForm);
             if (!helpers.isValidEmail(formData.email)) {
                 forgotPasswordEmailInput.addClass(errorClass);
-            } else {
+            }
+            if (!helpers.formHasErrors(loginForm)) {
                 console.log('submit forgot password');
                 forgotPasswordSubmit.addClass(disabledClass);
             }
