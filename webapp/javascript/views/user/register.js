@@ -1,10 +1,10 @@
 (function(){
 
     var $ = jQuery,
-        that = app.templates.user;
+        that = app.views.user.register;
 
     this.init = function(){
-        if (true){
+        if ($('#user-register').length > 0){
             console.log('register page');
         }
     };

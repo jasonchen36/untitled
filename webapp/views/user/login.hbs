@@ -1,6 +1,40 @@
-<main class="grid-container">
-    welcome {{data.name}}, view count = {{data.views}}
-
-    please <a href="/register">register</a>
-    <a>forgot password</a>
+<main id="user-login" class="grid-container">
+    <h1>Login</h1>
+    <p>
+        welcome {{data.name}}, view count = {{data.views}}
+    </p>
+    <form id="user-login-form">
+        <p>
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" name="email"/>
+        </p>
+        <p>
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" name="password"/>
+        </p>
+        <button type="submit">Login</button>
+    </form>
+    <p>
+        <a href="#modal-forgot-password">Forgot password?</a>
+    </p>
+    <p>
+        Don't have an account? <a href="/register">Register</a>
+    </p>
 </main>
+<section class="modal--fade" id="modal-forgot-password" data-stackable="false" tabindex="-1" role="dialog" aria-labelledby="label-fade" aria-hidden="true">
+    <a href="#!" class="modal-close" title="Close this modal" data-dismiss="modal" data-close="Close">&times;</a>
+    <div class="modal-inner">
+        <header>
+            <h2 id="label-fade">Forgot Password</h2>
+        </header>
+        <div class="modal-content">
+            <form id="forgot-password-form">
+                <p>
+                    <label for="forgot-password-email">Email</label>
+                    <input type="email" id="forgot-password-email" name="email"/>
+                </p>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</section>

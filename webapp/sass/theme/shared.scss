@@ -12,6 +12,14 @@ img {
   max-width: 100%;
 }
 
+input {
+  border: 1px solid black;
+  @include transition-with-defaults(border-color);
+  &.error {
+    border-color: red;
+  }
+}
+
 
 //helper classes
 //-----------------------------

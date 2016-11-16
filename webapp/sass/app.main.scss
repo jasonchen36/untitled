@@ -14,7 +14,7 @@ Imports and settings that might change with theme development
 
 //Susy (grid)
 //-----------------------------
-@import "../bower_components/susy/sass/susy";
+@import "susy";
 
 //settings
 $susy: (
@@ -35,8 +35,8 @@ $susy: (
 @import "theme/footer";
 
 
-//templates
+//views
 //-----------------------------
-@import "templates/errors";
-@import "templates/user/login";
-@import "templates/user/register";
+@import "views/errors";
+@import "views/user/login";
+@import "views/user/register";

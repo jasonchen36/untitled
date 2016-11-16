@@ -17,6 +17,7 @@
     "susy": "2.2.12",
     "jquery": "3.0.0",
     "normalize-css": "4.1.1",
-    "moment": "2.13.0"
+    "moment": "2.13.0",
+    "css-modal": "^1.5.0"
   }
 }
