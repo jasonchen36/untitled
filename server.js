@@ -17,6 +17,7 @@ const express = require('express'),
 // routes
     errorRoutes = require('./app/routes/errors'),
     userRoutes = require('./app/routes/user'),
+    questionnaireRoutes = require('./app/routes/questionnaire'),
 //controllers
     errorController = require('./app/controllers/errors'),
 //variables
@@ -112,7 +113,7 @@ app.use('/bower_components', express.static(path.join(__dirname, 'webapp/bower_c
  */
 app.use('/', userRoutes);
 app.use('/', errorRoutes);
-
+app.use('/questionnaire', questionnaireRoutes);
 
 /**
  * error handlers
