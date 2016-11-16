@@ -1,29 +1,29 @@
-const express = require('express'),
+const //services
+    express = require('express'),
     router = express.Router(),
-//services
-    bookshelf = require('../services/bookshelf');
+    //middleware
+    authenticationMiddleware = require('../middleware/authentication'),
+    //controllers
+    userController = require('../controllers/user');
 
-router.route('/')
-    .get(function(req, res, next) {
+router.route('/').get(function(req, res, next) {
+    res.redirect('/login');
+});
 
-        var User = bookshelf.Model.extend({
-            tableName: 'users'
-        });
+router.route('/login')
+    .get(authenticationMiddleware.redirectWithSession,userController.getLoginPage)
+    .put(userController.actionLoginUser);
 
-        User.where('id', 1)
-            .fetch()
-            .then(function(user) {
-                // Update views
-                req.session.views = (req.session.views || 0) + 1;
+router.route('/register')
+    .get(authenticationMiddleware.redirectWithSession,userController.getRegisterPage)
+    .post(userController.actionRegisterUser);
 
-                res.render('home', {
-                    name: user.toJSON().name,
-                    views: req.session.views
-                });
-            })
-            .catch(function(error) {
-                next(error);
-            });
-    });
+router.route('/forgot-password')
+    .get(authenticationMiddleware.redirectWithSession,userController.getForgotPasswordPage)
+    .put(userController.actionForgotPassword);
+
+router.route('/logout')
+    .get(userController.getLogoutPage)
+    .put(userController.actionLogoutUser);
 
 module.exports = router;

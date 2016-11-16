@@ -17,8 +17,11 @@ const express = require('express'),
 // routes
     errorRoutes = require('./app/routes/errors'),
     userRoutes = require('./app/routes/user'),
+    questionnaireRoutes = require('./app/routes/questionnaire'),
 //controllers
     errorController = require('./app/controllers/errors'),
+//middleware
+    authenticationMiddleware = require('./app/middleware/authentication'),
 //variables
     port = process.env.NODE_PORT || 3000,
 //main declaration
@@ -110,9 +113,9 @@ app.use('/bower_components', express.static(path.join(__dirname, 'webapp/bower_c
 /**
  * routes
  */
-app.use('/', userRoutes);
 app.use('/', errorRoutes);
-
+app.use('/', userRoutes);
+app.use('/questionnaire', authenticationMiddleware.redirectWithoutSession, questionnaireRoutes);
 
 /**
  * error handlers

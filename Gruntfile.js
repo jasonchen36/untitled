@@ -138,7 +138,10 @@ module.exports = function(grunt){
                 },
                 options: {
                     style: 'compressed',
-                    trace: true
+                    trace: true,
+                    loadPath: [
+                        'webapp/bower_components/css-modal'
+                    ]
                 }
             },
             main: {
@@ -147,7 +150,10 @@ module.exports = function(grunt){
                 },
                 options: {
                     style: 'compressed',
-                    trace: true
+                    trace: true,
+                    loadPath: [
+                        'webapp/bower_components/susy/sass'
+                    ]
                 }
             }
         },
@@ -166,7 +172,8 @@ module.exports = function(grunt){
                         'webapp/bower_components/moment/min/moment.min.js',
                         'webapp/bower_components/velocity/velocity.min.js',
                         'webapp/bower_components/velocity/velocity.ui.min.js',
-                        'webapp/bower_components/slick-carousel/slick/slick.min.js'
+                        'webapp/bower_components/slick-carousel/slick/slick.min.js',
+                        'webapp/bower_components/css-modal/modal.js'
                     ]
                 },
                 options: {
@@ -181,7 +188,7 @@ module.exports = function(grunt){
                 files: {
                     'webapp/public/app.main.min.js': [
                         'webapp/javascript/app.js',
-                        'webapp/javascript/lib/*.js',
+                        'webapp/javascript/services/*.js',
                         'webapp/javascript/modules/*.js',
                         'webapp/javascript/**/*.js'
                     ]

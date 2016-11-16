@@ -10,7 +10,7 @@
 ## Software Architecture (High Level) ##
 
 
-* This webapp is built on [Node.js](https://nodejs.org/en/) with a [Handlebars](http://handlebarsjs.com/) templating engine and [Sass](http://sass-lang.com/).  [Grunt](http://gruntjs.com/) is used for development purposes.
+* This webapp is built on [Node.js](https://nodejs.org/en/) with a [Handlebars](http://handlebarsjs.com/) templating engine and [Sass](http://sass-lang.com/).  [Grunt](http://gruntjs.com/) is used primarily for development purposes.
 
 
 ## Technical Requirements ##
@@ -32,4 +32,4 @@
 ## How to Deploy ##
 
 * Use Jenkins
-* For further information see README_Devops.md
+* For further information see README_Deploy.md

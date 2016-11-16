@@ -1,0 +1,11 @@
+<header class="grid-container">
+    <nav>
+        {{#if user.isLoggedIn}}
+            <a href="/logout">Logout</a>
+        {{else}}
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+            <a href="/forgot-password">Forgot Password</a>
+        {{/if}}
+    </nav>
+</header>
