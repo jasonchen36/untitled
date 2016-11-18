@@ -22,6 +22,16 @@ var app = {
 
     //templates
     views: {
+        profile: {
+            pageOne: {},
+            pageTwo: {},
+            pageThree: {},
+            pageFour: {},
+            pageFive: {},
+            pageSix: {},
+            pageSeven: {},
+            pageQuote: {}
+        },
         user: {
             login: {},
             register: {},
@@ -49,10 +59,20 @@ var app = {
         }
 
 
-        //templates
+        //user views
         views.user.login.init();
         views.user.register.init();
         views.user.forgotPassword.init();
+
+        //tax profile views
+        views.profile.pageOne.init();
+        views.profile.pageTwo.init();
+        views.profile.pageThree.init();
+        views.profile.pageFour.init();
+        views.profile.pageFive.init();
+        views.profile.pageSix.init();
+        views.profile.pageSeven.init();
+        views.profile.pageQuote.init();
     }
 };
 

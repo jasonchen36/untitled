@@ -25,7 +25,8 @@ util.environment = {
 
 util.globals = {
     metaTitlePrefix: 'Taxplan | ',
-    apiUrl: process.env.API_URL
+    apiUrl: process.env.API_URL,
+    apiProductId: process.env.API_PRODUCT_ID
 };
 
 util.getGlobalObject = function(){
