@@ -19,7 +19,7 @@ userPages.getLoginPage = function(req, res, next){
 
             res.render('user/login', {
                 meta: {
-                    pageTitle: util.globals.metaTitlePrefix+'Login'
+                    pageTitle: util.globals.metaTitlePrefix+'Sign In'
                 },
                 account: session.getAccountObject(req),
                 data: {
@@ -64,7 +64,7 @@ userPages.actionRegisterUser = function(req, res, next){
 userPages.getForgotPasswordPage = function(req, res, next){
     res.render('user/forgot-password', {
         meta: {
-            pageTitle: util.globals.metaTitlePrefix + 'Forgot Password'
+            pageTitle: util.globals.metaTitlePrefix + 'Password Reset'
         },
         account: session.getAccountObject(req),
         data: {}
