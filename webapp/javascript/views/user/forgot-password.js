@@ -16,10 +16,23 @@
             if (!helpers.isValidEmail(formData.email)) {
                 forgotPasswordEmailInput.addClass(errorClass);
             }
-            if (!helpers.formHasErrors(loginForm)) {
-                console.log('submit forgot password');
-                alert('reset password');
-                // forgotPasswordSubmit.addClass(disabledClass);
+            if (!helpers.formHasErrors(forgotPasswordForm)) {
+                forgotPasswordSubmit.addClass(disabledClass);
+                app.ajax.ajax(
+                    'PUT',
+                    apiUrl+'users/reset',
+                    {
+                        email: formData.email
+                    },
+                    'json'
+                )
+                    .then(function(){
+                        window.location.href = '/login';
+                    })
+                    .catch(function(){
+                        alert('error');
+                        forgotPasswordSubmit.removeClass(disabledClass);
+                    });
             }
         }
     }

@@ -9,6 +9,7 @@ errorPages.get404Page = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + '404 Not Found'
         },
+        globals: util.getGlobalObject(),
         account: session.getAccountObject(req),
         data: {},
         layout: 'layout-error'
@@ -20,6 +21,7 @@ errorPages.get500Page = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + '500 Error'
         },
+        globals: util.getGlobalObject(),
         account: session.getAccountObject(req),
         data: {},
         layout: 'layout-error'

@@ -10,6 +10,7 @@ taxReturnPages.getPage1 = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + taxReturnPrefix + '1'
         },
+        globals: util.getGlobalObject(),
         account: session.getAccountObject(req),
         data: {}
     });
@@ -20,6 +21,7 @@ taxReturnPages.getPage2 = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + taxReturnPrefix + '2'
         },
+        globals: util.getGlobalObject(),
         account: session.getAccountObject(req),
         data: {}
     });
@@ -30,6 +32,7 @@ taxReturnPages.getPage3 = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + taxReturnPrefix + '3'
         },
+        globals: util.getGlobalObject(),
         account: session.getAccountObject(req),
         data: {}
     });

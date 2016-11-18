@@ -21,6 +21,7 @@ userPages.getLoginPage = function(req, res, next){
                 meta: {
                     pageTitle: util.globals.metaTitlePrefix+'Sign In'
                 },
+                globals: util.getGlobalObject(),
                 account: session.getAccountObject(req),
                 data: {
                     name: user.toJSON().name,
@@ -47,6 +48,7 @@ userPages.getRegisterPage = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Register'
         },
+        globals: util.getGlobalObject(),
         account: session.getAccountObject(req),
         data: {}
     });
@@ -66,6 +68,7 @@ userPages.getForgotPasswordPage = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Password Reset'
         },
+        globals: util.getGlobalObject(),
         account: session.getAccountObject(req),
         data: {}
     });
