@@ -34,6 +34,7 @@ const express = require('express'),
 app.use(cors());
 app.options('*', cors());
 app.use(cookieParser());
+app.use(favicon(__dirname + '/webapp/public/images/favicon.ico'));
 
 //Remove trailing slashes
 app.use(function(req, res, next) {
