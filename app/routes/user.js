@@ -1,9 +1,9 @@
 const //services
     express = require('express'),
     router = express.Router(),
-    //middleware
+//middleware
     authenticationMiddleware = require('../middleware/authentication'),
-    //controllers
+//controllers
     userController = require('../controllers/user');
 
 router.route('/').get(function(req, res, next) {
@@ -20,7 +20,11 @@ router.route('/register')
 
 router.route('/password-reset')
     .get(authenticationMiddleware.redirectWithUserSession,userController.getPasswordResetPage)
-    .put(userController.actionPasswordReset);
+    .post(userController.actionPasswordReset)
+    .put(userController.actionAuthorizedPasswordReset);
+
+router.route('/password-reset/:token')
+    .get(userController.getAuthorizedPasswordResetPage);
 
 router.route('/logout')
     .get(userController.getLogoutPage)

@@ -1,11 +1,11 @@
 (function(){
 
     var $ = jQuery,
-        that = app.views.user.passwordReset,
+        that = app.views.user.authorizedPasswordReset,
         helpers = app.helpers,
-        passwordResetForm = $('#password-reset-form'),
-        passwordResetEmailInput = $('#password-reset-email'),
-        passwordResetSubmit = $('#password-reset-submit'),
+        passwordResetForm = $('#authorized-password-reset-form'),
+        passwordResetPasswordInput = $('#authorized-password-reset-password'),
+        passwordResetSubmit = $('#authorized-password-reset-submit'),
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
@@ -13,16 +13,17 @@
         if (!passwordResetSubmit.hasClass(disabledClass)) {
             var formData = helpers.getFormData(passwordResetForm);
             helpers.resetForm(passwordResetForm);
-            if (!helpers.isValidEmail(formData.email)) {
-                passwordResetEmailInput.addClass(errorClass);
+            if (!helpers.isValidPassword(formData.password)) {
+                passwordResetPasswordInput.addClass(errorClass);
             }
             if (!helpers.formHasErrors(passwordResetForm)) {
                 passwordResetSubmit.addClass(disabledClass);
                 app.ajax.ajax(
-                    'POST',
-                    '/reset-password',
+                    'PUT',
+                    '/password-reset',
                     {
-                        email: formData.email
+                        password: formData.password,
+                        token: authToken
                     },
                     'json'
                 )
@@ -38,7 +39,7 @@
     }
 
     this.init = function(){
-        if ($('#page-user-password-reset').length > 0){
+        if ($('#page-user-authorized-password-reset').length > 0){
 
             //listeners
             passwordResetForm.on('submit',function(event){
@@ -48,4 +49,4 @@
         }
     };
 
-}).apply(app.views.user.passwordReset);
+}).apply(app.views.user.authorizedPasswordReset);

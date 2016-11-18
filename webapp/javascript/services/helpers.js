@@ -72,8 +72,9 @@
 
     this.isValidPassword = function(password){
         //http://stackoverflow.com/questions/14850553/javascript-regex-for-password-containing-at-least-8-characters-1-number-1-uppe
-        var regex = (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/);
-        return regex.test(password);
+        // var regex = (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/);
+        // return regex.test(password);
+        return password.length >= 8;
     };
 
 }).apply(app.helpers);

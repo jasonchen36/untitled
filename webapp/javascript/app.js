@@ -33,7 +33,8 @@ var app = {
         user: {
             login: {},
             register: {},
-            passwordReset: {}
+            passwordReset: {},
+            authorizedPasswordReset: {}
         }
     },
 
@@ -60,6 +61,7 @@ var app = {
         views.user.login.init();
         views.user.register.init();
         views.user.passwordReset.init();
+        views.user.authorizedPasswordReset.init();
 
         //tax profile views
         views.profile.pageOne.init();

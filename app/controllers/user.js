@@ -64,7 +64,7 @@ userPages.actionRegisterUser = function(req, res, next){
     });
 };
 
-/************ forgot password ************/
+/************ password reset ************/
 userPages.getPasswordResetPage = function(req, res, next){
     res.render('user/password-reset', {
         meta: {
@@ -79,7 +79,28 @@ userPages.getPasswordResetPage = function(req, res, next){
 userPages.actionPasswordReset = function(req, res, next){
     //todo, communicate with api
     res.status(util.http.status.accepted).json({
-        action: 'forgot password',
+        action: 'password reset',
+        status: 'success'
+    });
+};
+
+userPages.getAuthorizedPasswordResetPage = function(req, res, next){
+    res.render('user/authorized-password-reset', {
+        meta: {
+            pageTitle: util.globals.metaTitlePrefix + 'Password Reset'
+        },
+        account: session.getAccountObject(req),
+        user: session.getUserObject(req),
+        data: {
+            token: req.params.token
+        }
+    });
+};
+
+userPages.actionAuthorizedPasswordReset = function(req, res, next){
+    //todo, communicate with api
+    res.status(util.http.status.accepted).json({
+        action: 'authorized password reset',
         status: 'success'
     });
 };
