@@ -89,6 +89,10 @@ userPages.getLogoutPage = function(req, res, next) {
 
 userPages.actionLogoutUser = function(req, res, next) {
     session.actionDestroyUserSession(req);
+    res.status(util.http.status.ok).json({
+        action: 'logout',
+        status: 'success'
+    });
 };
 
 /************ dashboard ************/

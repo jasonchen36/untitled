@@ -5,6 +5,7 @@ const //services
 var taxReturnPrefix = 'Tax Profile | Page ',
     taxReturnPages = {};
 
+/************ page one ************/
 taxReturnPages.getPageOne = function(req, res, next){
     res.render('tax_profile/page-one', {
         meta: {
@@ -16,6 +17,15 @@ taxReturnPages.getPageOne = function(req, res, next){
     });
 };
 
+taxReturnPages.actionPageOne = function(req, res, next) {
+    session.actionStartAccountSession(req);
+    res.status(util.http.status.accepted).json({
+        action: 'profile 1',
+        status: 'success'
+    });
+};
+
+/************ page two ************/
 taxReturnPages.getPageTwo = function(req, res, next){
     res.render('tax_profile/page-two', {
         meta: {
@@ -27,6 +37,7 @@ taxReturnPages.getPageTwo = function(req, res, next){
     });
 };
 
+/************ page three ************/
 taxReturnPages.getPageThree = function(req, res, next){
     res.render('tax_profile/page-three', {
         meta: {
@@ -38,6 +49,7 @@ taxReturnPages.getPageThree = function(req, res, next){
     });
 };
 
+/************ page four ************/
 taxReturnPages.getPageFour = function(req, res, next){
     res.render('tax_profile/page-four', {
         meta: {
@@ -49,6 +61,7 @@ taxReturnPages.getPageFour = function(req, res, next){
     });
 };
 
+/************ page five ************/
 taxReturnPages.getPageFive = function(req, res, next){
     res.render('tax_profile/page-five', {
         meta: {
@@ -60,6 +73,7 @@ taxReturnPages.getPageFive = function(req, res, next){
     });
 };
 
+/************ page six ************/
 taxReturnPages.getPageSix = function(req, res, next){
     res.render('tax_profile/page-six', {
         meta: {
@@ -82,6 +96,7 @@ taxReturnPages.getPageSeven = function(req, res, next){
     });
 };
 
+/************ page quote ************/
 taxReturnPages.getPageQuote = function(req, res, next){
     res.render('tax_profile/quote', {
         meta: {
@@ -91,6 +106,12 @@ taxReturnPages.getPageQuote = function(req, res, next){
         account: session.getAccountObject(req),
         data: {}
     });
+};
+
+/************ logout ************/
+taxReturnPages.getLogoutPage = function(req, res, next){
+    session.actionDestroyAccountSession(req);
+    res.redirect('/tax-profile');
 };
 
 module.exports = taxReturnPages;

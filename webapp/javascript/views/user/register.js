@@ -32,7 +32,7 @@
                     'json'
                 )
                     .then(function(){
-                        window.location.href = '/tax-return/page1';
+                        window.location.href = '/dashboard';
                     })
                     .catch(function(){
                         alert('error');

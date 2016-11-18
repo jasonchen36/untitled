@@ -3,12 +3,16 @@
         <!--for dev use-->
         {{#if account.hasUserSession}}
             <a href="/dashboard">Dashboard</a>
-            <a href="/logout">Logout</a>
+            <a href="/logout">Logout (user session)</a>
         {{else}}
             <a href="/login">Login</a>
             <a href="/register">Register</a>
             <a href="/tax-profile">Tax Profile</a>
             <a href="/password-reset">Forgot Password</a>
+        {{/if}}
+
+        {{#if account.hasAccountSession}}
+            <a href="/tax-profile/logout">Logout (account session)</a>
         {{/if}}
     </nav>
 </header>

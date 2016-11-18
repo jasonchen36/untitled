@@ -4,7 +4,7 @@
         that = app.views.user.login,
         helpers = app.helpers,
         loginForm = $('#user-login-form'),
-        loginSubmit = $('#login-form'),
+        loginSubmit = $('#login-submit'),
         loginEmailInput = $('#login-email'),
         loginPasswordInput = $('#login-password'),
         errorClass = app.helpers.errorClass,
@@ -32,7 +32,7 @@
                     'json'
                 )
                     .then(function(){
-                        window.location.href = '/tax-profile/page1';
+                        window.location.href = '/dashboard';
                     })
                     .catch(function(){
                         alert('error');

@@ -27,6 +27,6 @@ router.route('/logout')
     .put(userController.actionLogoutUser);
 
 router.route('/dashboard')
-    .get(userController.getDashboardPage);
+    .get(authenticationMiddleware.redirectWithoutUserSession, userController.getDashboardPage);
 
 module.exports = router;
