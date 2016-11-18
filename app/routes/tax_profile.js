@@ -3,16 +3,31 @@ const express = require('express'),
     taxReturnController = require('../controllers/tax_profile');
 
 router.route('/').get(function(req, res, next) {
-    res.redirect('/tax-profile/page1');
+    res.redirect('/tax-profile/1');
 });
 
-router.route('/page1')
-    .get(taxReturnController.getPage1);
+router.route('/1')
+    .get(taxReturnController.getPageOne);
 
-router.route('/page2')
-    .get(taxReturnController.getPage2);
+router.route('/2')
+    .get(taxReturnController.getPageTwo);
 
-router.route('/page3')
-    .get(taxReturnController.getPage3);
+router.route('/3')
+    .get(taxReturnController.getPageThree);
+
+router.route('/4')
+    .get(taxReturnController.getPageFour);
+
+router.route('/5')
+    .get(taxReturnController.getPageFive);
+
+router.route('/6')
+    .get(taxReturnController.getPageSix);
+
+router.route('/7')
+    .get(taxReturnController.getPageSeven);
+
+router.route('/quote')
+    .get(taxReturnController.getPageQuote);
 
 module.exports = router;
