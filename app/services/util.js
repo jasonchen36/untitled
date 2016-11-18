@@ -29,8 +29,4 @@ util.globals = {
     apiProductId: process.env.API_PRODUCT_ID
 };
 
-util.getGlobalObject = function(){
-  return util.globals;
-};
-
 module.exports = util;

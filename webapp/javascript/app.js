@@ -4,8 +4,6 @@
 
  */
 
-
-//chose a better global variable name to reduce chances of conflict
 var app = {
 
     //lib
@@ -35,7 +33,7 @@ var app = {
         user: {
             login: {},
             register: {},
-            forgotPassword: {}
+            passwordReset: {}
         }
     },
 
@@ -57,12 +55,11 @@ var app = {
         if (carousel.hasCarousels()){
             carousel.init();
         }
-
-
+        
         //user views
         views.user.login.init();
         views.user.register.init();
-        views.user.forgotPassword.init();
+        views.user.passwordReset.init();
 
         //tax profile views
         views.profile.pageOne.init();

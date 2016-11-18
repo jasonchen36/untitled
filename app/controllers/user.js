@@ -21,8 +21,8 @@ userPages.getLoginPage = function(req, res, next){
                 meta: {
                     pageTitle: util.globals.metaTitlePrefix+'Sign In'
                 },
-                globals: util.getGlobalObject(),
                 account: session.getAccountObject(req),
+                user: session.getUserObject(req),
                 data: {
                     name: user.toJSON().name,
                     views: req.session.views
@@ -35,6 +35,7 @@ userPages.getLoginPage = function(req, res, next){
 };
 
 userPages.actionLoginUser = function(req, res, next){
+    //todo, communicate with api
     session.actionStartUserSession(req);
     res.status(util.http.status.ok).json({
         action: 'login',
@@ -48,13 +49,14 @@ userPages.getRegisterPage = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Register'
         },
-        globals: util.getGlobalObject(),
         account: session.getAccountObject(req),
+        user: session.getUserObject(req),
         data: {}
     });
 };
 
 userPages.actionRegisterUser = function(req, res, next){
+    //todo, communicate with api
     session.actionStartUserSession(req);
     res.status(util.http.status.accepted).json({
         action: 'register',
@@ -63,18 +65,19 @@ userPages.actionRegisterUser = function(req, res, next){
 };
 
 /************ forgot password ************/
-userPages.getForgotPasswordPage = function(req, res, next){
+userPages.getPasswordResetPage = function(req, res, next){
     res.render('user/password-reset', {
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Password Reset'
         },
-        globals: util.getGlobalObject(),
         account: session.getAccountObject(req),
+        user: session.getUserObject(req),
         data: {}
     });
 };
 
-userPages.actionForgotPassword = function(req, res, next){
+userPages.actionPasswordReset = function(req, res, next){
+    //todo, communicate with api
     res.status(util.http.status.accepted).json({
         action: 'forgot password',
         status: 'success'
@@ -101,8 +104,8 @@ userPages.getDashboardPage = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Dashboard'
         },
-        globals: util.getGlobalObject(),
         account: session.getAccountObject(req),
+        user: session.getUserObject(req),
         data: {}
     });
 };

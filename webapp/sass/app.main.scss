@@ -38,5 +38,22 @@ $susy: (
 //views
 //-----------------------------
 @import "views/errors";
+
+
+//user views
+//-----------------------------
 @import "views/user/login";
 @import "views/user/register";
+@import "views/user/dashboard";
+
+
+//tax profile views
+//-----------------------------
+@import "views/tax_profile/page-one";
+@import "views/tax_profile/page-two";
+@import "views/tax_profile/page-three";
+@import "views/tax_profile/page-four";
+@import "views/tax_profile/page-five";
+@import "views/tax_profile/page-six";
+@import "views/tax_profile/page-seven";
+@import "views/tax_profile/page-quote";

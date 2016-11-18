@@ -11,14 +11,17 @@ taxReturnPages.getPageOne = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + taxReturnPrefix + '1'
         },
-        globals: util.getGlobalObject(),
         account: session.getAccountObject(req),
+        user: session.getUserObject(req),
         data: {}
     });
 };
 
 taxReturnPages.actionPageOne = function(req, res, next) {
+    //todo, communicate with api
     session.actionStartAccountSession(req);
+    const accountName = req.body.name;
+    req.session.account['name'] = accountName;
     res.status(util.http.status.accepted).json({
         action: 'profile 1',
         status: 'success'
@@ -31,8 +34,8 @@ taxReturnPages.getPageTwo = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + taxReturnPrefix + '2'
         },
-        globals: util.getGlobalObject(),
         account: session.getAccountObject(req),
+        user: session.getUserObject(req),
         data: {}
     });
 };
@@ -43,8 +46,8 @@ taxReturnPages.getPageThree = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + taxReturnPrefix + '3'
         },
-        globals: util.getGlobalObject(),
         account: session.getAccountObject(req),
+        user: session.getUserObject(req),
         data: {}
     });
 };
@@ -55,8 +58,8 @@ taxReturnPages.getPageFour = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + taxReturnPrefix + '4'
         },
-        globals: util.getGlobalObject(),
         account: session.getAccountObject(req),
+        user: session.getUserObject(req),
         data: {}
     });
 };
@@ -67,8 +70,8 @@ taxReturnPages.getPageFive = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + taxReturnPrefix + '5'
         },
-        globals: util.getGlobalObject(),
         account: session.getAccountObject(req),
+        user: session.getUserObject(req),
         data: {}
     });
 };
@@ -79,8 +82,8 @@ taxReturnPages.getPageSix = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + taxReturnPrefix + '6'
         },
-        globals: util.getGlobalObject(),
         account: session.getAccountObject(req),
+        user: session.getUserObject(req),
         data: {}
     });
 };
@@ -90,8 +93,8 @@ taxReturnPages.getPageSeven = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + taxReturnPrefix + '7'
         },
-        globals: util.getGlobalObject(),
         account: session.getAccountObject(req),
+        user: session.getUserObject(req),
         data: {}
     });
 };
@@ -102,8 +105,8 @@ taxReturnPages.getPageQuote = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Tax Profile | Quote'
         },
-        globals: util.getGlobalObject(),
         account: session.getAccountObject(req),
+        user: session.getUserObject(req),
         data: {}
     });
 };

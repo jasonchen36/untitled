@@ -1,7 +1,7 @@
 <header class="grid-container">
     <nav>
         <!--for dev use-->
-        {{#if account.hasUserSession}}
+        {{#if user.hasUserSession}}
             <a href="/dashboard">Dashboard</a>
             <a href="/logout">Logout (user session)</a>
         {{else}}

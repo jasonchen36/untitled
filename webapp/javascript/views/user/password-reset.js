@@ -1,7 +1,7 @@
 (function(){
 
     var $ = jQuery,
-        that = app.views.user.forgotPassword,
+        that = app.views.user.passwordReset,
         helpers = app.helpers,
         forgotPasswordForm = $('#forgot-password-form'),
         forgotPasswordEmailInput = $('#forgot-password-email'),
@@ -48,4 +48,4 @@
         }
     };
 
-}).apply(app.views.user.forgotPassword);
+}).apply(app.views.user.passwordReset);

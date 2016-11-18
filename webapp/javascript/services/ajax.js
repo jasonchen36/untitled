@@ -15,7 +15,8 @@
         if(data && helpers.sizeOfObject(data) > 0) {
             if (contentType === 'json') {
                 parameters.data = JSON.stringify(data);
-                parameters.contentType= "application/json";
+                parameters.contentType= 'application/json';
+                parameters.dataType = contentType;
             } else {
                 parameters.data = data;
             }
