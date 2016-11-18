@@ -40,6 +40,22 @@ taxReturnPages.getPageTwo = function(req, res, next){
     });
 };
 
+taxReturnPages.actionPageTwo = function(req, res, next) {
+    //todo, communicate with api
+    const filingForMyself = req.body.myself,
+        filingForSpouse = req.body.spouse,
+        filingForOther = req.body.other;
+    req.session.account['filingType'] = {
+        myself: filingForMyself,
+        spouse: filingForSpouse,
+        other: filingForOther
+    };
+    res.status(util.http.status.accepted).json({
+        action: 'profile 2',
+        status: 'success'
+    });
+};
+
 /************ page three ************/
 taxReturnPages.getPageThree = function(req, res, next){
     res.render('tax_profile/page-three', {

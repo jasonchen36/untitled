@@ -26,7 +26,11 @@
     this.getFormData = function(formElement){
         var data = {};
         $(formElement).find('input').each(function(){
-            data[$(this).attr('name')] = $(this).val();
+            if ($(this).attr('type') === 'checkbox'){
+                data[$(this).attr('name')] = $(this).prop('checked')?1:0;
+            } else {
+                data[$(this).attr('name')] = $(this).val();
+            }
         });
         return data;
     };
@@ -39,6 +43,10 @@
             }
         });
         return errorCount > 0;
+    };
+
+    this.hasCheckedCheckboxes = function(formData){
+        return Object.values(formData).indexOf(1) !== -1;
     };
 
     this.getBaseUrl = function(){

@@ -15,7 +15,8 @@ router.route('/1')
     .put(taxProfileController.actionPageOne);
 
 router.route('/2')
-    .get(authenticationMiddleware.redirectWithoutAccountSession, taxProfileController.getPageTwo);
+    .get(authenticationMiddleware.redirectWithoutAccountSession, taxProfileController.getPageTwo)
+    .post(taxProfileController.actionPageTwo);
 
 router.route('/3')
     .get(authenticationMiddleware.redirectWithoutAccountSession, taxProfileController.getPageThree);

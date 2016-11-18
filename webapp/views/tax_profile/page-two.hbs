@@ -1,6 +1,22 @@
 <main id="page-profile-2" class="grid-container">
     <h1>question 2</h1>
+    <p>
+        {{account.name}}, please tell us who you are filing for. Select all that apply
+    </p>
+    <form id="profile-2-form">
+        <p>
+        <input type="checkbox" id="profile-2-myself" name="myself" {{#compare account.filingType.myself 1 operator="=="}}checked="checked"{{/compare}}/>
+            <label for="profile-2-myself">Myself</label>
+        </p>
+        <p>
+            <input type="checkbox" id="profile-2-spouse" name="spouse" {{#compare account.filingType.spouse 1 operator="=="}}checked="checked"{{/compare}}/>
+            <label for="profile-2-spouse">My Spouse/Partner</label>
+        </p>
+        <p>
+            <input type="checkbox" id="profile-2-other" name="other" {{#compare account.filingType.other 1 operator="=="}}checked="checked"{{/compare}}/>
+            <label for="profile-2-other">Other Person/People</label>
+        </p>
+        <button type="submit" id="profile-2-submit">Next</button>
+    </form>
     <a href="1">Back</a>
-    <br/>
-    <a href="3">Next</a>
 </main>

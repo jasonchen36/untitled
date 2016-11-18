@@ -174,6 +174,7 @@ module.exports = function(grunt){
             base: {
                 files: {
                     'webapp/public/app.base.min.js': [
+                        'webapp/bower_components/lodash/dist/lodash.min.js',
                         'webapp/bower_components/jquery/dist/jquery.min.js',
                         'webapp/bower_components/bluebird/javascript/browser/bluebird.min.js',
                         'webapp/bower_components/store-js/store.min.js',
