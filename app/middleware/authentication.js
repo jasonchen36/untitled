@@ -4,7 +4,7 @@ const //services
 
 var authenticationMiddleware = {};
 
-authenticationMiddleware.redirectWithoutSession = function(req, res, next){
+authenticationMiddleware.redirectWithoutAccountSession = function(req, res, next){
     if (session.getAccountSession(req)){
         next();
     } else {
@@ -12,9 +12,9 @@ authenticationMiddleware.redirectWithoutSession = function(req, res, next){
     }
 };
 
-authenticationMiddleware.redirectWithSession = function(req, res, next){
+authenticationMiddleware.redirectWithUserSession = function(req, res, next){
     if (session.getAccountSession(req)){
-        res.redirect('/tax-return/page1');
+        res.redirect('/dashboard');
     } else {
         next();
     }

@@ -1,10 +1,12 @@
 <header class="grid-container">
     <nav>
-        {{#if account.hasSession}}
+        {{#if account.hasUserSession}}
+            <a href="/dashboard">Dashboard</a>
             <a href="/logout">Logout</a>
         {{else}}
             <a href="/login">Login</a>
             <a href="/register">Register</a>
+            <a href="/tax-profile">Tax Profile</a>
             <a href="/password-reset">Forgot Password</a>
         {{/if}}
     </nav>

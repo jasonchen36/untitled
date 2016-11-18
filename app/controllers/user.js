@@ -35,7 +35,7 @@ userPages.getLoginPage = function(req, res, next){
 };
 
 userPages.actionLoginUser = function(req, res, next){
-    session.actionStartAccountSession(req);
+    session.actionStartUserSession(req);
     res.status(util.http.status.ok).json({
         action: 'login',
         result: 'success'
@@ -55,7 +55,7 @@ userPages.getRegisterPage = function(req, res, next){
 };
 
 userPages.actionRegisterUser = function(req, res, next){
-    session.actionStartAccountSession(req);
+    session.actionStartUserSession(req);
     res.status(util.http.status.accepted).json({
         action: 'register',
         result: 'success'
@@ -64,7 +64,7 @@ userPages.actionRegisterUser = function(req, res, next){
 
 /************ forgot password ************/
 userPages.getForgotPasswordPage = function(req, res, next){
-    res.render('user/forgot-password', {
+    res.render('user/password-reset', {
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Password Reset'
         },
@@ -82,14 +82,25 @@ userPages.actionForgotPassword = function(req, res, next){
 };
 
 /************ logout ************/
-
 userPages.getLogoutPage = function(req, res, next) {
-    session.actionDestroyAccountSession(req);
+    session.actionDestroyUserSession(req);
     res.redirect('/login');
 };
 
 userPages.actionLogoutUser = function(req, res, next) {
-    session.actionDestroyAccountSession(req);
+    session.actionDestroyUserSession(req);
+};
+
+/************ dashboard ************/
+userPages.getDashboardPage = function(req, res, next){
+    res.render('user/dashboard', {
+        meta: {
+            pageTitle: util.globals.metaTitlePrefix + 'Dashboard'
+        },
+        globals: util.getGlobalObject(),
+        account: session.getAccountObject(req),
+        data: {}
+    });
 };
 
 module.exports = userPages;

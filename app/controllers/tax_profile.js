@@ -6,7 +6,7 @@ var taxReturnPrefix = 'Question ',
     taxReturnPages = {};
 
 taxReturnPages.getPage1 = function(req, res, next){
-    res.render('tax_return/page1', {
+    res.render('tax_profile/page1', {
         meta: {
             pageTitle: util.globals.metaTitlePrefix + taxReturnPrefix + '1'
         },
@@ -17,7 +17,7 @@ taxReturnPages.getPage1 = function(req, res, next){
 };
 
 taxReturnPages.getPage2 = function(req, res, next){
-    res.render('tax_return/page2', {
+    res.render('tax_profile/page2', {
         meta: {
             pageTitle: util.globals.metaTitlePrefix + taxReturnPrefix + '2'
         },
@@ -28,7 +28,7 @@ taxReturnPages.getPage2 = function(req, res, next){
 };
 
 taxReturnPages.getPage3 = function(req, res, next){
-    res.render('tax_return/page3', {
+    res.render('tax_profile/page3', {
         meta: {
             pageTitle: util.globals.metaTitlePrefix + taxReturnPrefix + '3'
         },

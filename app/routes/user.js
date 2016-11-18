@@ -11,19 +11,22 @@ router.route('/').get(function(req, res, next) {
 });
 
 router.route('/login')
-    .get(authenticationMiddleware.redirectWithSession,userController.getLoginPage)
+    .get(authenticationMiddleware.redirectWithUserSession,userController.getLoginPage)
     .put(userController.actionLoginUser);
 
 router.route('/register')
-    .get(authenticationMiddleware.redirectWithSession,userController.getRegisterPage)
+    .get(authenticationMiddleware.redirectWithUserSession,userController.getRegisterPage)
     .post(userController.actionRegisterUser);
 
 router.route('/password-reset')
-    .get(authenticationMiddleware.redirectWithSession,userController.getForgotPasswordPage)
+    .get(authenticationMiddleware.redirectWithUserSession,userController.getForgotPasswordPage)
     .put(userController.actionForgotPassword);
 
 router.route('/logout')
     .get(userController.getLogoutPage)
     .put(userController.actionLogoutUser);
+
+router.route('/dashboard')
+    .get(userController.getDashboardPage);
 
 module.exports = router;

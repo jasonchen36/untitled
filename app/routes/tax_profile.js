@@ -1,6 +1,10 @@
 const express = require('express'),
     router = express.Router(),
-    taxReturnController = require('../controllers/tax_return');
+    taxReturnController = require('../controllers/tax_profile');
+
+router.route('/').get(function(req, res, next) {
+    res.redirect('/tax-profile/page1');
+});
 
 router.route('/page1')
     .get(taxReturnController.getPage1);
