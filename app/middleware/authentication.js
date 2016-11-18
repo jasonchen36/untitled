@@ -6,7 +6,7 @@ var authenticationMiddleware = {};
 
 /************ account session ************/
 authenticationMiddleware.redirectWithoutAccountSession = function(req, res, next){
-    if (session.getAccountSession(req)){
+    if (session.hasAccountSession(req)){
         next();
     } else {
         res.redirect('/tax-profile');
@@ -14,7 +14,7 @@ authenticationMiddleware.redirectWithoutAccountSession = function(req, res, next
 };
 
 authenticationMiddleware.rejectWithoutAccountSession = function(req, res, next){
-    if (session.getAccountSession(req)){
+    if (session.hasAccountSession(req)){
         next();
     } else {
         res.status(util.http.status.unauthorized).json({
@@ -26,7 +26,7 @@ authenticationMiddleware.rejectWithoutAccountSession = function(req, res, next){
 
 /************ user session ************/
 authenticationMiddleware.redirectWithUserSession = function(req, res, next){
-    if (session.getUserSession(req)){
+    if (session.hasUserSession(req)){
         res.redirect('/dashboard');
     } else {
         next();
@@ -34,7 +34,7 @@ authenticationMiddleware.redirectWithUserSession = function(req, res, next){
 };
 
 authenticationMiddleware.redirectWithoutUserSession = function(req, res, next){
-    if (session.getUserSession(req)){
+    if (session.hasUserSession(req)){
         next();
     } else {
         res.redirect('/login');
@@ -42,7 +42,7 @@ authenticationMiddleware.redirectWithoutUserSession = function(req, res, next){
 };
 
 authenticationMiddleware.rejectWithoutUserSession = function(req, res, next){
-    if (session.getUserSession(req)){
+    if (session.hasUserSession(req)){
         next();
     } else {
         res.status(util.http.status.unauthorized).json({

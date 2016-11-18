@@ -19,7 +19,9 @@ taxReturnPages.getPageOne = function(req, res, next){
 
 taxReturnPages.actionPageOne = function(req, res, next) {
     //todo, communicate with api
-    session.actionStartAccountSession(req);
+    if (!session.hasAccountSession(req)){
+        session.actionStartAccountSession(req);
+    }
     const accountName = req.body.name;
     req.session.account['name'] = accountName;
     res.status(util.http.status.accepted).json({
