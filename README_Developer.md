@@ -8,7 +8,7 @@ After cloning the repo:
 ```
 cp .env_example .env
 npm install
-npm install foreman -g
+npm install foreman grunt bower -g
 bower install
 grunt build
 ```
@@ -19,6 +19,9 @@ Nodemon is used in Procfile_dev so that any changes to the Node.js code are auto
 ```
 foreman start -f Procfile_dev
 ```
+
+The site is served at [http://localhost:3000](http://localhost:3000)
+
 
 ## How to develop the frontend JS and CSS files ##
 
