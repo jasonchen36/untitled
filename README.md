@@ -19,7 +19,6 @@
 * Node.js 6.3.1
 * Sass ~3.4.22
 * JavaScript ES6
-* Grunt CLI
 * NPM ~3.10.3 
 
 
