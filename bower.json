@@ -18,7 +18,7 @@
     "jquery": "3.0.0",
     "normalize-css": "4.1.1",
     "moment": "2.13.0",
-    "css-modal": "^1.5.0",
-    "lodash": "^4.17.2"
+    "css-modal": "1.5.0",
+    "lodash": "4.17.2"
   }
 }
