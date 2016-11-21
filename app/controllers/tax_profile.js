@@ -1,15 +1,16 @@
 const //services
     util = require('../services/util'),
-    session = require('../services/session');
+    session = require('../services/session'),
+    taxProfile = require('../services/tax_profile'),
+    errorService = require('../services/errors');
 
-var taxReturnPrefix = 'Tax Profile | Page ',
-    taxReturnPages = {};
+var taxReturnPages = {};
 
-/************ page one ************/
-taxReturnPages.getPageOne = function(req, res, next){
-    res.render('tax_profile/page-one', {
+/************ tax profile ************/
+taxReturnPages.getPageTaxProfile = function(req, res, next){
+    res.render('tax_profile/landing', {
         meta: {
-            pageTitle: util.globals.metaTitlePrefix + taxReturnPrefix + '1'
+            pageTitle: util.globals.metaTitlePrefix + 'Tax Profile'
         },
         account: session.getAccountObject(req),
         user: session.getUserObject(req),
@@ -17,117 +18,33 @@ taxReturnPages.getPageOne = function(req, res, next){
     });
 };
 
-taxReturnPages.actionPageOne = function(req, res, next) {
-    //todo, communicate with api
+taxReturnPages.actionSaveAccount = function(req, res, next) {
     if (!session.hasAccountSession(req)){
-        session.actionStartAccountSession(req);
+        if (req.body.action !== 'name') {
+            next(new errorService.BadRequestError('tax profile - no account session exists'));
+        } else {
+            session.actionStartAccountSession(req);
+        }
     }
-    const accountName = req.body.name;
-    req.session.account['name'] = accountName;
+    switch(req.body.action){
+        case 'name':
+            taxProfile.saveName(req);
+            break;
+        case 'filingType':
+            taxProfile.saveFilingType(req);
+            break;
+        default:
+            next(new errorService.BadRequestError('tax profile - invalid action'));
+            break;
+    }
     res.status(util.http.status.accepted).json({
-        action: 'profile 1',
-        status: 'success'
+        action: req.body.action,
+        status: 'success',
+        data: session.getAccountObject(req)
     });
 };
 
-/************ page two ************/
-taxReturnPages.getPageTwo = function(req, res, next){
-    res.render('tax_profile/page-two', {
-        meta: {
-            pageTitle: util.globals.metaTitlePrefix + taxReturnPrefix + '2'
-        },
-        account: session.getAccountObject(req),
-        user: session.getUserObject(req),
-        data: {}
-    });
-};
 
-taxReturnPages.actionPageTwo = function(req, res, next) {
-    //todo, communicate with api
-    const filingForMyself = req.body.myself,
-        filingForSpouse = req.body.spouse,
-        filingForOther = req.body.other;
-    req.session.account['filingType'] = {
-        myself: filingForMyself,
-        spouse: filingForSpouse,
-        other: filingForOther
-    };
-    res.status(util.http.status.accepted).json({
-        action: 'profile 2',
-        status: 'success'
-    });
-};
-
-/************ page three ************/
-taxReturnPages.getPageThree = function(req, res, next){
-    res.render('tax_profile/page-three', {
-        meta: {
-            pageTitle: util.globals.metaTitlePrefix + taxReturnPrefix + '3'
-        },
-        account: session.getAccountObject(req),
-        user: session.getUserObject(req),
-        data: {}
-    });
-};
-
-/************ page four ************/
-taxReturnPages.getPageFour = function(req, res, next){
-    res.render('tax_profile/page-four', {
-        meta: {
-            pageTitle: util.globals.metaTitlePrefix + taxReturnPrefix + '4'
-        },
-        account: session.getAccountObject(req),
-        user: session.getUserObject(req),
-        data: {}
-    });
-};
-
-/************ page five ************/
-taxReturnPages.getPageFive = function(req, res, next){
-    res.render('tax_profile/page-five', {
-        meta: {
-            pageTitle: util.globals.metaTitlePrefix + taxReturnPrefix + '5'
-        },
-        account: session.getAccountObject(req),
-        user: session.getUserObject(req),
-        data: {}
-    });
-};
-
-/************ page six ************/
-taxReturnPages.getPageSix = function(req, res, next){
-    res.render('tax_profile/page-six', {
-        meta: {
-            pageTitle: util.globals.metaTitlePrefix + taxReturnPrefix + '6'
-        },
-        account: session.getAccountObject(req),
-        user: session.getUserObject(req),
-        data: {}
-    });
-};
-
-taxReturnPages.getPageSeven = function(req, res, next){
-    res.render('tax_profile/page-seven', {
-        meta: {
-            pageTitle: util.globals.metaTitlePrefix + taxReturnPrefix + '7'
-        },
-        account: session.getAccountObject(req),
-        user: session.getUserObject(req),
-        data: {}
-    });
-};
-
-/************ page quote ************/
-taxReturnPages.getPageQuote = function(req, res, next){
-    res.render('tax_profile/quote', {
-        meta: {
-            pageTitle: util.globals.metaTitlePrefix + 'Tax Profile | Quote'
-        },
-        account: session.getAccountObject(req),
-        user: session.getUserObject(req),
-        data: {}
-    });
-};
 
 /************ logout ************/
 taxReturnPages.getLogoutPage = function(req, res, next){
