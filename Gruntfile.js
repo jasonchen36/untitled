@@ -30,7 +30,7 @@ module.exports = function(grunt){
             '!webapp/sass/lib/**/*.scss'
         ],
         handlebars: [
-            'webapp/handlebars/**/*.hbs'
+            'webapp/views/**/*.hbs'
         ],
         images: [
             'webapp/assets/images/**/*'
@@ -198,8 +198,9 @@ module.exports = function(grunt){
                 files: {
                     'webapp/public/app.main.min.js': [
                         'webapp/javascript/app.js',
-                        'webapp/javascript/services/*.js',
-                        'webapp/javascript/modules/*.js',
+                        'webapp/javascript/lib/**/*.js',
+                        'webapp/javascript/services/**/*.js',
+                        'webapp/javascript/modules/**/.js',
                         'webapp/javascript/**/*.js'
                     ]
                 },

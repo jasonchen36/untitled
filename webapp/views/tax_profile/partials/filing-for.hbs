@@ -3,20 +3,20 @@
     <p>
         {{account.name}}, please tell us who you are filing for. Select all that apply
     </p>
-    <form id="profile-2-form">
+    <form id="filing-for-form">
         <p>
-        <input type="checkbox" id="profile-2-myself" name="myself" {{#compare account.filingType.myself 1 operator="=="}}checked="checked"{{/compare}}/>
-            <label for="profile-2-myself">Myself</label>
+        <input type="checkbox" id="filing-for-myself" name="myself" {{#compare account.filingType.myself 1 operator="=="}}checked="checked"{{/compare}}/>
+            <label for="filing-for-myself">Myself</label>
         </p>
         <p>
-            <input type="checkbox" id="profile-2-spouse" name="spouse" {{#compare account.filingType.spouse 1 operator="=="}}checked="checked"{{/compare}}/>
-            <label for="profile-2-spouse">My Spouse/Partner</label>
+            <input type="checkbox" id="filing-for-spouse" name="spouse" {{#compare account.filingType.spouse 1 operator="=="}}checked="checked"{{/compare}}/>
+            <label for="filing-for-spouse">My Spouse/Partner</label>
         </p>
         <p>
-            <input type="checkbox" id="profile-2-other" name="other" {{#compare account.filingType.other 1 operator="=="}}checked="checked"{{/compare}}/>
-            <label for="profile-2-other">Other Person/People</label>
+            <input type="checkbox" id="filing-for-other" name="other" {{#compare account.filingType.other 1 operator="=="}}checked="checked"{{/compare}}/>
+            <label for="filing-for-other">Other Person/People</label>
         </p>
-        <button type="submit" id="profile-2-submit">Next</button>
+        <button type="submit" id="filing-for-submit">Next</button>
     </form>
-    <a href="1">Back</a>
+    <button id="filing-for-back">Back</button>
 </section>

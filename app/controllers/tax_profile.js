@@ -21,7 +21,7 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
 taxReturnPages.actionSaveAccount = function(req, res, next) {
     if (!session.hasAccountSession(req)){
         if (req.body.action !== 'name') {
-            next(new errorService.BadRequestError('tax profile - no account session exists'));
+            return next(new errorService.BadRequestError('tax profile - no account session exists'));
         } else {
             session.actionStartAccountSession(req);
         }
@@ -34,7 +34,7 @@ taxReturnPages.actionSaveAccount = function(req, res, next) {
             taxProfile.saveFilingType(req);
             break;
         default:
-            next(new errorService.BadRequestError('tax profile - invalid action'));
+            return next(new errorService.BadRequestError('tax profile - invalid action'));
             break;
     }
     res.status(util.http.status.accepted).json({

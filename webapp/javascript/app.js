@@ -6,7 +6,7 @@
 
 var app = {
 
-    //lib
+    //services
     ajax: {},
     animations: {},
     cookies: {},
@@ -14,21 +14,18 @@ var app = {
     helpers: {},
     state: {},
     mediaQueries: {},
+    services: {
+      taxProfile: {}  
+    },
 
     //modules
     carousel: {},
 
     //templates
     views: {
-        profile: {
-            pageOne: {},
-            pageTwo: {},
-            pageThree: {},
-            pageFour: {},
-            pageFive: {},
-            pageSix: {},
-            pageSeven: {},
-            pageQuote: {}
+        taxProfile: {
+            welcome: {},
+            filingFor: {}
         },
         user: {
             login: {},
@@ -57,21 +54,14 @@ var app = {
             carousel.init();
         }
         
-        //user views
+        //views
         views.user.login.init();
         views.user.register.init();
         views.user.passwordReset.init();
         views.user.authorizedPasswordReset.init();
 
-        //tax profile views
-        views.profile.pageOne.init();
-        views.profile.pageTwo.init();
-        views.profile.pageThree.init();
-        views.profile.pageFour.init();
-        views.profile.pageFive.init();
-        views.profile.pageSix.init();
-        views.profile.pageSeven.init();
-        views.profile.pageQuote.init();
+        //tax profile
+        app.services.taxProfile.init();
     }
 };
 
