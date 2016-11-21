@@ -8,7 +8,7 @@ After cloning the repo:
 ```
 cp .env_example .env
 npm install
-npm install foreman grunt bower -g
+npm install foreman grunt-cli bower -g
 bower install
 grunt build
 ```
