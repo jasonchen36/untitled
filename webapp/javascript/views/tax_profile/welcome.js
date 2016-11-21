@@ -28,11 +28,12 @@
                     },
                     'json'
                 )
-                    .then(function(){
+                    .then(function(response){
+                        taxProfile.updateAccountSession(response.data);
                         taxProfile.goToNextPage();
                     })
-                    .catch(function(){
-                        alert('error');
+                    .catch(function(jqXHR,textStatus,errorThrown){
+                        console.log(jqXHR,textStatus,errorThrown);
                         welcomeSubmit.removeClass(disabledClass);
                     });
             }

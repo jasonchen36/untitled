@@ -26,10 +26,11 @@
         'quote-multi'
     ];
 
-    this.changePage = function(currentPage){
+    this.changePage = function(newPage){
         return new Promise(function(resolve,reject) {
-            var data = store.get(that.accountSessionCookie),
-                template = Handlebars.templates[currentPage],
+            var data = cookies.getCookie(that.accountSessionCookie);
+            that.updateAccountSession(data,newPage);
+            var template = Handlebars.templates[newPage],
                 html = template(data);
             landingPageContainer.html(html);
             resolve();
@@ -72,6 +73,15 @@
         }
     };
 
+    this.updateAccountSession = function(data, currentPage){
+        if(!currentPage){
+            data.currentPage = getCurrentPage();
+        } else {
+            data.currentPage = currentPage;
+        }
+        cookies.setCookie(that.accountSessionCookie,data);
+    };
+
     function triggerInitScripts(){
         var taxProfileViews = app.views.taxProfile;
         taxProfileViews.welcome.init();
@@ -80,14 +90,16 @@
 
     function startAccountSession(){
         return cookies.setCookie(that.accountSessionCookie, {
-            currentPage: that.singleFilerFlow[0],
-            nextPage: that.singleFilerFlow[1],
-            previousPage: null
+            currentPage: that.singleFilerFlow[0]
         });
     }
 
     function isMultiFiler(){
-        return Object.values(cookies.getCookie(that.accountSessionCookie).filingType).count(1) > 1;
+        if(!cookies.getCookie(that.accountSessionCookie).hasOwnProperty('filingType')){
+            return false;
+        } else {
+            return Object.values(cookies.getCookie(that.accountSessionCookie).filingType).filter(function(value){return value === 1;}).length > 1;
+        }
     }
 
     function getCurrentPage(){
@@ -100,7 +112,7 @@
     }
 
     this.init = function(){
-        if ($('#page-tax-profile').length > 0) {
+        if (landingPageContainer.length > 0) {
             that.changePage(getCurrentPage());
         }
     };
