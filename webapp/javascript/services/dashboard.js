@@ -16,18 +16,20 @@
         'my-return'
     ];
 
-    this.changePage = function(newPage){
-        return new Promise(function(resolve,reject) {
-            var data = cookies.getCookie(that.userSessionCookie);
-            that.updateUserSession(data,newPage);
-            var template = Handlebars.templates[newPage],
-                html = template(data);
-            landingPageContainer.html(html);
-            resolve();
-        })
-            .then(function(){
-                triggerInitScripts();
-            });
+    this.changePage = function(newPage, overrideDuplicate){
+        if(overrideDuplicate || newPage !== getCurrentPage()) {
+            return new Promise(function (resolve, reject) {
+                var data = cookies.getCookie(that.userSessionCookie);
+                that.updateUserSession(data, newPage);
+                var template = Handlebars.templates[newPage],
+                    html = template(data);
+                landingPageContainer.html(html);
+                resolve();
+            })
+                .then(function () {
+                    triggerInitScripts();
+                });
+        }
     };
 
     this.updateUserSession = function(data, currentPage){
@@ -86,7 +88,7 @@
             });
             
             //functions
-            that.changePage(getCurrentPage());
+            that.changePage(getCurrentPage(), true);
         }
     };
 
