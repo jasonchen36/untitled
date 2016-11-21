@@ -10,8 +10,8 @@ Note: font file paths are relative to deployed file paths, not source paths
 //font declarations
 //-----------------------------
 @font-face {
-  font-family: 'AgendaMedium';
-  src: url('assets/fonts/AgendaMedium.woff2') format('woff2'), url('assets/fonts/AgendaMedium.woff') format('woff'),url('assets/fonts/AgendaMedium.ttf') format('truetype');
+  font-family: 'FuturaMedium';
+  src: url('/public/fonts/FuturaPTMedium.woff2') format('woff2'), url('/public/fonts/FuturaPTMedium.woff') format('woff'),url('/public/fonts/FuturaPTMedium.ttf') format('truetype');
   font-weight: normal;
   font-style: normal
 }
@@ -19,8 +19,8 @@ Note: font file paths are relative to deployed file paths, not source paths
 
 //extensible classes
 //-----------------------------
-.f--agenda-medium {
-  font-family: AgendaMedium, Arial, sans-serif;
+.f--futura-medium {
+  font-family: FuturaMedium, Arial, sans-serif;
 }
 
 .f--helvetica-neue {

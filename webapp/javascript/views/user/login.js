@@ -4,7 +4,7 @@
         that = app.views.user.login,
         helpers = app.helpers,
         loginForm = $('#user-login-form'),
-        loginSubmit = $('#login-form'),
+        loginSubmit = $('#login-submit'),
         loginEmailInput = $('#login-email'),
         loginPasswordInput = $('#login-password'),
         errorClass = app.helpers.errorClass,
@@ -17,7 +17,7 @@
             if (!helpers.isValidEmail(formData.email)) {
                 loginEmailInput.addClass(errorClass);
             }
-            if (formData.password.length < 1){
+            if (!helpers.isValidPassword(formData.password)) {
                 loginPasswordInput.addClass(errorClass);
             }
             if (!helpers.formHasErrors(loginForm)) {
@@ -32,7 +32,7 @@
                     'json'
                 )
                     .then(function(){
-                        window.location.href = '/questionnaire/page1';
+                        window.location.href = '/dashboard';
                     })
                     .catch(function(){
                         alert('error');

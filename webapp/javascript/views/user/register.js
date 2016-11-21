@@ -17,7 +17,7 @@
             if (!helpers.isValidEmail(formData.email)) {
                 registerEmailInput.addClass(errorClass);
             }
-            if (formData.password.length < 8){
+            if (!helpers.isValidPassword(formData.password)) {
                 registerPasswordInput.addClass(errorClass);
             }
             if (!helpers.formHasErrors(registerForm)) {
@@ -32,7 +32,7 @@
                     'json'
                 )
                     .then(function(){
-                        window.location.href = '/questionnaire/page1';
+                        window.location.href = '/personal-profile';
                     })
                     .catch(function(){
                         alert('error');

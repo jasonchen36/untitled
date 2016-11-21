@@ -4,20 +4,53 @@ const //services
 
 var authenticationMiddleware = {};
 
-authenticationMiddleware.redirectWithoutSession = function(req, res, next){
-    if (session.getUserLoggedIn(req)){
+/************ account session ************/
+authenticationMiddleware.redirectWithoutAccountSession = function(req, res, next){
+    if (session.hasAccountSession(req)){
+        next();
+    } else {
+        res.redirect('/tax-profile');
+    }
+};
+
+authenticationMiddleware.rejectWithoutAccountSession = function(req, res, next){
+    if (session.hasAccountSession(req)){
+        next();
+    } else {
+        res.status(util.http.status.unauthorized).json({
+            action: 'unauthorized - no account session',
+            status: 'failure'
+        });
+    }
+};
+
+/************ user session ************/
+authenticationMiddleware.redirectWithUserSession = function(req, res, next){
+    if (session.hasUserSession(req)){
+        res.redirect('/dashboard');
+    } else {
+        next();
+    }
+};
+
+authenticationMiddleware.redirectWithoutUserSession = function(req, res, next){
+    if (session.hasUserSession(req)){
         next();
     } else {
         res.redirect('/login');
     }
 };
 
-authenticationMiddleware.redirectWithSession = function(req, res, next){
-    if (session.getUserLoggedIn(req)){
-        res.redirect('/questionnaire/page1');
-    } else {
+authenticationMiddleware.rejectWithoutUserSession = function(req, res, next){
+    if (session.hasUserSession(req)){
         next();
+    } else {
+        res.status(util.http.status.unauthorized).json({
+            action: 'unauthorized - no user session',
+            status: 'failure'
+        });
     }
 };
+
 
 module.exports = authenticationMiddleware;

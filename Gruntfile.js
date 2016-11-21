@@ -30,7 +30,7 @@ module.exports = function(grunt){
             '!webapp/sass/lib/**/*.scss'
         ],
         handlebars: [
-            'webapp/handlebars/**/*.hbs'
+            'webapp/views/**/*.hbs'
         ],
         images: [
             'webapp/assets/images/**/*'
@@ -47,7 +47,16 @@ module.exports = function(grunt){
                 src: [
                     'webapp/assets/fonts/**'
                 ],
-                dest: 'webapp/public/assets/fonts/',
+                dest: 'webapp/public/fonts/',
+                flatten: true,
+                filter: 'isFile'
+            },
+            images: {
+                expand: true,
+                src: [
+                    'webapp/assets/images/**'
+                ],
+                dest: 'webapp/public/images/',
                 flatten: true,
                 filter: 'isFile'
             }
@@ -165,6 +174,7 @@ module.exports = function(grunt){
             base: {
                 files: {
                     'webapp/public/app.base.min.js': [
+                        'webapp/bower_components/lodash/dist/lodash.min.js',
                         'webapp/bower_components/jquery/dist/jquery.min.js',
                         'webapp/bower_components/bluebird/javascript/browser/bluebird.min.js',
                         'webapp/bower_components/store-js/store.min.js',
@@ -188,8 +198,9 @@ module.exports = function(grunt){
                 files: {
                     'webapp/public/app.main.min.js': [
                         'webapp/javascript/app.js',
-                        'webapp/javascript/services/*.js',
-                        'webapp/javascript/modules/*.js',
+                        'webapp/javascript/lib/**/*.js',
+                        'webapp/javascript/services/**/*.js',
+                        'webapp/javascript/modules/**/.js',
                         'webapp/javascript/**/*.js'
                     ]
                 },
@@ -236,7 +247,7 @@ module.exports = function(grunt){
             },
             images: {
                 files: watchFiles.images,
-                tasks: ['newer:imagemin'],
+                tasks: ['newer:imagemin','newer:copy:images'],
                 options: {
                     livereload: true
                 }
@@ -246,8 +257,8 @@ module.exports = function(grunt){
 
     // Development task.  After started, will monitor files for changes and then recompile as needed
     grunt.registerTask('dev', [
-        'newer:copy',
         'newer:imagemin',
+        'newer:copy',
         'newer:handlebars:compile',
         'newer:uglify',
         'newer:sass',
@@ -257,8 +268,8 @@ module.exports = function(grunt){
 
     // Build task. For initializing environment after clone or for deploy in a remote environment
     grunt.registerTask('build', [
-        'newer:copy',
         'newer:imagemin',
+        'newer:copy',
         'handlebars:compile',
         'uglify',
         'sass',

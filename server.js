@@ -17,7 +17,9 @@ const express = require('express'),
 // routes
     errorRoutes = require('./app/routes/errors'),
     userRoutes = require('./app/routes/user'),
-    questionnaireRoutes = require('./app/routes/questionnaire'),
+    taxProfileRoutes = require('./app/routes/tax_profile'),
+    personalProfileRoutes = require('./app/routes/personal_profile'),
+    dashboardRoutes = require('./app/routes/dashboard'),
 //controllers
     errorController = require('./app/controllers/errors'),
 //middleware
@@ -34,6 +36,7 @@ const express = require('express'),
 app.use(cors());
 app.options('*', cors());
 app.use(cookieParser());
+app.use(favicon(__dirname + '/webapp/public/images/favicon.ico'));
 
 //Remove trailing slashes
 app.use(function(req, res, next) {
@@ -115,7 +118,10 @@ app.use('/bower_components', express.static(path.join(__dirname, 'webapp/bower_c
  */
 app.use('/', errorRoutes);
 app.use('/', userRoutes);
-app.use('/questionnaire', authenticationMiddleware.redirectWithoutSession, questionnaireRoutes);
+app.use('/tax-profile', authenticationMiddleware.redirectWithUserSession, taxProfileRoutes);
+app.use('/dashboard', authenticationMiddleware.redirectWithoutUserSession, dashboardRoutes);
+app.use('/personal-profile', authenticationMiddleware.redirectWithoutUserSession, personalProfileRoutes);
+
 
 /**
  * error handlers

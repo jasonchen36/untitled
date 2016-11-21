@@ -4,11 +4,9 @@
 
  */
 
-
-//chose a better global variable name to reduce chances of conflict
 var app = {
 
-    //lib
+    //services
     ajax: {},
     animations: {},
     cookies: {},
@@ -16,16 +14,48 @@ var app = {
     helpers: {},
     state: {},
     mediaQueries: {},
+    services: {
+        taxProfile: {},
+        personalProfile: {},
+        dashboard: {}
+    },
 
     //modules
     carousel: {},
 
     //templates
     views: {
+        dashboard: {
+            upload: {},
+            chat: {},
+            myReturn: {}
+        },
+        personalProfile: {
+            lastName: {},
+            specialScenarios: {},
+            maritalStatus: {},
+            dependants: {},
+            address: {},
+            birthdate: {}
+        },
+        taxProfile: {
+            welcome: {},
+            filingFor: {},
+            filersNames: {},
+            income: {},
+            incomeMulti: {},
+            credits: {},
+            creditsMulti: {},
+            deductions: {},
+            deductionsMulti: {},
+            quote: {},
+            quoteMulti: {}
+        },
         user: {
             login: {},
             register: {},
-            forgotPassword: {}
+            passwordReset: {},
+            authorizedPasswordReset: {}
         }
     },
 
@@ -48,11 +78,16 @@ var app = {
             carousel.init();
         }
 
-
-        //templates
+        //regular views
         views.user.login.init();
         views.user.register.init();
-        views.user.forgotPassword.init();
+        views.user.passwordReset.init();
+        views.user.authorizedPasswordReset.init();
+
+        //one page views
+        app.services.taxProfile.init();
+        app.services.personalProfile.init();
+        app.services.dashboard.init();
     }
 };
 

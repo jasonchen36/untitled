@@ -1,9 +1,9 @@
 const //services
     express = require('express'),
     router = express.Router(),
-    //middleware
+//middleware
     authenticationMiddleware = require('../middleware/authentication'),
-    //controllers
+//controllers
     userController = require('../controllers/user');
 
 router.route('/').get(function(req, res, next) {
@@ -11,16 +11,20 @@ router.route('/').get(function(req, res, next) {
 });
 
 router.route('/login')
-    .get(authenticationMiddleware.redirectWithSession,userController.getLoginPage)
+    .get(authenticationMiddleware.redirectWithUserSession,userController.getLoginPage)
     .put(userController.actionLoginUser);
 
 router.route('/register')
-    .get(authenticationMiddleware.redirectWithSession,userController.getRegisterPage)
+    .get(authenticationMiddleware.redirectWithUserSession,userController.getRegisterPage)
     .post(userController.actionRegisterUser);
 
-router.route('/forgot-password')
-    .get(authenticationMiddleware.redirectWithSession,userController.getForgotPasswordPage)
-    .put(userController.actionForgotPassword);
+router.route('/password-reset')
+    .get(authenticationMiddleware.redirectWithUserSession,userController.getPasswordResetPage)
+    .post(userController.actionPasswordReset)
+    .put(userController.actionAuthorizedPasswordReset);
+
+router.route('/password-reset/:token')
+    .get(userController.getAuthorizedPasswordResetPage);
 
 router.route('/logout')
     .get(userController.getLogoutPage)

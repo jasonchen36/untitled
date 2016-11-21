@@ -19,8 +19,9 @@ userPages.getLoginPage = function(req, res, next){
 
             res.render('user/login', {
                 meta: {
-                    pageTitle: util.globals.metaTitlePrefix+'Login'
+                    pageTitle: util.globals.metaTitlePrefix+'Sign In'
                 },
+                account: session.getAccountObject(req),
                 user: session.getUserObject(req),
                 data: {
                     name: user.toJSON().name,
@@ -34,6 +35,7 @@ userPages.getLoginPage = function(req, res, next){
 };
 
 userPages.actionLoginUser = function(req, res, next){
+    //todo, communicate with api
     session.actionStartUserSession(req);
     res.status(util.http.status.ok).json({
         action: 'login',
@@ -47,12 +49,14 @@ userPages.getRegisterPage = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Register'
         },
+        account: session.getAccountObject(req),
         user: session.getUserObject(req),
         data: {}
     });
 };
 
 userPages.actionRegisterUser = function(req, res, next){
+    //todo, communicate with api
     session.actionStartUserSession(req);
     res.status(util.http.status.accepted).json({
         action: 'register',
@@ -60,26 +64,48 @@ userPages.actionRegisterUser = function(req, res, next){
     });
 };
 
-/************ forgot password ************/
-userPages.getForgotPasswordPage = function(req, res, next){
-    res.render('user/forgot-password', {
+/************ password reset ************/
+userPages.getPasswordResetPage = function(req, res, next){
+    res.render('user/password-reset', {
         meta: {
-            pageTitle: util.globals.metaTitlePrefix + 'Forgot Password'
+            pageTitle: util.globals.metaTitlePrefix + 'Password Reset'
         },
+        account: session.getAccountObject(req),
         user: session.getUserObject(req),
         data: {}
     });
 };
 
-userPages.actionForgotPassword = function(req, res, next){
+userPages.actionPasswordReset = function(req, res, next){
+    //todo, communicate with api
     res.status(util.http.status.accepted).json({
-        action: 'forgot password',
+        action: 'password reset',
+        status: 'success'
+    });
+};
+
+userPages.getAuthorizedPasswordResetPage = function(req, res, next){
+    res.render('user/password-reset-authorized', {
+        meta: {
+            pageTitle: util.globals.metaTitlePrefix + 'Password Reset'
+        },
+        account: session.getAccountObject(req),
+        user: session.getUserObject(req),
+        data: {
+            token: req.params.token
+        }
+    });
+};
+
+userPages.actionAuthorizedPasswordReset = function(req, res, next){
+    //todo, communicate with api
+    res.status(util.http.status.accepted).json({
+        action: 'authorized password reset',
         status: 'success'
     });
 };
 
 /************ logout ************/
-
 userPages.getLogoutPage = function(req, res, next) {
     session.actionDestroyUserSession(req);
     res.redirect('/login');
@@ -87,6 +113,10 @@ userPages.getLogoutPage = function(req, res, next) {
 
 userPages.actionLogoutUser = function(req, res, next) {
     session.actionDestroyUserSession(req);
+    res.status(util.http.status.ok).json({
+        action: 'logout',
+        status: 'success'
+    });
 };
 
 module.exports = userPages;

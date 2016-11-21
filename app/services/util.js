@@ -24,7 +24,9 @@ util.environment = {
 };
 
 util.globals = {
-    metaTitlePrefix: 'Taxplan | '
+    metaTitlePrefix: 'Taxplan | ',
+    apiUrl: process.env.API_URL,
+    apiProductId: process.env.API_PRODUCT_ID
 };
 
 module.exports = util;
