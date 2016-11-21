@@ -25,7 +25,16 @@ var app = {
     views: {
         taxProfile: {
             welcome: {},
-            filingFor: {}
+            filingFor: {},
+            filersNames: {},
+            income: {},
+            incomeMulti: {},
+            credits: {},
+            creditsMulti: {},
+            deductions: {},
+            deductionsMulti: {},
+            quote: {},
+            quoteMulti: {}
         },
         user: {
             login: {},

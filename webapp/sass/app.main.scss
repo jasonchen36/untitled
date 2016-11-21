@@ -49,11 +49,10 @@ $susy: (
 
 //tax profile views
 //-----------------------------
-@import "views/tax_profile/page-one";
-@import "views/tax_profile/page-two";
-@import "views/tax_profile/page-three";
-@import "views/tax_profile/page-four";
-@import "views/tax_profile/page-five";
-@import "views/tax_profile/page-six";
-@import "views/tax_profile/page-seven";
-@import "views/tax_profile/page-quote";
+@import "views/tax_profile/welcome";
+@import "views/tax_profile/filing-for";
+@import "views/tax_profile/filers-names";
+@import "views/tax_profile/income";
+@import "views/tax_profile/deductions";
+@import "views/tax_profile/credits";
+@import "views/tax_profile/quote";
