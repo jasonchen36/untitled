@@ -15,7 +15,8 @@ var app = {
     state: {},
     mediaQueries: {},
     services: {
-      taxProfile: {}  
+        taxProfile: {},
+        dashboard: {}
     },
 
     //modules
@@ -23,6 +24,11 @@ var app = {
 
     //templates
     views: {
+        dashboard: {
+            upload: {},
+            chat: {},
+            myReturn: {}
+        },
         taxProfile: {
             welcome: {},
             filingFor: {},
@@ -62,15 +68,16 @@ var app = {
         if (carousel.hasCarousels()){
             carousel.init();
         }
-        
-        //views
+
+        //regular views
         views.user.login.init();
         views.user.register.init();
         views.user.passwordReset.init();
         views.user.authorizedPasswordReset.init();
 
-        //tax profile
+        //one page views
         app.services.taxProfile.init();
+        app.services.dashboard.init();
     }
 };
 

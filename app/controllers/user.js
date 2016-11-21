@@ -121,7 +121,7 @@ userPages.actionLogoutUser = function(req, res, next) {
 
 /************ dashboard ************/
 userPages.getDashboardPage = function(req, res, next){
-    res.render('user/dashboard', {
+    res.render('dashboard/dashboard', {
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Dashboard'
         },

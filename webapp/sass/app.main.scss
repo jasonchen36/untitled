@@ -44,7 +44,7 @@ $susy: (
 //-----------------------------
 @import "views/user/login";
 @import "views/user/register";
-@import "views/user/dashboard";
+@import "views/user/password-reset";
 
 
 //tax profile views
@@ -56,3 +56,10 @@ $susy: (
 @import "views/tax_profile/deductions";
 @import "views/tax_profile/credits";
 @import "views/tax_profile/quote";
+
+
+//dashboard views
+//-----------------------------
+@import "views/dashboard/chat";
+@import "views/dashboard/my-return";
+@import "views/dashboard/upload";

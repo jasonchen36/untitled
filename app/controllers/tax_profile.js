@@ -8,7 +8,7 @@ var taxReturnPages = {};
 
 /************ tax profile ************/
 taxReturnPages.getPageTaxProfile = function(req, res, next){
-    res.render('tax_profile/landing', {
+    res.render('tax_profile/tax_profile', {
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Tax Profile'
         },
