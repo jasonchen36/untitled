@@ -85,7 +85,7 @@ userPages.actionPasswordReset = function(req, res, next){
 };
 
 userPages.getAuthorizedPasswordResetPage = function(req, res, next){
-    res.render('user/authorized-password-reset', {
+    res.render('user/password-reset-authorized', {
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Password Reset'
         },
