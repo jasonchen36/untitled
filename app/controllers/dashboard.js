@@ -1,5 +1,4 @@
 const //services
-    bookshelf = require('../services/bookshelf'),
     util = require('../services/util'),
     session = require('../services/session');
 
