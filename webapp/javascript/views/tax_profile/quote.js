@@ -12,6 +12,7 @@
 
     function submitIncome(){
         //todo
+        taxProfile.destroyAccountSession();
         window.location.href = '/register';
     }
 

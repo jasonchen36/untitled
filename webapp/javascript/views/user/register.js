@@ -32,7 +32,7 @@
                     'json'
                 )
                     .then(function(){
-                        window.location.href = '/personal_profile';
+                        window.location.href = '/personal-profile';
                     })
                     .catch(function(){
                         alert('error');

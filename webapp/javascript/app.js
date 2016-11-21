@@ -16,6 +16,7 @@ var app = {
     mediaQueries: {},
     services: {
         taxProfile: {},
+        personalProfile: {},
         dashboard: {}
     },
 
@@ -28,6 +29,14 @@ var app = {
             upload: {},
             chat: {},
             myReturn: {}
+        },
+        personalProfile: {
+            lastName: {},
+            specialScenarios: {},
+            maritalStatus: {},
+            dependants: {},
+            address: {},
+            birthdate: {}
         },
         taxProfile: {
             welcome: {},
@@ -77,6 +86,7 @@ var app = {
 
         //one page views
         app.services.taxProfile.init();
+        app.services.personalProfile.init();
         app.services.dashboard.init();
     }
 };

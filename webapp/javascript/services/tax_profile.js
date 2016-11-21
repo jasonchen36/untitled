@@ -103,6 +103,10 @@
         });
     }
 
+    this.destroyAccountSession = function(){
+        return cookies.clearCookie(that.accountSessionCookie);
+    };
+
     function isMultiFiler(){
         if(!cookies.getCookie(that.accountSessionCookie).hasOwnProperty('filingType')){
             return false;
