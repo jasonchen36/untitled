@@ -12,7 +12,7 @@
 
     function submitIncome(){
         //todo
-        alert('go to register page');
+        window.location.href = '/register';
     }
 
     this.init = function(){

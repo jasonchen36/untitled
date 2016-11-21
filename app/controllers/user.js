@@ -119,16 +119,4 @@ userPages.actionLogoutUser = function(req, res, next) {
     });
 };
 
-/************ dashboard ************/
-userPages.getDashboardPage = function(req, res, next){
-    res.render('dashboard/dashboard', {
-        meta: {
-            pageTitle: util.globals.metaTitlePrefix + 'Dashboard'
-        },
-        account: session.getAccountObject(req),
-        user: session.getUserObject(req),
-        data: {}
-    });
-};
-
 module.exports = userPages;

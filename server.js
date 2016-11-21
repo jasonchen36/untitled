@@ -18,6 +18,8 @@ const express = require('express'),
     errorRoutes = require('./app/routes/errors'),
     userRoutes = require('./app/routes/user'),
     taxProfileRoutes = require('./app/routes/tax_profile'),
+    personalProfileRoutes = require('./app/routes/personal_profile'),
+    dashboardRoutes = require('./app/routes/dashboard'),
 //controllers
     errorController = require('./app/controllers/errors'),
 //middleware
@@ -117,6 +119,9 @@ app.use('/bower_components', express.static(path.join(__dirname, 'webapp/bower_c
 app.use('/', errorRoutes);
 app.use('/', userRoutes);
 app.use('/tax-profile', authenticationMiddleware.redirectWithUserSession, taxProfileRoutes);
+app.use('/dashboard', authenticationMiddleware.redirectWithoutUserSession, dashboardRoutes);
+app.use('/personal-profile', authenticationMiddleware.redirectWithoutUserSession, personalProfileRoutes);
+
 
 /**
  * error handlers
