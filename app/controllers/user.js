@@ -1,5 +1,4 @@
 const //services
-    bookshelf = require('../services/bookshelf'),
     util = require('../services/util'),
     session = require('../services/session');
 
@@ -7,31 +6,14 @@ var userPages = {};
 
 /************ login ************/
 userPages.getLoginPage = function(req, res, next){
-    var User = bookshelf.Model.extend({
-        tableName: 'users'
+    res.render('user/login', {
+        meta: {
+            pageTitle: util.globals.metaTitlePrefix+'Sign In'
+        },
+        account: session.getAccountObject(req),
+        user: session.getUserObject(req),
+        data: {}
     });
-
-    User.where('id', 1)
-        .fetch()
-        .then(function(user) {
-            // Update views
-            req.session.views = (req.session.views || 0) + 1;
-
-            res.render('user/login', {
-                meta: {
-                    pageTitle: util.globals.metaTitlePrefix+'Sign In'
-                },
-                account: session.getAccountObject(req),
-                user: session.getUserObject(req),
-                data: {
-                    name: user.toJSON().name,
-                    views: req.session.views
-                }
-            });
-        })
-        .catch(function(error) {
-            next(error);
-        });
 };
 
 userPages.actionLoginUser = function(req, res, next){

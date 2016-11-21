@@ -9,7 +9,6 @@ const express = require('express'),
     compression = require('compression'),
     cookieSession = require('cookie-session'),
 //services
-    bookshelf = require('./app/services/bookshelf'),
     logger = require('./app/services/logger'),
     handlebarsHelpers = require('./app/services/handlebars'),
     errorService = require('./app/services/errors'),
