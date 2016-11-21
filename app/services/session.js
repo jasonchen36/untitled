@@ -4,7 +4,7 @@ const session = {};
 session.actionStartAccountSession = function(req){
     //todo, store account token in cookie
     //todo, add expiry timestamp 1 week
-    session.actionDestroyAccountSession();
+    session.actionDestroyAccountSession(req);
     req.session.account = {
         hasAccountSession: true
     }
@@ -29,7 +29,7 @@ session.getAccountObject = function(req){
 session.actionStartUserSession = function(req){
     //todo, store account id in cookie
     //todo, add expiry timestamp 1 hour
-    session.actionDestroyUserSession();
+    session.actionDestroyUserSession(req);
     req.session.user = {
         hasUserSession: true
     }
