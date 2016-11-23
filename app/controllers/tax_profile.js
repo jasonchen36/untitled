@@ -1,8 +1,11 @@
-const //services
+const //packages
+    requestPromise = require('request-promise'),
+    promise = require('bluebird'),
+//services
     util = require('../services/util'),
     session = require('../services/session'),
     taxProfile = require('../services/tax_profile'),
-    errorService = require('../services/errors');
+    errors = require('../services/errors');
 
 var taxReturnPages = {};
 
@@ -19,30 +22,39 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
 };
 
 taxReturnPages.actionSaveAccount = function(req, res, next) {
-    if (!session.hasAccountSession(req)){
-        if (req.body.action !== 'name') {
-            return next(new errorService.BadRequestError('tax profile - no account session exists'));
-        } else {
-            session.actionStartAccountSession(req);
-        }
-    }
-    switch(req.body.action){
-        //todo, communicate with api
-        case 'name':
-            taxProfile.saveName(req);
-            break;
-        case 'filingType':
-            taxProfile.saveFilingType(req);
-            break;
-        default:
-            return next(new errorService.BadRequestError('tax profile - invalid action'));
-            break;
-    }
-    res.status(util.http.status.accepted).json({
-        action: req.body.action,
-        status: 'success',
-        data: session.getAccountObject(req)
-    });
+    promise.resolve()
+        .then(function(){
+            //check if session is initiated
+            if (!session.hasAccountSession(req)){
+                return session.actionStartAccountSession(req);
+            }
+        })
+        .then(function(){
+            //save session
+            switch(req.body.action){
+                //todo, communicate with api
+                case 'api-tp-name':
+                    return taxProfile.saveName(req);
+                    break;
+                case 'api-tp-filingType':
+                    return taxProfile.saveFilingType(req);
+                    break;
+                default:
+                    return next(new errors.BadRequestError('tax profile - invalid action'));
+                    break;
+            }
+        })
+        .then(function(){
+            //success
+            res.status(util.http.status.accepted).json({
+                action: req.body.action,
+                status: 'success',
+                data: session.getAccountObject(req)
+            });
+        })
+        .catch(function(err){
+            next(new errors.BadRequestError(err));
+        });
 };
 
 

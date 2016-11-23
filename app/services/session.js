@@ -1,13 +1,46 @@
-const session = {};
+const //packages
+    requestPromise = require('request-promise'),
+    promise = require('bluebird'),
+//services
+    errors = require('./errors'),
+    session = {};
 
 /************ account ************/
 session.actionStartAccountSession = function(req){
-    //todo, store account token in cookie
-    //todo, add expiry timestamp 1 week
     session.actionDestroyAccountSession(req);
-    req.session.account = {
-        hasAccountSession: true
-    }
+    return promise.resolve()
+        .then(function(){
+            //validate
+            req.checkBody('name').notEmpty();
+
+            if (req.validationErrors() || req.body.action !== 'api-tp-name'){
+                return promise.reject('api - account session creation - validation errors');
+            }
+        })
+        .then(function(){
+            const options = {
+                method: 'POST',
+                uri: process.env.API_URL+'/account',
+                body: {
+                    name: req.body.name,
+                    productId: process.env.API_PRODUCT_ID
+                },
+                json: true
+            };
+            return requestPromise(options)
+                .then(function (response) {
+                    console.log('success',response);
+                    //todo, store token
+                    //todo, add expiry timestamp 1 week
+                    req.session.account = {
+                        hasAccountSession: true
+                    };
+                    return promise.resolve();
+                })
+                .catch(function (response) {
+                    return promise.reject(response.error);
+                });
+        });
 };
 
 session.hasAccountSession = function(req){
