@@ -37,6 +37,7 @@
                         window.location.href = '/personal-profile';
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
+                        console.log(jqXHR,textStatus,errorThrown);
                         loginSubmit.removeClass(disabledClass);
                     });
             }
