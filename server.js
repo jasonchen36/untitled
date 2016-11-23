@@ -134,23 +134,67 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
     //general error handler
     logger.error(err);
-    if (err && err.statusCode){
-        switch(err.statusCode){
-            case util.http.status.notFound:
-                errorController.get404Page(req, res, next);
-                break;
-            case util.http.status.unauthorized:
-                res.redirect('/login');
-                break;
-            case util.http.status.badRequest:
-                errorController.get500Page(req, res, next);
-                break;
-            case util.http.status.internalServerError:
-                errorController.get500Page(req, res, next);
-                break;
+    if (req.body.action.indexOf('api') !== -1){
+        //api routes handler
+        if (err && err.statusCode) {
+            switch (err.statusCode) {
+                case util.http.status.notFound:
+                    res.status(util.http.status.notFound).json({
+                        action: req.body.action,
+                        status: util.http.status.notFound,
+                        message: err.message
+                    });
+                    break;
+                case util.http.status.unauthorized:
+                    res.status(util.http.status.unauthorized).json({
+                        action: req.body.action,
+                        status: util.http.status.unauthorized,
+                        message: err.message
+                    });
+                    break;
+                case util.http.status.badRequest:
+                    res.status(util.http.status.badRequest).json({
+                        action: req.body.action,
+                        status: util.http.status.badRequest,
+                        message: err.message
+                    });
+                    break;
+                case util.http.status.internalServerError:
+                default:
+                    res.status(util.http.status.internalServerError).json({
+                        action: req.body.action,
+                        status: util.http.status.internalServerError,
+                        message: err.message
+                    });
+                    break;
+            }
+        } else {
+            res.status(util.http.status.internalServerError).json({
+                action: req.body.action,
+                status: util.http.status.internalServerError,
+                message: err.message
+            });
         }
     } else {
-        errorController.get500Page(req, res, next);
+        //page request errors
+        if (err && err.statusCode) {
+            switch (err.statusCode) {
+                case util.http.status.notFound:
+                    errorController.get404Page(req, res, next);
+                    break;
+                case util.http.status.unauthorized:
+                    res.redirect('/login');
+                    break;
+                case util.http.status.badRequest:
+                    errorController.get500Page(req, res, next);
+                    break;
+                case util.http.status.internalServerError:
+                    errorController.get500Page(req, res, next);
+                    break;
+            }
+        } else {
+            errorController.get500Page(req, res, next);
+        }
     }
 });
 
