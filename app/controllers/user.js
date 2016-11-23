@@ -1,6 +1,9 @@
-const //services
+const //packages
+    requestPromise = require('request-promise'),
+//services
     util = require('../services/util'),
-    session = require('../services/session');
+    session = require('../services/session'),
+    errors = require('../services/errors');
 
 var userPages = {};
 
@@ -59,11 +62,28 @@ userPages.getPasswordResetPage = function(req, res, next){
 };
 
 userPages.actionPasswordReset = function(req, res, next){
-    //todo, communicate with api
-    res.status(util.http.status.accepted).json({
-        action: 'password reset',
-        status: 'success'
-    });
+    if (req.body.action !== 'api-password-reset'){
+        next(new errors.BadRequestError('password reset'));
+    } else {
+        const options = {
+            method: 'PUT',
+            uri: process.env.API_URL+'/users/reset',
+            body: {
+                email: req.body.email
+            },
+            json: true
+        };
+        requestPromise(options)
+            .then(function () {
+                res.status(util.http.status.accepted).json({
+                    action: 'password reset',
+                    status: 'success'
+                });
+            })
+            .catch(function (response) {
+                next(new errors.BadRequestError(response.error));
+            });
+    }
 };
 
 userPages.getAuthorizedPasswordResetPage = function(req, res, next){
