@@ -8,6 +8,7 @@ const express = require('express'),
     path = require('path'),
     compression = require('compression'),
     cookieSession = require('cookie-session'),
+    expressValidator = require('express-validator'),
 //services
     logger = require('./app/services/logger'),
     handlebarsHelpers = require('./app/services/handlebars'),
@@ -56,6 +57,7 @@ app.use(bodyParser.urlencoded({
 // to support URL-encoded bodies
     extended: true
 }));
+app.use(expressValidator());
 
 
 /**
@@ -134,7 +136,7 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
     //general error handler
     logger.error(err);
-    if (req.body.action.indexOf('api') !== -1){
+    if (req.body.action && req.body.action.indexOf('api') !== -1){
         //api routes handler
         if (err && err.statusCode) {
             switch (err.statusCode) {

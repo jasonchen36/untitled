@@ -3,7 +3,8 @@ const //packages
 //services
     util = require('../services/util'),
     session = require('../services/session'),
-    errors = require('../services/errors');
+    errors = require('../services/errors'),
+    taxProfile = require('../services/tax_profile');
 
 var userPages = {};
 
@@ -41,12 +42,37 @@ userPages.getRegisterPage = function(req, res, next){
 };
 
 userPages.actionRegisterUser = function(req, res, next){
-    //todo, communicate with api
-    session.actionStartUserSession(req);
-    res.status(util.http.status.accepted).json({
-        action: 'register',
-        result: 'success'
-    });
+    req.checkBody('action').notEmpty();
+    req.checkBody('password').notEmpty();
+    req.checkBody('email').notEmpty();
+
+    if (req.validationErrors() || req.body.action !== 'api-register'){
+        next(new errors.BadRequestError('register - validation errors'));
+    } else {
+        const options = {
+            method: 'POST',
+            uri: process.env.API_URL+'/users',
+            body: {
+                password: req.body.password,
+                first_name: taxProfile.getValue(req,'name'),
+                last_name: '',//not entered until person profile section
+                email: req.body.email,
+                accountId: taxProfile.getValue(req,'id')
+            },
+            json: true
+        };
+        requestPromise(options)
+            .then(function (response) {
+                //todo, store token
+                res.status(util.http.status.accepted).json({
+                    action: 'register',
+                    status: 'success'
+                });
+            })
+            .catch(function (response) {
+                next(new errors.BadRequestError(response.error));
+            });
+    }
 };
 
 /************ password reset ************/
@@ -62,8 +88,11 @@ userPages.getPasswordResetPage = function(req, res, next){
 };
 
 userPages.actionPasswordReset = function(req, res, next){
-    if (req.body.action !== 'api-password-reset'){
-        next(new errors.BadRequestError('password reset'));
+    req.checkBody('action').notEmpty();
+    req.checkBody('email').notEmpty();
+
+    if (req.validationErrors() || req.body.action !== 'api-password-reset'){
+        next(new errors.BadRequestError('password reset - validation errors'));
     } else {
         const options = {
             method: 'PUT',
@@ -100,8 +129,10 @@ userPages.getAuthorizedPasswordResetPage = function(req, res, next){
 };
 
 userPages.actionAuthorizedPasswordReset = function(req, res, next){
-    if (req.body.action !== 'api-authorized-password-reset'){
-        next(new errors.BadRequestError('authorized password reset'));
+    req.checkBody('password').notEmpty();
+
+    if (req.validationErrors() || req.body.action !== 'api-authorized-password-reset'){
+        next(new errors.BadRequestError('authorized password reset - validation errors'));
     } else {
         const options = {
             method: 'PUT',

@@ -27,6 +27,7 @@ taxReturnPages.actionSaveAccount = function(req, res, next) {
         }
     }
     switch(req.body.action){
+        //todo, communicate with api
         case 'name':
             taxProfile.saveName(req);
             break;
