@@ -136,7 +136,7 @@ app.use(function (req, res, next) {
 app.use(function (err, req, res, next) {
     //general error handler
     logger.error(err);
-    if ((req.body.action && req.body.action.indexOf('api') !== -1) || (err.message && typeof err.message === 'string' && err.message.indexOf('api') !== -1)){
+    if ((req.body.action && req.body.action.indexOf('api') !== -1) || (err.api && err.api === true)){
         //api routes handler
         if (err && err.statusCode) {
             switch (err.statusCode) {

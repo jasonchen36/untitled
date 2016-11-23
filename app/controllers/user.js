@@ -26,7 +26,7 @@ userPages.actionLoginUser = function(req, res, next){
     req.checkBody('email').notEmpty();
 
     if (req.validationErrors() || req.body.action !== 'api-login'){
-        next(new errors.BadRequestError('api - login - validation errors'));
+        next(new errors.BadRequestError('login - validation errors',true));
     } else {
         const options = {
             method: 'POST',
@@ -46,7 +46,7 @@ userPages.actionLoginUser = function(req, res, next){
                 });
             })
             .catch(function (response) {
-                next(new errors.BadRequestError(response.error));
+                next(new errors.BadRequestError(response.error,true));
             });
     }
 };
@@ -69,7 +69,7 @@ userPages.actionRegisterUser = function(req, res, next){
     req.checkBody('email').notEmpty();
 
     if (req.validationErrors() || req.body.action !== 'api-register'){
-        next(new errors.BadRequestError('api - register - validation errors'));
+        next(new errors.BadRequestError('register - validation errors',true));
     } else {
         const options = {
             method: 'POST',
@@ -92,7 +92,7 @@ userPages.actionRegisterUser = function(req, res, next){
                 });
             })
             .catch(function (response) {
-                next(new errors.BadRequestError(response.error));
+                next(new errors.BadRequestError(response.error,true));
             });
     }
 };
@@ -114,7 +114,7 @@ userPages.actionPasswordReset = function(req, res, next){
     req.checkBody('email').notEmpty();
 
     if (req.validationErrors() || req.body.action !== 'api-password-reset'){
-        next(new errors.BadRequestError('api - password reset - validation errors'));
+        next(new errors.BadRequestError('password reset - validation errors',true));
     } else {
         const options = {
             method: 'PUT',
@@ -132,7 +132,7 @@ userPages.actionPasswordReset = function(req, res, next){
                 });
             })
             .catch(function (response) {
-                next(new errors.BadRequestError(response.error));
+                next(new errors.BadRequestError(response.error,true));
             });
     }
 };
@@ -154,7 +154,7 @@ userPages.actionAuthorizedPasswordReset = function(req, res, next){
     req.checkBody('password').notEmpty();
 
     if (req.validationErrors() || req.body.action !== 'api-authorized-password-reset'){
-        next(new errors.BadRequestError('api - authorized password reset - validation errors'));
+        next(new errors.BadRequestError('authorized password reset - validation errors',true));
     } else {
         const options = {
             method: 'PUT',
@@ -172,7 +172,7 @@ userPages.actionAuthorizedPasswordReset = function(req, res, next){
                 });
             })
             .catch(function (response) {
-                next(new errors.BadRequestError(response.error));
+                next(new errors.BadRequestError(response.error,true));
             });
     }
 };

@@ -34,13 +34,13 @@ taxReturnPages.actionSaveAccount = function(req, res, next) {
             switch(req.body.action){
                 //todo, communicate with api
                 case 'api-tp-name':
-                    return taxProfile.saveName(req);
+                    taxProfile.saveName(req);
                     break;
                 case 'api-tp-filingType':
-                    return taxProfile.saveFilingType(req);
+                    taxProfile.saveFilingType(req);
                     break;
                 default:
-                    return next(new errors.BadRequestError('tax profile - invalid action'));
+                    return promise.reject('tax profile - invalid action');
                     break;
             }
         })
@@ -53,7 +53,7 @@ taxReturnPages.actionSaveAccount = function(req, res, next) {
             });
         })
         .catch(function(err){
-            next(new errors.BadRequestError(err));
+            next(new errors.BadRequestError(err,true));
         });
 };
 
