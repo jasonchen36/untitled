@@ -21,12 +21,34 @@ userPages.getLoginPage = function(req, res, next){
 };
 
 userPages.actionLoginUser = function(req, res, next){
-    //todo, communicate with api
-    session.actionStartUserSession(req);
-    res.status(util.http.status.ok).json({
-        action: 'login',
-        result: 'success'
-    });
+    req.checkBody('action').notEmpty();
+    req.checkBody('password').notEmpty();
+    req.checkBody('email').notEmpty();
+
+    if (req.validationErrors() || req.body.action !== 'api-login'){
+        next(new errors.BadRequestError('api - login - validation errors'));
+    } else {
+        const options = {
+            method: 'POST',
+            uri: process.env.API_URL+'/login',
+            body: {
+                password: req.body.password,
+                email: req.body.email
+            },
+            json: true
+        };
+        requestPromise(options)
+            .then(function (response) {
+                //todo, store token
+                res.status(util.http.status.accepted).json({
+                    action: 'login',
+                    status: 'success'
+                });
+            })
+            .catch(function (response) {
+                next(new errors.BadRequestError(response.error));
+            });
+    }
 };
 
 /************ register ************/
@@ -47,7 +69,7 @@ userPages.actionRegisterUser = function(req, res, next){
     req.checkBody('email').notEmpty();
 
     if (req.validationErrors() || req.body.action !== 'api-register'){
-        next(new errors.BadRequestError('register - validation errors'));
+        next(new errors.BadRequestError('api - register - validation errors'));
     } else {
         const options = {
             method: 'POST',
@@ -92,7 +114,7 @@ userPages.actionPasswordReset = function(req, res, next){
     req.checkBody('email').notEmpty();
 
     if (req.validationErrors() || req.body.action !== 'api-password-reset'){
-        next(new errors.BadRequestError('password reset - validation errors'));
+        next(new errors.BadRequestError('api - password reset - validation errors'));
     } else {
         const options = {
             method: 'PUT',
@@ -132,7 +154,7 @@ userPages.actionAuthorizedPasswordReset = function(req, res, next){
     req.checkBody('password').notEmpty();
 
     if (req.validationErrors() || req.body.action !== 'api-authorized-password-reset'){
-        next(new errors.BadRequestError('authorized password reset - validation errors'));
+        next(new errors.BadRequestError('api - authorized password reset - validation errors'));
     } else {
         const options = {
             method: 'PUT',
