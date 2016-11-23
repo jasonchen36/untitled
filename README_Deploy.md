@@ -24,7 +24,9 @@ sudo service taxplanweb start
 
 ## Foreman ##
 
-You can use Foreman to export the config env files for production using:
+Config updates/env variables are not part of the Jenkins build process. Any config changes need to be done manually on the server.
+
+After the correct environment variables are in the .env file, use Foreman to export the config for production use.
 ```
 sudo nf export -o /etc/init
 ```
