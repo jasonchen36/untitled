@@ -19,7 +19,14 @@ img {
 }
 
 input {
-  border: 1px solid black;
+  background: white;
+  border:0;
+  border-bottom-color: #5C5C5C;
+  border-bottom: 1px solid;
+  outline: 0;
+  height:40px;
+  min-width: 50%;
+  display:block;
   @include transition-with-defaults(border-color);
   &.error {
     border-color: red;
@@ -31,6 +38,13 @@ button {
   .disabled {
     opacity: 0.6;
   }
+}
+
+label{
+  font-size: 14px;
+  font-weight: bold;
+  color: #5C5C5C;
+  display:block;
 }
 
 
@@ -74,6 +88,8 @@ button {
   background: #FFCB3B;
   height:100%;
 }
+
+
 
 
 //visibility
