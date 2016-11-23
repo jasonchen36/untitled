@@ -100,11 +100,28 @@ userPages.getAuthorizedPasswordResetPage = function(req, res, next){
 };
 
 userPages.actionAuthorizedPasswordReset = function(req, res, next){
-    //todo, communicate with api
-    res.status(util.http.status.accepted).json({
-        action: 'authorized password reset',
-        status: 'success'
-    });
+    if (req.body.action !== 'api-authorized-password-reset'){
+        next(new errors.BadRequestError('authorized password reset'));
+    } else {
+        const options = {
+            method: 'PUT',
+            uri: process.env.API_URL+'/users/reset/'+req.body.token,
+            body: {
+                password: req.body.password
+            },
+            json: true
+        };
+        requestPromise(options)
+            .then(function () {
+                res.status(util.http.status.accepted).json({
+                    action: 'authorized password reset',
+                    status: 'success'
+                });
+            })
+            .catch(function (response) {
+                next(new errors.BadRequestError(response.error));
+            });
+    }
 };
 
 /************ logout ************/
