@@ -11,6 +11,7 @@ Use helper classes to style elements that otherwise wouldn't need to have a full
 
 * {
   font-family: FuturaMedium, Arial, sans-serif;
+  color: #787878;
 }
 
 img {
@@ -60,6 +61,18 @@ button {
 
 .text-upper {
   text-transform: uppercase;
+}
+
+//background colours
+//-----------------------------
+.main-container{
+  background: #F5F3F1;
+  height:100%;
+}
+
+.yellow-container{
+  background: #FFCB3B;
+  height:100%;
 }
 
 
