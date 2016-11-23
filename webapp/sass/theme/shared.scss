@@ -26,7 +26,7 @@ input {
   outline: 0;
   height:40px;
   min-width: 50%;
-  display:block;
+  display:inline-block;
   @include transition-with-defaults(border-color);
   &.error {
     border-color: red;
