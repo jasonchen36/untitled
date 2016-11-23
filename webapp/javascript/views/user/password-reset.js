@@ -20,17 +20,19 @@
                 passwordResetSubmit.addClass(disabledClass);
                 app.ajax.ajax(
                     'POST',
-                    '/reset-password',
+                    '/password-reset',
                     {
+                        action: 'api-password-reset',
                         email: formData.email
                     },
                     'json'
                 )
-                    .then(function(){
+                    .then(function(response){
+                        //todo, show success and then redirect
                         window.location.href = '/login';
                     })
-                    .catch(function(){
-                        alert('error');
+                    .catch(function(jqXHR,textStatus,errorThrown){
+                        console.log(jqXHR,textStatus,errorThrown);
                         passwordResetSubmit.removeClass(disabledClass);
                     });
             }

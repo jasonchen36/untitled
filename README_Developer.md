@@ -31,15 +31,17 @@ Grunt monitors changes and recompiles the build files as needed.  [Live Reload](
 grunt dev
 ```
 
+## Unit Tests ##
+
+Unit tests are built with [Mocha](https://www.npmjs.com/package/mocha) and [Chai](https://www.npmjs.com/package/chai).
+
+Tests can be run using
+```
+npm test
+```
+
+
 ## Notes ##
 
 Organize your Files Around Features, Not Roles 
 https://blog.risingstack.com/node-hero-node-js-project-structure-tutorial/
-
-## TODO ##
-
-unit tests
-https://blog.risingstack.com/node-hero-node-js-unit-testing-tutorial/
-
-monitoring
-https://blog.risingstack.com/node-hero-monitoring-node-js-applications/

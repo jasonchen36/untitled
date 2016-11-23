@@ -22,16 +22,18 @@
                     'PUT',
                     '/password-reset',
                     {
+                        action: 'api-authorized-password-reset',
                         password: formData.password,
                         token: authToken
                     },
                     'json'
                 )
-                    .then(function(){
+                    .then(function(response){
+                        //todo, show success and then redirect
                         window.location.href = '/login';
                     })
-                    .catch(function(){
-                        alert('error');
+                    .catch(function(jqXHR,textStatus,errorThrown){
+                        console.log(jqXHR,textStatus,errorThrown);
                         passwordResetSubmit.removeClass(disabledClass);
                     });
             }

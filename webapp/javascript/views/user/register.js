@@ -26,16 +26,18 @@
                     'POST',
                     '/register',
                     {
+                        action: 'api-register',
                         email: formData.email,
                         password: formData.password
                     },
                     'json'
                 )
-                    .then(function(){
+                    .then(function(response){
+                        //todo, show success and then redirect
                         window.location.href = '/personal-profile';
                     })
-                    .catch(function(){
-                        alert('error');
+                    .catch(function(jqXHR,textStatus,errorThrown){
+                        console.log(jqXHR,textStatus,errorThrown);
                         registerSubmit.removeClass(disabledClass);
                     });
             }

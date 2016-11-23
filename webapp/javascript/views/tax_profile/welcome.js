@@ -23,7 +23,7 @@
                     'POST',
                     '/tax-profile',
                     {
-                        action: 'name',
+                        action: 'api-tp-name',
                         name: formData.name
                     },
                     'json'

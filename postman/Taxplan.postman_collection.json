@@ -1,0 +1,233 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Taxplan",
+		"_postman_id": "6eaa1100-9a4a-e701-9551-00e4af5ebd14",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User | Login",
+			"request": {
+				"url": "http://{{url}}/login",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "action",
+							"value": "api-login",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "email",
+							"value": "test@test.com",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "password",
+							"value": "pass1234",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "User | Register",
+			"request": {
+				"url": "http://{{url}}/register",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "test@test.com",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "action",
+							"value": "api-register",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "password",
+							"value": "pass1234",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "User | Password Reset",
+			"request": {
+				"url": "http://{{url}}/password-reset",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "test@test.com",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "action",
+							"value": "api-password-reset",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "User | Logout",
+			"request": {
+				"url": "http://{{url}}/logout",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "email",
+							"value": "test@test.com",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "action",
+							"value": "api-password-reset",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Tax Profile | Name",
+			"request": {
+				"url": "http://{{url}}/tax-profile",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "john",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "action",
+							"value": "api-tp-name",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Tax Profile | Filing Type",
+			"request": {
+				"url": "http://{{url}}/tax-profile",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "myself",
+							"value": "1",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "spouse",
+							"value": "1",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "other",
+							"value": "0",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "action",
+							"value": "api-tp-filingType",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

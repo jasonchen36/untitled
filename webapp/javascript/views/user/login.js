@@ -26,16 +26,17 @@
                     'PUT',
                     '/login',
                     {
+                        action: 'api-login',
                         email: formData.email,
                         password: formData.password
                     },
                     'json'
                 )
-                    .then(function(){
-                        window.location.href = '/dashboard';
+                    .then(function(response){
+                        //todo, show success and then redirect
+                        window.location.href = '/personal-profile';
                     })
-                    .catch(function(){
-                        alert('error');
+                    .catch(function(jqXHR,textStatus,errorThrown){
                         loginSubmit.removeClass(disabledClass);
                     });
             }
