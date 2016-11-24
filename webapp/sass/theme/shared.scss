@@ -60,6 +60,15 @@ button {
   font-size: 12px;
 }
 
+button:focus{
+  outline:0;
+}
+
+
+button:active{
+  background:grey;
+}
+
 label{
   font-size: 14px;
   font-weight: bold;
