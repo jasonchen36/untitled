@@ -134,6 +134,16 @@ h1{
 }
 
 
+.wrapper-container{
+  margin-top: 235px;
+  &.marketing{
+    margin-top: 400px;
+  }
+  &.sideinfo{
+
+  }
+}
+
 
 //visibility
 //-----------------------------
