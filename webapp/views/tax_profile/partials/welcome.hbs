@@ -1,11 +1,15 @@
 <section id="tax-profile-welcome" class="full-screen-grid-container main-container">
-    <div class="small-12 medium-7">
+    <div class="small-12 medium-7 content-form">
         <div class="container-header">
-            <h1 class="text-header">Welcome to TAXplan</h1>
-            <button type="submit" id="welcome-submit" class="green">Next</button>
+            <h1 class="header">Welcome to TAXplan</h1>
+            <button type="submit" id="welcome-submit" class="green button-next">Next</button>
         </div>
     <form id="welcome-form">
         <p>
+            <h1 class="subtitle">To start off we just need your first name…</h1>
+        </p>
+        <p>
+            <label for="welcome-name">ENTER YOUR FIRST NAME</label>
             <input type="text" id="welcome-name" name="name" placeholder="First Name" value="{{name}}"/>
         </p>
     </form>

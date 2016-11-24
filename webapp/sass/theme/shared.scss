@@ -70,6 +70,14 @@ label{
 
 h1{
   text-align: center;
+  font-size: 24px;
+  &.subtitle{
+    text-align: left;
+    font-weight:bold;
+  }
+  &.header{
+    display:inline-block;
+  }
 }
 
 
@@ -119,6 +127,11 @@ h1{
   height:100%;
 }
 
+//content padding
+//-----------------------------
+.content-form{
+  padding-left:20px;
+}
 
 
 
