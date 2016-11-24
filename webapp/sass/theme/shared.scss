@@ -12,6 +12,9 @@ Use helper classes to style elements that otherwise wouldn't need to have a full
 * {
   font-family: FuturaMedium, Arial, sans-serif;
   color: #787878;
+  &.font-yellow{
+    color:#FFCB3B;
+  }
 }
 
 img {
@@ -108,6 +111,11 @@ h1{
 
 .yellow-container{
   background: #FFCB3B;
+  height:100%;
+}
+
+.white-container{
+  background: white;
   height:100%;
 }
 
