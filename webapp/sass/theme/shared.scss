@@ -58,12 +58,8 @@ button {
   text-transform: none;
   border: 0 none;
   font-size: 12px;
+  outline:none;
 }
-
-button:focus{
-  outline:0;
-}
-
 
 button:active{
   background:grey;
