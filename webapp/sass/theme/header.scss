@@ -1,25 +1,21 @@
 header {
   height: 80px;
   .i--icon-logo {
-    height: 60px;
+    height: 40px;
     width: 180px;
+    margin: 20px;
+    display: inline-block;
   }
 }
 
 .text-contact{
   display: inline-block;
   float: right;
-  color:#B9B9B9;
+  color:$color-header-lightgrey;
   font-size: 14px;
-  padding:15px;
+  padding: 15px;
 }
 
 .dev-nav{
-  display: inline-block;
-}
-
-.image-logo{
-  width: 10%;
-  margin: 20px;
   display: inline-block;
 }
