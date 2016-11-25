@@ -1,13 +1,17 @@
 .link-forgot-password{
-  display:inline-block;
   background: transparent;
   text-decoration: none;
-  height:40px;
-  margin-left: -90px;
+  position: absolute;
+  right: 20px;
+  bottom: 15px;
   font-size: 12px;
 }
 
 .container-button-login{
   margin-top:50px;
   text-align: center;
+}
+
+.container-password-form{
+  position:relative;
 }
