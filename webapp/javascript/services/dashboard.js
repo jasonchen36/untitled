@@ -17,6 +17,9 @@
     ];
 
     this.changePage = function(newPage, overrideDuplicate){
+        if(newPage === 'chat'){
+            startUserSession();
+        }
         if(overrideDuplicate || newPage !== getCurrentPage()) {
             return new Promise(function (resolve, reject) {
                 var data = getUserSession();

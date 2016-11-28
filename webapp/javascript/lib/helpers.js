@@ -21,16 +21,25 @@
                 $(this).val('');
             }
         });
+        formElement.find('textarea').each(function(){
+            $(this).removeClass(that.errorClass);
+            if(clearInputValue){
+                $(this).val('');
+            }
+        });
     };
 
     this.getFormData = function(formElement){
         var data = {};
-        $(formElement).find('input').each(function(){
+        formElement.find('input').each(function(){
             if ($(this).attr('type') === 'checkbox'){
                 data[$(this).attr('name')] = $(this).prop('checked')?1:0;
             } else {
                 data[$(this).attr('name')] = $(this).val();
             }
+        });
+        formElement.find('textarea').each(function(){
+            data[$(this).attr('name')] = $(this).val();
         });
         return data;
     };
@@ -38,6 +47,11 @@
     this.formHasErrors = function(formElement){
         var errorCount = 0;
         formElement.find('input').each(function(){
+            if($(this).hasClass(that.errorClass)){
+                errorCount++;
+            }
+        });
+        formElement.find('textarea').each(function(){
             if($(this).hasClass(that.errorClass)){
                 errorCount++;
             }
@@ -75,6 +89,10 @@
         // var regex = (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/);
         // return regex.test(password);
         return password.length >= 8;
+    };
+
+    this.isEmpty = function(input){
+        return !input || input.length < 1;
     };
 
 }).apply(app.helpers);
