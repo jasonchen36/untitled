@@ -4,7 +4,7 @@
         that = app.views.user.register,
         helpers = app.helpers,
         registerForm = $('#user-register-form'),
-        registerSubmit = $('#register-form'),
+        registerSubmit = $('#register-submit'),
         registerEmailInput = $('#register-email'),
         registerPasswordInput = $('#register-password'),
         errorClass = app.helpers.errorClass,
@@ -48,7 +48,7 @@
         if ($('#page-user-register').length > 0){
 
             //listeners
-            registerForm.on('submit',function(event){
+            registerSubmit.on('click',function(event){
                 event.preventDefault();
                 submitRegister();
             });

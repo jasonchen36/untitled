@@ -1,5 +1,4 @@
 const //services
-    session = require('../services/session'),
     taxProfile = {};
 
 taxProfile.saveName = function(req){
@@ -16,11 +15,6 @@ taxProfile.saveFilingType = function(req){
         spouse: filingForSpouse,
         other: filingForOther
     };
-};
-
-taxProfile.getValue = function(req, key){
-    const accountSession = session.getAccountObject(req);
-    return accountSession.hasOwnProperty(key)?accountSession[key]:'';
 };
 
 module.exports = taxProfile;

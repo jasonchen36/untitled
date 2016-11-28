@@ -30,7 +30,7 @@ session.actionStartAccountSession = function(req){
             return requestPromise(options)
                 .then(function (response) {
                     console.log('success',response);
-                    //todo, store token
+                    //todo, store id
                     //todo, add expiry timestamp 1 week
                     req.session.account = {
                         hasAccountSession: true
@@ -49,37 +49,45 @@ session.hasAccountSession = function(req){
 };
 
 session.actionDestroyAccountSession = function(req){
-    //todo, communicate with api
     req.session.account = {};
 };
 
 session.getAccountObject = function(req){
-    return req.session.account;
+    return req.session.hasOwnProperty('account')?req.session.account:{};
+};
+
+session.getAccountValue = function(req, key){
+    const accountSession = session.getAccountObject(req);
+    return accountSession.hasOwnProperty(key)?accountSession[key]:'';
 };
 
 
 /************ user ************/
-session.actionStartUserSession = function(req){
-    //todo, store account id in cookie
+session.actionStartUserSession = function(req,token){
     //todo, add expiry timestamp 1 hour
     session.actionDestroyUserSession(req);
     req.session.user = {
-        hasUserSession: true
-    }
+        hasUserSession: true,
+        token: token
+    };
 };
 
 session.hasUserSession = function(req){
     //todo, timestamp validation
-    return req.session.user && req.session.user.hasUserSession;
+    return req.session.hasOwnProperty('user') && req.session.user.hasOwnProperty('hasUserSession');
 };
 
 session.getUserObject = function(req){
-    return req.session.user;
+    return req.session.hasOwnProperty('user')?req.session.user:{};
 };
 
 session.actionDestroyUserSession = function(req){
-    //todo, communicate with api
     req.session.user = {};
+};
+
+session.getUserValue = function(req, key){
+    const userSession = session.getUserObject(req);
+    return userSession.hasOwnProperty(key)?userSession[key]:'';
 };
 
 module.exports = session;
