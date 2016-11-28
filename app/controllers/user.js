@@ -38,11 +38,19 @@ userPages.actionLoginUser = function(req, res, next){
         };
         requestPromise(options)
             .then(function (response) {
-                //todo, store token
-                res.status(util.http.status.accepted).json({
-                    action: 'login',
-                    status: 'success'
-                });
+                try{
+                    const responseToken = response.token;
+                    session.actionStartUserSession(req,responseToken);
+                    res.status(util.http.status.accepted).json({
+                        action: 'login',
+                        status: 'success'
+                    });
+                } catch(error){
+                    if (!error){
+                        error = 'Could not start user session';
+                    }
+                    next(new errors.InternalServerError(error,true));
+                }
             })
             .catch(function (response) {
                 next(new errors.BadRequestError(response.error,true));
