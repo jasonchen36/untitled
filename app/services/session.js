@@ -7,16 +7,18 @@ const //packages
 
 /************ account ************/
 session.actionStartAccountSession = function(req){
-    session.actionDestroyAccountSession(req)
+    return session.actionDestroyAccountSession(req)
         .then(function(){
             //validate
             req.checkBody('name').notEmpty();
 
+            //can only create an account on the name step
             if (req.validationErrors() || req.body.action !== 'api-tp-name'){
                 return promise.reject('api - account session creation - validation errors');
             }
         })
         .then(function(){
+            //create account
             const options = {
                 method: 'POST',
                 uri: process.env.API_URL+'/account',
@@ -28,16 +30,27 @@ session.actionStartAccountSession = function(req){
             };
             return requestPromise(options)
                 .then(function (response) {
-                    console.log('success',response);
-                    //todo, store id
-                    //todo, add expiry timestamp 1 week
-                    req.session.account = {
-                        hasAccountSession: true
-                    };
-                    return promise.resolve();
+                    try {
+                        //todo, add expiry timestamp 1 week
+                        req.session.account = {
+                            hasAccountSession: true,
+                            id: response.accountId,
+                            name: response.name
+                        };
+                        return promise.resolve();
+                    } catch(error){
+                        if(!error){
+                            error = 'Could not create account';
+                        }
+                        return promise.reject(error);
+                    }
                 })
                 .catch(function (response) {
-                    return promise.reject(response.error);
+                    var error = response;
+                    if (response && response.hasOwnProperty('error')){
+                        error = response.error;
+                    }
+                    return promise.reject(error);
                 });
         });
 };
@@ -46,7 +59,7 @@ session.hasAccountSession = function(req){
     //todo, timestamp validation
     return promise.resolve()
         .then(function(){
-            return req.session.account && req.session.account.hasAccountSession;
+            return req.session.hasOwnProperty('account') && req.session.account.hasOwnProperty('hasAccountSession') && req.session.account.hasAccountSession;
         });
 };
 

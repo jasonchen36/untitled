@@ -22,27 +22,29 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
 };
 
 taxReturnPages.actionSaveAccount = function(req, res, next) {
-    promise.resolve()
-        .then(function(){
+    session.hasAccountSession(req)
+        .then(function(hasSession){
             //check if session is initiated
-            if (!session.hasAccountSession(req)){
+            if (!hasSession){
                 return session.actionStartAccountSession(req);
             }
         })
         .then(function(){
-            //save session
+            //save account and qoute to session
             switch(req.body.action){
-                //todo, communicate with api
                 case 'api-tp-name':
-                    taxProfile.saveName(req);
+                    return taxProfile.saveName(req);
                     break;
                 case 'api-tp-filingType':
-                    taxProfile.saveFilingType(req);
+                    return taxProfile.saveFilingType(req);
                     break;
                 default:
                     return promise.reject('tax profile - invalid action');
                     break;
             }
+        })
+        .then(function(){
+            //todo, update quote in api
         })
         .then(function(){
             //success
@@ -52,8 +54,11 @@ taxReturnPages.actionSaveAccount = function(req, res, next) {
                 data: session.getAccountObject(req)
             });
         })
-        .catch(function(err){
-            next(new errors.BadRequestError(err,true));
+        .catch(function(error){
+            if(!error){
+                error = 'Could not save account';
+            }
+            next(new errors.BadRequestError(error,true));
         });
 };
 

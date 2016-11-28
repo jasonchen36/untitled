@@ -49,7 +49,7 @@
             welcomeNameInput = $('#welcome-name');
 
             //listeners
-            welcomeForm.on('submit',function(event){
+            welcomeSubmit.on('click',function(event){
                 event.preventDefault();
                 submitWelcome();
             });
