@@ -11,6 +11,10 @@ Use helper classes to style elements that otherwise wouldn't need to have a full
 
 * {
   font-family: FuturaMedium, Arial, sans-serif;
+  color: $color-global-text-grey;
+  &.font-yellow{
+    color: $color-global-yellow;
+  }
 }
 
 img {
@@ -18,10 +22,20 @@ img {
 }
 
 input {
-  border: 1px solid black;
+  background: white;
+  border:0;
+  border-bottom-color: $color-global-border-grey;
+  border-bottom: 1px solid;
+  outline: 0;
+  height:40px;
+  min-width: 50%;
+  display:inline-block;
   @include transition-with-defaults(border-color);
   &.error {
     border-color: red;
+  }
+  &.login{
+    min-width: 98%;
   }
 }
 
@@ -29,6 +43,47 @@ button {
   @include transition-with-defaults(opacity);
   .disabled {
     opacity: 0.6;
+  }
+  &.green{
+    background: $color-global-green;
+  }
+  &.grey{
+    background: $color-global-button-grey;
+  }
+  border-radius: 20px;
+  color: white;
+  padding: 10px 45px;
+  cursor: pointer;
+  text-decoration: none !important;
+  text-transform: none;
+  border: 0 none;
+  font-size: 12px;
+  outline:none;
+}
+
+button:active{
+  background:grey;
+}
+
+label{
+  font-size: 14px;
+  font-weight: bold;
+  color: $color-global-text-grey;
+  display:block;
+  padding-bottom: 7px;
+}
+
+h1{
+  text-align: center;
+  font-size: 24px;
+  &.subtitle{
+    text-align: left;
+    font-weight:bold;
+    margin-top: 40px;
+    margin-bottom: 40px;
+  }
+  &.header{
+    display:inline-block;
   }
 }
 
@@ -60,6 +115,43 @@ button {
 
 .text-upper {
   text-transform: uppercase;
+}
+
+//background colours
+//-----------------------------
+.main-container{
+  background: $color-global-bg;
+  height:100%;
+}
+
+.yellow-container{
+  background: $color-global-yellow;
+  height:100%;
+}
+
+.white-container{
+  background: white;
+  height:100%;
+}
+
+//content padding
+//-----------------------------
+.content-form{
+  margin-left:20px;
+}
+
+
+.wrapper-container{
+  margin-top: 235px;
+  &.marketing{
+    margin-top: 400px;
+  }
+  &.sideinfo{
+    margin-top: 40%;
+    margin-left: 15%;
+    margin-right: 15%;
+    text-align: center;
+  }
 }
 
 

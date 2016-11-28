@@ -1,23 +1,40 @@
-<main id="page-user-register" class="grid-container">
-    <div class="small-12 medium-8">
-        <h1>Register</h1>
-        <form id="user-register-form">
-            <p>
-                <label for="register-email">Email</label>
-                <input type="email" id="register-email" name="email"/>
-            </p>
-            <p>
-                <label for="register-password">Password</label>
-                <input type="password" id="register-password" name="password"/>
-            </p>
-            <button type="submit" id="register-submit">Sign In</button>
-        </form>
+<main id="page-user-register" class="full-screen-grid-container main-container">
+    <div class="small-12 medium-7">
+        <div class="content-form">
+            <div class="container-header">
+                <h1 class="header">Hi {{name}}, welcome to TAXplan</h1>
+                <button type="submit" id="register-submit" class="green button-next">Sign In</button>
+            </div>
+            <form id="user-register-form">
+                <p>
+                <h1 class="subtitle">Let’s get started…</h1>
+                </p>
+                <p>
+                    <label for="register-email">PREFERRED EMAIL</label>
+                    <input type="email" id="register-email" name="email"/>
+                </p>
+                <p>
+                    <label for="-confirm-email">CONFIRM EMAIL</label>
+                    <input type="email" id="register-confirm-email" name="confirmemail"/>
+                </p>
+                <p class="container-password-form-register">
+                    <label for="register-password">PASSWORD</label>
+                    <input type="password" id="register-password" name="password"/>
+                </p>
+                <p>
+                    <label for="register-confirm-password">CONFIRM PASSWORD</label>
+                    <input type="password" id="register-confirm-password" name="confirmpassword"/>
+                </p>
+
+            </form>
+        </div>
     </div>
-    <div class="hide-for-small small-12 medium-4 grid-end">
-        <h3>Hi tax pro</h3>
-        <img src="http://placehold.it/350x350">
-        <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris aliquam velit ut faucibus consequat. In hac habitasse platea dictumst. Proin at volutpat velit. Quisque congue varius nulla non aliquam. Integer condimentum dapibus ipsum, sit amet pharetra ligula aliquam sit amet. Praesent dui tortor, molestie et sodales non, vulputate in ligula. Curabitur nec justo tellus. Sed ac arcu porttitor, blandit sapien convallis, ultrices nisi. Duis aliquam iaculis nunc sed sodales. Phasellus cursus convallis scelerisque. Nulla consectetur, nunc at maximus tincidunt, mauris sapien vehicula libero, at bibendum metus dui ac magna. Donec tempus justo eu vestibulum dictum.
-        </p>
+    <div class="hide-for-small small-12 medium-5 grid-end white-container">
+        <div class="wrapper-container sideinfo">
+            <h3 class="font-yellow">Hi, from the TAXplan Team</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris aliquam velit ut faucibus consequat. In hac habitasse platea dictumst. Proin at volutpat velit. Quisque congue varius nulla non aliquam. Integer condimentum dapibus ipsum, sit amet pharetra ligula aliquam sit amet. Praesent dui tortor, molestie et sodales non, vulputate in ligula. Curabitur nec justo tellus. Sed ac arcu porttitor, blandit sapien convallis, ultrices nisi. Duis aliquam iaculis nunc sed sodales. Phasellus cursus convallis scelerisque. Nulla consectetur, nunc at maximus tincidunt, mauris sapien vehicula libero, at bibendum metus dui ac magna. Donec tempus justo eu vestibulum dictum.
+            </p>
+        </div>
     </div>
 </main>

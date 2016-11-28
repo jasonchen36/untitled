@@ -204,9 +204,9 @@ app.use(function (err, req, res, next) {
 /**
  *  start server
  */
-logger.info("Starting server");
 app.listen(port, function() {
-    logger.info('%s: Node server started on port %d', Date(Date.now()), port);
+    logger.info('Node server started on port %d at %s', port, Date(Date.now()));
+    logger.info('Using API server: '+process.env.API_URL);
 });
 
 module.exports = app;

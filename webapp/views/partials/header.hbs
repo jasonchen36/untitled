@@ -1,5 +1,8 @@
-<header class="grid-container">
-    <nav>
+<header class="full-screen-grid-container">
+<!--TODO: Where to get images-->
+    <div class="i--icon-logo"></div>
+    <p class="text-contact">NEED HELP? CALL US: 1-855-610-PLAN (7526)</p>
+    <nav class="dev-nav">
         <!--for dev use-->
         {{#if user.hasUserSession}}
             <a href="/dashboard">Dashboard</a>
@@ -15,5 +18,6 @@
         {{#if account.hasAccountSession}}
             <a href="/tax-profile/logout">Logout (account session)</a>
         {{/if}}
+
     </nav>
 </header>
