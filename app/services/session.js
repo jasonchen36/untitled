@@ -58,18 +58,12 @@ session.actionDestroyAccountSession = function(req){
 };
 
 session.getAccountObject = function(req){
-    return promise.resolve()
-        .then(function(){
-            return req.session.hasOwnProperty('account')?req.session.account:{};
-        });
+    return req.session.hasOwnProperty('account')?req.session.account:{};
 };
 
 session.getAccountValue = function(req, key){
-    return promise.resolve()
-        .then(function(){
-            const accountSession = session.getAccountObject(req);
-            return accountSession.hasOwnProperty(key)?accountSession[key]:'';
-        });
+    const accountSession = session.getAccountObject(req);
+    return accountSession.hasOwnProperty(key)?accountSession[key]:'';
 };
 
 
@@ -95,10 +89,7 @@ session.hasUserSession = function(req){
 };
 
 session.getUserObject = function(req){
-    return promise.resolve()
-        .then(function() {
-            return req.session.hasOwnProperty('user') ? req.session.user : {};
-        });
+    return req.session.hasOwnProperty('user') ? req.session.user : {};
 };
 
 session.actionDestroyUserSession = function(req){
@@ -109,11 +100,8 @@ session.actionDestroyUserSession = function(req){
 };
 
 session.getUserValue = function(req, key){
-    return promise.resolve()
-        .then(function() {
-            const userSession = session.getUserObject(req);
-            return userSession.hasOwnProperty(key) ? userSession[key] : '';
-        });
+    const userSession = session.getUserObject(req);
+    return userSession.hasOwnProperty(key) ? userSession[key] : '';
 };
 
 module.exports = session;
