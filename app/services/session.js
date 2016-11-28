@@ -7,8 +7,7 @@ const //packages
 
 /************ account ************/
 session.actionStartAccountSession = function(req){
-    session.actionDestroyAccountSession(req);
-    return promise.resolve()
+    session.actionDestroyAccountSession(req)
         .then(function(){
             //validate
             req.checkBody('name').notEmpty();
@@ -45,49 +44,76 @@ session.actionStartAccountSession = function(req){
 
 session.hasAccountSession = function(req){
     //todo, timestamp validation
-    return req.session.account && req.session.account.hasAccountSession;
+    return promise.resolve()
+        .then(function(){
+            return req.session.account && req.session.account.hasAccountSession;
+        });
 };
 
 session.actionDestroyAccountSession = function(req){
-    req.session.account = {};
+    return promise.resolve()
+        .then(function(){
+            req.session.account = {};
+        });
 };
 
 session.getAccountObject = function(req){
-    return req.session.hasOwnProperty('account')?req.session.account:{};
+    return promise.resolve()
+        .then(function(){
+            return req.session.hasOwnProperty('account')?req.session.account:{};
+        });
 };
 
 session.getAccountValue = function(req, key){
-    const accountSession = session.getAccountObject(req);
-    return accountSession.hasOwnProperty(key)?accountSession[key]:'';
+    return promise.resolve()
+        .then(function(){
+            const accountSession = session.getAccountObject(req);
+            return accountSession.hasOwnProperty(key)?accountSession[key]:'';
+        });
 };
 
 
 /************ user ************/
 session.actionStartUserSession = function(req,token){
     //todo, add expiry timestamp 1 hour
-    session.actionDestroyUserSession(req);
-    req.session.user = {
-        hasUserSession: true,
-        token: token
-    };
+    //todo, get full user object
+    return session.actionDestroyUserSession(req)
+        .then(function(){
+            req.session.user = {
+                hasUserSession: true,
+                token: token
+            };
+        });
 };
 
 session.hasUserSession = function(req){
     //todo, timestamp validation
-    return req.session.hasOwnProperty('user') && req.session.user.hasOwnProperty('hasUserSession');
+    return promise.resolve()
+        .then(function() {
+            return req.session.hasOwnProperty('user') && req.session.user.hasOwnProperty('hasUserSession') && req.session.user.hasUserSession;
+        });
 };
 
 session.getUserObject = function(req){
-    return req.session.hasOwnProperty('user')?req.session.user:{};
+    return promise.resolve()
+        .then(function() {
+            return req.session.hasOwnProperty('user') ? req.session.user : {};
+        });
 };
 
 session.actionDestroyUserSession = function(req){
-    req.session.user = {};
+    return promise.resolve()
+        .then(function() {
+            req.session.user = {};
+        });
 };
 
 session.getUserValue = function(req, key){
-    const userSession = session.getUserObject(req);
-    return userSession.hasOwnProperty(key)?userSession[key]:'';
+    return promise.resolve()
+        .then(function() {
+            const userSession = session.getUserObject(req);
+            return userSession.hasOwnProperty(key) ? userSession[key] : '';
+        });
 };
 
 module.exports = session;

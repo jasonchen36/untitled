@@ -40,11 +40,13 @@ userPages.actionLoginUser = function(req, res, next){
             .then(function (response) {
                 try{
                     const responseToken = response.token;
-                    session.actionStartUserSession(req,responseToken);
-                    res.status(util.http.status.accepted).json({
-                        action: 'login',
-                        status: 'success'
-                    });
+                    session.actionStartUserSession(req,responseToken)
+                        .then(function(){
+                            res.status(util.http.status.accepted).json({
+                                action: 'login',
+                                status: 'success'
+                            });
+                        });
                 } catch(error){
                     if (!error){
                         error = 'Could not start user session';
@@ -94,11 +96,13 @@ userPages.actionRegisterUser = function(req, res, next){
             .then(function (response) {
                 try{
                     const responseToken = response.token;
-                    session.actionStartUserSession(req,responseToken);
-                    res.status(util.http.status.accepted).json({
-                        action: 'register',
-                        status: 'success'
-                    });
+                    session.actionStartUserSession(req,responseToken)
+                        .then(function(){
+                            res.status(util.http.status.accepted).json({
+                                action: 'register',
+                                status: 'success'
+                            });
+                        });
                 } catch(error){
                     if (!error){
                         error = 'Could not start user session';
@@ -194,16 +198,20 @@ userPages.actionAuthorizedPasswordReset = function(req, res, next){
 
 /************ logout ************/
 userPages.getLogoutPage = function(req, res, next) {
-    session.actionDestroyUserSession(req);
-    res.redirect('/login');
+    session.actionDestroyUserSession(req)
+        .then(function(){
+            res.redirect('/login');
+        });
 };
 
 userPages.actionLogoutUser = function(req, res, next) {
-    session.actionDestroyUserSession(req);
-    res.status(util.http.status.ok).json({
-        action: 'logout',
-        status: 'success'
-    });
+    session.actionDestroyUserSession(req)
+        .then(function(){
+            res.status(util.http.status.ok).json({
+                action: 'logout',
+                status: 'success'
+            });
+        });
 };
 
 module.exports = userPages;

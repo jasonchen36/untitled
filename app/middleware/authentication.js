@@ -6,50 +6,65 @@ var authenticationMiddleware = {};
 
 /************ account session ************/
 authenticationMiddleware.redirectWithoutAccountSession = function(req, res, next){
-    if (session.hasAccountSession(req)){
-        next();
-    } else {
-        res.redirect('/tax-profile');
-    }
+    session.hasAccountSession(req)
+        .then(function(hasSession){
+            if (hasSession){
+                next();
+            } else {
+                res.redirect('/tax-profile');
+            }
+        });
 };
 
 authenticationMiddleware.rejectWithoutAccountSession = function(req, res, next){
-    if (session.hasAccountSession(req)){
-        next();
-    } else {
-        res.status(util.http.status.unauthorized).json({
-            action: 'unauthorized - no account session',
-            status: 'failure'
+    session.hasAccountSession(req)
+        .then(function(hasSession) {
+            if (hasSession) {
+                next();
+            } else {
+                res.status(util.http.status.unauthorized).json({
+                    action: 'unauthorized - no account session',
+                    status: 'failure'
+                });
+            }
         });
-    }
 };
 
 /************ user session ************/
 authenticationMiddleware.redirectWithUserSession = function(req, res, next){
-    if (session.hasUserSession(req)){
-        res.redirect('/dashboard');
-    } else {
-        next();
-    }
+    session.hasUserSession(req)
+        .then(function(hasSession) {
+            if (hasSession) {
+                res.redirect('/dashboard');
+            } else {
+                next();
+            }
+        });
 };
 
 authenticationMiddleware.redirectWithoutUserSession = function(req, res, next){
-    if (session.hasUserSession(req)){
-        next();
-    } else {
-        res.redirect('/login');
-    }
+    session.hasUserSession(req)
+        .then(function(hasSession) {
+            if (hasSession) {
+                next();
+            } else {
+                res.redirect('/login');
+            }
+        });
 };
 
 authenticationMiddleware.rejectWithoutUserSession = function(req, res, next){
-    if (session.hasUserSession(req)){
-        next();
-    } else {
-        res.status(util.http.status.unauthorized).json({
-            action: 'unauthorized - no user session',
-            status: 'failure'
+    session.hasUserSession(req)
+        .then(function(hasSession) {
+            if (hasSession) {
+                next();
+            } else {
+                res.status(util.http.status.unauthorized).json({
+                    action: 'unauthorized - no user session',
+                    status: 'failure'
+                });
+            }
         });
-    }
 };
 
 
