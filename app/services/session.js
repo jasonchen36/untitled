@@ -127,7 +127,7 @@ session.getUserObject = function(req){
 };
 
 session.actionDestroyUserSession = function(req){
-    return session.actionDestroyAccountSession()
+    return session.actionDestroyAccountSession(req)
         .then(function() {
             req.session.user = {};
         });
