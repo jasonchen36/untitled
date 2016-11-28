@@ -1,6 +1,7 @@
 const //packages
     requestPromise = require('request-promise'),
     promise = require('bluebird'),
+    moment = require('moment'),
 //services
     errors = require('./errors'),
     session = {};
@@ -31,9 +32,9 @@ session.actionStartAccountSession = function(req){
             return requestPromise(options)
                 .then(function (response) {
                     try {
-                        //todo, add expiry timestamp 1 week
                         req.session.account = {
                             hasAccountSession: true,
+                            expiry: moment().add(7, 'days'),
                             id: response.accountId,
                             name: response.name
                         };
@@ -56,10 +57,20 @@ session.actionStartAccountSession = function(req){
 };
 
 session.hasAccountSession = function(req){
-    //todo, timestamp validation
     return promise.resolve()
         .then(function(){
-            return req.session.hasOwnProperty('account') && req.session.account.hasOwnProperty('hasAccountSession') && req.session.account.hasAccountSession;
+            if (req.session.hasOwnProperty('account') && session.getAccountValue(req,'hasAccountSession')){
+                if (moment().isBefore(session.getAccountValue(req,'expiry'))){
+                    return true;
+                } else {
+                    return session.actionDestroyAccountSession(req)
+                        .then(function(){
+                            return false;
+                        });
+                }
+            } else {
+                return false;
+            }
         });
 };
 
@@ -82,22 +93,32 @@ session.getAccountValue = function(req, key){
 
 /************ user ************/
 session.actionStartUserSession = function(req,token){
-    //todo, add expiry timestamp 1 hour
     //todo, get full user object
     return session.actionDestroyUserSession(req)
         .then(function(){
             req.session.user = {
                 hasUserSession: true,
-                token: token
+                token: token,
+                expiry: moment().add(1, 'hour')
             };
         });
 };
 
 session.hasUserSession = function(req){
-    //todo, timestamp validation
     return promise.resolve()
         .then(function() {
-            return req.session.hasOwnProperty('user') && req.session.user.hasOwnProperty('hasUserSession') && req.session.user.hasUserSession;
+            if (req.session.hasOwnProperty('user') && session.getUserValue(req,'hasUserSession')){
+                if (moment().isBefore(session.getUserValue(req,'expiry'))){
+                    return true;
+                } else {
+                    return session.actionDestroyUserSession(req)
+                        .then(function(){
+                            return false;
+                        });
+                }
+            } else {
+                return false;
+            }
         });
 };
 
@@ -106,7 +127,7 @@ session.getUserObject = function(req){
 };
 
 session.actionDestroyUserSession = function(req){
-    return promise.resolve()
+    return session.actionDestroyAccountSession()
         .then(function() {
             req.session.user = {};
         });

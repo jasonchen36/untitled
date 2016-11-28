@@ -66,8 +66,10 @@ taxReturnPages.actionSaveAccount = function(req, res, next) {
 
 /************ logout ************/
 taxReturnPages.getLogoutPage = function(req, res, next){
-    session.actionDestroyAccountSession(req);
-    res.redirect('/tax-profile');
+    session.actionDestroyAccountSession(req)
+        .then(function(){
+            res.redirect('/tax-profile');
+        });
 };
 
 module.exports = taxReturnPages;
