@@ -44,7 +44,7 @@ taxReturnPages.actionSaveAccount = function(req, res, next) {
             }
         })
         .then(function(){
-            //todo, update quote in api
+            //todo, update account/quote in api
         })
         .then(function(){
             //success
