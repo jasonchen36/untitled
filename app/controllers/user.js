@@ -15,7 +15,7 @@ userPages.getLoginPage = function(req, res, next){
         },
         account: session.getAccountObject(req),
         user: session.getUserObject(req),
-        data: {}
+        locals: {}
     });
 };
 
@@ -68,7 +68,7 @@ userPages.getRegisterPage = function(req, res, next){
         },
         account: session.getAccountObject(req),
         user: session.getUserObject(req),
-        data: {}
+        locals: {}
     });
 };
 
@@ -124,7 +124,7 @@ userPages.getPasswordResetPage = function(req, res, next){
         },
         account: session.getAccountObject(req),
         user: session.getUserObject(req),
-        data: {}
+        locals: {}
     });
 };
 
@@ -163,7 +163,7 @@ userPages.getAuthorizedPasswordResetPage = function(req, res, next){
         },
         account: session.getAccountObject(req),
         user: session.getUserObject(req),
-        data: {
+        locals: {
             token: req.params.token
         }
     });

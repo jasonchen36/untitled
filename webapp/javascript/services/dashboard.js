@@ -19,7 +19,7 @@
     this.changePage = function(newPage, overrideDuplicate){
         if(overrideDuplicate || newPage !== getCurrentPage()) {
             return new Promise(function (resolve, reject) {
-                var data = cookies.getCookie(that.userSessionCookie);
+                var data = getUserSession();
                 that.updateUserSession(data, newPage);
                 var template = Handlebars.templates[newPage],
                     html = template(data);
@@ -49,14 +49,39 @@
     }
 
     function startUserSession(){
-        return cookies.setCookie(that.userSessionCookie, {
-            currentPage: that.dashboardOrder[0]
-        });
+        var sessionObject = userObject;
+        sessionObject.currentPage = that.dashboardOrder[0];
+        sessionObject.expiry = moment().add(1,'hour');
+        destroyUserSession();
+        return cookies.setCookie(that.userSessionCookie, sessionObject);
+    }
+
+    function getUserSession(){
+        return cookies.getCookie(that.userSessionCookie);
+    }
+
+    function destroyUserSession(){
+        cookies.setCookie(that.userSessionCookie,{});
+    }
+
+    function hasUserSession(){
+        var accountSession = getUserSession();
+        if (accountSession) {
+            if (accountSession.hasOwnProperty('expiry') && moment().isBefore(accountSession.expiry)) {
+                return true;
+            } else {
+                destroyUserSession();
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     function getCurrentPage(){
-        var accountSession = cookies.getCookie(that.userSessionCookie);
-        if (!accountSession) {
+        var hasSession = hasUserSession(),
+            accountSession = getUserSession();
+        if (!hasSession) {
             return startUserSession().currentPage;
         } else {
             return accountSession.currentPage;
@@ -65,6 +90,9 @@
 
     this.init = function(){
         if (landingPageContainer.length > 0) {
+
+            //check for expiry
+            hasUserSession();
 
             //variables
             sidebarUploadActivate = $('#dashboard-upload-activate');
@@ -86,7 +114,7 @@
                 event.preventDefault();
                 that.changePage('my-return');
             });
-            
+
             //functions
             that.changePage(getCurrentPage(), true);
         }

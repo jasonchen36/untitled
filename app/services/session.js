@@ -93,14 +93,57 @@ session.getAccountValue = function(req, key){
 
 /************ user ************/
 session.actionStartUserSession = function(req,token){
-    //todo, get full user object
     return session.actionDestroyUserSession(req)
         .then(function(){
-            req.session.user = {
-                hasUserSession: true,
-                token: token,
-                expiry: moment().add(1, 'hour')
+            //get user object
+            const options = {
+                method: 'GET',
+                uri: process.env.API_URL+'/users/me',
+                headers: {
+                    'Authorization': 'Bearer '+token
+                },
+                body: {
+                    name: req.body.name,
+                    productId: process.env.API_PRODUCT_ID
+                },
+                json: true
             };
+            return requestPromise(options)
+                .then(function (response) {
+                    try {
+                        req.session.user = {
+                            hasUserSession: true,
+                            token: token,
+                            expiry: moment().add(1, 'hour'),
+                            id: response.id,
+                            role: response.role,
+                            provider: response.provider,
+                            name: response.name,
+                            email: response.email,
+                            phone: response.phone,
+                            username: response.username,
+                            firstName: response.first_name,
+                            lastName: response.last_name,
+                            accounts: response.accounts,
+                            birthday: response.birthday,
+                            resetKey: response.reset_key,
+                            accountId: response.account_id
+                        };
+                        return promise.resolve();
+                    } catch(error){
+                        if(!error){
+                            error = 'Could not create account';
+                        }
+                        return promise.reject(error);
+                    }
+                })
+                .catch(function (response) {
+                    var error = response;
+                    if (response && response.hasOwnProperty('error')){
+                        error = response.error;
+                    }
+                    return promise.reject(error);
+                });
         });
 };
 
