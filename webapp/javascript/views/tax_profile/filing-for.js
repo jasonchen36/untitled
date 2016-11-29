@@ -50,7 +50,7 @@
             filingForBack = $('#filing-for-back');
 
             //listeners
-            filingForForm.on('submit',function(event){
+            filingForSubmit.on('click',function(event){
                 event.preventDefault();
                 submitFilingFor();
             });
