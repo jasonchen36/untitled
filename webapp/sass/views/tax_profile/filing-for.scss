@@ -1,3 +1,63 @@
 .i--icon-multifiler{
   height: 270px;
 }
+
+p{
+  display:inline-block;
+}
+
+input[type=checkbox] {
+  display:none;
+}
+
+input[type=checkbox] + label
+{
+  background-color: white;
+  background-image: url("http://pngimg.com/upload/cat_PNG100.png");
+  background-size: 80%;
+  background-position: 50% 40%;
+  background-repeat: no-repeat;
+  height: 140px;
+  width: 140px;
+  display:inline-block;
+  padding: 0px;
+  border-color: $color-global-yellow;
+  border-style: solid;
+  border-width: 3px;
+  border-radius: 20px;
+  position:relative;
+  margin:5px;
+}
+
+input[type=checkbox]:checked + label
+{
+  background-color: $color-global-yellow;
+  background-image: url("https://cdn.pixabay.com/photo/2016/02/19/15/46/dog-1210559_1280.jpg");
+  border-color: $color-global-yellow;
+  border-style: solid;
+  border-width: 3px;
+}
+
+input[type=checkbox] + label:after
+{
+  content:attr(data-label-filing);
+  position:absolute;
+  width: 100%;
+  text-align: center;
+  bottom: 8%;
+  height: 25%;
+  padding: 5px;
+}
+
+input[type=checkbox] + label:before
+{
+  background-image:url("https://cdn.pixabay.com/photo/2016/02/19/15/46/dog-1210559_1280.jpg");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  width: 50px;
+  height: 50px;
+  content:"";
+  right:10px;
+  top:10px;
+  position:absolute;
+}
