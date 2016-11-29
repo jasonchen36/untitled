@@ -48,7 +48,11 @@ button {
     background: $color-global-green;
   }
   &.grey{
-    background: $color-global-button-grey;
+    background: $color-global-mid-grey;
+  }
+  &.header{
+    float:right;
+    margin: 15px;
   }
   border-radius: 20px;
   color: white;
@@ -140,6 +144,10 @@ textarea {
 .white-container{
   background: white;
   height:100%;
+}
+
+.container-header{
+  border-bottom: 1px solid $color-global-border-grey;
 }
 
 //content padding
