@@ -17,7 +17,9 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
         },
         account: session.getAccountObject(req),
         user: session.getUserObject(req),
-        locals: {}
+        locals: {
+            accountToString: JSON.stringify(session.getAccountObject(req))
+        }
     });
 };
 
@@ -51,7 +53,7 @@ taxReturnPages.actionSaveAccount = function(req, res, next) {
             res.status(util.http.status.accepted).json({
                 action: req.body.action,
                 status: 'success',
-                locals: session.getAccountObject(req)
+                data: session.getAccountObject(req)
             });
         })
         .catch(function(error){
