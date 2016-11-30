@@ -24,6 +24,7 @@
         'deductions-multi',
         'quote-multi'
     ];
+    
 
     /* *************** private methods ***************/
     function changePage(newPage){
@@ -87,10 +88,13 @@
         if(!data || typeof data !== 'object'){
             data = getAccountSession();
         }
-        data.currentPage = newPage;
+        if(newPage && newPage.length > 0){
+            data.currentPage = newPage;
+        }
         accountSessionStore = data;
     }
 
+    
     /* *************** public methods ***************/
     this.goToNextPage = function(data){
         var currentPage = getCurrentPage(),
