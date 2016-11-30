@@ -22,7 +22,7 @@
                     'POST',
                     '/tax-profile',
                     {
-                        action: 'api-tp-filing-type',
+                        action: 'api-tp-filing-for',
                         myself: formData.myself,
                         spouse: formData.spouse,
                         other: formData.other

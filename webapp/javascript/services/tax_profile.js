@@ -24,7 +24,7 @@
         'deductions-multi',
         'quote-multi'
     ];
-    
+
 
     /* *************** private methods ***************/
     function changePage(newPage){
@@ -59,7 +59,12 @@
 
     function startAccountSession(){
         accountSessionStore = accountObject;
-        accountSessionStore.currentPage = that.singleFilerFlow[0];
+        if(!accountSessionStore.hasOwnProperty('currentPage') || accountSessionStore.currentPage.length < 1){
+            accountSessionStore.currentPage = that.singleFilerFlow[0];
+            changePage(accountSessionStore.currentPage);
+        } else {
+            that.goToNextPage();
+        }
         return accountSessionStore;
     }
 
@@ -76,12 +81,7 @@
     }
 
     function getCurrentPage(){
-        var accountSession = getAccountSession();
-        if (!accountSession) {
-            return startAccountSession().currentPage;
-        } else {
-            return accountSession.currentPage;
-        }
+        return getAccountSession().currentPage;
     }
 
     function updateAccountSession(data,newPage){
@@ -94,7 +94,7 @@
         accountSessionStore = data;
     }
 
-    
+
     /* *************** public methods ***************/
     this.goToNextPage = function(data){
         var currentPage = getCurrentPage(),
@@ -141,7 +141,7 @@
 
     this.init = function(){
         if (landingPageContainer.length > 0) {
-            changePage(getCurrentPage());
+            startAccountSession();
         }
     };
 

@@ -37,7 +37,7 @@ taxReturnPages.actionSaveAccount = function(req, res, next) {
                 case 'api-tp-welcome':
                     return taxProfile.saveName(req);
                     break;
-                case 'api-tp-filing-type':
+                case 'api-tp-filing-for':
                     return taxProfile.saveFilingType(req);
                     break;
                 default:

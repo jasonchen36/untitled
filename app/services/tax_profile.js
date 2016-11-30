@@ -33,7 +33,7 @@ taxProfile.saveFilingType = function(req){
             req.checkBody('other').notEmpty();
 
             //can only create an account on the name step
-            if (req.validationErrors() || req.body.action !== 'api-tp-filing-type'){
+            if (req.validationErrors() || req.body.action !== 'api-tp-filing-for'){
                 return promise.reject('api - account session creation - validation errors');
             } else {
                 const filingForMyself = req.body.myself,
