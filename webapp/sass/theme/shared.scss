@@ -48,7 +48,11 @@ button {
     background: $color-global-green;
   }
   &.grey{
-    background: $color-global-button-grey;
+    background: $color-global-mid-grey;
+  }
+  &.header{
+    float:right;
+    margin: 15px;
   }
   border-radius: 20px;
   color: white;
@@ -92,6 +96,12 @@ textarea {
   @include transition-with-defaults(border-color);
   &.error {
     border-color: red;
+  }
+}
+
+p{
+  &.tile{
+    display:inline-block;
   }
 }
 
@@ -142,6 +152,10 @@ textarea {
   height:100%;
 }
 
+.container-header{
+  border-bottom: 1px solid $color-global-border-grey;
+}
+
 //content padding
 //-----------------------------
 .content-form{
@@ -159,6 +173,9 @@ textarea {
     margin-left: 15%;
     margin-right: 15%;
     text-align: center;
+    &.has-image{
+      margin-top: 10%;
+    }
   }
 }
 
