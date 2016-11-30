@@ -10,18 +10,24 @@
                 Hi {{name}}, can you please select all the people you are filing for:
             </h1>
             <form id="filing-for-form">
-                <p class="tile">
-                <input type="checkbox" id="filing-for-myself" name="myself" {{#compare filingType.myself 1 operator="=="}}checked="checked"{{/compare}}/>
-                    <label for="filing-for-myself" data-label-filing="Myself" class="myself"></label>
-                </p>
-                <p class="tile">
-                    <input type="checkbox" id="filing-for-spouse" name="spouse" {{#compare filingType.spouse 1 operator="=="}}checked="checked"{{/compare}}/>
-                    <label for="filing-for-spouse" data-label-filing="My Spouse/Partner" class="partner"></label>
-                </p>
-                <p class="tile">
-                    <input type="checkbox" id="filing-for-other" name="other" {{#compare filingType.other 1 operator="=="}}checked="checked"{{/compare}}/>
-                    <label for="filing-for-other" data-label-filing="Other Person/People" class="other"></label>
-                </p>
+                <div class="tax-profile-tile i--icon-filing-myself {{#compare filingType.myself 1 operator="=="}}active{{/compare}}">
+                    <div class="i--icon-question"></div>
+                   <span class="tax-profile-tile-label">
+                       Myself
+                   </span>
+                </div>
+                <div class="tax-profile-tile i--icon-filing-partner {{#compare filingType.spouse 1 operator="=="}}active{{/compare}}">
+                    <div class="i--icon-question"></div>
+                    <span class="tax-profile-tile-label">
+                        My Spouse/Partner
+                        </span>
+                </div>
+                <div class="tax-profile-tile i--icon-filing-other {{#compare filingType.other 1 operator="=="}}active{{/compare}}">
+                    <div class="i--icon-question"></div>
+                    <span class="tax-profile-tile-label">
+                    Other Person/People
+                    </span>
+                </div>
             </form>
         </div>
     </div>

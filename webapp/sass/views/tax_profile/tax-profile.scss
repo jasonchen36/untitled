@@ -1,0 +1,33 @@
+.tax-profile-tile {
+  position: relative;
+  height: 140px;
+  width: 140px;
+  border: 3px solid $color-global-yellow;
+  border-radius: 20px;
+  margin: 5px;
+  float: left;
+  cursor: pointer;
+  &.active, &:hover {
+    background-color: $color-global-yellow;
+  }
+}
+
+.tax-profile-tile-label {
+  position: absolute;
+  bottom: 10%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  text-align: center;
+  display: inline-block;
+}
+
+#tax-profile-filing-for {
+  .i--icon-question{
+    width: 20px;
+    height: 20px;
+    right: 10px;
+    top: 10px;
+    position:absolute;
+  }
+}

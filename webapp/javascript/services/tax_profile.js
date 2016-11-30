@@ -3,7 +3,9 @@
     /* *************** variables ***************/
     var $ = jQuery,
         that = app.services.taxProfile,
+        helpers = app.helpers,
         landingPageContainer = $('#page-tax-profile'),
+        activeClass = helpers.activeClass,
         accountSessionStore;
 
     this.singleFilerFlow = [
@@ -141,6 +143,12 @@
     this.init = function(){
         if (landingPageContainer.length > 0) {
             startAccountSession();
+
+            $(document).on('click', '.tax-profile-tile', function (event) {
+                event.preventDefault();
+                $(this).toggleClass(activeClass);
+            });
+            
         }
     };
 
