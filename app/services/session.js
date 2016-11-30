@@ -181,4 +181,52 @@ session.getUserValue = function(req, key){
     return userSession.hasOwnProperty(key) ? userSession[key] : '';
 };
 
+
+/************ personal profile ************/
+
+session.actionStartPersonalProfileSession = function(req){
+    return session.actionDestroyPersonalProfileSession(req)
+        .then(function(){
+            req.session.personalProfile = {
+                hasPersonalProfileSession: true,
+                expiry: moment().add(7, 'days')
+            };
+            return promise.resolve();
+        });
+};
+
+session.hasPersonalProfileSession = function(req){
+    return promise.resolve()
+        .then(function() {
+            if (req.session.hasOwnProperty('personalProfile') && session.getPersonalProfileValue(req,'hasPersonalProfileSession')){
+                if (moment().isBefore(session.getPersonalProfileValue(req,'expiry'))){
+                    return true;
+                } else {
+                    return session.actionDestroyPersonalProfileSession(req)
+                        .then(function(){
+                            return false;
+                        });
+                }
+            } else {
+                return false;
+            }
+        });
+};
+
+session.getPersonalProfileObject = function(req){
+    return req.session.hasOwnProperty('personalProfile') ? req.session.personalProfile : {};
+};
+
+session.actionDestroyPersonalProfileSession = function(req){
+    return promise.resolve()
+        .then(function() {
+            req.session.personalProfile = {};
+        });
+};
+
+session.getPersonalProfileValue = function(req, key){
+    const personalProfileSession = session.getPersonalProfileObject(req);
+    return personalProfileSession.hasOwnProperty(key) ? personalProfileSession[key] : '';
+};
+
 module.exports = session;

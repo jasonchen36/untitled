@@ -2,10 +2,8 @@
 
     var $ = jQuery,
         that = app.services.personalProfile,
-        cookies = app.cookies,
-        landingPageContainer = $('#page-personal-profile');
-
-    this.personalProfileSessionCookie = 'personalProfileSession';
+        landingPageContainer = $('#page-personal-profile'),
+        personalProfileSessionStore;
 
     this.personalProfileFlow = [
         'last-name',
@@ -16,9 +14,11 @@
         'birthdate'
     ];
 
-    this.changePage = function(newPage){
+    this.changePage = function(newPage,data){
         return new Promise(function(resolve,reject) {
-            var data = cookies.getCookie(that.personalProfileSessionCookie);
+            if(!data){
+                data = getPersonalProfileSession();
+            }
             that.updatePersonalProfileSession(data,newPage);
             var template = Handlebars.templates[newPage],
                 html = template(data);
@@ -52,7 +52,7 @@
         } else {
             data.currentPage = currentPage;
         }
-        cookies.setCookie(that.personalProfileSessionCookie,data);
+        personalProfileSessionStore = data;
     };
 
     function triggerInitScripts(){
@@ -66,17 +66,17 @@
     }
 
     function startPersonalProfileSession(){
-        return cookies.setCookie(that.personalProfileSessionCookie, {
-            currentPage: that.personalProfileFlow[0]
-        });
+        personalProfileSessionStore = personalProfileObject;
+        personalProfileSessionStore.currentPage = that.personalProfileFlow[0];
+        return personalProfileSessionStore;
     }
 
-    this.destroyPersonalProfileSession = function(){
-        return cookies.clearCookie(that.personalProfileSessionCookie);
-    };
+    function getPersonalProfileSession(){
+        return personalProfileSessionStore;
+    }
 
     function getCurrentPage(){
-        var accountSession = cookies.getCookie(that.personalProfileSessionCookie);
+        var accountSession = getPersonalProfileSession();
         if (!accountSession) {
             return startPersonalProfileSession().currentPage;
         } else {
