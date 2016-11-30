@@ -4,7 +4,7 @@
   cursor: pointer;
   @include transition-with-defaults(border-color);
   @include unselectable;
-  &.active{
+  &.active, &:hover{
     border-color: green;
   }
 }
