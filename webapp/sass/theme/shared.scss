@@ -75,6 +75,9 @@ label{
   color: $color-global-text-grey;
   display:block;
   padding-bottom: 7px;
+  &.under{
+    padding-top: 30px;
+  }
 }
 
 h1{
