@@ -1,5 +1,6 @@
 (function(){
 
+    /* *************** variables ***************/
     var $ = jQuery,
         that = app.services.dashboard,
         sidebarUploadActivate,
@@ -14,27 +15,14 @@
         'my-return'
     ];
 
-    this.changePage = function(newPage, data){
-        return new Promise(function (resolve, reject) {
-            if(typeof data !== 'object'){
-                data = getUserSession();
-            }
-            updateUserSession(data, newPage);
-            var template = Handlebars.templates[newPage],
-                html = template(data);
-            landingPageContainer.html(html);
-            resolve();
-        })
-            .then(function () {
-                triggerInitScripts();
-            });
-    };
 
-    function updateUserSession(data, currentPage){
-        if(!currentPage){
-            data.currentPage = getCurrentPage();
-        } else {
-            data.currentPage = currentPage;
+    /* *************** private methods ***************/
+    function updateUserSession(data, newPage){
+        if(!data || typeof data !== 'object'){
+            data = getUserSession();
+        }
+        if(newPage && newPage.length > 0){
+            data.currentPage = newPage;
         }
         userSessionStore = data;
     }
@@ -70,6 +58,25 @@
             that.changePage(pageName);
         }
     }
+
+
+    /* *************** public methods ***************/
+    this.changePage = function(newPage, data){
+        return new Promise(function (resolve, reject) {
+            if(typeof data !== 'object'){
+                data = getUserSession();
+            }
+            //update session with new page
+            updateUserSession(data, newPage);
+            var template = Handlebars.templates[newPage],
+                html = template(data);
+            landingPageContainer.html(html);
+            resolve();
+        })
+            .then(function () {
+                triggerInitScripts();
+            });
+    };
 
     this.init = function(){
         if (landingPageContainer.length > 0) {
