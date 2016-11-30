@@ -44,8 +44,12 @@
 
     function startPersonalProfileSession(){
         personalProfileSessionStore = personalProfileObject;
-        personalProfileSessionStore.currentPage = that.personalProfileFlow[0];
-        return personalProfileSessionStore;
+        if(!personalProfileSessionStore.hasOwnProperty('currentPage') || personalProfileSessionStore.currentPage.length < 1){
+            personalProfileSessionStore.currentPage = that.personalProfileFlow[0];
+            changePage(personalProfileSessionStore.currentPage);
+        } else {
+            that.goToNextPage();
+        }
     }
 
     function getPersonalProfileSession(){
@@ -92,10 +96,10 @@
             changePage(that.personalProfileFlow[currentPageIndex-1]);
         }
     };
-    
+
     this.init = function(){
         if (landingPageContainer.length > 0) {
-            changePage(getCurrentPage());
+            startPersonalProfileSession();
         }
     };
 
