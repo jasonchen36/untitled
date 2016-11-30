@@ -12,6 +12,7 @@ var taxReturnPages = {};
 /************ tax profile ************/
 taxReturnPages.getPageTaxProfile = function(req, res, next){
     res.render('tax_profile/tax_profile', {
+        layout: 'layout-tax-profile',
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Tax Profile'
         },

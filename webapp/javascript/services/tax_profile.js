@@ -4,7 +4,9 @@
     var $ = jQuery,
         that = app.services.taxProfile,
         helpers = app.helpers,
+        animations = app.animations,
         landingPageContainer = $('#page-tax-profile'),
+        profileBar = $('#tax-profile-progress-bar'),
         activeClass = helpers.activeClass,
         accountSessionStore;
 
@@ -31,9 +33,20 @@
     /* *************** private methods ***************/
     function changePage(newPage){
         return new Promise(function(resolve,reject) {
-            var data = getAccountSession();
+            var data = getAccountSession(),
+                percentageComplete;
             //update session with new page
             updateAccountSession(data, newPage);
+            if(isMultiFiler()){
+                percentageComplete = helpers.getAverage(that.multiFilerFlow.indexOf(getCurrentPage()),that.multiFilerFlow.length);
+            } else {
+                percentageComplete = helpers.getAverage(that.singleFilerFlow.indexOf(getCurrentPage()),that.singleFilerFlow.length);
+            }
+            animations.animateElement(profileBar,{
+               properties: {
+                   width: percentageComplete+'%'
+               }
+            });
             var template = Handlebars.templates[newPage],
                 html = template(data);
             landingPageContainer.html(html);

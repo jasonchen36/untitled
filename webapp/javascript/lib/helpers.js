@@ -107,5 +107,9 @@
     this.isEmpty = function(input){
         return !input || input.length < 1;
     };
+    
+    this.getAverage = function(index, length) {
+        return Math.round(index / length * 100);
+    };
 
 }).apply(app.helpers);
