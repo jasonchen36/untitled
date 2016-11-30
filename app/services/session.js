@@ -14,7 +14,7 @@ session.actionStartAccountSession = function(req){
             req.checkBody('name').notEmpty();
 
             //can only create an account on the name step
-            if (req.validationErrors() || req.body.action !== 'api-tp-name'){
+            if (req.validationErrors() || req.body.action !== 'api-tp-welcome'){
                 return promise.reject('api - account session creation - validation errors');
             }
         })
@@ -35,6 +35,7 @@ session.actionStartAccountSession = function(req){
                         req.session.account = {
                             hasAccountSession: true,
                             expiry: moment().add(7, 'days'),
+                            currentPage: 'welcome',
                             id: response.accountId,
                             name: response.name
                         };

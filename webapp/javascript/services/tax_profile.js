@@ -1,10 +1,11 @@
 (function(){
 
+    /* *************** variables ***************/
     var $ = jQuery,
         that = app.services.taxProfile,
         landingPageContainer = $('#page-tax-profile'),
         accountSessionStore;
-    
+
     this.singleFilerFlow = [
         'welcome',
         'filing-for',
@@ -24,12 +25,12 @@
         'quote-multi'
     ];
 
-    this.changePage = function(newPage, data){
+    /* *************** private methods ***************/
+    function changePage(newPage){
         return new Promise(function(resolve,reject) {
-            if(typeof data !== 'object'){
-                data = getAccountSession();
-            }
-            updateAccountSession(data,newPage);
+            var data = getAccountSession();
+            //update session with new page
+            updateAccountSession(data, newPage);
             var template = Handlebars.templates[newPage],
                 html = template(data);
             landingPageContainer.html(html);
@@ -38,48 +39,6 @@
             .then(function(){
                 triggerInitScripts();
             });
-    };
-
-    this.goToNextPage = function(data){
-        var currentPage = getCurrentPage(),
-            currentPageIndex;
-        if (isMultiFiler()){
-            currentPageIndex = that.multiFilerFlow.indexOf(currentPage);
-            if (currentPageIndex !== that.multiFilerFlow.length-1){
-                that.changePage(that.multiFilerFlow[currentPageIndex+1],data);
-            }
-        } else {
-            currentPageIndex = that.singleFilerFlow.indexOf(currentPage);
-            if (currentPageIndex !== that.singleFilerFlow.length-1){
-                that.changePage(that.singleFilerFlow[currentPageIndex+1],data);
-            }
-        }
-
-    };
-
-    this.goToPreviousPage = function(data){
-        var currentPage = getCurrentPage(),
-            currentPageIndex;
-        if (isMultiFiler()){
-            currentPageIndex = that.multiFilerFlow.indexOf(currentPage);
-            if (currentPageIndex !== 0){
-                that.changePage(that.multiFilerFlow[currentPageIndex-1],data);
-            }
-        } else {
-            currentPageIndex = that.singleFilerFlow.indexOf(currentPage);
-            if (currentPageIndex !== 0){
-                that.changePage(that.singleFilerFlow[currentPageIndex-1],data);
-            }
-        }
-    };
-
-    function updateAccountSession(data, currentPage){
-        if(!currentPage){
-            data.currentPage = getCurrentPage();
-        } else {
-            data.currentPage = currentPage;
-        }
-        accountSessionStore = data;
     }
 
     function triggerInitScripts(){
@@ -102,7 +61,7 @@
         accountSessionStore.currentPage = that.singleFilerFlow[0];
         return accountSessionStore;
     }
-    
+
     function getAccountSession(){
         return accountSessionStore;
     }
@@ -124,9 +83,61 @@
         }
     }
 
+    function updateAccountSession(data,newPage){
+        if(!data || typeof data !== 'object'){
+            data = getAccountSession();
+        }
+        data.currentPage = newPage;
+        accountSessionStore = data;
+    }
+
+    /* *************** public methods ***************/
+    this.goToNextPage = function(data){
+        var currentPage = getCurrentPage(),
+            currentPageIndex,
+            newPage;
+        //update session from ajax response
+        updateAccountSession(data);
+        if (isMultiFiler()){
+            currentPageIndex = that.multiFilerFlow.indexOf(currentPage);
+            if (currentPageIndex !== that.multiFilerFlow.length-1){
+                newPage = that.multiFilerFlow[currentPageIndex+1];
+                changePage(newPage);
+            }
+        } else {
+            currentPageIndex = that.singleFilerFlow.indexOf(currentPage);
+            if (currentPageIndex !== that.singleFilerFlow.length-1){
+                newPage = that.singleFilerFlow[currentPageIndex+1];
+                changePage(newPage);
+            }
+        }
+
+    };
+
+    this.goToPreviousPage = function(data){
+        var currentPage = getCurrentPage(),
+            currentPageIndex,
+            newPage;
+        //update session from ajax response
+        updateAccountSession(data);
+        if (isMultiFiler()){
+            currentPageIndex = that.multiFilerFlow.indexOf(currentPage);
+            if (currentPageIndex !== 0){
+                newPage = that.multiFilerFlow[currentPageIndex-1];
+                changePage(newPage);
+            }
+        } else {
+            currentPageIndex = that.singleFilerFlow.indexOf(currentPage);
+            if (currentPageIndex !== 0){
+                newPage = that.singleFilerFlow[currentPageIndex-1];
+                changePage(newPage);
+            }
+        }
+    };
+
     this.init = function(){
         if (landingPageContainer.length > 0) {
-            that.changePage(getCurrentPage());
+            changePage(getCurrentPage());
         }
     };
 
