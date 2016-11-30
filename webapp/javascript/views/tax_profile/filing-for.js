@@ -22,7 +22,7 @@
                     'POST',
                     '/tax-profile',
                     {
-                        action: 'api-tp-filingType',
+                        action: 'api-tp-filing-type',
                         myself: formData.myself,
                         spouse: formData.spouse,
                         other: formData.other
@@ -30,8 +30,7 @@
                     'json'
                 )
                     .then(function(response){
-                        taxProfile.updateAccountSession(response.data);
-                        taxProfile.goToNextPage();
+                        taxProfile.goToNextPage(response.data);
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         console.log(jqXHR,textStatus,errorThrown);

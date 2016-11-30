@@ -61,6 +61,7 @@ dashboardPages.actionAddNewMessage = function(req, res, next){
                 'Authorization': 'Bearer '+session.getUserValue(req,'token')
             },
             body: {
+                //todo, fix these dummy values after api is updated
                 from: 2,
                 fromname: 'test_user',
                 client: 1,

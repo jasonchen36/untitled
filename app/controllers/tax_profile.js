@@ -34,10 +34,10 @@ taxReturnPages.actionSaveAccount = function(req, res, next) {
         .then(function(){
             //save account and qoute to session
             switch(req.body.action){
-                case 'api-tp-name':
+                case 'api-tp-welcome':
                     return taxProfile.saveName(req);
                     break;
-                case 'api-tp-filingType':
+                case 'api-tp-filing-type':
                     return taxProfile.saveFilingType(req);
                     break;
                 default:

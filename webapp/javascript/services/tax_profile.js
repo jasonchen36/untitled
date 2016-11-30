@@ -2,11 +2,9 @@
 
     var $ = jQuery,
         that = app.services.taxProfile,
-        cookies = app.cookies,
-        landingPageContainer = $('#page-tax-profile');
-
-    this.accountSessionCookie = 'accountSession';
-
+        landingPageContainer = $('#page-tax-profile'),
+        accountSessionStore;
+    
     this.singleFilerFlow = [
         'welcome',
         'filing-for',
@@ -26,10 +24,12 @@
         'quote-multi'
     ];
 
-    this.changePage = function(newPage){
+    this.changePage = function(newPage, data){
         return new Promise(function(resolve,reject) {
-            var data = cookies.getCookie(that.accountSessionCookie);
-            that.updateAccountSession(data,newPage);
+            if(!data){
+                data = getAccountSession();
+            }
+            updateAccountSession(data,newPage);
             var template = Handlebars.templates[newPage],
                 html = template(data);
             landingPageContainer.html(html);
@@ -40,47 +40,47 @@
             });
     };
 
-    this.goToNextPage = function(){
+    this.goToNextPage = function(data){
         var currentPage = getCurrentPage(),
             currentPageIndex;
         if (isMultiFiler()){
             currentPageIndex = that.multiFilerFlow.indexOf(currentPage);
             if (currentPageIndex !== that.multiFilerFlow.length-1){
-                that.changePage(that.multiFilerFlow[currentPageIndex+1]);
+                that.changePage(that.multiFilerFlow[currentPageIndex+1],data);
             }
         } else {
             currentPageIndex = that.singleFilerFlow.indexOf(currentPage);
             if (currentPageIndex !== that.singleFilerFlow.length-1){
-                that.changePage(that.singleFilerFlow[currentPageIndex+1]);
+                that.changePage(that.singleFilerFlow[currentPageIndex+1],data);
             }
         }
 
     };
 
-    this.goToPreviousPage = function(){
+    this.goToPreviousPage = function(data){
         var currentPage = getCurrentPage(),
             currentPageIndex;
         if (isMultiFiler()){
             currentPageIndex = that.multiFilerFlow.indexOf(currentPage);
             if (currentPageIndex !== 0){
-                that.changePage(that.multiFilerFlow[currentPageIndex-1]);
+                that.changePage(that.multiFilerFlow[currentPageIndex-1],data);
             }
         } else {
             currentPageIndex = that.singleFilerFlow.indexOf(currentPage);
             if (currentPageIndex !== 0){
-                that.changePage(that.singleFilerFlow[currentPageIndex-1]);
+                that.changePage(that.singleFilerFlow[currentPageIndex-1],data);
             }
         }
     };
 
-    this.updateAccountSession = function(data, currentPage){
+    function updateAccountSession(data, currentPage){
         if(!currentPage){
             data.currentPage = getCurrentPage();
         } else {
             data.currentPage = currentPage;
         }
-        cookies.setCookie(that.accountSessionCookie,data);
-    };
+        accountSessionStore = data;
+    }
 
     function triggerInitScripts(){
         var taxProfileViews = app.views.taxProfile;
@@ -98,25 +98,25 @@
     }
 
     function startAccountSession(){
-        return cookies.setCookie(that.accountSessionCookie, {
-            currentPage: that.singleFilerFlow[0]
-        });
+        accountSessionStore = accountObject;
+        accountSessionStore.currentPage = that.singleFilerFlow[0];
+        return accountSessionStore;
+    }
+    
+    function getAccountSession(){
+        return accountSessionStore;
     }
 
-    this.destroyAccountSession = function(){
-        return cookies.clearCookie(that.accountSessionCookie);
-    };
-
     function isMultiFiler(){
-        if(!cookies.getCookie(that.accountSessionCookie).hasOwnProperty('filingType')){
+        if(!getAccountSession().hasOwnProperty('filingType')){
             return false;
         } else {
-            return Object.values(cookies.getCookie(that.accountSessionCookie).filingType).filter(function(value){return value === 1;}).length > 1;
+            return Object.values(getAccountSession().filingType).filter(function(value){return value === 1;}).length > 1;
         }
     }
 
     function getCurrentPage(){
-        var accountSession = cookies.getCookie(that.accountSessionCookie);
+        var accountSession = getAccountSession();
         if (!accountSession) {
             return startAccountSession().currentPage;
         } else {
