@@ -63,7 +63,7 @@ module.exports = function(grunt){
         },
         /*
          Precompiles handlebars templates for faster rendering.  Handlebars template names are based off of file names
-         https://github.com/gruntjavascript/grunt-contrib-handlebars
+         https://github.com/gruntjs/grunt-contrib-handlebars
          */
         handlebars: {
             compile: {
@@ -76,7 +76,16 @@ module.exports = function(grunt){
                     var pathPieces = filePath.split('/'),//get filename from path
                         filePieces = pathPieces[pathPieces.length-1].split('.');//return name of file without extension
                     return filePieces[0];
-                }
+                },
+                processPartialName: function(filePath) {
+                    var pathPieces = filePath.split('/'),//get filename from path
+                        filePieces = pathPieces[pathPieces.length-1].split('.');//return name of file without extension
+                    console.log('partial',filePath,filePieces[0]);
+                    return filePieces[0];
+                },
+                partialsPathRegex: /\/partials\//,
+                partialRegex: /^/,
+                partialsUseNamespace: true
             }
         },
         /*

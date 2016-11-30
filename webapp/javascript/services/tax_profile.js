@@ -65,7 +65,6 @@
         } else {
             that.goToNextPage();
         }
-        return accountSessionStore;
     }
 
     function getAccountSession(){

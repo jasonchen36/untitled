@@ -52,6 +52,11 @@
                 event.preventDefault();
                 submitWelcome();
             });
+
+            welcomeForm.on('submit',function(event){
+                event.preventDefault();
+                submitWelcome();
+            });
         }
     };
 

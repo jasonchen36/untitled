@@ -54,6 +54,11 @@
                 submitFilingFor();
             });
 
+            filingForSubmit.on('click',function(event){
+                event.preventDefault();
+                submitFilingFor();
+            });
+
             filingForBack.on('click',function(event){
                 event.preventDefault();
                 taxProfile.goToPreviousPage();
