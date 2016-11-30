@@ -3,6 +3,7 @@
   padding: 5px;
   cursor: pointer;
   @include transition-with-defaults(border-color);
+  @include unselectable;
   &.active{
     border-color: green;
   }
