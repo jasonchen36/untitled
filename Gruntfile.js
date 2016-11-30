@@ -183,7 +183,10 @@ module.exports = function(grunt){
                         'webapp/bower_components/velocity/velocity.min.js',
                         'webapp/bower_components/velocity/velocity.ui.min.js',
                         'webapp/bower_components/slick-carousel/slick/slick.min.js',
-                        'webapp/bower_components/css-modal/modal.js'
+                        'webapp/bower_components/css-modal/modal.js',
+                        'webapp/vendor/jquery-file-upload-9.14.1/js/vendor/jquery.ui.widget.js',
+                        'webapp/vendor/jquery-file-upload-9.14.1/js/jquery.iframe-transport.js',
+                        'webapp/vendor/jquery-file-upload-9.14.1/js/jquery.fileupload.js'
                     ]
                 },
                 options: {

@@ -9,6 +9,7 @@ const express = require('express'),
     compression = require('compression'),
     cookieSession = require('cookie-session'),
     expressValidator = require('express-validator'),
+    upload = require('jquery-file-upload-middleware'),
 //services
     logger = require('./app/services/logger'),
     handlebarsHelpers = require('./app/services/handlebars'),
@@ -33,10 +34,37 @@ const express = require('express'),
  * Settings
  */
 
+upload.configure({
+    uploadDir: __dirname + '/webapp/public/uploads',
+    uploadUrl: '/dashboard/upload'
+});
+
 app.use(cors());
 app.options('*', cors());
 app.use(cookieParser());
 app.use(favicon(__dirname + '/webapp/public/images/favicon.ico'));
+
+// Redirect all upload requests to home except post
+//https://github.com/aguidrevitch/jquery-file-upload-middleware
+app.get('/dashboard/upload', function( req, res ){
+    res.redirect('/');
+})
+    .put('/dashboard/upload', function( req, res ){
+        res.redirect('/');
+    })
+    .delete('/dashboard/upload', function( req, res ){
+        res.redirect('/');
+    })
+    .use('/dashboard/upload', function(req, res, next){
+        upload.fileHandler({
+            uploadDir: function () {
+                return __dirname + '/webapp/public/uploads/'
+            },
+            uploadUrl: function () {
+                return '/dashboard/upload'
+            }
+        })(req, res, next);
+    });
 
 //Remove trailing slashes
 app.use(function(req, res, next) {

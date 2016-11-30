@@ -1,5 +1,6 @@
 const //packages
     requestPromise = require('request-promise'),
+    fs = require('fs'),
 //services
     util = require('../services/util'),
     session = require('../services/session'),
@@ -80,5 +81,18 @@ dashboardPages.actionAddNewMessage = function(req, res, next){
             });
     }
 };
+
+// dashboardPages.actionAddNewDocument = function(req, res, next) {
+//     if (req.validationErrors() || req.body.action !== 'api-dashboard-chat'){
+//         next(new errors.BadRequestError('dashboard upload - new document - validation errors',true));
+//     } else {
+//         res.setHeader("content-disposition", "attachment; filename=logo.png");
+//         request('http://google.com/images/srpr/logo11w.png').pipe(res);
+//         var readableStream = fs.createReadStream('file1.txt'),
+//             writableStream = fs.createWriteStream('file2.txt');
+//
+//         readableStream.pipe(writableStream);
+//     }
+// };
 
 module.exports = dashboardPages;
