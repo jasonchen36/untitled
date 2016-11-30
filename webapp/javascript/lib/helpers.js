@@ -3,6 +3,7 @@
     var $ = jQuery,
         that = app.helpers;
 
+    this.activeClass = 'active';
     this.errorClass = 'error';
     this.disabledClass = 'disabled';
 

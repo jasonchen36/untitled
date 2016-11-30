@@ -23,14 +23,13 @@
                     'POST',
                     '/tax-profile',
                     {
-                        action: 'api-tp-name',
+                        action: 'api-tp-welcome',
                         name: formData.name
                     },
                     'json'
                 )
                     .then(function(response){
-                        taxProfile.updateAccountSession(response.data);
-                        taxProfile.goToNextPage();
+                        taxProfile.goToNextPage(response.data);
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         console.log(jqXHR,textStatus,errorThrown);
@@ -50,6 +49,11 @@
 
             //listeners
             welcomeSubmit.on('click',function(event){
+                event.preventDefault();
+                submitWelcome();
+            });
+
+            welcomeForm.on('submit',function(event){
                 event.preventDefault();
                 submitWelcome();
             });

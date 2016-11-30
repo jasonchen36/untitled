@@ -1,0 +1,17 @@
+<section id="tax-profile-income-multi">
+    <h1>income - multi</h1>
+    <form id="income-multi-form">
+        <p>{{name}} please select all sources of income in 2016:</p>
+        {{>income-options}}
+        {{#compare filingType.spouse 1 operator="=="}}
+            <p>Please select all your spouse's sources of income in 2016:</p>
+            {{>income-options}}
+        {{/compare}}
+        {{#compare filingType.other 1 operator="=="}}
+            <p>Please select all your other filer's sources of income in 2016:</p>
+            {{>income-options}}
+        {{/compare}}
+        <button type="submit">Next</button>
+    </form>
+    <button id="income-multi-back">Back</button>
+</section>

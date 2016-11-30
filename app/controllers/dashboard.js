@@ -1,5 +1,6 @@
 const //packages
     requestPromise = require('request-promise'),
+    fs = require('fs'),
 //services
     util = require('../services/util'),
     session = require('../services/session'),
@@ -61,13 +62,10 @@ dashboardPages.actionAddNewMessage = function(req, res, next){
                 'Authorization': 'Bearer '+session.getUserValue(req,'token')
             },
             body: {
-                from: 2,
-                fromname: 'test_user',
-                client: 1,
-                subject: 'test message',
-                body: req.body.message,
-                status: 'new',
-                user: session.getUserObject(req)
+                //todo, remove subject after api is updated
+                from: session.getUserValue(req,'id'),
+                subject: 'subject is required',
+                body: req.body.message
             },
             json: true
         };
@@ -83,5 +81,18 @@ dashboardPages.actionAddNewMessage = function(req, res, next){
             });
     }
 };
+
+// dashboardPages.actionAddNewDocument = function(req, res, next) {
+//     if (req.validationErrors() || req.body.action !== 'api-dashboard-chat'){
+//         next(new errors.BadRequestError('dashboard upload - new document - validation errors',true));
+//     } else {
+//         res.setHeader("content-disposition", "attachment; filename=logo.png");
+//         request('http://google.com/images/srpr/logo11w.png').pipe(res);
+//         var readableStream = fs.createReadStream('file1.txt'),
+//             writableStream = fs.createWriteStream('file2.txt');
+//
+//         readableStream.pipe(writableStream);
+//     }
+// };
 
 module.exports = dashboardPages;

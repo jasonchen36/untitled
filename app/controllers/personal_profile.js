@@ -13,7 +13,10 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
         },
         account: session.getAccountObject(req),
         user: session.getUserObject(req),
-        locals: {}
+        personalProfile: session.getPersonalProfileObject(req),
+        locals: {
+            personalProfileToString: JSON.stringify(session.getPersonalProfileObject(req))
+        }
     });
 };
 

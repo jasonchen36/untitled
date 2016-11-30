@@ -7,6 +7,8 @@
         incomeMultiForm,
         incomeMultiSubmit,
         incomeMultiBack,
+        incomeOptions,
+        activeClass = app.helpers.activeClass,
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
@@ -22,6 +24,7 @@
             incomeMultiForm = $('#income-multi-form');
             incomeMultiSubmit = $('#income-multi-submit');
             incomeMultiBack = $('#income-multi-back');
+            incomeOptions = $('.tp-income-option');
 
             //listeners
             incomeMultiForm.on('submit',function(event){
@@ -32,6 +35,11 @@
             incomeMultiBack.on('click',function(event){
                 event.preventDefault();
                 taxProfile.goToPreviousPage();
+            });
+
+            incomeOptions.on('click',function(event){
+                event.preventDefault();
+                $(this).toggleClass(activeClass);
             });
         }
     };
