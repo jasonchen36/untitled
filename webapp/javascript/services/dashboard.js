@@ -36,7 +36,6 @@
         } else {
             data.currentPage = currentPage;
         }
-        console.log('update',data,userSessionStore);
         userSessionStore = data;
     }
 
@@ -50,7 +49,6 @@
     function startUserSession(){
         userSessionStore = userObject;
         userSessionStore.currentPage = that.dashboardOrder[0];
-        console.log('start',userObject,userSessionStore);
         return userSessionStore;
     }
 
@@ -67,6 +65,12 @@
         }
     }
 
+    function changePageHelper(pageName){
+        if (getCurrentPage() !== pageName) {
+            that.changePage(pageName);
+        }
+    }
+
     this.init = function(){
         if (landingPageContainer.length > 0) {
 
@@ -78,17 +82,17 @@
             //listeners
             sidebarUploadActivate.on('click',function(event){
                 event.preventDefault();
-                that.changePage('upload');
+                changePageHelper('upload');
             });
 
             sidebarChatActivate.on('click',function(event){
                 event.preventDefault();
-                that.changePage('chat');
+                changePageHelper('chat');
             });
 
             sidebarMyReturnActivate.on('click',function(event){
                 event.preventDefault();
-                that.changePage('my-return');
+                changePageHelper('my-return');
             });
 
             //functions

@@ -3,7 +3,9 @@
     <div class="small-4">
         <button id="dashboard-chat-activate">Chat</button>
         <button id="dashboard-upload-activate">Upload</button>
-        <button id="dashboard-my-return-activate">My Return</button>
+        {{#if user.enableTaxReturn}}
+            <button id="dashboard-my-return-activate">My Return</button>
+        {{/if}}
     </div>
     <div id="dashboard-container" class="small-8 grid-end">
         <p>coming soon</p>
