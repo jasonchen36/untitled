@@ -14,7 +14,7 @@
         if (!welcomeSubmit.hasClass(disabledClass)) {
             var formData = helpers.getFormData(welcomeForm);
             helpers.resetForm(welcomeForm);
-            if (formData.name.length < 1){
+            if (helpers.isEmpty(formData.name)){
                 welcomeNameInput.addClass(errorClass);
             }
             if (!helpers.formHasErrors(welcomeForm)) {
