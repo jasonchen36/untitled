@@ -6,6 +6,7 @@
     this.activeClass = 'active';
     this.errorClass = 'error';
     this.disabledClass = 'disabled';
+    this.taxProfileTileClass = 'tax-profile-tile';
 
     this.sizeOfObject = function(data){
         if (data){
@@ -45,6 +46,17 @@
         return data;
     };
 
+    this.getTileFormData = function(formElement,tileClass){
+        var data = {};
+        formElement.find('.'+tileClass).each(function(){
+            data[$(this).attr('data-name')] = $(this).hasClass(that.activeClass)?1:0;
+        });
+        formElement.find('textarea').each(function(){
+            data[$(this).attr('name')] = $(this).val();
+        });
+        return data;
+    };
+
     this.formHasErrors = function(formElement){
         var errorCount = 0;
         formElement.find('input').each(function(){
@@ -60,7 +72,7 @@
         return errorCount > 0;
     };
 
-    this.hasCheckedCheckboxes = function(formData){
+    this.hasSelectedTile = function(formData){
         return Object.values(formData).indexOf(1) !== -1;
     };
 

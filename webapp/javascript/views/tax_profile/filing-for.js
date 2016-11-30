@@ -7,14 +7,14 @@
         filingForForm,
         filingForSubmit,
         filingForBack,
-        errorClass = app.helpers.errorClass,
-        disabledClass = app.helpers.disabledClass;
+        errorClass = helpers.errorClass,
+        disabledClass = helpers.disabledClass,
+        taxProfileTileClass = helpers.taxProfileTileClass;
 
     function submitFilingFor(){
         if (!filingForSubmit.hasClass(disabledClass)) {
-            var formData = helpers.getFormData(filingForForm);
-            helpers.resetForm(filingForForm);
-            if (!helpers.hasCheckedCheckboxes(formData)){
+            var formData = helpers.getTileFormData(filingForForm,taxProfileTileClass);
+            if(!helpers.hasSelectedTile(formData)){
                 alert('no selected option');
             } else {
                 filingForSubmit.addClass(disabledClass);
@@ -54,7 +54,7 @@
                 submitFilingFor();
             });
 
-            filingForSubmit.on('click',function(event){
+            filingForForm.on('submit',function(event){
                 event.preventDefault();
                 submitFilingFor();
             });
