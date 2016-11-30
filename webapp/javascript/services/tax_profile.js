@@ -26,7 +26,7 @@
 
     this.changePage = function(newPage, data){
         return new Promise(function(resolve,reject) {
-            if(!data){
+            if(typeof data !== 'object'){
                 data = getAccountSession();
             }
             updateAccountSession(data,newPage);

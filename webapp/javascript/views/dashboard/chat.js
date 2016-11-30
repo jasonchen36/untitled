@@ -29,6 +29,7 @@
                 )
                     .then(function(response){
                         //todo, show success and refresh?
+                        //todo, refresh messages without refresh?
                         window.location.reload();
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
@@ -42,7 +43,7 @@
     this.init = function(){
         if ($('#dashboard-chat').length > 0) {
 
-            console.log('init');
+            console.log('chat init');
             
             //variables
             chatForm = $('#dashboard-chat-form');
