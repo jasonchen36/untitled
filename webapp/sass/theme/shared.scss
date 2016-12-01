@@ -52,11 +52,12 @@ button {
   }
   &.header{
     float:right;
-    margin: 15px;
+    margin:10px;
   }
-  border-radius: 20px;
+  border-radius: 30px;
   color: white;
-  padding: 10px 45px;
+  width:120px;
+  height:43px;
   cursor: pointer;
   text-decoration: none !important;
   text-transform: none;
