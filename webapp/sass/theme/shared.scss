@@ -118,7 +118,6 @@ p{
   opacity: 0;
 }
 
-
 //typography
 .text-bold {
   font-weight: bold;
@@ -138,6 +137,25 @@ p{
 
 .text-upper {
   text-transform: uppercase;
+}
+
+//custom checkbox
+//-----------------------------
+.checkbox {
+  background-color: $color-checkbox-bg;
+  position: relative;
+  height: 20px;
+  width: 20px;
+  border: 2px solid $color-global-green;
+  border-radius: 5px;
+  margin: 5px;
+  float: left;
+  cursor: pointer;
+  @include unselectable;
+  &.active, &:hover {
+    background-color: $color-global-green;
+    @extend .i--icon-check;
+  }
 }
 
 //background colours
