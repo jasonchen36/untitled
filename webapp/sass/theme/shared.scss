@@ -10,7 +10,7 @@ Use helper classes to style elements that otherwise wouldn't need to have a full
 //-----------------------------
 
 * {
-  font-family: FuturaMedium, Arial, sans-serif;
+  @extend .f--futura-heavy;
   color: $color-global-text-grey;
   &.font-yellow{
     color: $color-global-yellow;
@@ -52,11 +52,12 @@ button {
   }
   &.header{
     float:right;
-    margin: 15px;
+    margin:10px;
   }
-  border-radius: 20px;
+  border-radius: 30px;
   color: white;
-  padding: 10px 45px;
+  width:120px;
+  height:43px;
   cursor: pointer;
   text-decoration: none !important;
   text-transform: none;
@@ -75,6 +76,9 @@ label{
   color: $color-global-text-grey;
   display:block;
   padding-bottom: 7px;
+  &.under{
+    padding-top: 30px;
+  }
 }
 
 h1{
@@ -96,6 +100,13 @@ textarea {
   @include transition-with-defaults(border-color);
   &.error {
     border-color: red;
+  }
+}
+
+p{
+  &.sideinfo{
+    font-size: 0.9em;
+    @extend .f--futura-book;
   }
 }
 
@@ -133,7 +144,8 @@ textarea {
 //-----------------------------
 .main-container{
   background: $color-global-bg;
-  height:100%;
+  position: relative;
+  min-height:100%;
 }
 
 .yellow-container{

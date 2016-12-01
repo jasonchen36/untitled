@@ -24,7 +24,7 @@
             deductionsBack = $('#deductions-back');
 
             //listeners
-            deductionsForm.on('submit',function(event){
+            deductionsSubmit.on('click',function(event){
                 event.preventDefault();
                 submitIncome();
             });

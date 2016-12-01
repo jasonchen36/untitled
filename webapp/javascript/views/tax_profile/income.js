@@ -27,7 +27,7 @@
             incomeOptions = $('.tp-income-option');
 
             //listeners
-            incomeForm.on('submit',function(event){
+            incomeSubmit.on('click',function(event){
                 event.preventDefault();
                 submitIncome();
             });
