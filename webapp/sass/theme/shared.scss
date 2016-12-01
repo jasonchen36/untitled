@@ -143,7 +143,8 @@ p{
 //-----------------------------
 .main-container{
   background: $color-global-bg;
-  height:100%;
+  position: relative;
+  min-height:100%;
 }
 
 .yellow-container{
