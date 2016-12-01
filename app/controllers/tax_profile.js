@@ -12,37 +12,42 @@ var taxReturnPages = {};
 /************ tax profile ************/
 taxReturnPages.getPageTaxProfile = function(req, res, next){
     res.render('tax_profile/tax_profile', {
+        layout: 'layout-tax-profile',
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Tax Profile'
         },
         account: session.getAccountObject(req),
         user: session.getUserObject(req),
-        data: {}
+        locals: {
+            accountToString: JSON.stringify(session.getAccountObject(req))
+        }
     });
 };
 
 taxReturnPages.actionSaveAccount = function(req, res, next) {
-    promise.resolve()
-        .then(function(){
+    session.hasAccountSession(req)
+        .then(function(hasSession){
             //check if session is initiated
-            if (!session.hasAccountSession(req)){
+            if (!hasSession){
                 return session.actionStartAccountSession(req);
             }
         })
         .then(function(){
-            //save session
+            //save account and qoute to session
             switch(req.body.action){
-                //todo, communicate with api
-                case 'api-tp-name':
-                    taxProfile.saveName(req);
+                case 'api-tp-welcome':
+                    return taxProfile.saveName(req);
                     break;
-                case 'api-tp-filingType':
-                    taxProfile.saveFilingType(req);
+                case 'api-tp-filing-for':
+                    return taxProfile.saveFilingType(req);
                     break;
                 default:
                     return promise.reject('tax profile - invalid action');
                     break;
             }
+        })
+        .then(function(){
+            //todo, update account/quote in api
         })
         .then(function(){
             //success
@@ -52,8 +57,11 @@ taxReturnPages.actionSaveAccount = function(req, res, next) {
                 data: session.getAccountObject(req)
             });
         })
-        .catch(function(err){
-            next(new errors.BadRequestError(err,true));
+        .catch(function(error){
+            if(!error){
+                error = 'Could not save account';
+            }
+            next(new errors.BadRequestError(error,true));
         });
 };
 
@@ -61,8 +69,10 @@ taxReturnPages.actionSaveAccount = function(req, res, next) {
 
 /************ logout ************/
 taxReturnPages.getLogoutPage = function(req, res, next){
-    session.actionDestroyAccountSession(req);
-    res.redirect('/tax-profile');
+    session.actionDestroyAccountSession(req)
+        .then(function(){
+            res.redirect('/tax-profile');
+        });
 };
 
 module.exports = taxReturnPages;

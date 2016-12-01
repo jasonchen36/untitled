@@ -3,8 +3,10 @@
     var $ = jQuery,
         that = app.helpers;
 
+    this.activeClass = 'active';
     this.errorClass = 'error';
     this.disabledClass = 'disabled';
+    this.taxProfileTileClass = 'tax-profile-tile';
 
     this.sizeOfObject = function(data){
         if (data){
@@ -21,16 +23,36 @@
                 $(this).val('');
             }
         });
+        formElement.find('textarea').each(function(){
+            $(this).removeClass(that.errorClass);
+            if(clearInputValue){
+                $(this).val('');
+            }
+        });
     };
 
     this.getFormData = function(formElement){
         var data = {};
-        $(formElement).find('input').each(function(){
+        formElement.find('input').each(function(){
             if ($(this).attr('type') === 'checkbox'){
                 data[$(this).attr('name')] = $(this).prop('checked')?1:0;
             } else {
                 data[$(this).attr('name')] = $(this).val();
             }
+        });
+        formElement.find('textarea').each(function(){
+            data[$(this).attr('name')] = $(this).val();
+        });
+        return data;
+    };
+
+    this.getTileFormData = function(formElement,tileClass){
+        var data = {};
+        formElement.find('.'+tileClass).each(function(){
+            data[$(this).attr('data-name')] = $(this).hasClass(that.activeClass)?1:0;
+        });
+        formElement.find('textarea').each(function(){
+            data[$(this).attr('name')] = $(this).val();
         });
         return data;
     };
@@ -42,10 +64,15 @@
                 errorCount++;
             }
         });
+        formElement.find('textarea').each(function(){
+            if($(this).hasClass(that.errorClass)){
+                errorCount++;
+            }
+        });
         return errorCount > 0;
     };
 
-    this.hasCheckedCheckboxes = function(formData){
+    this.hasSelectedTile = function(formData){
         return Object.values(formData).indexOf(1) !== -1;
     };
 
@@ -75,6 +102,14 @@
         // var regex = (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/);
         // return regex.test(password);
         return password.length >= 8;
+    };
+
+    this.isEmpty = function(input){
+        return !input || input.length < 1;
+    };
+    
+    this.getAverage = function(index, length) {
+        return Math.round(index / length * 100);
     };
 
 }).apply(app.helpers);

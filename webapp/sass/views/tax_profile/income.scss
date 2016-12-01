@@ -1,0 +1,10 @@
+.tp-income-option {
+  border: 3px solid black;
+  padding: 5px;
+  cursor: pointer;
+  @include transition-with-defaults(border-color);
+  @include unselectable;
+  &.active, &:hover{
+    border-color: green;
+  }
+}

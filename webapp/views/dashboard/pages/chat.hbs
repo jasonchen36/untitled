@@ -1,0 +1,16 @@
+<section id="dashboard-chat">
+    <h1>chat</h1>
+    <p>hello {{firstName}} {{lastName}}</p>
+    {{#each messages}}
+        <div class="messages">
+            {{{body}}}
+        </div>
+    {{/each}}
+    <form id="dashboard-chat-form">
+        <label for="dashboard-chat-message">Write Message:</label>
+        <textarea id="dashboard-chat-message" rows="10" name="message"></textarea>
+        <p>
+            <button type="submit" id="dashboard-chat-submit">Submit</button>
+        </p>
+    </form>
+</section>

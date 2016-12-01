@@ -3,8 +3,7 @@ const //packages
 //services
     util = require('../services/util'),
     session = require('../services/session'),
-    errors = require('../services/errors'),
-    taxProfile = require('../services/tax_profile');
+    errors = require('../services/errors');
 
 var userPages = {};
 
@@ -16,7 +15,7 @@ userPages.getLoginPage = function(req, res, next){
         },
         account: session.getAccountObject(req),
         user: session.getUserObject(req),
-        data: {}
+        locals: {}
     });
 };
 
@@ -39,11 +38,21 @@ userPages.actionLoginUser = function(req, res, next){
         };
         requestPromise(options)
             .then(function (response) {
-                //todo, store token
-                res.status(util.http.status.accepted).json({
-                    action: 'login',
-                    status: 'success'
-                });
+                try{
+                    const responseToken = response.token;
+                    session.actionStartUserSession(req,responseToken)
+                        .then(function(){
+                            res.status(util.http.status.accepted).json({
+                                action: 'login',
+                                status: 'success'
+                            });
+                        });
+                } catch(error){
+                    if (!error){
+                        error = 'Could not start user session';
+                    }
+                    next(new errors.InternalServerError(error,true));
+                }
             })
             .catch(function (response) {
                 next(new errors.BadRequestError(response.error,true));
@@ -59,7 +68,7 @@ userPages.getRegisterPage = function(req, res, next){
         },
         account: session.getAccountObject(req),
         user: session.getUserObject(req),
-        data: {}
+        locals: {}
     });
 };
 
@@ -76,20 +85,30 @@ userPages.actionRegisterUser = function(req, res, next){
             uri: process.env.API_URL+'/users',
             body: {
                 password: req.body.password,
-                first_name: taxProfile.getValue(req,'name'),
-                last_name: '',//not entered until person profile section
+                first_name: session.getAccountValue(req,'name'),
+                last_name: 'todo',//todo, not entered until person profile section
                 email: req.body.email,
-                accountId: taxProfile.getValue(req,'id')
+                accountId: session.getAccountValue(req,'id')
             },
             json: true
         };
         requestPromise(options)
             .then(function (response) {
-                //todo, store token
-                res.status(util.http.status.accepted).json({
-                    action: 'register',
-                    status: 'success'
-                });
+                try{
+                    const responseToken = response.token;
+                    session.actionStartUserSession(req,responseToken)
+                        .then(function(){
+                            res.status(util.http.status.accepted).json({
+                                action: 'register',
+                                status: 'success'
+                            });
+                        });
+                } catch(error){
+                    if (!error){
+                        error = 'Could not start user session';
+                    }
+                    next(new errors.InternalServerError(error,true));
+                }
             })
             .catch(function (response) {
                 next(new errors.BadRequestError(response.error,true));
@@ -105,7 +124,7 @@ userPages.getPasswordResetPage = function(req, res, next){
         },
         account: session.getAccountObject(req),
         user: session.getUserObject(req),
-        data: {}
+        locals: {}
     });
 };
 
@@ -144,7 +163,7 @@ userPages.getAuthorizedPasswordResetPage = function(req, res, next){
         },
         account: session.getAccountObject(req),
         user: session.getUserObject(req),
-        data: {
+        locals: {
             token: req.params.token
         }
     });
@@ -179,16 +198,20 @@ userPages.actionAuthorizedPasswordReset = function(req, res, next){
 
 /************ logout ************/
 userPages.getLogoutPage = function(req, res, next) {
-    session.actionDestroyUserSession(req);
-    res.redirect('/login');
+    session.actionDestroyUserSession(req)
+        .then(function(){
+            res.redirect('/login');
+        });
 };
 
 userPages.actionLogoutUser = function(req, res, next) {
-    session.actionDestroyUserSession(req);
-    res.status(util.http.status.ok).json({
-        action: 'logout',
-        status: 'success'
-    });
+    session.actionDestroyUserSession(req)
+        .then(function(){
+            res.status(util.http.status.ok).json({
+                action: 'logout',
+                status: 'success'
+            });
+        });
 };
 
 module.exports = userPages;

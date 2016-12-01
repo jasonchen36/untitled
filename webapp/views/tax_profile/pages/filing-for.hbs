@@ -1,0 +1,43 @@
+<section id="tax-profile-filing-for" class="full-screen-grid-container main-container">
+    <div class="small-12 medium-7">
+        <div class="content-form">
+            <div class="container-header">
+                <h1 class="header">Multiple Filers</h1>
+                <button type="submit" id="filing-for-submit" class="green header">Next</button>
+                <button id="filing-for-back" class="grey header">Previous</button>
+            </div>
+            <h1 class="subtitle">
+                Hi {{name}}, can you please select all the people you are filing for:
+            </h1>
+            <form id="filing-for-form">
+                <div class="tax-profile-tile i--icon-filing-myself {{#compare filingType.myself 1 operator="=="}}active{{/compare}}" data-name="myself">
+                    <div class="i--icon-question"></div>
+                   <span class="tax-profile-tile-label">
+                       Myself
+                   </span>
+                </div>
+                <div class="tax-profile-tile i--icon-filing-partner {{#compare filingType.spouse 1 operator="=="}}active{{/compare}}" data-name="spouse">
+                    <div class="i--icon-question"></div>
+                    <span class="tax-profile-tile-label">
+                        My Spouse/Partner
+                    </span>
+                </div>
+                <div class="tax-profile-tile i--icon-filing-other {{#compare filingType.other 1 operator="=="}}active{{/compare}}" data-name="other">
+                    <div class="i--icon-question"></div>
+                    <span class="tax-profile-tile-label">
+                    Other Person/People
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="hide-for-small small-12 medium-5 grid-end white-container">
+        <div class="wrapper-container sideinfo has-image">
+            <div class="i--icon-multifiler"></div>
+            <h3 class="font-yellow">Multiple Filers</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris aliquam velit ut faucibus consequat. In hac habitasse platea dictumst. Proin at volutpat velit. Quisque congue varius nulla non aliquam. Integer condimentum dapibus ipsum, sit amet pharetra ligula aliquam sit amet. Praesent dui tortor, molestie et sodales non, vulputate in ligula. Curabitur nec justo tellus. Sed ac arcu porttitor, blandit sapien convallis, ultrices nisi. Duis aliquam iaculis nunc sed sodales. Phasellus cursus convallis scelerisque. Nulla consectetur, nunc at maximus tincidunt, mauris sapien vehicula libero, at bibendum metus dui ac magna. Donec tempus justo eu vestibulum dictum.
+            </p>
+        </div>
+    </div>
+</section>

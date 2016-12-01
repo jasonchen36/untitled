@@ -1,8 +1,6 @@
 const //services
     express = require('express'),
     router = express.Router(),
-//middleware
-    authenticationMiddleware = require('../middleware/authentication'),
 //controllers
     taxProfileController = require('../controllers/tax_profile');
 

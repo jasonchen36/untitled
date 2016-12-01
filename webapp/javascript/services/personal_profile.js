@@ -1,11 +1,10 @@
 (function(){
 
+    /* *************** variables ***************/
     var $ = jQuery,
         that = app.services.personalProfile,
-        cookies = app.cookies,
-        landingPageContainer = $('#page-personal-profile');
-
-    this.personalProfileSessionCookie = 'personalProfileSession';
+        landingPageContainer = $('#page-personal-profile'),
+        personalProfileSessionStore;
 
     this.personalProfileFlow = [
         'last-name',
@@ -16,10 +15,13 @@
         'birthdate'
     ];
 
-    this.changePage = function(newPage){
+
+    /* *************** private methods ***************/
+    function changePage(newPage){
         return new Promise(function(resolve,reject) {
-            var data = cookies.getCookie(that.personalProfileSessionCookie);
-            that.updatePersonalProfileSession(data,newPage);
+            var data = getPersonalProfileSession();
+            //update session with new page
+            updatePersonalProfileSession(data, newPage);
             var template = Handlebars.templates[newPage],
                 html = template(data);
             landingPageContainer.html(html);
@@ -28,32 +30,7 @@
             .then(function(){
                 triggerInitScripts();
             });
-    };
-
-    this.goToNextPage = function(){
-        var currentPage = getCurrentPage(),
-            currentPageIndex = that.personalProfileFlow.indexOf(currentPage);
-        if (currentPageIndex !== that.personalProfileFlow.length-1){
-            that.changePage(that.personalProfileFlow[currentPageIndex+1]);
-        }
-    };
-
-    this.goToPreviousPage = function(){
-        var currentPage = getCurrentPage(),
-            currentPageIndex = that.personalProfileFlow.indexOf(currentPage);
-        if (currentPageIndex !== 0){
-            that.changePage(that.personalProfileFlow[currentPageIndex-1]);
-        }
-    };
-
-    this.updatePersonalProfileSession = function(data, currentPage){
-        if(!currentPage){
-            data.currentPage = getCurrentPage();
-        } else {
-            data.currentPage = currentPage;
-        }
-        cookies.setCookie(that.personalProfileSessionCookie,data);
-    };
+    }
 
     function triggerInitScripts(){
         var personalProfile = app.views.personalProfile;
@@ -66,27 +43,63 @@
     }
 
     function startPersonalProfileSession(){
-        return cookies.setCookie(that.personalProfileSessionCookie, {
-            currentPage: that.personalProfileFlow[0]
-        });
-    }
-
-    this.destroyPersonalProfileSession = function(){
-        return cookies.clearCookie(that.personalProfileSessionCookie);
-    };
-
-    function getCurrentPage(){
-        var accountSession = cookies.getCookie(that.personalProfileSessionCookie);
-        if (!accountSession) {
-            return startPersonalProfileSession().currentPage;
+        personalProfileSessionStore = personalProfileObject;
+        if(!personalProfileSessionStore.hasOwnProperty('currentPage') || personalProfileSessionStore.currentPage.length < 1){
+            personalProfileSessionStore.currentPage = that.personalProfileFlow[0];
+            changePage(personalProfileSessionStore.currentPage);
         } else {
-            return accountSession.currentPage;
+            that.goToNextPage();
         }
     }
 
+    function getPersonalProfileSession(){
+        return personalProfileSessionStore;
+    }
+
+    function getCurrentPage(){
+        var personalProfileSession = getPersonalProfileSession();
+        if (!personalProfileSession) {
+            return startPersonalProfileSession().currentPage;
+        } else {
+            return personalProfileSession.currentPage;
+        }
+    }
+
+    function updatePersonalProfileSession(data,newPage){
+        if(!data || typeof data !== 'object'){
+            data = getPersonalProfileSession();
+        }
+        if(newPage && newPage.length > 0){
+            data.currentPage = newPage;
+        }
+        personalProfileSessionStore = data;
+    }
+
+
+    /* *************** public methods ***************/
+    this.goToNextPage = function(data){
+        var currentPage = getCurrentPage(),
+            currentPageIndex = that.personalProfileFlow.indexOf(currentPage);
+        //update session from ajax response
+        updatePersonalProfileSession(data);
+        if (currentPageIndex !== that.personalProfileFlow.length-1){
+            changePage(that.personalProfileFlow[currentPageIndex+1]);
+        }
+    };
+
+    this.goToPreviousPage = function(data){
+        var currentPage = getCurrentPage(),
+            currentPageIndex = that.personalProfileFlow.indexOf(currentPage);
+        //update session from ajax response
+        updatePersonalProfileSession(data);
+        if (currentPageIndex !== 0){
+            changePage(that.personalProfileFlow[currentPageIndex-1]);
+        }
+    };
+
     this.init = function(){
         if (landingPageContainer.length > 0) {
-            that.changePage(getCurrentPage());
+            startPersonalProfileSession();
         }
     };
 

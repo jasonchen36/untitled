@@ -1,5 +1,5 @@
 header {
-  height: 80px;
+  height: 85px;
   .i--icon-logo {
     height: 40px;
     width: 180px;
@@ -16,6 +16,9 @@ header {
   padding: 15px;
 }
 
-.dev-nav{
-  display: inline-block;
+.progress-bar{
+  display: block;
+  height: 5px;
+  background: $color-header-progress-blue;
+  width: 10%;
 }

@@ -63,7 +63,7 @@ module.exports = function(grunt){
         },
         /*
          Precompiles handlebars templates for faster rendering.  Handlebars template names are based off of file names
-         https://github.com/gruntjavascript/grunt-contrib-handlebars
+         https://github.com/gruntjs/grunt-contrib-handlebars
          */
         handlebars: {
             compile: {
@@ -76,7 +76,16 @@ module.exports = function(grunt){
                     var pathPieces = filePath.split('/'),//get filename from path
                         filePieces = pathPieces[pathPieces.length-1].split('.');//return name of file without extension
                     return filePieces[0];
-                }
+                },
+                processPartialName: function(filePath) {
+                    var pathPieces = filePath.split('/'),//get filename from path
+                        filePieces = pathPieces[pathPieces.length-1].split('.');//return name of file without extension
+                    console.log('partial',filePath,filePieces[0]);
+                    return filePieces[0];
+                },
+                partialsPathRegex: /\/partials\//,
+                partialRegex: /^/,
+                partialsUseNamespace: true
             }
         },
         /*
@@ -183,7 +192,10 @@ module.exports = function(grunt){
                         'webapp/bower_components/velocity/velocity.min.js',
                         'webapp/bower_components/velocity/velocity.ui.min.js',
                         'webapp/bower_components/slick-carousel/slick/slick.min.js',
-                        'webapp/bower_components/css-modal/modal.js'
+                        'webapp/bower_components/css-modal/modal.js',
+                        'webapp/vendor/jquery-file-upload-9.14.1/js/vendor/jquery.ui.widget.js',
+                        'webapp/vendor/jquery-file-upload-9.14.1/js/jquery.iframe-transport.js',
+                        'webapp/vendor/jquery-file-upload-9.14.1/js/jquery.fileupload.js'
                     ]
                 },
                 options: {

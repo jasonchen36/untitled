@@ -14,7 +14,7 @@
         if (!welcomeSubmit.hasClass(disabledClass)) {
             var formData = helpers.getFormData(welcomeForm);
             helpers.resetForm(welcomeForm);
-            if (formData.name.length < 1){
+            if (helpers.isEmpty(formData.name)){
                 welcomeNameInput.addClass(errorClass);
             }
             if (!helpers.formHasErrors(welcomeForm)) {
@@ -23,14 +23,13 @@
                     'POST',
                     '/tax-profile',
                     {
-                        action: 'api-tp-name',
+                        action: 'api-tp-welcome',
                         name: formData.name
                     },
                     'json'
                 )
                     .then(function(response){
-                        taxProfile.updateAccountSession(response.data);
-                        taxProfile.goToNextPage();
+                        taxProfile.goToNextPage(response.data);
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         console.log(jqXHR,textStatus,errorThrown);
@@ -49,6 +48,11 @@
             welcomeNameInput = $('#welcome-name');
 
             //listeners
+            welcomeSubmit.on('click',function(event){
+                event.preventDefault();
+                submitWelcome();
+            });
+
             welcomeForm.on('submit',function(event){
                 event.preventDefault();
                 submitWelcome();

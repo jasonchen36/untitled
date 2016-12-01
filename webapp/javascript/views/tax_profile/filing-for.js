@@ -7,14 +7,14 @@
         filingForForm,
         filingForSubmit,
         filingForBack,
-        errorClass = app.helpers.errorClass,
-        disabledClass = app.helpers.disabledClass;
+        errorClass = helpers.errorClass,
+        disabledClass = helpers.disabledClass,
+        taxProfileTileClass = helpers.taxProfileTileClass;
 
     function submitFilingFor(){
         if (!filingForSubmit.hasClass(disabledClass)) {
-            var formData = helpers.getFormData(filingForForm);
-            helpers.resetForm(filingForForm);
-            if (!helpers.hasCheckedCheckboxes(formData)){
+            var formData = helpers.getTileFormData(filingForForm,taxProfileTileClass);
+            if(!helpers.hasSelectedTile(formData)){
                 alert('no selected option');
             } else {
                 filingForSubmit.addClass(disabledClass);
@@ -22,7 +22,7 @@
                     'POST',
                     '/tax-profile',
                     {
-                        action: 'filingType',
+                        action: 'api-tp-filing-for',
                         myself: formData.myself,
                         spouse: formData.spouse,
                         other: formData.other
@@ -30,8 +30,7 @@
                     'json'
                 )
                     .then(function(response){
-                        taxProfile.updateAccountSession(response.data);
-                        taxProfile.goToNextPage();
+                        taxProfile.goToNextPage(response.data);
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         console.log(jqXHR,textStatus,errorThrown);
@@ -50,6 +49,11 @@
             filingForBack = $('#filing-for-back');
 
             //listeners
+            filingForSubmit.on('click',function(event){
+                event.preventDefault();
+                submitFilingFor();
+            });
+
             filingForForm.on('submit',function(event){
                 event.preventDefault();
                 submitFilingFor();

@@ -1,23 +1,4 @@
 <header class="full-screen-grid-container">
-<!--TODO: Where to get images-->
     <div class="i--icon-logo"></div>
     <p class="text-contact">NEED HELP? CALL US: 1-855-610-PLAN (7526)</p>
-    <nav class="dev-nav">
-        <!--for dev use-->
-        {{#if user.hasUserSession}}
-            <a href="/dashboard">Dashboard</a>
-            <a href="/personal-profile">Personal Profile</a>
-            <a href="/logout">Logout (user session)</a>
-        {{else}}
-            <a href="/login">Login</a>
-            <a href="/register">Register</a>
-            <a href="/tax-profile">Tax Profile</a>
-            <a href="/password-reset">Forgot Password</a>
-        {{/if}}
-
-        {{#if account.hasAccountSession}}
-            <a href="/tax-profile/logout">Logout (account session)</a>
-        {{/if}}
-
-    </nav>
 </header>

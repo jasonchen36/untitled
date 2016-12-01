@@ -1,14 +1,13 @@
 (function(){
 
+    /* *************** variables ***************/
     var $ = jQuery,
         that = app.services.dashboard,
-        cookies = app.cookies,
         sidebarUploadActivate,
         sidebarChatActivate,
         sidebarMyReturnActivate,
+        userSessionStore,
         landingPageContainer = $('#dashboard-container');
-
-    this.userSessionCookie = 'userSession';
 
     this.dashboardOrder = [
         'chat',
@@ -16,30 +15,17 @@
         'my-return'
     ];
 
-    this.changePage = function(newPage, overrideDuplicate){
-        if(overrideDuplicate || newPage !== getCurrentPage()) {
-            return new Promise(function (resolve, reject) {
-                var data = cookies.getCookie(that.userSessionCookie);
-                that.updateUserSession(data, newPage);
-                var template = Handlebars.templates[newPage],
-                    html = template(data);
-                landingPageContainer.html(html);
-                resolve();
-            })
-                .then(function () {
-                    triggerInitScripts();
-                });
-        }
-    };
 
-    this.updateUserSession = function(data, currentPage){
-        if(!currentPage){
-            data.currentPage = getCurrentPage();
-        } else {
-            data.currentPage = currentPage;
+    /* *************** private methods ***************/
+    function updateUserSession(data, newPage){
+        if(!data || typeof data !== 'object'){
+            data = getUserSession();
         }
-        cookies.setCookie(that.userSessionCookie,data);
-    };
+        if(newPage && newPage.length > 0){
+            data.currentPage = newPage;
+        }
+        userSessionStore = data;
+    }
 
     function triggerInitScripts(){
         var dashboardViews = app.views.dashboard;
@@ -49,19 +35,48 @@
     }
 
     function startUserSession(){
-        return cookies.setCookie(that.userSessionCookie, {
-            currentPage: that.dashboardOrder[0]
-        });
+        userSessionStore = userObject;
+        userSessionStore.currentPage = that.dashboardOrder[0];
+        return userSessionStore;
+    }
+
+    function getUserSession(){
+        return userSessionStore;
     }
 
     function getCurrentPage(){
-        var accountSession = cookies.getCookie(that.userSessionCookie);
-        if (!accountSession) {
+        var userSession = getUserSession();
+        if (!userSession) {
             return startUserSession().currentPage;
         } else {
-            return accountSession.currentPage;
+            return userSession.currentPage;
         }
     }
+
+    function changePageHelper(pageName){
+        if (getCurrentPage() !== pageName) {
+            that.changePage(pageName);
+        }
+    }
+
+
+    /* *************** public methods ***************/
+    this.changePage = function(newPage, data){
+        return new Promise(function (resolve, reject) {
+            if(typeof data !== 'object'){
+                data = getUserSession();
+            }
+            //update session with new page
+            updateUserSession(data, newPage);
+            var template = Handlebars.templates[newPage],
+                html = template(data);
+            landingPageContainer.html(html);
+            resolve();
+        })
+            .then(function () {
+                triggerInitScripts();
+            });
+    };
 
     this.init = function(){
         if (landingPageContainer.length > 0) {
@@ -74,19 +89,19 @@
             //listeners
             sidebarUploadActivate.on('click',function(event){
                 event.preventDefault();
-                that.changePage('upload');
+                changePageHelper('upload');
             });
 
             sidebarChatActivate.on('click',function(event){
                 event.preventDefault();
-                that.changePage('chat');
+                changePageHelper('chat');
             });
 
             sidebarMyReturnActivate.on('click',function(event){
                 event.preventDefault();
-                that.changePage('my-return');
+                changePageHelper('my-return');
             });
-            
+
             //functions
             that.changePage(getCurrentPage(), true);
         }

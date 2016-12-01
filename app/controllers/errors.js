@@ -11,7 +11,7 @@ errorPages.get404Page = function(req, res, next){
         },
         account: session.getAccountObject(req),
         user: session.getUserObject(req),
-        data: {},
+        locals: {},
         layout: 'layout-error'
     });
 };
@@ -23,7 +23,7 @@ errorPages.get500Page = function(req, res, next){
         },
         account: session.getAccountObject(req),
         user: session.getUserObject(req),
-        data: {},
+        locals: {},
         layout: 'layout-error'
     });
 };

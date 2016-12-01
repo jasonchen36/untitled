@@ -8,4 +8,6 @@ const //services
 
 router.route('/').get(dashboardController.getDashboardPage);
 
+router.route('/chat').put(dashboardController.actionAddNewMessage);
+
 module.exports = router;
