@@ -31,7 +31,7 @@
 
             lastNameSubmit.on('click',function(event){
                 event.preventDefault();
-                submitIncome();
+                submitLastName();
             });
         }
     };
