@@ -29,6 +29,12 @@ See assets/svgs/README.md for further information on SVG conversion process
   @include icon-helper;
 }
 
+.i--icon-check{
+  background-image: url('public/assets/images/icons/icon-check.png');
+  background-image: linear-gradient(transparent, transparent), url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2218%22%20height%3D%2213%22%20viewBox%3D%220%200%2018%2013%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Ctitle%3Echeck%3C/title%3E%3Cpath%20d%3D%22M16.308%201l-9.533%209.745L2%205.865%22%20stroke-width%3D%223%22%20stroke%3D%22%23FEFEFE%22%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22/%3E%3C/svg%3E');
+  @include icon-helper;
+}
+
 .i--icon-add {
   background-image: url('public/assets/images/icons/icon-add.png');
   background-image: linear-gradient(transparent, transparent), url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2222%22%20height%3D%2221%22%20viewBox%3D%220%200%2022%2021%22%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%3E%3Ctitle%3E+%3C/title%3E%3Ctext%20transform%3D%22translate%28-22%20-625%29%22%20fill%3D%22%2386B77A%22%20fill-rule%3D%22evenodd%22%20font-size%3D%2248%22%20font-family%3D%22FuturaPT-Heavy%2C%20Futura%20PT%22%20font-weight%3D%22600%22%3E%3Ctspan%20x%3D%2221%22%20y%3D%22652%22%3E+%3C/tspan%3E%3C/text%3E%3C/svg%3E');
