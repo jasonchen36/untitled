@@ -47,6 +47,10 @@ $susy: (
 @import "views/user/password-reset";
 
 
+//personal profile views
+//-----------------------------
+@import "views/personal_profile/special-scenarios";
+
 //tax profile views
 //-----------------------------
 @import "views/tax_profile/tax-profile";
