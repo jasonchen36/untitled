@@ -24,6 +24,11 @@
             creditsBack = $('#credits-back');
 
             //listeners
+            creditsForm.on('submit',function(event){
+                event.preventDefault();
+                submitIncome();
+            });
+
             creditsSubmit.on('click',function(event){
                 event.preventDefault();
                 submitIncome();
