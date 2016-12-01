@@ -15,6 +15,12 @@ See assets/svgs/README.md for further information on SVG conversion process
   background-position: center center;
 }
 
+@mixin icon-helper-tile(){
+  background-repeat: no-repeat;
+  background-size: 50%;
+  background-position: 50% 40%;
+}
+
 //icons
 //-----------------------------
 .i--icon-logo {
