@@ -16,10 +16,14 @@
 
 .tax-profile-tile-label {
   position: absolute;
+  font-size: 0.8em;
   bottom: 10%;
   left: 0;
   right: 0;
-  margin: auto;
+  margin-left: 10px;
+  margin-right: 10px;
+  word-wrap: break-word;
+  text-align: center;
   text-align: center;
   display: inline-block;
 }
