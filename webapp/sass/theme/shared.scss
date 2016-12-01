@@ -105,6 +105,7 @@ textarea {
 
 p{
   &.sideinfo{
+    font-size: 0.9em;
     @extend .f--futura-book;
   }
 }
