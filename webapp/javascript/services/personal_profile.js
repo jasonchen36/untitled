@@ -3,7 +3,10 @@
     /* *************** variables ***************/
     var $ = jQuery,
         that = app.services.personalProfile,
+        helpers = app.helpers,
+        animations = app.animations,
         landingPageContainer = $('#page-personal-profile'),
+        profileBar = $('#tax-profile-progress-bar'),
         personalProfileSessionStore;
 
     this.personalProfileFlow = [
@@ -22,6 +25,12 @@
             var data = getPersonalProfileSession();
             //update session with new page
             updatePersonalProfileSession(data, newPage);
+            percentageComplete = helpers.getAverage(that.personalProfileFlow.indexOf(getCurrentPage()),that.personalProfileFlow.length);
+            animations.animateElement(profileBar,{
+                properties: {
+                    width: percentageComplete+'%'
+                }
+            });
             var template = Handlebars.templates[newPage],
                 html = template(data);
             landingPageContainer.html(html);
