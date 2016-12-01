@@ -29,6 +29,11 @@
                 submitDependants();
             });
 
+            dependantsSubmit.on('click',function(event){
+                event.preventDefault();
+                submitDependants();
+            });
+
             dependantsBack.on('click',function(event){
                 event.preventDefault();
                 personalProfile.goToPreviousPage();
