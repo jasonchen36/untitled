@@ -10,7 +10,7 @@ Use helper classes to style elements that otherwise wouldn't need to have a full
 //-----------------------------
 
 * {
-  font-family: FuturaMedium, Arial, sans-serif;
+  @extend .f--futura-heavy;
   color: $color-global-text-grey;
   &.font-yellow{
     color: $color-global-yellow;
@@ -99,6 +99,12 @@ textarea {
   @include transition-with-defaults(border-color);
   &.error {
     border-color: red;
+  }
+}
+
+p{
+  &.sideinfo{
+    @extend .f--futura-book;
   }
 }
 
