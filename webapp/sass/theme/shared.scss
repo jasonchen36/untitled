@@ -104,7 +104,7 @@ textarea {
 }
 
 p{
-  &.sideinfo{
+  &.side-info{
     font-size: 0.9em;
     @extend .f--futura-book;
   }
@@ -174,7 +174,7 @@ p{
   &.marketing{
     margin-top: 400px;
   }
-  &.sideinfo{
+  &.side-info{
     margin-top: 40%;
     margin-left: 15%;
     margin-right: 15%;
