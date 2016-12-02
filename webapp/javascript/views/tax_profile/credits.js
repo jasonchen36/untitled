@@ -29,6 +29,11 @@
                 submitIncome();
             });
 
+            creditsSubmit.on('click',function(event){
+                event.preventDefault();
+                submitIncome();
+            });
+
             creditsBack.on('click',function(event){
                 event.preventDefault();
                 taxProfile.goToPreviousPage();

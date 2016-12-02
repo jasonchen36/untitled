@@ -10,7 +10,7 @@ Use helper classes to style elements that otherwise wouldn't need to have a full
 //-----------------------------
 
 * {
-  font-family: FuturaMedium, Arial, sans-serif;
+  @extend .f--futura-heavy;
   color: $color-global-text-grey;
   &.font-yellow{
     color: $color-global-yellow;
@@ -27,7 +27,7 @@ input {
   border-bottom-color: $color-global-border-grey;
   border-bottom: 1px solid;
   outline: 0;
-  height:40px;
+  height:50px;
   min-width: 50%;
   display:inline-block;
   @include transition-with-defaults(border-color);
@@ -36,6 +36,11 @@ input {
   }
   &.login{
     min-width: 98%;
+  }
+  &.small{
+    @extend .small-2;
+    min-width: 10%;
+    text-align: center;
   }
 }
 
@@ -52,11 +57,12 @@ button {
   }
   &.header{
     float:right;
-    margin: 15px;
+    margin:10px;
   }
-  border-radius: 20px;
+  border-radius: 30px;
   color: white;
-  padding: 10px 45px;
+  width:120px;
+  height:43px;
   cursor: pointer;
   text-decoration: none !important;
   text-transform: none;
@@ -75,6 +81,9 @@ label{
   color: $color-global-text-grey;
   display:block;
   padding-bottom: 7px;
+  &.under{
+    padding-top: 30px;
+  }
 }
 
 h1{
@@ -99,6 +108,18 @@ textarea {
   }
 }
 
+p{
+  &.side-info{
+    font-size: 0.9em;
+    @extend .f--futura-book;
+  }
+  &.checkbox-label{
+    display: inline-block;
+    margin: 0px;
+    padding: 5px 10px;
+  }
+}
+
 
 //helper classes
 //-----------------------------
@@ -106,7 +127,6 @@ textarea {
   display: none;
   opacity: 0;
 }
-
 
 //typography
 .text-bold {
@@ -129,11 +149,32 @@ textarea {
   text-transform: uppercase;
 }
 
+//custom checkbox
+//-----------------------------
+.checkbox {
+  background-color: $color-checkbox-bg;
+  display:inline-block;
+  position: relative;
+  height: 20px;
+  width: 20px;
+  border: 2px solid $color-global-green;
+  border-radius: 5px;
+  margin: 5px;
+  float: left;
+  cursor: pointer;
+  @include unselectable;
+  &.active, &:hover {
+    background-color: $color-global-green;
+    @extend .i--icon-check;
+  }
+}
+
 //background colours
 //-----------------------------
 .main-container{
   background: $color-global-bg;
-  height:100%;
+  position: relative;
+  min-height:100%;
 }
 
 .yellow-container{
@@ -162,7 +203,7 @@ textarea {
   &.marketing{
     margin-top: 400px;
   }
-  &.sideinfo{
+  &.side-info{
     margin-top: 40%;
     margin-left: 15%;
     margin-right: 15%;

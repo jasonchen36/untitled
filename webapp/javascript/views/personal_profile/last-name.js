@@ -28,6 +28,11 @@
                 event.preventDefault();
                 submitLastName();
             });
+
+            lastNameSubmit.on('click',function(event){
+                event.preventDefault();
+                submitLastName();
+            });
         }
     };
 

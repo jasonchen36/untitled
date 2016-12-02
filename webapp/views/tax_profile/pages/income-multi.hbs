@@ -1,7 +1,8 @@
-<section id="tax-profile-income-multi">
+<section id="tax-profile-income-multi"  class="full-screen-grid-container main-container">
+    <div class="small-12 medium-7">
     <h1>income - multi</h1>
     <form id="income-multi-form">
-        <p>{{name}} please select all sources of income in 2016:</p>
+        <p>{{name}} please select all your sources of income in 2016:</p>
         {{>income-options}}
         {{#compare filingType.spouse 1 operator="=="}}
             <p>Please select all your spouse's sources of income in 2016:</p>
@@ -14,4 +15,13 @@
         <button type="submit">Next</button>
     </form>
     <button id="income-multi-back">Back</button>
+    </div>
+    <div class="hide-for-small small-12 medium-5 grid-end white-container">
+        <div class="wrapper-container side-info">
+            <h3 class="font-yellow">Filers Names</h3>
+            <p class="side-info">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris aliquam velit ut faucibus consequat. In hac habitasse platea dictumst. Proin at volutpat velit. Quisque congue varius nulla non aliquam. Integer condimentum dapibus ipsum, sit amet pharetra ligula aliquam sit amet. Praesent dui tortor, molestie et sodales non, vulputate in ligula. Curabitur nec justo tellus. Sed ac arcu porttitor, blandit sapien convallis, ultrices nisi. Duis aliquam iaculis nunc sed sodales. Phasellus cursus convallis scelerisque. Nulla consectetur, nunc at maximus tincidunt, mauris sapien vehicula libero, at bibendum metus dui ac magna. Donec tempus justo eu vestibulum dictum.
+            </p>
+        </div>
+    </div>
 </section>

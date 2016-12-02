@@ -29,6 +29,11 @@
                 submitSpecialScenarios();
             });
 
+            specialScenariosSubmit.on('click',function(event){
+                event.preventDefault();
+                submitSpecialScenarios();
+            });
+
             specialScenariosBack.on('click',function(event){
                 event.preventDefault();
                 personalProfile.goToPreviousPage();

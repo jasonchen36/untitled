@@ -29,6 +29,11 @@
                 submitMaritalStatus();
             });
 
+            maritalStatusSubmit.on('click',function(event){
+                event.preventDefault();
+                submitMaritalStatus();
+            });
+
             maritalStatusBack.on('click',function(event){
                 event.preventDefault();
                 personalProfile.goToPreviousPage();

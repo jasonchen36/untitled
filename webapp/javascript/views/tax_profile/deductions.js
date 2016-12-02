@@ -25,6 +25,11 @@
 
             //listeners
             deductionsForm.on('submit',function(event){
+               event.preventDefault();
+               submitIncome();
+            });
+
+            deductionsSubmit.on('click',function(event){
                 event.preventDefault();
                 submitIncome();
             });

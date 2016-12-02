@@ -1,7 +1,24 @@
-<section id="tax-profile-credits">
-    <h1>credits</h1>
-    <form id="credits-form">
-        <button type="submit">Next</button>
-    </form>
-    <button id="credits-back">Back</button>
+<section id="tax-profile-credits" class="full-screen-grid-container main-container">
+    <div class="small-12 medium-7">
+        <div class="content-form">
+            <div class="container-header">
+                <h1 class="header">Credits</h1>
+                <button id="credits-submit" type="submit" class="green header">Next</button>
+                <button id="credits-back" class="grey header">Previous</button>
+            </div>
+            <form id="credits-form">
+                <h1 class="subtitle">{{name}} please select all your credit in 2016:</h1>
+                {{>credits-options}}
+            </form>
+        </div>
+    </div>
+    <div class="hide-for-small small-12 medium-5 grid-end white-container">
+        <div class="wrapper-container side-info has-image">
+            <div class="i--icon-credits"></div>
+            <h3 class="font-yellow">Credits</h3>
+            <p class="side-info">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris aliquam velit ut faucibus consequat. In hac habitasse platea dictumst. Proin at volutpat velit. Quisque congue varius nulla non aliquam. Integer condimentum dapibus ipsum, sit amet pharetra ligula aliquam sit amet. Praesent dui tortor, molestie et sodales non, vulputate in ligula. Curabitur nec justo tellus. Sed ac arcu porttitor, blandit sapien convallis, ultrices nisi. Duis aliquam iaculis nunc sed sodales. Phasellus cursus convallis scelerisque. Nulla consectetur, nunc at maximus tincidunt, mauris sapien vehicula libero, at bibendum metus dui ac magna. Donec tempus justo eu vestibulum dictum.
+            </p>
+        </div>
+    </div>
 </section>
