@@ -25,11 +25,14 @@ taxProfile.saveName = function(req){
         });
 };
 
-taxProfile.saveActiveTiles = function(req){
+taxProfile.saveActiveTiles = function(req, group){
     return promise.resolve()
         .then(function() {
+            if (!req.session.account.activeTiles.hasOwnProperty(group)){
+                req.session.account.activeTiles[group] = {};
+            }
             _.forOwn(req.body.data, function(value, key) {
-                req.session.account.activeTiles[key] = value;
+                req.session.account.activeTiles[group][key] = value;
             });
             req.session.account.currentPage = getCurrentPage(req.body.action);
             return promise.resolve();

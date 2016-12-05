@@ -77,10 +77,11 @@
     }
 
     function isMultiFiler(){
-        if(!getAccountSession().hasOwnProperty('filingType')){
+        var accountSession = getAccountSession();
+        if(!accountSession.hasOwnProperty('activeTiles')) {
             return false;
         } else {
-            return Object.values(getAccountSession().filingType).filter(function(value){return value === 1;}).length > 1;
+            return accountSession.activeTiles.hasOwnProperty('filingFor') && Object.values(accountSession.activeTiles.filingFor).filter(function (x) {return x == 1;}).length > 1;
         }
     }
 

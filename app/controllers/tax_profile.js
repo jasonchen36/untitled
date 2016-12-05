@@ -81,10 +81,16 @@ taxReturnPages.actionSaveAccount = function(req, res, next) {
                     return taxProfile.saveName(req);
                     break;
                 case 'api-tp-filing-for':
+                    return taxProfile.saveActiveTiles(req, 'filingFor');
+                    break;
                 case 'api-tp-income':
+                    return taxProfile.saveActiveTiles(req, 'income');
+                    break;
                 case 'api-tp-credits':
+                    return taxProfile.saveActiveTiles(req, 'credits');
+                    break;
                 case 'api-tp-deductions':
-                    return taxProfile.saveActiveTiles(req);
+                    return taxProfile.saveActiveTiles(req, 'deductions');
                     break;
                 default:
                     return promise.reject('tax profile - invalid action');
