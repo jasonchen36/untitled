@@ -2,6 +2,8 @@ const //packages
     promise = require('bluebird'),
     _ = require('lodash'),
 //services
+    session = require('./session'),
+    util = require('./util'),
     taxProfile = {};
 
 function getCurrentPage(action){
@@ -37,6 +39,13 @@ taxProfile.saveActiveTiles = function(req, group){
             req.session.account.currentPage = getCurrentPage(req.body.action);
             return promise.resolve();
         });
+};
+
+taxProfile.getDataObject = function(req){
+    return util.mergeObjects([
+        session.getUserObject(req),//user
+        session.getAccountObject(req)//account
+    ])
 };
 
 module.exports = taxProfile;

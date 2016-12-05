@@ -38,10 +38,7 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
                     credits: response[1],
                     deductions: response[2]
                 },
-                dataObject = util.mergeObjects([
-                    session.getUserObject(req),//user
-                    session.getAccountObject(req)//account
-                ]);
+                dataObject = taxProfile.getDataObject(req);
             try {
                 res.render('tax_profile/tax_profile', {
                     layout: 'layout-questionnaire',
@@ -102,7 +99,7 @@ taxReturnPages.actionSaveAccount = function(req, res, next) {
             res.status(util.http.status.accepted).json({
                 action: req.body.action,
                 status: 'success',
-                data: session.getAccountObject(req)
+                data: taxProfile.getDataObject(req)
             });
         })
         .catch(function(error){
