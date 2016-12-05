@@ -1,4 +1,5 @@
 const //packages
+    _ = require('lodash'),
     requestPromise = require('request-promise'),
     promise = require('bluebird'),
 //services
@@ -11,17 +12,54 @@ var taxReturnPages = {};
 
 /************ tax profile ************/
 taxReturnPages.getPageTaxProfile = function(req, res, next){
-    res.render('tax_profile/tax_profile', {
-        layout: 'layout-tax-profile',
-        meta: {
-            pageTitle: util.globals.metaTitlePrefix + 'Tax Profile'
-        },
-        account: session.getAccountObject(req),
-        user: session.getUserObject(req),
-        locals: {
-            accountToString: JSON.stringify(session.getAccountObject(req))
-        }
-    });
+    const requestObject = {
+        method: 'GET',
+        uri: process.env.API_URL+'/questions/product/'+process.env.API_PRODUCT_ID+'/category/',
+        body: {},
+        json: true
+    };
+    var incomeRequest = _.clone(requestObject, true),
+        creditsRequest = _.clone(requestObject, true),
+        deductionsRequest = _.clone(requestObject, true);
+    incomeRequest.uri = incomeRequest.uri+util.questionCategories.income;
+    creditsRequest.uri += util.questionCategories.credits;
+    deductionsRequest.uri += util.questionCategories.deductions;
+    promise.all([
+        requestPromise(incomeRequest),
+        requestPromise(creditsRequest),
+        requestPromise(deductionsRequest)
+    ])
+        .then(function (response) {
+            const taxProfileQuestions = {
+                income: response[0],
+                credits: response[1],
+                deductions: response[2]
+            };
+            try {
+                res.render('tax_profile/tax_profile', {
+                    layout: 'layout-questionnaire',
+                    meta: {
+                        pageTitle: util.globals.metaTitlePrefix + 'Tax Profile'
+                    },
+                    account: session.getAccountObject(req),
+                    user: session.getUserObject(req),
+                    taxProfileQuestions: taxProfileQuestions,
+                    locals: {
+                        accountToString: JSON.stringify(session.getAccountObject(req)),
+                        taxProfileQuestionsToString: JSON.stringify(taxProfileQuestions)
+                    }
+                });
+            } catch(error){
+                console.log(error);
+                next(new errors.InternalServerError(error));
+            }
+        })
+        .catch(function (error) {
+            if (!error){
+                error = 'Could not retrieve questions'
+            }
+            next(new errors.InternalServerError(error));
+        });
 };
 
 taxReturnPages.actionSaveAccount = function(req, res, next) {

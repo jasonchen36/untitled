@@ -23,6 +23,15 @@ util.environment = {
     }
 };
 
+util.questionCategories = {
+    income: 1,
+    credits: 2,
+    deductions: 3,
+    credits2: 4,
+    specialSituations: 5,
+    other: 6
+};
+
 util.globals = {
     metaTitlePrefix: 'Taxplan | ',
     apiUrl: process.env.API_URL,

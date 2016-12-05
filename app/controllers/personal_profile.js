@@ -17,7 +17,7 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
         locals: {
             personalProfileToString: JSON.stringify(session.getPersonalProfileObject(req))
         },
-        layout: 'layout-tax-profile'
+        layout: 'layout-questionnaire'
     });
 };
 
