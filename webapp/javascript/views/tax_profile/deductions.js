@@ -10,9 +10,32 @@
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
-    function submitIncome(){
-        //todo
-        taxProfile.goToNextPage();
+    function submitDeductions(){
+        if (!deductionsSubmit.hasClass(disabledClass)) {
+            var formData = helpers.getTileFormData(deductionsForm);
+            if(!helpers.hasSelectedTile(formData)){
+                //todo, real alert
+                alert('no selected option');
+            } else {
+                deductionsSubmit.addClass(disabledClass);
+                app.ajax.ajax(
+                    'POST',
+                    '/tax-profile',
+                    {
+                        action: 'api-tp-deductions',
+                        data: formData
+                    },
+                    'json'
+                )
+                    .then(function(response){
+                        taxProfile.goToNextPage(response.data);
+                    })
+                    .catch(function(jqXHR,textStatus,errorThrown){
+                        console.log(jqXHR,textStatus,errorThrown);
+                        deductionsSubmit.removeClass(disabledClass);
+                    });
+            }
+        }
     }
 
     this.init = function(){
@@ -26,12 +49,12 @@
             //listeners
             deductionsForm.on('submit',function(event){
                event.preventDefault();
-               submitIncome();
+               submitDeductions();
             });
 
             deductionsSubmit.on('click',function(event){
                 event.preventDefault();
-                submitIncome();
+                submitDeductions();
             });
 
             deductionsBack.on('click',function(event){

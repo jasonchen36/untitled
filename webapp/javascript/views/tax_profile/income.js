@@ -7,14 +7,36 @@
         incomeForm,
         incomeSubmit,
         incomeBack,
-        incomeOptions,
-        activeClass = app.helpers.activeClass,
-        errorClass = app.helpers.errorClass,
-        disabledClass = app.helpers.disabledClass;
+        activeClass = helpers.activeClass,
+        errorClass = helpers.errorClass,
+        disabledClass = helpers.disabledClass;
 
     function submitIncome(){
-        //todo
-        taxProfile.goToNextPage();
+        if (!incomeSubmit.hasClass(disabledClass)) {
+            var formData = helpers.getTileFormData(incomeForm);
+            if(!helpers.hasSelectedTile(formData)){
+                //todo, real alert
+                alert('no selected option');
+            } else {
+                incomeSubmit.addClass(disabledClass);
+                app.ajax.ajax(
+                    'POST',
+                    '/tax-profile',
+                    {
+                        action: 'api-tp-income',
+                        data: formData
+                    },
+                    'json'
+                )
+                    .then(function(response){
+                        taxProfile.goToNextPage(response.data);
+                    })
+                    .catch(function(jqXHR,textStatus,errorThrown){
+                        console.log(jqXHR,textStatus,errorThrown);
+                        incomeSubmit.removeClass(disabledClass);
+                    });
+            }
+        }
     }
 
     this.init = function(){
@@ -24,7 +46,6 @@
             incomeForm = $('#income-form');
             incomeSubmit = $('#income-submit');
             incomeBack = $('#income-back');
-            incomeOptions = $('.tp-income-option');
 
             //listeners
             incomeForm.on('submit',function(event){
@@ -40,11 +61,6 @@
             incomeBack.on('click',function(event){
                 event.preventDefault();
                 taxProfile.goToPreviousPage();
-            });
-
-            incomeOptions.on('click',function(event){
-                event.preventDefault();
-                $(this).toggleClass(activeClass);
             });
         }
     };

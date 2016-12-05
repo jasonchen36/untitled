@@ -10,9 +10,32 @@
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
-    function submitIncome(){
-        //todo
-        taxProfile.goToNextPage();
+    function submitCredits(){
+        if (!creditsSubmit.hasClass(disabledClass)) {
+            var formData = helpers.getTileFormData(creditsForm);
+            if(!helpers.hasSelectedTile(formData)){
+                //todo, real alert
+                alert('no selected option');
+            } else {
+                creditsSubmit.addClass(disabledClass);
+                app.ajax.ajax(
+                    'POST',
+                    '/tax-profile',
+                    {
+                        action: 'api-tp-credits',
+                        data: formData
+                    },
+                    'json'
+                )
+                    .then(function(response){
+                        taxProfile.goToNextPage(response.data);
+                    })
+                    .catch(function(jqXHR,textStatus,errorThrown){
+                        console.log(jqXHR,textStatus,errorThrown);
+                        creditsSubmit.removeClass(disabledClass);
+                    });
+            }
+        }
     }
 
     this.init = function(){
@@ -26,12 +49,12 @@
             //listeners
             creditsForm.on('submit',function(event){
                 event.preventDefault();
-                submitIncome();
+                submitCredits();
             });
 
             creditsSubmit.on('click',function(event){
                 event.preventDefault();
-                submitIncome();
+                submitCredits();
             });
 
             creditsBack.on('click',function(event){

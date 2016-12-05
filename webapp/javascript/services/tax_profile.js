@@ -164,7 +164,7 @@
             startAccountSession();
 
             //shared bindings
-            $(document).on('click', '.tax-profile-tile', function (event) {
+            $(document).on('click', '.taxplan-tile', function (event) {
                 event.preventDefault();
                 $(this).toggleClass(activeClass);
             });

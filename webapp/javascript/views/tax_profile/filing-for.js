@@ -8,12 +8,11 @@
         filingForSubmit,
         filingForBack,
         errorClass = helpers.errorClass,
-        disabledClass = helpers.disabledClass,
-        taxProfileTileClass = helpers.taxProfileTileClass;
+        disabledClass = helpers.disabledClass;
 
     function submitFilingFor(){
         if (!filingForSubmit.hasClass(disabledClass)) {
-            var formData = helpers.getTileFormData(filingForForm,taxProfileTileClass);
+            var formData = helpers.getTileFormData(filingForForm);
             if(!helpers.hasSelectedTile(formData)){
                 //todo, real alert
                 alert('no selected option');
