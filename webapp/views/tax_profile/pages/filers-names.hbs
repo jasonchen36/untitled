@@ -11,7 +11,7 @@
             </h1>
             <form id="filers-names-form">
                 <label for="filers-names-myself">YOUR FIRST NAME</label>
-                <input id="filers-names-myself" type="text" readonly="readonly" value="{{name}}"/>
+                <input id="filers-names-myself" type="text" readonly="readonly" value="{{firstName}}"/>
                 {{#compare filingType.spouse 1 operator="=="}}
                     <label for="filers-names-spouse" class="under">YOUR SPOUSE OR PARTNER’S FIRST NAME</label>
                     <input id="filers-names-spouse" type="text" value=""/>
