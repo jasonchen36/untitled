@@ -6,13 +6,11 @@
                 <button type="submit" id="filing-for-submit" class="green header">Next</button>
                 <button id="filing-for-back" class="grey header">Previous</button>
             </div>
-            <h1 class="subtitle">
-                Hi {{name}}, can you please select all the people you are filing for:
-            </h1>
             <form id="filing-for-form">
-                {{#each questions.filingFor}}
-                    {{>tax-profile-option}}
-                {{/each}}
+                <h1 class="subtitle">
+                    Hi {{name}}, can you please select all the people you are filing for:
+                </h1>
+                {{>tax-profile-options questions=questions.filingFor}}
             </form>
         </div>
     </div>

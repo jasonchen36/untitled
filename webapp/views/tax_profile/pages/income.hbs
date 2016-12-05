@@ -8,11 +8,7 @@
             </div>
             <form id="income-form">
                 <h1 class="subtitle">{{name}} please select all your sources of income in 2016:</h1>
-                <section class="grid-container">
-                    {{#each questions.income}}
-                        {{>tax-profile-option}}
-                    {{/each}}
-                </section>
+                {{>tax-profile-options questions=questions.income}}
             </form>
         </div>
     </div>

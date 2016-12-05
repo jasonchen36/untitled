@@ -53,7 +53,6 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
                     }
                 });
             } catch(error){
-                console.log(error);
                 next(new errors.InternalServerError(error));
             }
         })
@@ -80,15 +79,15 @@ taxReturnPages.actionSaveAccount = function(req, res, next) {
                     return taxProfile.saveName(req);
                     break;
                 case 'api-tp-filing-for':
-                    return taxProfile.saveFilingType(req);
+                case 'api-tp-income':
+                case 'api-tp-credits':
+                case 'api-tp-deductions':
+                    return taxProfile.saveActiveTiles(req);
                     break;
                 default:
                     return promise.reject('tax profile - invalid action');
                     break;
             }
-        })
-        .then(function(){
-            //todo, update account/quote in api
         })
         .then(function(){
             //success

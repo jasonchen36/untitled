@@ -8,11 +8,7 @@
             </div>
             <form id="deductions-form">
                 <h1 class="subtitle">Last Question! {{name}} please select all your 2016 deductions:</h1>
-                <section class="grid-container">
-                    {{#each questions.deductions}}
-                        {{>tax-profile-option}}
-                    {{/each}}
-                </section>
+                {{>tax-profile-options questions=questions.deductions}}
             </form>
         </div>
     </div>

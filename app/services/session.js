@@ -37,7 +37,8 @@ session.actionStartAccountSession = function(req){
                             expiry: moment().add(7, 'days'),
                             currentPage: 'welcome',
                             id: response.accountId,
-                            name: response.name
+                            name: response.name,
+                            activeTiles: {}
                         };
                         return promise.resolve();
                     } catch(error){

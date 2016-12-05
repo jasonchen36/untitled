@@ -8,11 +8,7 @@
             </div>
             <form id="credits-form">
                 <h1 class="subtitle">{{name}} please select all your credit in 2016:</h1>
-                <section class="grid-container">
-                    {{#each questions.credits}}
-                        {{>tax-profile-option}}
-                    {{/each}}
-                </section>
+                {{>tax-profile-options questions=questions.credits}}
             </form>
         </div>
     </div>

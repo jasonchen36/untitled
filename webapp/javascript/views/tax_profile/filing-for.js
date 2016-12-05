@@ -15,6 +15,7 @@
         if (!filingForSubmit.hasClass(disabledClass)) {
             var formData = helpers.getTileFormData(filingForForm,taxProfileTileClass);
             if(!helpers.hasSelectedTile(formData)){
+                //todo, real alert
                 alert('no selected option');
             } else {
                 filingForSubmit.addClass(disabledClass);
@@ -23,9 +24,7 @@
                     '/tax-profile',
                     {
                         action: 'api-tp-filing-for',
-                        myself: formData.myself,
-                        spouse: formData.spouse,
-                        other: formData.other
+                        data: formData
                     },
                     'json'
                 )

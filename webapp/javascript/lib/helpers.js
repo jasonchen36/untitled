@@ -49,10 +49,7 @@
     this.getTileFormData = function(formElement,tileClass){
         var data = {};
         formElement.find('.'+tileClass).each(function(){
-            data[$(this).attr('data-name')] = $(this).hasClass(that.activeClass)?1:0;
-        });
-        formElement.find('textarea').each(function(){
-            data[$(this).attr('name')] = $(this).val();
+            data[parseInt($(this).attr('data-id'))] = $(this).hasClass(that.activeClass)?1:0;
         });
         return data;
     };

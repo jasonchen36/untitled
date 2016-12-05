@@ -44,6 +44,14 @@
             }
         });
 
+        Handlebars.registerHelper('isActiveTile',function(id, activeTiles, options){
+            if(activeTiles && activeTiles.hasOwnProperty(id) && activeTiles[id] == 1) {
+                return options.fn(this);
+            } else {
+                return options.inverse(this);
+            }
+        });
+
     };
     
 }).apply(app.handlebars);
