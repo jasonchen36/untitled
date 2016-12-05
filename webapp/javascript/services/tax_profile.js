@@ -96,6 +96,7 @@
         if(newPage && newPage.length > 0){
             data.currentPage = newPage;
         }
+        data.questions = questionsObject;
         accountSessionStore = data;
     }
     
