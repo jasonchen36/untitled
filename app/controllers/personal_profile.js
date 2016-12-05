@@ -29,17 +29,16 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
         requestPromise(creditsRequest)
     ])
         .then(function (response) {
-            var personalProfile = session.getPersonalProfileObject(req);
-            personalProfile.questions = {
-                specialScenarios: response[0],
-                credits: response[1],
-                maritalStatus: questionsModel.getMaritalStatusData()
-            };
-            const dataObject = util.mergeObjects([
-                session.getUserObject(req),//user
-                session.getAccountObject(req),//account,
-                personalProfile//personal profile
-            ]);
+            const personalProfileQuestions = {
+                    specialScenarios: response[0],
+                    credits: response[1],
+                    maritalStatus: questionsModel.getMaritalStatusData()
+                },
+                dataObject = util.mergeObjects([
+                    session.getUserObject(req),//user
+                    session.getAccountObject(req),//account,
+                    session.getPersonalProfileObject(req)//personal profile
+                ]);
             try {
                 res.render('personal_profile/personal_profile', {
                     meta: {
@@ -47,7 +46,8 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
                     },
                     data: dataObject,
                     locals: {
-                        personalProfileToString: JSON.stringify(dataObject)
+                        personalProfileToString: JSON.stringify(dataObject),
+                        personalProfileQuestionsToString: JSON.stringify(personalProfileQuestions)
                     },
                     layout: 'layout-questionnaire'
                 });
