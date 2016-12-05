@@ -78,6 +78,9 @@ personalProfilePages.actionSavePersonalProfile = function(req, res, next) {
                 case 'api-pp-special-scenarios':
                     return personalProfile.saveActiveTiles(req, 'specialScenarios');
                     break;
+                case 'api-pp-marital-status':
+                    return personalProfile.saveActiveTiles(req, 'maritalStatus');
+                    break;
                 default:
                     return promise.reject('tax profile - invalid action');
                     break;

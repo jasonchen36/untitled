@@ -11,8 +11,31 @@
         disabledClass = app.helpers.disabledClass;
 
     function submitMaritalStatus(){
-        //todo
-        personalProfile.goToNextPage();
+        if (!maritalStatusSubmit.hasClass(disabledClass)) {
+            var formData = helpers.getTileFormData(maritalStatusForm);
+            if(!helpers.hasSelectedTile(formData)){
+                //todo, real alert
+                alert('no selected option');
+            } else {
+                maritalStatusSubmit.addClass(disabledClass);
+                app.ajax.ajax(
+                    'POST',
+                    '/personal-profile',
+                    {
+                        action: 'api-pp-marital-status',
+                        data: formData
+                    },
+                    'json'
+                )
+                    .then(function(response){
+                        personalProfile.goToNextPage(response.data);
+                    })
+                    .catch(function(jqXHR,textStatus,errorThrown){
+                        console.log(jqXHR,textStatus,errorThrown);
+                        maritalStatusSubmit.removeClass(disabledClass);
+                    });
+            }
+        }
     }
 
     this.init = function(){
