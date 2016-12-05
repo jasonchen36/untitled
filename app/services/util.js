@@ -1,4 +1,7 @@
-const util = {};
+const //packages
+    _ = require('lodash');
+
+var util = {};
 
 util.http = {
     status: {
@@ -24,18 +27,30 @@ util.environment = {
 };
 
 util.questionCategories = {
+    filingFor: 0,
     income: 1,
     credits: 2,
     deductions: 3,
     credits2: 4,
-    specialSituations: 5,
-    other: 6
+    specialScenarios: 5,
+    other: 6,
+    maritalStatus: 7
 };
 
 util.globals = {
     metaTitlePrefix: 'Taxplan | ',
     apiUrl: process.env.API_URL,
     apiProductId: process.env.API_PRODUCT_ID
+};
+
+util.mergeObjects = function(objectArray){
+    var finalObject = {};
+    _.each(objectArray, function(entry){
+        _.forOwn(entry, function(value, key) {
+            finalObject[key] = value;
+        });
+    });
+    return finalObject;
 };
 
 module.exports = util;

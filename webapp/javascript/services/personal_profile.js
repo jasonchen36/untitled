@@ -7,6 +7,7 @@
         animations = app.animations,
         landingPageContainer = $('#page-personal-profile'),
         profileBar = $('#tax-profile-progress-bar'),
+        activeClass = helpers.activeClass,
         personalProfileSessionStore;
 
     this.personalProfileFlow = [
@@ -113,6 +114,18 @@
         if (landingPageContainer.length > 0) {
             startPersonalProfileSession();
         }
+
+        //shared bindings
+        $(document).on('click', '.taxplan-tile', function (event) {
+            event.preventDefault();
+            $(this).toggleClass(activeClass);
+        });
+
+        $(document).on('click', '.taxplan-tile-instructions', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            $('#personal-profile-instructions').html($(this).data('instructions'));
+        });
     };
 
 }).apply(app.services.personalProfile);

@@ -169,7 +169,7 @@
                 $(this).toggleClass(activeClass);
             });
             
-            $(document).on('click', '.tax-profile-question-instructions', function (event) {
+            $(document).on('click', '.taxplan-tile-instructions', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
                 $('#tax-profile-instructions').html($(this).data('instructions'));

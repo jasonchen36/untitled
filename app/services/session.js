@@ -191,7 +191,8 @@ session.actionStartPersonalProfileSession = function(req){
         .then(function(){
             req.session.personalProfile = {
                 hasPersonalProfileSession: true,
-                expiry: moment().add(7, 'days')
+                expiry: moment().add(7, 'days'),
+                activeTiles: {}
             };
             return promise.resolve();
         });

@@ -35,4 +35,69 @@ questionsModel.getFilingForData = function(){
     ]
 };
 
+questionsModel.getMaritalStatusData = function(){
+    return [
+        {
+            category_id: 7,
+            has_multiple_answers: 0,
+            id: 8889,
+            instructions: '',
+            product_id: process.env.API_PRODUCT_ID,
+            question_id: 8889,
+            text: 'Married',
+            type: 'Choice'
+        },
+        {
+            category_id: 7,
+            has_multiple_answers: 0,
+            id: 8888,
+            instructions: '',
+            product_id: process.env.API_PRODUCT_ID,
+            question_id: 8888,
+            text: 'Divorced',
+            type: 'Choice'
+        },
+        {
+            category_id: 7,
+            has_multiple_answers: 0,
+            id: 8887,
+            instructions: '',
+            product_id: process.env.API_PRODUCT_ID,
+            question_id: 8887,
+            text: 'Separated',
+            type: 'Choice'
+        },
+        {
+            category_id: 7,
+            has_multiple_answers: 0,
+            id: 8886,
+            instructions: '',
+            product_id: process.env.API_PRODUCT_ID,
+            question_id: 8886,
+            text: 'Widowed',
+            type: 'Choice'
+        },
+        {
+            category_id: 7,
+            has_multiple_answers: 0,
+            id: 8885,
+            instructions: '',
+            product_id: process.env.API_PRODUCT_ID,
+            question_id: 8885,
+            text: 'Common Law',
+            type: 'Choice'
+        },
+        {
+            category_id: 7,
+            has_multiple_answers: 0,
+            id: 8884,
+            instructions: '',
+            product_id: process.env.API_PRODUCT_ID,
+            question_id: 8884,
+            text: 'Single',
+            type: 'Choice'
+        }
+    ]
+};
+
 module.exports = questionsModel;
