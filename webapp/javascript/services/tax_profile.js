@@ -33,20 +33,10 @@
     /* *************** private methods ***************/
     function changePage(newPage){
         return new Promise(function(resolve,reject) {
-            var data = getAccountSession(),
-                percentageComplete;
+            var data = getAccountSession();
             //update session with new page
             updateAccountSession(data, newPage);
-            if(isMultiFiler()){
-                percentageComplete = helpers.getAverage(that.multiFilerFlow.indexOf(getCurrentPage()),that.multiFilerFlow.length);
-            } else {
-                percentageComplete = helpers.getAverage(that.singleFilerFlow.indexOf(getCurrentPage()),that.singleFilerFlow.length);
-            }
-            animations.animateElement(profileBar,{
-               properties: {
-                   width: percentageComplete+'%'
-               }
-            });
+            animateProgressBar();
             var template = Handlebars.templates[newPage],
                 html = template(data);
             landingPageContainer.html(html);
@@ -106,6 +96,20 @@
             data.currentPage = newPage;
         }
         accountSessionStore = data;
+    }
+    
+    function animateProgressBar(){
+        var percentageComplete;
+        if(isMultiFiler()){
+            percentageComplete = helpers.getAverage(that.multiFilerFlow.indexOf(getCurrentPage()),that.multiFilerFlow.length);
+        } else {
+            percentageComplete = helpers.getAverage(that.singleFilerFlow.indexOf(getCurrentPage()),that.singleFilerFlow.length);
+        }
+        animations.animateElement(profileBar,{
+            properties: {
+                width: percentageComplete+'%'
+            }
+        });
     }
 
 

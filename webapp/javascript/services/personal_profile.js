@@ -25,12 +25,7 @@
             var data = getPersonalProfileSession();
             //update session with new page
             updatePersonalProfileSession(data, newPage);
-            percentageComplete = helpers.getAverage(that.personalProfileFlow.indexOf(getCurrentPage()),that.personalProfileFlow.length);
-            animations.animateElement(profileBar,{
-                properties: {
-                    width: percentageComplete+'%'
-                }
-            });
+            animateProgressBar();
             var template = Handlebars.templates[newPage],
                 html = template(data);
             landingPageContainer.html(html);
@@ -84,6 +79,14 @@
         personalProfileSessionStore = data;
     }
 
+    function animateProgressBar(){
+        var percentageComplete = helpers.getAverage(that.personalProfileFlow.indexOf(getCurrentPage()),that.personalProfileFlow.length);
+        animations.animateElement(profileBar,{
+            properties: {
+                width: percentageComplete+'%'
+            }
+        });
+    }
 
     /* *************** public methods ***************/
     this.goToNextPage = function(data){
