@@ -11,8 +11,31 @@
         disabledClass = app.helpers.disabledClass;
 
     function submitSpecialScenarios(){
-        //todo
-        personalProfile.goToNextPage();
+        if (!specialScenariosSubmit.hasClass(disabledClass)) {
+            var formData = helpers.getTileFormData(specialScenariosForm);
+            if(!helpers.hasSelectedTile(formData)){
+                //todo, real alert
+                alert('no selected option');
+            } else {
+                specialScenariosSubmit.addClass(disabledClass);
+                app.ajax.ajax(
+                    'POST',
+                    '/personal-profile',
+                    {
+                        action: 'api-pp-special-scenarios',
+                        data: formData
+                    },
+                    'json'
+                )
+                    .then(function(response){
+                        personalProfile.goToNextPage(response.data);
+                    })
+                    .catch(function(jqXHR,textStatus,errorThrown){
+                        console.log(jqXHR,textStatus,errorThrown);
+                        specialScenariosSubmit.removeClass(disabledClass);
+                    });
+            }
+        }
     }
 
     this.init = function(){

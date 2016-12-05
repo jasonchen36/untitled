@@ -75,8 +75,8 @@ personalProfilePages.actionSavePersonalProfile = function(req, res, next) {
                 case 'api-pp-last-name':
                     return personalProfile.saveLastName(req);
                     break;
-                case 'api-pp-filing-for':
-                    return personalProfile.saveActiveTiles(req, 'filingFor');
+                case 'api-pp-special-scenarios':
+                    return personalProfile.saveActiveTiles(req, 'specialScenarios');
                     break;
                 default:
                     return promise.reject('tax profile - invalid action');
