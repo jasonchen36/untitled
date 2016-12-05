@@ -37,7 +37,7 @@ session.actionStartAccountSession = function(req){
                             expiry: moment().add(7, 'days'),
                             currentPage: 'welcome',
                             id: response.accountId,
-                            name: response.name,
+                            firstName: response.name,
                             activeTiles: {}
                         };
                         return promise.resolve();
@@ -120,11 +120,11 @@ session.actionStartUserSession = function(req,token){
                             id: response.id,
                             role: response.role,
                             provider: response.provider,
-                            name: response.name,
+                            firstName: response.name,
                             email: response.email,
                             phone: response.phone,
                             username: response.username,
-                            firstName: response.first_name,
+                            // firstName: response.first_name,
                             lastName: response.last_name,
                             accounts: response.accounts,
                             birthday: response.birthday,

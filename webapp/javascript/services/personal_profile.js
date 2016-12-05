@@ -7,7 +7,6 @@
         animations = app.animations,
         landingPageContainer = $('#page-personal-profile'),
         profileBar = $('#tax-profile-progress-bar'),
-        activeClass = helpers.activeClass,
         personalProfileSessionStore;
 
     this.personalProfileFlow = [
@@ -49,6 +48,7 @@
 
     function startPersonalProfileSession(){
         personalProfileSessionStore = personalProfileObject;
+        personalProfileSessionStore.questions = questionsObject;
         if(!personalProfileSessionStore.hasOwnProperty('currentPage') || personalProfileSessionStore.currentPage.length < 1){
             personalProfileSessionStore.currentPage = that.personalProfileFlow[0];
             changePage(personalProfileSessionStore.currentPage);
@@ -77,6 +77,7 @@
         if(newPage && newPage.length > 0){
             data.currentPage = newPage;
         }
+        data.questions = questionsObject;
         personalProfileSessionStore = data;
     }
 
@@ -116,12 +117,12 @@
         }
 
         //shared bindings
-        $(document).on('click', '.taxplan-tile', function (event) {
+        $(document).on('click', '.'+helpers.tileClass, function (event) {
             event.preventDefault();
-            $(this).toggleClass(activeClass);
+            $(this).toggleClass(helpers.activeClass);
         });
 
-        $(document).on('click', '.taxplan-tile-instructions', function (event) {
+        $(document).on('click', '.'+helpers.tileClass+'-instructions', function (event) {
             event.preventDefault();
             event.stopPropagation();
             $('#personal-profile-instructions').html($(this).data('instructions'));

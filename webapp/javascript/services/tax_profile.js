@@ -7,7 +7,6 @@
         animations = app.animations,
         landingPageContainer = $('#page-tax-profile'),
         profileBar = $('#tax-profile-progress-bar'),
-        activeClass = helpers.activeClass,
         accountSessionStore;
 
     this.singleFilerFlow = [
@@ -164,12 +163,12 @@
             startAccountSession();
 
             //shared bindings
-            $(document).on('click', '.taxplan-tile', function (event) {
+            $(document).on('click', '.'+helpers.tileClass, function (event) {
                 event.preventDefault();
-                $(this).toggleClass(activeClass);
+                $(this).toggleClass(helpers.activeClass);
             });
             
-            $(document).on('click', '.taxplan-tile-instructions', function (event) {
+            $(document).on('click', '.'+helpers.tileClass+'-instructions', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
                 $('#tax-profile-instructions').html($(this).data('instructions'));

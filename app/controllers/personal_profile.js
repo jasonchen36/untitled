@@ -45,6 +45,7 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
                     meta: {
                         pageTitle: util.globals.metaTitlePrefix + 'Personal Profile'
                     },
+                    data: dataObject,
                     locals: {
                         personalProfileToString: JSON.stringify(dataObject)
                     },

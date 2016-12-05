@@ -33,22 +33,24 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
     ])
         .then(function (response) {
             const taxProfileQuestions = {
-                filingFor: questionsModel.getFilingForData(),
-                income: response[0],
-                credits: response[1],
-                deductions: response[2]
-            };
+                    filingFor: questionsModel.getFilingForData(),
+                    income: response[0],
+                    credits: response[1],
+                    deductions: response[2]
+                },
+                dataObject = util.mergeObjects([
+                    session.getUserObject(req),//user
+                    session.getAccountObject(req)//account
+                ]);
             try {
                 res.render('tax_profile/tax_profile', {
                     layout: 'layout-questionnaire',
                     meta: {
                         pageTitle: util.globals.metaTitlePrefix + 'Tax Profile'
                     },
-                    account: session.getAccountObject(req),
-                    user: session.getUserObject(req),
-                    taxProfileQuestions: taxProfileQuestions,
+                    data: dataObject,
                     locals: {
-                        accountToString: JSON.stringify(session.getAccountObject(req)),
+                        taxProfileToString: JSON.stringify(dataObject),
                         taxProfileQuestionsToString: JSON.stringify(taxProfileQuestions)
                     }
                 });
