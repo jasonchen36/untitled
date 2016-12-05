@@ -1,4 +1,4 @@
-<div class="tax-profile-tile i--icon-question-{{id}}">
+<div class="tax-profile-tile i--icon-question-{{id}} {{#compare active 1 operator="=="}}active{{/compare}}">
     {{#if instructions}}
         <div class="tax-profile-question-instructions i--icon-question" data-instructions="{{{instructions}}}"></div>
     {{/if}}
