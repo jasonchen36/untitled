@@ -6,7 +6,9 @@ const //packages
     util = require('../services/util'),
     session = require('../services/session'),
     taxProfile = require('../services/tax_profile'),
-    errors = require('../services/errors');
+    errors = require('../services/errors'),
+//models
+    questionsModel = require('../models/questions');
 
 var taxReturnPages = {};
 
@@ -31,6 +33,7 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
     ])
         .then(function (response) {
             const taxProfileQuestions = {
+                filingFor: questionsModel.getFilingForData(),
                 income: response[0],
                 credits: response[1],
                 deductions: response[2]

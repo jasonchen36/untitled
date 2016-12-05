@@ -10,21 +10,9 @@
                 Hi {{name}}, can you please select all the people you are filing for:
             </h1>
             <form id="filing-for-form">
-                <div class="tax-profile-tile i--icon-filing-myself {{#compare filingType.myself 1 operator="=="}}active{{/compare}}" data-name="myself">
-                   <span class="tax-profile-tile-label">
-                       Myself
-                   </span>
-                </div>
-                <div class="tax-profile-tile i--icon-filing-partner {{#compare filingType.spouse 1 operator="=="}}active{{/compare}}" data-name="spouse">
-                    <span class="tax-profile-tile-label">
-                        My Spouse/Partner
-                    </span>
-                </div>
-                <div class="tax-profile-tile i--icon-filing-other {{#compare filingType.other 1 operator="=="}}active{{/compare}}" data-name="other">
-                    <span class="tax-profile-tile-label">
-                    Other Person/People
-                    </span>
-                </div>
+                {{#each questions.filingFor}}
+                    {{>tax-profile-option}}
+                {{/each}}
             </form>
         </div>
     </div>
