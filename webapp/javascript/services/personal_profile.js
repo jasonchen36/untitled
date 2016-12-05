@@ -5,7 +5,7 @@
         that = app.services.personalProfile,
         helpers = app.helpers,
         animations = app.animations,
-        landingPageContainer = $('#page-personal-profile'),
+        personalProfilePageContainer = $('#page-personal-profile'),
         profileBar = $('#tax-profile-progress-bar'),
         personalProfileSessionStore;
 
@@ -28,7 +28,7 @@
             animateProgressBar();
             var template = Handlebars.templates[newPage],
                 html = template(data);
-            landingPageContainer.html(html);
+            personalProfilePageContainer.html(html);
             resolve();
         })
             .then(function(){
@@ -112,21 +112,21 @@
     };
 
     this.init = function(){
-        if (landingPageContainer.length > 0) {
+        if (personalProfilePageContainer.length > 0) {
             startPersonalProfileSession();
+
+            //shared bindings
+            $(document)
+                .on('click', '.'+helpers.tileClass, function (event) {
+                    event.preventDefault();
+                    $(this).toggleClass(helpers.activeClass);
+                })
+                .on('click', '.'+helpers.tileClass+'-instructions', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    $('#personal-profile-instructions').html($(this).data('instructions'));
+                });
         }
-
-        //shared bindings
-        $(document).on('click', '.'+helpers.tileClass, function (event) {
-            event.preventDefault();
-            $(this).toggleClass(helpers.activeClass);
-        });
-
-        $(document).on('click', '.'+helpers.tileClass+'-instructions', function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-            $('#personal-profile-instructions').html($(this).data('instructions'));
-        });
     };
 
 }).apply(app.services.personalProfile);

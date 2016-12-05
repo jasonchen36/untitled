@@ -5,7 +5,7 @@
         that = app.services.taxProfile,
         helpers = app.helpers,
         animations = app.animations,
-        landingPageContainer = $('#page-tax-profile'),
+        taxProfilePageContainer = $('#page-tax-profile'),
         profileBar = $('#tax-profile-progress-bar'),
         accountSessionStore;
 
@@ -38,7 +38,7 @@
             animateProgressBar();
             var template = Handlebars.templates[newPage],
                 html = template(data);
-            landingPageContainer.html(html);
+            taxProfilePageContainer.html(html);
             resolve();
         })
             .then(function(){
@@ -98,7 +98,7 @@
         data.questions = questionsObject;
         accountSessionStore = data;
     }
-    
+
     function animateProgressBar(){
         var percentageComplete;
         if(isMultiFiler()){
@@ -159,21 +159,21 @@
     };
 
     this.init = function(){
-        if (landingPageContainer.length > 0) {
+        if (taxProfilePageContainer.length > 0) {
             startAccountSession();
 
             //shared bindings
-            $(document).on('click', '.'+helpers.tileClass, function (event) {
-                event.preventDefault();
-                $(this).toggleClass(helpers.activeClass);
-            });
-            
-            $(document).on('click', '.'+helpers.tileClass+'-instructions', function (event) {
-                event.preventDefault();
-                event.stopPropagation();
-                $('#tax-profile-instructions').html($(this).data('instructions'));
-            });
-            
+            $(document)
+                .on('click', '.'+helpers.tileClass, function (event) {
+                    event.preventDefault();
+                    $(this).toggleClass(helpers.activeClass);
+                })
+                .on('click', '.'+helpers.tileClass+'-instructions', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    $('#tax-profile-instructions').html($(this).data('instructions'));
+                });
+
         }
     };
 
