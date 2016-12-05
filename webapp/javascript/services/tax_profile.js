@@ -64,6 +64,7 @@
 
     function startAccountSession(){
         accountSessionStore = accountObject;
+        accountSessionStore.questions = questionsObject;
         if(!accountSessionStore.hasOwnProperty('currentPage') || accountSessionStore.currentPage.length < 1){
             accountSessionStore.currentPage = that.singleFilerFlow[0];
             changePage(accountSessionStore.currentPage);
@@ -161,9 +162,16 @@
         if (landingPageContainer.length > 0) {
             startAccountSession();
 
+            //shared bindings
             $(document).on('click', '.tax-profile-tile', function (event) {
                 event.preventDefault();
                 $(this).toggleClass(activeClass);
+            });
+            
+            $(document).on('click', '.tax-profile-question-instructions', function (event) {
+                event.preventDefault();
+                event.stopPropagation();
+                $('#tax-profile-instructions').html($(this).data('instructions'));
             });
             
         }
