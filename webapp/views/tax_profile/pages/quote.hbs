@@ -1,7 +1,14 @@
-<section id="tax-profile-quote">
-    <h1>quote</h1>
-    <form id="quote-form">
-        <button type="submit">Next</button>
-    </form>
-    <button id="quote-back">Back</button>
+<section id="tax-profile-quote" class="full-screen-grid-container main-container">
+    <div class="small-12 medium-7">
+        <div class="content-form">
+            <div class="container-header">
+                <h1 class="header">Quote</h1>
+                <button id="quote-submit" type="submit" class="green header">Next</button>
+                <button id="quote-back" class="grey header">Previous</button>
+            </div>
+            <form id="quote-form">
+            </form>
+        </div>
+    </div>
+    {{>tax-profile-sidebar sidebarImage="i--icon-credits" sidebarTitle="quote"}}
 </section>
