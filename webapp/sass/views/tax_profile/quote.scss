@@ -2,73 +2,54 @@
   height: 270px;
 }
 
-.credits-form-container{
+.container-credits-form{
   width:64%;
-  margin: 0 auto;
-}
-
-.container-total{
-  text-align: center;
-}
-
-.line-item-container{
-  text-align: left;
-}
-
-.label-line-item{
-  text-align: left;
-  display: inline-block;
-  font-size: 1.3em;
-}
-
-.label-line-price{
-  text-align: right;
-  float: right;
-  margin-right:25px;
-  font-size: 1.3em;
+  @extend .horizontal-center;
 }
 
 .button-details{
   float: right;
-  vertical-align: middle;
   margin:20px 0px;
 }
 
-.container-line-item{
-  &.first{
-    border-top: 1px solid $color-global-shadow;
+p{
+  &.line-item{
+    font-size: 1.3em;
+    &.item{
+      text-align: left;
+      display: inline-block;
+    }
+    &.price{
+      float: right;
+      margin-right:25px;
+    }
   }
-  border-bottom: 1px solid $color-global-shadow;
-}
 
-.label-fine-print{
-  margin: 0px 0px 5px 0px;
-  &.get-started{
-    width:35%;
-    margin:3% auto;
+  &.label-fine-print{
+    margin: 0px 0px 5px 0px;
+    &.get-started{
+      width:35%;
+      margin:3% auto;
+    }
+    &.tax{
+      display:inline-block;
+    }
   }
-  &.tax{
-    display:inline-block;
+
+  &.label-blurb{
+    font-size: 1.4em;
+    width: 60%;
+    margin: 10% auto;
+    @extend .text-center;
+    &.bottom{
+      @extend .horizontal-center;
+    }
   }
-}
 
-.label-direct-deposit{
-  color: $color-text-light-grey;
-}
-
-.label-blurb{
-  font-size: 1.4em;
-  width: 60%;
-  text-align: center;
-  margin: 10% auto;
-  &.bottom{
-    margin: 0 auto;
+  &.label-total-price{
+    font-size: 3em;
+    display: inline-block;
+    margin: 10px 10px;
   }
-}
-
-.label-total-price{
-  font-size: 3em;
-  display: inline-block;
-  margin: 10px 10px;
 }
 
