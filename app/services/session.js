@@ -124,7 +124,7 @@ session.actionStartUserSession = function(req,token){
                             email: response.email,
                             phone: response.phone,
                             username: response.username,
-                            // firstName: response.first_name,
+                            firstName: response.first_name,
                             lastName: response.last_name,
                             accounts: response.accounts,
                             birthday: response.birthday,
