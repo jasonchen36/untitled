@@ -72,6 +72,13 @@ button {
   &.long{
     width:240px;
   }
+  &.green-outline{
+    color: $color-global-green;
+    background: transparent;
+    border: 1px solid $color-global-green;
+    width:90px;
+    height:25px;
+  }
 }
 
 button:active{
