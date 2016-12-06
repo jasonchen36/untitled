@@ -29,7 +29,7 @@
                 submitIncome();
             });
 
-            quoteSubmit.on('submit',function(event){
+            quoteSubmit.on('click',function(event){
                 event.preventDefault();
                 submitIncome();
             });
