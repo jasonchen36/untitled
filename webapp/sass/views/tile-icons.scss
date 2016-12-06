@@ -1,0 +1,16 @@
+//filing-for icons
+//-----------------------------
+.taxplan-tile[data-id="9999"]{
+  @extend .i--icon-filing-myself;
+}
+
+.taxplan-tile[data-id="9998"]{
+  @extend .i--icon-filing-partner;
+}
+
+.taxplan-tile[data-id="9997"]{
+  @extend .i--icon-filing-other;
+}
+
+//filing-for icons
+//-----------------------------
