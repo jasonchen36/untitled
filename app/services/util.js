@@ -34,8 +34,7 @@ util.questionCategories = {
     credits2: 4,
     specialScenarios: 5,
     other: 6,
-    maritalStatus: 7,
-    dependants: 8
+    maritalStatus: 7
 };
 
 util.globals = {

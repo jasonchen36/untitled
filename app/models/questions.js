@@ -100,29 +100,4 @@ questionsModel.getMaritalStatusData = function(){
     ]
 };
 
-questionsModel.getDependentsData = function(){
-    return [
-        {
-            category_id: 8,
-            has_multiple_answers: 0,
-            id: 1111,
-            instructions: '',
-            product_id: process.env.API_PRODUCT_ID,
-            question_id: 1111,
-            text: 'Yes',
-            type: 'Choice'
-        },
-        {
-            category_id: 8,
-            has_multiple_answers: 0,
-            id: 1112,
-            instructions: '',
-            product_id: process.env.API_PRODUCT_ID,
-            question_id: 1112,
-            text: 'No',
-            type: 'Choice'
-        }
-        ]
-};
-
 module.exports = questionsModel;
