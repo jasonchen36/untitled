@@ -11,8 +11,34 @@
         disabledClass = app.helpers.disabledClass;
 
     function submitDependants(){
-        //todo
-        personalProfile.goToNextPage();
+        if (!dependantsSubmit.hasClass(disabledClass)) {
+            var formData = helpers.getTileFormData(dependantsForm);
+            if(!helpers.hasSelectedTile(formData)){
+                //todo, real alert
+                alert('no selected option');
+            } else {
+                dependantsSubmit.addClass(disabledClass);
+                app.ajax.ajax(
+                    'POST',
+                    '/personal-profile',
+                    {
+                        action: 'api-pp-dependants',
+                        data: formData
+                    },
+                    'json'
+                    )
+                    .then(function(response){
+                        personalProfile.goToNextPage(response.data);
+                    })
+                    .catch(function(jqXHR,textStatus,errorThrown){
+                        console.log(jqXHR,textStatus,errorThrown);
+                        dependantsSubmit.removeClass(disabledClass);
+                    });
+            }
+        }
+
+
+
     }
 
     this.init = function(){
