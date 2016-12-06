@@ -8,16 +8,8 @@
             </div>
             <form id="dependants-form">
                 <h1 class="subtitle">{{firstName}}, do you have any children or elderly parents as dependants?</h1>
-                <div class="taxplan-tile">
-                    <span class="taxplan-tile-label">
-                       Yes
-                   </span>
-                </div>
-                <div class="taxplan-tile">
-                    <span class="taxplan-tile-label">
-                       No
-                   </span>
-                </div>
+                {{>personal-profile-options questions=questions.dependants activeTiles=activeTiles.dependants}}
+
             </form>
         </div>
     </div>
