@@ -76,6 +76,9 @@ button {
   &.long{
     width:240px;
   }
+  &.short{
+    width:98px;
+  }
   &.green-outline{
     color: $color-global-green;
     background: transparent;

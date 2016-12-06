@@ -1,5 +1,28 @@
 .messages {
   margin: 20px 0;
   border: 2px solid black;
+  border-radius: 15px;
   padding: 10px 15px;
+  background: $color-global-white;
+}
+
+.messages-container{
+  height: calc(100% - #{$header-height} - 110px); //whole height - header - text area height
+  overflow-y: auto;
+}
+
+.text-field-chat{
+  width: 80%;
+  margin: 15px 0px;
+  border-radius: 15px;
+  resize: none;
+}
+
+.container-text-field{
+  margin: 0px;
+}
+
+.button-send{
+  float: right;
+  margin-top: 25px;
 }
