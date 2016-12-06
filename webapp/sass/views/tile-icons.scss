@@ -1,4 +1,4 @@
-//filing-for icons
+//Filing for icons
 //-----------------------------
 .taxplan-tile[data-id="9999"]{
   @extend .i--icon-filing-myself;
@@ -12,5 +12,16 @@
   @extend .i--icon-filing-other;
 }
 
-//filing-for icons
+//Question option icons
 //-----------------------------
+.taxplan-tile[data-id="115"]{
+  @extend .i--icon-employee;
+}
+
+.taxplan-tile[data-id="121"], [data-id="114"]{
+  @extend .i--icon-gains;
+}
+
+.taxplan-tile[data-id="122"], [data-id="123"]{
+  @extend .i--icon-support;
+}
