@@ -8,6 +8,7 @@ Use helper classes to style elements that otherwise wouldn't need to have a full
 
 //main styles
 //-----------------------------
+$header-height: 85px;
 
 * {
   @extend .f--futura-heavy;
