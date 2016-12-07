@@ -1,44 +1,40 @@
 (function(){
 
     var $ = jQuery,
-        that = app.views.taxProfile.quote,
+        that = app.views.taxProfile.modalQuote,
         helpers = app.helpers,
         taxProfile = app.services.taxProfile,
         quoteForm,
         quoteSubmit,
-        quoteBack,
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
-    function submitQuote(){
+    function submitModalQuote(){
         //todo
-        window.location.hash = 'modal-tax-profile-quote';
+        if(confirm('register?')){
+            window.location.hash = '';
+            window.location.href = '/register';
+        }
     }
 
     this.init = function(){
-        if ($('#tax-profile-quote').length > 0) {
+        if ($('#modal-tax-profile-quote').length > 0) {
 
             //variables
-            quoteForm = $('#quote-form');
-            quoteSubmit = $('#quote-submit');
-            quoteBack = $('#quote-back');
+            quoteForm = $('#modal-tax-profile-quote-form');
+            quoteSubmit = $('#modal-tax-profile-quote-submit');
 
             //listeners
             quoteForm.on('submit',function(event){
                 event.preventDefault();
-                submitQuote();
+                submitModalQuote();
             });
 
             quoteSubmit.on('click',function(event){
                 event.preventDefault();
-                submitQuote();
-            });
-
-            quoteBack.on('click',function(event){
-                event.preventDefault();
-                taxProfile.goToPreviousPage();
+                submitModalQuote();
             });
         }
     };
 
-}).apply(app.views.taxProfile.quote);
+}).apply(app.views.taxProfile.modalQuote);

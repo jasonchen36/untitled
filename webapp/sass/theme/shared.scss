@@ -8,6 +8,7 @@ Use helper classes to style elements that otherwise wouldn't need to have a full
 
 //main styles
 //-----------------------------
+$header-height: 85px;
 
 * {
   @extend .f--futura-heavy;
@@ -74,6 +75,9 @@ button {
   outline:none;
   &.long{
     width:240px;
+  }
+  &.short{
+    width:98px;
   }
   &.green-outline{
     color: $color-global-green;
@@ -209,7 +213,7 @@ p{
 .main-container{
   background: $color-global-bg;
   position: relative;
-  min-height:100%;
+  min-height:calc(100% - #{$header-height});
 }
 
 .yellow-container{

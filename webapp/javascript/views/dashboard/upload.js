@@ -3,7 +3,6 @@
     var $ = jQuery,
         that = app.views.dashboard.upload,
         helpers = app.helpers,
-        animations = app.animations,
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass,
         fileUpload,
@@ -17,6 +16,7 @@
             acceptFileTypes: /(\.|\/)(gif|jpe?g|png|pdf|txt|doc|docx|csv|xls|xlsx|ppt|pptx|odt|ott)$/i,
             dataType: 'json',
             add: function (e, data) {
+                // console.log(data.originalFiles[0].name);
                 fileUploadSubmit.removeClass(disabledClass);
                 data.context = fileUploadSubmit
                     .click(function () {
@@ -27,8 +27,23 @@
                     });
             },
             done: function (e, data) {
-                fileUploadSubmit.text('Upload finished').addClass(disabledClass);
-                //todo, clear form and or refresh template
+                app.ajax.ajax(
+                    'PUT',
+                    '/dashboard/document',
+                    {
+                        action: 'api-dashboard-upload',
+                        fileName: data.files[0].name
+                    },
+                    'json'
+                )
+                    .then(function(response){
+                        fileUploadSubmit.text('Upload finished').removeClass(disabledClass);
+                        //todo, clear form and or refresh template
+                    })
+                    .catch(function(jqXHR,textStatus,errorThrown){
+                        console.log(jqXHR,textStatus,errorThrown);
+                        fileUploadSubmit.removeClass(disabledClass);
+                    });
             },
             cancel: function (e, data) {
                 console.log(data);

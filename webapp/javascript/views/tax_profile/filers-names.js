@@ -10,7 +10,7 @@
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
-    function submitIncome(){
+    function submitFilersNames(){
         //todo
         taxProfile.goToNextPage();
     }
@@ -26,12 +26,12 @@
             //listeners
             filtersNamesForm.on('submit',function(event){
                 event.preventDefault();
-                submitIncome();
+                submitFilersNames();
             });
 
             filtersNamesSubmit.on('click',function(event){
                 event.preventDefault();
-                submitIncome();
+                submitFilersNames();
             });
 
             filtersNamesBack.on('click',function(event){

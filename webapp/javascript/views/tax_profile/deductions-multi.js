@@ -10,7 +10,7 @@
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
-    function submitIncome(){
+    function submitDeductionsMulti(){
         //todo
         taxProfile.goToNextPage();
     }
@@ -26,7 +26,7 @@
             //listeners
             deductionsMultiForm.on('submit',function(event){
                 event.preventDefault();
-                submitIncome();
+                submitDeductionsMulti();
             });
 
             deductionsMultiBack.on('click',function(event){

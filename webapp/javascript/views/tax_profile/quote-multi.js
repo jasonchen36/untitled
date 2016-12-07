@@ -10,7 +10,7 @@
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
-    function submitIncome(){
+    function submitQuoteMulti(){
         //todo
         window.location.href = '/register';
     }
@@ -26,7 +26,7 @@
             //listeners
             quoteMultiForm.on('submit',function(event){
                 event.preventDefault();
-                submitIncome();
+                submitQuoteMulti();
             });
 
             quoteMultiBack.on('click',function(event){
