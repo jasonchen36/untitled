@@ -48,11 +48,19 @@
             chatSubmit = $('#dashboard-chat-submit');
             chatMessageInput = $('#dashboard-chat-message');
 
-            $(".chat-message:last-child").velocity("scroll", {
-                container: $('#dashboard-chat-container'),
-                duration: 800,
-                delay: 250
-            });
+            if(scrollMessages) {
+                $(".chat-message:last-child").velocity("scroll", {
+                    container: $('#dashboard-chat-container'),
+                    duration: 800,
+                    delay: 250
+                });
+                scrollMessages = false;
+            } else {
+                $(".chat-message:last-child").velocity("scroll", {
+                    container: $('#dashboard-chat-container'),
+                    duration: 0
+                });
+            }
 
             //listeners
             chatForm.on('submit',function(event){

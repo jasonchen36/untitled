@@ -37,7 +37,7 @@ dashboardPages.getDashboardPage = function(req, res, next){
                     entry.isFromUser = true;
                 }
                 //format timestamp nicely
-                entry.date = moment(entry.date).format('MMM D [-] h:mm a').toString();
+                entry.date = moment(entry.date).format('MMM D [-] h:mm A').toString();
             });
             try {
                 res.render('dashboard/dashboard', {
