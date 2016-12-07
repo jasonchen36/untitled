@@ -1,4 +1,10 @@
 <header class="full-screen-grid-container">
     <div class="i--icon-logo"></div>
-    <p class="text-contact">NEED HELP? CALL US: 1-855-610-PLAN (7526)</p>
+    <!--hasAccountSession doesn't seem to be working-->
+    {{#if data.hasAccountSession}}
+        <p class="text-header dark-grey">CARMELA DOCTOR</p>
+        <div class="i--icon-default-user"></div>
+        <p class="text-header dark-grey">SETTINGS</p>
+    {{/if}}
+    <p class="text-header">NEED HELP? CALL US: 1-855-610-PLAN (7526)</p>
 </header>

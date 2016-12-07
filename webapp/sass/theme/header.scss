@@ -1,19 +1,29 @@
 header {
-  height: 85px;
+  height: $header-height;
   .i--icon-logo {
     height: 40px;
     width: 180px;
     margin: 20px;
     display: inline-block;
   }
+  .i--icon-default-user {
+    height: 34px;
+    width: 32px;
+    display: inline-block;
+    float: right;
+    margin: 20px 0px 20px 20px;
+  }
 }
 
-.text-contact{
+.text-header{
   display: inline-block;
   float: right;
   color:$color-header-lightgrey;
   font-size: 14px;
   padding: 15px;
+  &.dark-grey{
+    color:$color-global-mid-grey;
+  }
 }
 
 .progress-bar{

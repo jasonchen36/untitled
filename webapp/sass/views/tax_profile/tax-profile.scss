@@ -23,9 +23,8 @@
   margin-left: 10px;
   margin-right: 10px;
   word-wrap: break-word;
-  text-align: center;
-  text-align: center;
   display: inline-block;
+  @extend .text-center;
 }
 
 .i--icon-question{

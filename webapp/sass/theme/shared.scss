@@ -8,12 +8,16 @@ Use helper classes to style elements that otherwise wouldn't need to have a full
 
 //main styles
 //-----------------------------
+$header-height: 85px;
 
 * {
   @extend .f--futura-heavy;
   color: $color-global-text-grey;
   &.font-yellow{
     color: $color-global-yellow;
+  }
+  &.font-light-grey{
+    color: $color-text-light-grey;
   }
 }
 
@@ -39,8 +43,8 @@ input {
   }
   &.small{
     @extend .small-2;
+    @extend .text-center;
     min-width: 10%;
-    text-align: center;
   }
 }
 
@@ -69,6 +73,19 @@ button {
   border: 0 none;
   font-size: 12px;
   outline:none;
+  &.long{
+    width:240px;
+  }
+  &.short{
+    width:98px;
+  }
+  &.green-outline{
+    color: $color-global-green;
+    background: transparent;
+    border: 1px solid $color-global-green;
+    width:90px;
+    height:25px;
+  }
 }
 
 button:active{
@@ -87,7 +104,7 @@ label{
 }
 
 h1{
-  text-align: center;
+  @extend .text-center;
   font-size: 24px;
   &.subtitle{
     text-align: left;
@@ -128,6 +145,10 @@ p{
   opacity: 0;
 }
 
+.horizontal-center{
+  margin: 0 auto;
+}
+
 //typography
 .text-bold {
   font-weight: bold;
@@ -147,6 +168,24 @@ p{
 
 .text-upper {
   text-transform: uppercase;
+}
+
+//border classes
+//-----------------------------
+.border-top-light-gray{
+  border-top: 1px solid $color-global-shadow;
+}
+
+.border-bottom-light-gray{
+  border-bottom: 1px solid $color-global-shadow;
+}
+
+.border-bottom-dark-grey{
+  border-bottom: 1px solid $color-global-border-grey;
+}
+
+.border-none{
+  border: 0 none;
 }
 
 //custom checkbox
@@ -174,7 +213,7 @@ p{
 .main-container{
   background: $color-global-bg;
   position: relative;
-  min-height:100%;
+  min-height:calc(100% - #{$header-height});
 }
 
 .yellow-container{
@@ -188,7 +227,7 @@ p{
 }
 
 .container-header{
-  border-bottom: 1px solid $color-global-border-grey;
+  @extend .border-bottom-dark-grey;
 }
 
 //content padding
@@ -196,7 +235,6 @@ p{
 .content-form{
   margin-left:20px;
 }
-
 
 .wrapper-container{
   margin-top: 235px;
@@ -207,7 +245,7 @@ p{
     margin-top: 40%;
     margin-left: 15%;
     margin-right: 15%;
-    text-align: center;
+    @extend .text-center;
     &.has-image{
       margin-top: 10%;
     }

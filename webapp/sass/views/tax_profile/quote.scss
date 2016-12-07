@@ -1,0 +1,55 @@
+.i--icon-quote{
+  height: 270px;
+}
+
+.container-credits-form{
+  width:64%;
+  @extend .horizontal-center;
+}
+
+.button-details{
+  float: right;
+  margin:20px 0px;
+}
+
+p{
+  &.line-item{
+    font-size: 1.3em;
+    &.item{
+      text-align: left;
+      display: inline-block;
+    }
+    &.price{
+      float: right;
+      margin-right:25px;
+    }
+  }
+
+  &.label-fine-print{
+    margin: 0px 0px 5px 0px;
+    &.get-started{
+      width:35%;
+      margin:3% auto;
+    }
+    &.tax{
+      display:inline-block;
+    }
+  }
+
+  &.label-blurb{
+    font-size: 1.4em;
+    width: 60%;
+    margin: 10% auto;
+    @extend .text-center;
+    &.bottom{
+      @extend .horizontal-center;
+    }
+  }
+
+  &.label-total-price{
+    font-size: 3em;
+    display: inline-block;
+    margin: 10px 10px;
+  }
+}
+
