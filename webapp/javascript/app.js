@@ -49,7 +49,8 @@ var app = {
             deductions: {},
             deductionsMulti: {},
             quote: {},
-            quoteMulti: {}
+            quoteMulti: {},
+            modalQuote: {}
         },
         user: {
             login: {},

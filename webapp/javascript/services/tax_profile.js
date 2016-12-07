@@ -59,6 +59,7 @@
         taxProfileViews.creditsMulti.init();
         taxProfileViews.quote.init();
         taxProfileViews.quoteMulti.init();
+        taxProfileViews.modalQuote.init();
     }
 
     function startAccountSession(){
