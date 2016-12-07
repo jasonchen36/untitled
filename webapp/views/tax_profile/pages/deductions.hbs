@@ -1,7 +1,16 @@
-<section id="tax-profile-deductions">
-    <h1>deductions</h1>
-    <form id="deductions-form">
-        <button type="submit">Next</button>
-    </form>
-    <button id="deductions-back">Back</button>
+<section id="tax-profile-deductions" class="full-screen-grid-container main-container">
+    <div class="small-12 medium-7">
+        <div class="content-form">
+            <div class="container-header">
+                <h1 class="header">Deductions</h1>
+                <button id="deductions-submit" type="submit" class="green header">Next</button>
+                <button id="deductions-back" class="grey header">Previous</button>
+            </div>
+            <form id="deductions-form">
+                <h1 class="subtitle">Last Question! {{firstName}} please select all your 2016 deductions:</h1>
+                {{>tax-profile-options questions=questions.deductions activeTiles=activeTiles.deductions}}
+            </form>
+        </div>
+    </div>
+    {{>tax-profile-sidebar sidebarTitle="deductions"}}
 </section>

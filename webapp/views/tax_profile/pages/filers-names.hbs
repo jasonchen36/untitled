@@ -1,18 +1,39 @@
-<section id="tax-profile-filers-names">
-    <h1>filers names</h1>
-    <form id="filers-names-form">
-        <label for="filers-names-myself">Your first name</label>
-        <input id="filers-names-myself" type="text" readonly="readonly" value="{{name}}"/>
-        {{#compare filingType.spouse 1 operator="=="}}
-            <label for="filers-names-spouse">Your spouse or partner's first name</label>
-            <input id="filers-names-spouse" type="text" value=""/>
-        {{/compare}}
-        {{#compare filingType.other 1 operator="=="}}
-            <label for="filers-names-other">First name of your additional filer</label>
-            <input id="filers-names-other" type="text" value=""/>
-        {{/compare}}
-
-        <button type="submit">Next</button>
-    </form>
-    <button id="filers-names-back">Back</button>
+<section id="tax-profile-filers-names" class="full-screen-grid-container main-container">
+    <div class="small-12 medium-7">
+        <div class="content-form">
+            <div class="container-header">
+                <h1 class="header">Additional Filer Names</h1>
+                <button id="filers-names-submit" type="submit" class="green header">Next</button>
+                <button id="filers-names-back" class="grey header">Previous</button>
+            </div>
+            <h1 class="subtitle">
+                Next we just need the first names of all the people you are filing for:
+            </h1>
+            <form id="filers-names-form">
+                <label for="filers-names-myself">YOUR FIRST NAME</label>
+                <input id="filers-names-myself" type="text" readonly="readonly" value="{{firstName}}"/>
+                {{#compare filingType.spouse 1 operator="=="}}
+                    <label for="filers-names-spouse" class="under">YOUR SPOUSE OR PARTNER’S FIRST NAME</label>
+                    <input id="filers-names-spouse" type="text" value=""/>
+                {{/compare}}
+                {{#compare filingType.other 1 operator="=="}}
+                    <label for="filers-names-other" class="under">FIRST NAME OF YOUR ADDITIONAL FILER</label>
+                    <input id="filers-names-other" type="text" value=""/>
+                {{/compare}}
+            </form>
+            <div>
+                <div class="i--icon-add"></div>
+                <label class="label-add">ADD AN ADDITIONAL FILER</label>
+            </div>
+        </div>
+    </div>
+    <div class="hide-for-small small-12 medium-5 grid-end white-container">
+        <div class="wrapper-container side-info has-image">
+            <div class="i--icon-filersnames"></div>
+            <h3 class="font-yellow">Filers Names</h3>
+            <p class="side-info">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris aliquam velit ut faucibus consequat. In hac habitasse platea dictumst. Proin at volutpat velit. Quisque congue varius nulla non aliquam. Integer condimentum dapibus ipsum, sit amet pharetra ligula aliquam sit amet. Praesent dui tortor, molestie et sodales non, vulputate in ligula. Curabitur nec justo tellus. Sed ac arcu porttitor, blandit sapien convallis, ultrices nisi. Duis aliquam iaculis nunc sed sodales. Phasellus cursus convallis scelerisque. Nulla consectetur, nunc at maximus tincidunt, mauris sapien vehicula libero, at bibendum metus dui ac magna. Donec tempus justo eu vestibulum dictum.
+            </p>
+        </div>
+    </div>
 </section>

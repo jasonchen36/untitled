@@ -3,6 +3,7 @@
     var $ = jQuery,
         that = app.views.taxProfile.deductions,
         helpers = app.helpers,
+        ajax = app.ajax,
         taxProfile = app.services.taxProfile,
         deductionsForm,
         deductionsSubmit,
@@ -10,9 +11,32 @@
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
-    function submitIncome(){
-        //todo
-        taxProfile.goToNextPage();
+    function submitDeductions(){
+        if (!deductionsSubmit.hasClass(disabledClass)) {
+            var formData = helpers.getTileFormData(deductionsForm);
+            if(!helpers.hasSelectedTile(formData)){
+                //todo, real alert
+                alert('no selected option');
+            } else {
+                deductionsSubmit.addClass(disabledClass);
+                ajax.ajax(
+                    'POST',
+                    '/tax-profile',
+                    {
+                        action: 'api-tp-deductions',
+                        data: formData
+                    },
+                    'json'
+                )
+                    .then(function(response){
+                        taxProfile.goToNextPage(response.data);
+                    })
+                    .catch(function(jqXHR,textStatus,errorThrown){
+                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
+                        deductionsSubmit.removeClass(disabledClass);
+                    });
+            }
+        }
     }
 
     this.init = function(){
@@ -25,8 +49,13 @@
 
             //listeners
             deductionsForm.on('submit',function(event){
+               event.preventDefault();
+               submitDeductions();
+            });
+
+            deductionsSubmit.on('click',function(event){
                 event.preventDefault();
-                submitIncome();
+                submitDeductions();
             });
 
             deductionsBack.on('click',function(event){

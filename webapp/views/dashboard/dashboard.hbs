@@ -1,16 +1,24 @@
-<main id="page-user-dashboard" class="grid-container">
-    <h1>Dashboard</h1>
-    <div class="small-4">
-        <button id="dashboard-chat-activate">Chat</button>
-        <button id="dashboard-upload-activate">Upload</button>
-        {{#if user.enableTaxReturn}}
+<main id="page-user-dashboard" class="full-screen-grid-container main-container">
+    <div class="small-3">
+        <div>
+            <button id="dashboard-chat-activate">Chat Unread: {{data.newMessageCount}}</button>
+        </div>
+            <button id="dashboard-upload-activate">Upload</button>
+        <div>
+        {{#if data.enableTaxReturn}}
             <button id="dashboard-my-return-activate">My Return</button>
         {{/if}}
+        </div>
     </div>
-    <div id="dashboard-container" class="small-8 grid-end">
+    <div id="dashboard-container" class="small-6">
+        <p>coming soon</p>
+    </div>
+    <div class="small-3 grid-end">
+        <div class="i--icon-logo"></div>
         <p>coming soon</p>
     </div>
 </main>
 <script type="text/javascript">
-    var userObject = JSON.parse('{{{locals.userToString}}}');
+    var userObject = JSON.parse('{{{locals.userToString}}}'),
+            scrollMessages = true;
 </script>

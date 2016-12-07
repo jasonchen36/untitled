@@ -3,6 +3,7 @@
     var $ = jQuery,
         that = app.views.taxProfile.welcome,
         helpers = app.helpers,
+        ajax = app.ajax,
         taxProfile = app.services.taxProfile,
         welcomeForm,
         welcomeSubmit,
@@ -19,7 +20,7 @@
             }
             if (!helpers.formHasErrors(welcomeForm)) {
                 welcomeSubmit.addClass(disabledClass);
-                app.ajax.ajax(
+                ajax.ajax(
                     'POST',
                     '/tax-profile',
                     {
@@ -32,7 +33,7 @@
                         taxProfile.goToNextPage(response.data);
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
-                        console.log(jqXHR,textStatus,errorThrown);
+                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         welcomeSubmit.removeClass(disabledClass);
                     });
             }

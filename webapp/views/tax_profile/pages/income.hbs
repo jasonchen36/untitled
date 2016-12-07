@@ -1,9 +1,16 @@
-<section id="tax-profile-income">
-    <h1>income</h1>
-    <form id="income-form">
-        <p>{{name}} please select all sources of income in 2016:</p>
-        {{>income-options}}
-        <button type="submit">Next</button>
-    </form>
-    <button id="income-back">Back</button>
+<section id="tax-profile-income" class="full-screen-grid-container main-container">
+    <div class="small-12 medium-7">
+        <div class="content-form">
+            <div class="container-header">
+                <h1 class="header">Income</h1>
+                <button id="income-submit" type="submit" class="green header">Next</button>
+                <button id="income-back" class="grey header">Previous</button>
+            </div>
+            <form id="income-form">
+                <h1 class="subtitle">{{firstName}} please select all your sources of income in 2016:</h1>
+                {{>tax-profile-options questions=questions.income activeTiles=activeTiles.income}}
+            </form>
+        </div>
+    </div>
+    {{>tax-profile-sidebar sidebarTitle="income"}}
 </section>

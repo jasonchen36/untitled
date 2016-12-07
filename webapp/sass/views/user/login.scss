@@ -9,7 +9,7 @@
 
 .container-button-login{
   margin-top:50px;
-  text-align: center;
+  @extend .text-center;
 }
 
 .container-password-form{

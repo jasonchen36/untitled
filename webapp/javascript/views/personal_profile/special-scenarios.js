@@ -3,6 +3,7 @@
     var $ = jQuery,
         that = app.views.personalProfile.specialScenarios,
         helpers = app.helpers,
+        ajax = app.ajax,
         personalProfile = app.services.personalProfile,
         specialScenariosForm,
         specialScenariosSubmit,
@@ -11,8 +12,31 @@
         disabledClass = app.helpers.disabledClass;
 
     function submitSpecialScenarios(){
-        //todo
-        personalProfile.goToNextPage();
+        if (!specialScenariosSubmit.hasClass(disabledClass)) {
+            var formData = helpers.getTileFormData(specialScenariosForm);
+            if(!helpers.hasSelectedTile(formData)){
+                //todo, real alert
+                alert('no selected option');
+            } else {
+                specialScenariosSubmit.addClass(disabledClass);
+                ajax.ajax(
+                    'POST',
+                    '/personal-profile',
+                    {
+                        action: 'api-pp-special-scenarios',
+                        data: formData
+                    },
+                    'json'
+                )
+                    .then(function(response){
+                        personalProfile.goToNextPage(response.data);
+                    })
+                    .catch(function(jqXHR,textStatus,errorThrown){
+                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
+                        specialScenariosSubmit.removeClass(disabledClass);
+                    });
+            }
+        }
     }
 
     this.init = function(){
@@ -25,6 +49,11 @@
 
             //listeners
             specialScenariosForm.on('submit',function(event){
+                event.preventDefault();
+                submitSpecialScenarios();
+            });
+
+            specialScenariosSubmit.on('click',function(event){
                 event.preventDefault();
                 submitSpecialScenarios();
             });

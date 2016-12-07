@@ -10,9 +10,9 @@
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
-    function submitIncome(){
+    function submitQuote(){
         //todo
-        window.location.href = '/register';
+        window.location.hash = 'modal-tax-profile-quote';
     }
 
     this.init = function(){
@@ -26,7 +26,12 @@
             //listeners
             quoteForm.on('submit',function(event){
                 event.preventDefault();
-                submitIncome();
+                submitQuote();
+            });
+
+            quoteSubmit.on('click',function(event){
+                event.preventDefault();
+                submitQuote();
             });
 
             quoteBack.on('click',function(event){

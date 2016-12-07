@@ -3,6 +3,7 @@
     var $ = jQuery,
         that = app.views.personalProfile.maritalStatus,
         helpers = app.helpers,
+        ajax = app.ajax,
         personalProfile = app.services.personalProfile,
         maritalStatusForm,
         maritalStatusSubmit,
@@ -11,8 +12,31 @@
         disabledClass = app.helpers.disabledClass;
 
     function submitMaritalStatus(){
-        //todo
-        personalProfile.goToNextPage();
+        if (!maritalStatusSubmit.hasClass(disabledClass)) {
+            var formData = helpers.getTileFormData(maritalStatusForm);
+            if(!helpers.hasSelectedTile(formData)){
+                //todo, real alert
+                alert('no selected option');
+            } else {
+                maritalStatusSubmit.addClass(disabledClass);
+                ajax.ajax(
+                    'POST',
+                    '/personal-profile',
+                    {
+                        action: 'api-pp-marital-status',
+                        data: formData
+                    },
+                    'json'
+                )
+                    .then(function(response){
+                        personalProfile.goToNextPage(response.data);
+                    })
+                    .catch(function(jqXHR,textStatus,errorThrown){
+                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
+                        maritalStatusSubmit.removeClass(disabledClass);
+                    });
+            }
+        }
     }
 
     this.init = function(){
@@ -25,6 +49,11 @@
 
             //listeners
             maritalStatusForm.on('submit',function(event){
+                event.preventDefault();
+                submitMaritalStatus();
+            });
+
+            maritalStatusSubmit.on('click',function(event){
                 event.preventDefault();
                 submitMaritalStatus();
             });

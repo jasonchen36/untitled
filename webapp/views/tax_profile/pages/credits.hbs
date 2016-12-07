@@ -1,7 +1,16 @@
-<section id="tax-profile-credits">
-    <h1>credits</h1>
-    <form id="credits-form">
-        <button type="submit">Next</button>
-    </form>
-    <button id="credits-back">Back</button>
+<section id="tax-profile-credits" class="full-screen-grid-container main-container">
+    <div class="small-12 medium-7">
+        <div class="content-form">
+            <div class="container-header">
+                <h1 class="header">Credits</h1>
+                <button id="credits-submit" type="submit" class="green header">Next</button>
+                <button id="credits-back" class="grey header">Previous</button>
+            </div>
+            <form id="credits-form">
+                <h1 class="subtitle">{{firstName}} please select all your credit in 2016:</h1>
+                {{>tax-profile-options questions=questions.credits activeTiles=activeTiles.credits}}
+            </form>
+        </div>
+    </div>
+    {{>tax-profile-sidebar sidebarTitle="credits"}}
 </section>

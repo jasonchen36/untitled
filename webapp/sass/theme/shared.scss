@@ -8,12 +8,16 @@ Use helper classes to style elements that otherwise wouldn't need to have a full
 
 //main styles
 //-----------------------------
+$header-height: 85px;
 
 * {
-  font-family: FuturaMedium, Arial, sans-serif;
+  @extend .f--futura-heavy;
   color: $color-global-text-grey;
   &.font-yellow{
     color: $color-global-yellow;
+  }
+  &.font-light-grey{
+    color: $color-text-light-grey;
   }
 }
 
@@ -27,7 +31,7 @@ input {
   border-bottom-color: $color-global-border-grey;
   border-bottom: 1px solid;
   outline: 0;
-  height:40px;
+  height:50px;
   min-width: 50%;
   display:inline-block;
   @include transition-with-defaults(border-color);
@@ -36,6 +40,11 @@ input {
   }
   &.login{
     min-width: 98%;
+  }
+  &.small{
+    @extend .small-2;
+    @extend .text-center;
+    min-width: 10%;
   }
 }
 
@@ -52,17 +61,31 @@ button {
   }
   &.header{
     float:right;
-    margin: 15px;
+    margin:10px;
   }
-  border-radius: 20px;
+  border-radius: 30px;
   color: white;
-  padding: 10px 45px;
+  width:120px;
+  height:43px;
   cursor: pointer;
   text-decoration: none !important;
   text-transform: none;
   border: 0 none;
   font-size: 12px;
   outline:none;
+  &.long{
+    width:240px;
+  }
+  &.short{
+    width:98px;
+  }
+  &.green-outline{
+    color: $color-global-green;
+    background: transparent;
+    border: 1px solid $color-global-green;
+    width:90px;
+    height:25px;
+  }
 }
 
 button:active{
@@ -75,10 +98,13 @@ label{
   color: $color-global-text-grey;
   display:block;
   padding-bottom: 7px;
+  &.under{
+    padding-top: 30px;
+  }
 }
 
 h1{
-  text-align: center;
+  @extend .text-center;
   font-size: 24px;
   &.subtitle{
     text-align: left;
@@ -99,6 +125,18 @@ textarea {
   }
 }
 
+p{
+  &.side-info{
+    font-size: 0.9em;
+    @extend .f--futura-book;
+  }
+  &.checkbox-label{
+    display: inline-block;
+    margin: 0px;
+    padding: 5px 10px;
+  }
+}
+
 
 //helper classes
 //-----------------------------
@@ -107,6 +145,9 @@ textarea {
   opacity: 0;
 }
 
+.horizontal-center{
+  margin: 0 auto;
+}
 
 //typography
 .text-bold {
@@ -129,11 +170,50 @@ textarea {
   text-transform: uppercase;
 }
 
+//border classes
+//-----------------------------
+.border-top-light-gray{
+  border-top: 1px solid $color-global-shadow;
+}
+
+.border-bottom-light-gray{
+  border-bottom: 1px solid $color-global-shadow;
+}
+
+.border-bottom-dark-grey{
+  border-bottom: 1px solid $color-global-border-grey;
+}
+
+.border-none{
+  border: 0 none;
+}
+
+//custom checkbox
+//-----------------------------
+.checkbox {
+  background-color: $color-checkbox-bg;
+  display:inline-block;
+  position: relative;
+  height: 20px;
+  width: 20px;
+  border: 2px solid $color-global-green;
+  border-radius: 5px;
+  margin: 5px;
+  float: left;
+  cursor: pointer;
+  @include unselectable;
+  &.active, &:hover {
+    background-color: $color-global-green;
+    @extend .i--icon-check;
+  }
+}
+
 //background colours
 //-----------------------------
 .main-container{
   background: $color-global-bg;
-  height:100%;
+  position: relative;
+  min-height:calc(100% - #{$header-height});
 }
 
 .yellow-container{
@@ -147,7 +227,7 @@ textarea {
 }
 
 .container-header{
-  border-bottom: 1px solid $color-global-border-grey;
+  @extend .border-bottom-dark-grey;
 }
 
 //content padding
@@ -156,17 +236,16 @@ textarea {
   margin-left:20px;
 }
 
-
 .wrapper-container{
   margin-top: 235px;
   &.marketing{
     margin-top: 400px;
   }
-  &.sideinfo{
+  &.side-info{
     margin-top: 40%;
     margin-left: 15%;
     margin-right: 15%;
-    text-align: center;
+    @extend .text-center;
     &.has-image{
       margin-top: 10%;
     }

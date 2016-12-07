@@ -3,7 +3,10 @@
     /* *************** variables ***************/
     var $ = jQuery,
         that = app.services.personalProfile,
-        landingPageContainer = $('#page-personal-profile'),
+        helpers = app.helpers,
+        animations = app.animations,
+        personalProfilePageContainer = $('#page-personal-profile'),
+        profileBar = $('#tax-profile-progress-bar'),
         personalProfileSessionStore;
 
     this.personalProfileFlow = [
@@ -22,9 +25,10 @@
             var data = getPersonalProfileSession();
             //update session with new page
             updatePersonalProfileSession(data, newPage);
+            animateProgressBar();
             var template = Handlebars.templates[newPage],
                 html = template(data);
-            landingPageContainer.html(html);
+            personalProfilePageContainer.html(html);
             resolve();
         })
             .then(function(){
@@ -44,6 +48,7 @@
 
     function startPersonalProfileSession(){
         personalProfileSessionStore = personalProfileObject;
+        personalProfileSessionStore.questions = questionsObject;
         if(!personalProfileSessionStore.hasOwnProperty('currentPage') || personalProfileSessionStore.currentPage.length < 1){
             personalProfileSessionStore.currentPage = that.personalProfileFlow[0];
             changePage(personalProfileSessionStore.currentPage);
@@ -72,9 +77,18 @@
         if(newPage && newPage.length > 0){
             data.currentPage = newPage;
         }
+        data.questions = questionsObject;
         personalProfileSessionStore = data;
     }
 
+    function animateProgressBar(){
+        var percentageComplete = helpers.getAverage(that.personalProfileFlow.indexOf(getCurrentPage()),that.personalProfileFlow.length);
+        animations.animateElement(profileBar,{
+            properties: {
+                width: percentageComplete+'%'
+            }
+        });
+    }
 
     /* *************** public methods ***************/
     this.goToNextPage = function(data){
@@ -98,8 +112,20 @@
     };
 
     this.init = function(){
-        if (landingPageContainer.length > 0) {
+        if (personalProfilePageContainer.length > 0) {
             startPersonalProfileSession();
+
+            //shared bindings
+            $(document)
+                .on('click', '.'+helpers.tileClass, function (event) {
+                    event.preventDefault();
+                    $(this).toggleClass(helpers.activeClass);
+                })
+                .on('click', '.'+helpers.tileClass+'-instructions', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    $('#personal-profile-instructions').html($(this).data('instructions'));
+                });
         }
     };
 

@@ -1,7 +1,25 @@
-<section id="personal-profile-dependants">
-    <h1>dependants</h1>
-    <form id="dependants-form">
-        <button type="submit">Next</button>
-    </form>
-    <button id="dependants-back">Back</button>
+<section id="personal-profile-dependants" class="full-screen-grid-container main-container">
+    <div class="small-12 medium-7">
+        <div class="content-form">
+            <div class="container-header">
+                <h1 class="header">Dependants</h1>
+                <button id="dependants-submit" class="green header">Next</button>
+                <button id="dependants-back" class="grey header">Previous</button>
+            </div>
+            <form id="dependants-form">
+                <h1 class="subtitle">{{firstName}}, do you have any children or elderly parents as dependants?</h1>
+                <div class="taxplan-tile">
+                    <span class="taxplan-tile-label">
+                       Yes
+                   </span>
+                </div>
+                <div class="taxplan-tile">
+                    <span class="taxplan-tile-label">
+                       No
+                   </span>
+                </div>
+            </form>
+        </div>
+    </div>
+    {{>personal-profile-sidebar sidebarTitle="what is a dependent?"}}
 </section>

@@ -227,6 +227,8 @@ $large-grid-padding: 5px;
 @mixin grid-end {
   float: right;
   margin-right: 0;
+  right:0;
+  position: absolute;
 }
 
 .grid-end {

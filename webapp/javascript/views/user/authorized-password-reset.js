@@ -3,6 +3,7 @@
     var $ = jQuery,
         that = app.views.user.authorizedPasswordReset,
         helpers = app.helpers,
+        ajax = app.ajax,
         passwordResetForm = $('#authorized-password-reset-form'),
         passwordResetPasswordInput = $('#authorized-password-reset-password'),
         passwordResetSubmit = $('#authorized-password-reset-submit'),
@@ -18,7 +19,7 @@
             }
             if (!helpers.formHasErrors(passwordResetForm)) {
                 passwordResetSubmit.addClass(disabledClass);
-                app.ajax.ajax(
+                ajax.ajax(
                     'PUT',
                     '/password-reset',
                     {
@@ -33,7 +34,7 @@
                         window.location.href = '/login';
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
-                        console.log(jqXHR,textStatus,errorThrown);
+                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         passwordResetSubmit.removeClass(disabledClass);
                     });
             }

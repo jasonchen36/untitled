@@ -1,38 +1,52 @@
 const //packages
     requestPromise = require('request-promise'),
     fs = require('fs'),
+    moment = require('moment'),
 //services
     util = require('../services/util'),
     session = require('../services/session'),
-    errors = require('../services/errors');
+    errors = require('../services/errors'),
+    uploads = require('../services/uploads'),
+    user = require('../services/user');
 
 var dashboardPages = {};
 
 /************ dashboard ************/
 dashboardPages.getDashboardPage = function(req, res, next){
-    const userObject = session.getUserObject(req),
-        options = {
-            method: 'GET',
-            uri: process.env.API_URL+'/messages',
-            headers: {
-                'Authorization': 'Bearer '+session.getUserValue(req,'token')
-            },
-            body: {},
-            json: true
-        };
+    const options = {
+        method: 'GET',
+        uri: process.env.API_URL+'/messages',
+        headers: {
+            'Authorization': 'Bearer '+session.getUserValue(req,'token')
+        },
+        body: {},
+        json: true
+    };
     requestPromise(options)
         .then(function (response) {
-            userObject.messages = response.messages;
+            const dataObject = user.getDataObject(req);
+            dataObject.newMessageCount = 0;
+            dataObject.messages = response.messages;
+            response.messages.forEach(function(entry){
+                //count unread messages
+                if(entry.status && entry.status.toLowerCase() === 'new'){
+                    dataObject.newMessageCount++;
+                }
+                //determine if message if from user or tax pro
+                if(entry.client_id === entry.from_id){
+                    entry.isFromUser = true;
+                }
+                //format timestamp nicely
+                entry.date = moment(entry.date).format('MMM D [-] h:mm A').toString();
+            });
             try {
                 res.render('dashboard/dashboard', {
                     meta: {
                         pageTitle: util.globals.metaTitlePrefix + 'Dashboard'
                     },
-                    account: session.getAccountObject(req),
-                    user: userObject,
+                    data: dataObject,
                     locals: {
-                        userToString: JSON.stringify(userObject),
-                        messagesToString: JSON.stringify(response)
+                        userToString: JSON.stringify(dataObject)
                     }
                 });
             } catch(error){
@@ -62,9 +76,7 @@ dashboardPages.actionAddNewMessage = function(req, res, next){
                 'Authorization': 'Bearer '+session.getUserValue(req,'token')
             },
             body: {
-                //todo, remove subject after api is updated
                 from: session.getUserValue(req,'id'),
-                subject: 'subject is required',
                 body: req.body.message
             },
             json: true
@@ -82,17 +94,40 @@ dashboardPages.actionAddNewMessage = function(req, res, next){
     }
 };
 
-// dashboardPages.actionAddNewDocument = function(req, res, next) {
-//     if (req.validationErrors() || req.body.action !== 'api-dashboard-chat'){
-//         next(new errors.BadRequestError('dashboard upload - new document - validation errors',true));
-//     } else {
-//         res.setHeader("content-disposition", "attachment; filename=logo.png");
-//         request('http://google.com/images/srpr/logo11w.png').pipe(res);
-//         var readableStream = fs.createReadStream('file1.txt'),
-//             writableStream = fs.createWriteStream('file2.txt');
-//
-//         readableStream.pipe(writableStream);
-//     }
-// };
+dashboardPages.actionAddNewDocument = function(req, res, next) {
+    req.checkBody('fileName').notEmpty();
+
+    if (req.validationErrors() || req.body.action !== 'api-dashboard-upload'){
+        next(new errors.BadRequestError('dashboard upload - new document - validation errors',true));
+    } else {
+        const fileName = req.body.fileName,
+            options = {
+                method: 'POST',
+                uri: process.env.API_URL+'/quote/1/document',//todo dynamic quote id
+                headers: {
+                    'Authorization': 'Bearer '+session.getUserValue(req,'token')
+                },
+                formData: {
+                    taxReturnId: 1,//todo, dynamic tax return and checklist item values
+                    checklistItemId: 1,
+                    uploadFileName: fs.createReadStream(util.globals.uploadsFolderDirectory+fileName)
+                },
+                json: true
+            };
+        requestPromise(options)
+            .then(function (response) {
+                uploads.deleteFile(fileName)
+                    .then(function(){
+                        res.status(util.http.status.accepted).json({
+                            action: 'dashboard upload document added',
+                            status: 'success'
+                        });
+                    });
+            })
+            .catch(function (response) {
+                next(new errors.BadRequestError(response.error,true));
+            });
+    }
+};
 
 module.exports = dashboardPages;

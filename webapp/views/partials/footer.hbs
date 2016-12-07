@@ -1,7 +1,7 @@
 <footer class="grid-container">
     <nav class="dev-nav">
         <!--for dev use-->
-        {{#if user.hasUserSession}}
+        {{#if data.hasUserSession}}
             <a href="/dashboard">Dashboard</a>
             <a href="/personal-profile">Personal Profile</a>
             <a href="/logout">Logout (user session)</a>
@@ -12,7 +12,7 @@
             <a href="/password-reset">Forgot Password</a>
         {{/if}}
 
-        {{#if account.hasAccountSession}}
+        {{#if data.hasAccountSession}}
             <a href="/tax-profile/logout">Logout (account session)</a>
         {{/if}}
 

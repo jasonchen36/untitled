@@ -3,6 +3,7 @@
     var $ = jQuery,
         that = app.views.user.register,
         helpers = app.helpers,
+        ajax = app.ajax,
         registerForm = $('#user-register-form'),
         registerSubmit = $('#register-submit'),
         registerEmailInput = $('#register-email'),
@@ -22,7 +23,7 @@
             }
             if (!helpers.formHasErrors(registerForm)) {
                 registerSubmit.addClass(disabledClass);
-                app.ajax.ajax(
+                ajax.ajax(
                     'POST',
                     '/register',
                     {
@@ -37,7 +38,7 @@
                         window.location.href = '/personal-profile';
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
-                        console.log(jqXHR,textStatus,errorThrown);
+                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         registerSubmit.removeClass(disabledClass);
                     });
             }

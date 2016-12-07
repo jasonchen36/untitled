@@ -1,16 +1,21 @@
 <section id="dashboard-chat">
-    <h1>chat</h1>
-    <p>hello {{firstName}} {{lastName}}</p>
-    {{#each messages}}
-        <div class="messages">
-            {{{body}}}
-        </div>
-    {{/each}}
-    <form id="dashboard-chat-form">
-        <label for="dashboard-chat-message">Write Message:</label>
-        <textarea id="dashboard-chat-message" rows="10" name="message"></textarea>
-        <p>
-            <button type="submit" id="dashboard-chat-submit">Submit</button>
-        </p>
+    <div id="dashboard-chat-container">
+        {{#each messages}}
+            <div class="chat-message">
+                <p>{{date}}</p>
+                {{#if isFromUser}}
+                    <p>I sent this</p>
+                {{else}}
+                    <p>taxplan sent this (just styling difference?)</p>
+                {{/if}}
+                <p>
+                    {{{body}}}
+                </p>
+            </div>
+        {{/each}}
+    </div>
+    <form id="dashboard-chat-form" class="border-top-light-gray container-text-field">
+        <textarea id="dashboard-chat-message" rows="3" name="message" class="text-field-chat"></textarea>
+        <button type="submit" id="dashboard-chat-submit" class="green short button-send">Send</button>
     </form>
 </section>

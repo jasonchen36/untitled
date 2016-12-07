@@ -42,13 +42,25 @@
 
     this.init = function(){
         if ($('#dashboard-chat').length > 0) {
-
-            console.log('chat init');
             
             //variables
             chatForm = $('#dashboard-chat-form');
             chatSubmit = $('#dashboard-chat-submit');
             chatMessageInput = $('#dashboard-chat-message');
+
+            if(scrollMessages) {
+                $(".chat-message:last-child").velocity("scroll", {
+                    container: $('#dashboard-chat-container'),
+                    duration: 800,
+                    delay: 250
+                });
+                scrollMessages = false;
+            } else {
+                $(".chat-message:last-child").velocity("scroll", {
+                    container: $('#dashboard-chat-container'),
+                    duration: 0
+                });
+            }
 
             //listeners
             chatForm.on('submit',function(event){

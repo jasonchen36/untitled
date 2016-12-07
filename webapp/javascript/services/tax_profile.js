@@ -5,9 +5,8 @@
         that = app.services.taxProfile,
         helpers = app.helpers,
         animations = app.animations,
-        landingPageContainer = $('#page-tax-profile'),
+        taxProfilePageContainer = $('#page-tax-profile'),
         profileBar = $('#tax-profile-progress-bar'),
-        activeClass = helpers.activeClass,
         accountSessionStore;
 
     this.singleFilerFlow = [
@@ -33,23 +32,13 @@
     /* *************** private methods ***************/
     function changePage(newPage){
         return new Promise(function(resolve,reject) {
-            var data = getAccountSession(),
-                percentageComplete;
+            var data = getAccountSession();
             //update session with new page
             updateAccountSession(data, newPage);
-            if(isMultiFiler()){
-                percentageComplete = helpers.getAverage(that.multiFilerFlow.indexOf(getCurrentPage()),that.multiFilerFlow.length);
-            } else {
-                percentageComplete = helpers.getAverage(that.singleFilerFlow.indexOf(getCurrentPage()),that.singleFilerFlow.length);
-            }
-            animations.animateElement(profileBar,{
-               properties: {
-                   width: percentageComplete+'%'
-               }
-            });
+            animateProgressBar();
             var template = Handlebars.templates[newPage],
                 html = template(data);
-            landingPageContainer.html(html);
+            taxProfilePageContainer.html(html);
             resolve();
         })
             .then(function(){
@@ -70,10 +59,12 @@
         taxProfileViews.creditsMulti.init();
         taxProfileViews.quote.init();
         taxProfileViews.quoteMulti.init();
+        taxProfileViews.modalQuote.init();
     }
 
     function startAccountSession(){
         accountSessionStore = accountObject;
+        accountSessionStore.questions = questionsObject;
         if(!accountSessionStore.hasOwnProperty('currentPage') || accountSessionStore.currentPage.length < 1){
             accountSessionStore.currentPage = that.singleFilerFlow[0];
             changePage(accountSessionStore.currentPage);
@@ -87,10 +78,11 @@
     }
 
     function isMultiFiler(){
-        if(!getAccountSession().hasOwnProperty('filingType')){
+        var accountSession = getAccountSession();
+        if(!accountSession.hasOwnProperty('activeTiles')) {
             return false;
         } else {
-            return Object.values(getAccountSession().filingType).filter(function(value){return value === 1;}).length > 1;
+            return accountSession.activeTiles.hasOwnProperty('filingFor') && Object.values(accountSession.activeTiles.filingFor).filter(function (x) {return x == 1;}).length > 1;
         }
     }
 
@@ -105,7 +97,22 @@
         if(newPage && newPage.length > 0){
             data.currentPage = newPage;
         }
+        data.questions = questionsObject;
         accountSessionStore = data;
+    }
+
+    function animateProgressBar(){
+        var percentageComplete;
+        if(isMultiFiler()){
+            percentageComplete = helpers.getAverage(that.multiFilerFlow.indexOf(getCurrentPage()),that.multiFilerFlow.length);
+        } else {
+            percentageComplete = helpers.getAverage(that.singleFilerFlow.indexOf(getCurrentPage()),that.singleFilerFlow.length);
+        }
+        animations.animateElement(profileBar,{
+            properties: {
+                width: percentageComplete+'%'
+            }
+        });
     }
 
 
@@ -154,14 +161,21 @@
     };
 
     this.init = function(){
-        if (landingPageContainer.length > 0) {
+        if (taxProfilePageContainer.length > 0) {
             startAccountSession();
 
-            $(document).on('click', '.tax-profile-tile', function (event) {
-                event.preventDefault();
-                $(this).toggleClass(activeClass);
-            });
-            
+            //shared bindings
+            $(document)
+                .on('click', '.'+helpers.tileClass, function (event) {
+                    event.preventDefault();
+                    $(this).toggleClass(helpers.activeClass);
+                })
+                .on('click', '.'+helpers.tileClass+'-instructions', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    $('#tax-profile-instructions').html($(this).data('instructions'));
+                });
+
         }
     };
 

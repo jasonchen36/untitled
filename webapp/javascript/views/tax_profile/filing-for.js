@@ -3,29 +3,28 @@
     var $ = jQuery,
         that = app.views.taxProfile.filingFor,
         helpers = app.helpers,
+        ajax = app.ajax,
         taxProfile = app.services.taxProfile,
         filingForForm,
         filingForSubmit,
         filingForBack,
         errorClass = helpers.errorClass,
-        disabledClass = helpers.disabledClass,
-        taxProfileTileClass = helpers.taxProfileTileClass;
+        disabledClass = helpers.disabledClass;
 
     function submitFilingFor(){
         if (!filingForSubmit.hasClass(disabledClass)) {
-            var formData = helpers.getTileFormData(filingForForm,taxProfileTileClass);
+            var formData = helpers.getTileFormData(filingForForm);
             if(!helpers.hasSelectedTile(formData)){
+                //todo, real alert
                 alert('no selected option');
             } else {
                 filingForSubmit.addClass(disabledClass);
-                app.ajax.ajax(
+                ajax.ajax(
                     'POST',
                     '/tax-profile',
                     {
                         action: 'api-tp-filing-for',
-                        myself: formData.myself,
-                        spouse: formData.spouse,
-                        other: formData.other
+                        data: formData
                     },
                     'json'
                 )
@@ -33,7 +32,7 @@
                         taxProfile.goToNextPage(response.data);
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
-                        console.log(jqXHR,textStatus,errorThrown);
+                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         filingForSubmit.removeClass(disabledClass);
                     });
             }

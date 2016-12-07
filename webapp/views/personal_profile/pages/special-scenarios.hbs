@@ -1,7 +1,16 @@
-<section id="personal-profile-special-scenarios">
-    <h1>special scenarios</h1>
-    <form id="special-scenarios-form">
-        <button type="submit">Next</button>
-    </form>
-    <button id="special-scenarios-back">Back</button>
+<section id="personal-profile-special-scenarios" class="full-screen-grid-container main-container">
+    <div class="small-12 medium-7">
+        <div class="content-form">
+            <div class="container-header">
+                <h1 class="header">Special Scenarios</h1>
+                <button id="special-scenarios-submit" type="submit" class="green header">Next</button>
+                <button id="special-scenarios-back" class="grey header">Previous</button>
+            </div>
+            <form id="special-scenarios-form">
+                <h1 class="subtitle">{{firstName}} please select all scenarios that applied to you in 2016:</h1>
+                {{>personal-profile-options questions=questions.specialScenarios activeTiles=activeTiles.specialScenarios}}
+            </form>
+        </div>
+    </div>
+    {{>personal-profile-sidebar sidebarTitle="what is a special scenario?"}}
 </section>

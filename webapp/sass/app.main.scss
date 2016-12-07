@@ -47,6 +47,12 @@ $susy: (
 @import "views/user/password-reset";
 
 
+//personal profile views
+//-----------------------------
+@import "views/personal_profile/special-scenarios";
+@import "views/personal_profile/marital-status";
+@import "views/personal_profile/dependants";
+
 //tax profile views
 //-----------------------------
 @import "views/tax_profile/tax-profile";
@@ -57,6 +63,7 @@ $susy: (
 @import "views/tax_profile/deductions";
 @import "views/tax_profile/credits";
 @import "views/tax_profile/quote";
+@import "views/tile-icons";
 
 
 //dashboard views

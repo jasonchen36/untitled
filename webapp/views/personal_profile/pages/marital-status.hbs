@@ -1,7 +1,25 @@
-<section id="personal-profile-marital-status">
-    <h1>martial status</h1>
-    <form id="marital-status-form">
-        <button type="submit">Next</button>
-    </form>
-    <button id="marital-status-back">Back</button>
+<section id="personal-profile-marital-status" class="full-screen-grid-container main-container">
+    <div class="small-12 medium-7">
+        <div class="content-form">
+            <div class="container-header">
+                <h1 class="header">Marital Status</h1>
+                <button id="marital-status-submit" type="submit" class="green header">Next</button>
+                <button id="marital-status-back" class="grey header">Previous</button>
+            </div>
+            <form id="marital-status-form">
+                <h1 class="subtitle">{{firstName}}, what was your martial status on Dec 31, 2015:</h1>
+                {{>personal-profile-options questions=questions.maritalStatus activeTiles=activeTiles.maritalStatus}}
+                <div class="marital-status-changed-container">
+                    <div class="checkbox"></div>
+                    <p class="checkbox-label">MY MARITAL STATUS CHANGED IN 2016</p>
+                    <p>PLEASE INDICATE THE DATE OF CHANGE:</p>
+                    <div>
+                        <input class="small-2 small" placeholder="DD"/>
+                        <input class="small-2 small" placeholder="MM"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {{>personal-profile-sidebar sidebarTitle="marital status"}}
 </section>
