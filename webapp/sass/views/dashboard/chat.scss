@@ -1,4 +1,4 @@
-.messages {
+.chat-message {
   margin: 20px 0;
   border: 2px solid black;
   border-radius: 15px;
@@ -6,7 +6,7 @@
   background: $color-global-white;
 }
 
-.messages-container{
+#dashboard-chat-container{
   height: calc(100% - #{$header-height} - 110px); //whole height - header - text area height
   overflow-y: auto;
 }

@@ -1,11 +1,11 @@
 <main id="page-user-dashboard" class="full-screen-grid-container main-container">
     <div class="small-3">
         <div>
-            <button id="dashboard-chat-activate">Chat Unread: {{user.newMessageCount}}</button>
+            <button id="dashboard-chat-activate">Chat Unread: {{data.newMessageCount}}</button>
         </div>
             <button id="dashboard-upload-activate">Upload</button>
         <div>
-        {{#if user.enableTaxReturn}}
+        {{#if data.enableTaxReturn}}
             <button id="dashboard-my-return-activate">My Return</button>
         {{/if}}
         </div>

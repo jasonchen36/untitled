@@ -1,10 +1,16 @@
 <section id="dashboard-chat">
-    <div class="messages-container">
-        <h1>chat</h1>
-        <p>hello {{firstName}} {{lastName}}</p>
+    <div id="dashboard-chat-container">
         {{#each messages}}
-            <div class="messages">
-                {{{body}}}
+            <div class="chat-message">
+                <p>{{date}}</p>
+                {{#if isFromUser}}
+                    <p>I sent this</p>
+                {{else}}
+                    <p>taxplan sent this (just styling difference?)</p>
+                {{/if}}
+                <p>
+                    {{{body}}}
+                </p>
             </div>
         {{/each}}
     </div>

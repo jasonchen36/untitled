@@ -1,47 +1,52 @@
 const //packages
     requestPromise = require('request-promise'),
     fs = require('fs'),
-// restler = require('restler'),
+    moment = require('moment'),
 //services
     util = require('../services/util'),
     session = require('../services/session'),
     errors = require('../services/errors'),
-    uploads = require('../services/uploads');
+    uploads = require('../services/uploads'),
+    user = require('../services/user');
 
 var dashboardPages = {};
 
 /************ dashboard ************/
 dashboardPages.getDashboardPage = function(req, res, next){
-    const userObject = session.getUserObject(req),
-        options = {
-            method: 'GET',
-            uri: process.env.API_URL+'/messages',
-            headers: {
-                'Authorization': 'Bearer '+session.getUserValue(req,'token')
-            },
-            body: {},
-            json: true
-        };
+    const options = {
+        method: 'GET',
+        uri: process.env.API_URL+'/messages',
+        headers: {
+            'Authorization': 'Bearer '+session.getUserValue(req,'token')
+        },
+        body: {},
+        json: true
+    };
     requestPromise(options)
         .then(function (response) {
-            var newMessageCount = 0;
-            userObject.messages.forEach(function(entry){
+            const dataObject = user.getDataObject(req);
+            dataObject.newMessageCount = 0;
+            dataObject.messages = response.messages;
+            response.messages.forEach(function(entry){
+                //count unread messages
                 if(entry.status && entry.status.toLowerCase() === 'new'){
-                    newMessageCount++;
+                    dataObject.newMessageCount++;
                 }
+                //determine if message if from user or tax pro
+                if(entry.client_id === entry.from_id){
+                    entry.isFromUser = true;
+                }
+                //format timestamp nicely
+                entry.date = moment(entry.date).format('MMM D [-] h:mm a').toString();
             });
-            userObject.messages = response.messages;
-            userObject.newMessageCount = newMessageCount;
             try {
                 res.render('dashboard/dashboard', {
                     meta: {
                         pageTitle: util.globals.metaTitlePrefix + 'Dashboard'
                     },
-                    account: session.getAccountObject(req),
-                    user: userObject,
+                    data: dataObject,
                     locals: {
-                        userToString: JSON.stringify(userObject),
-                        messagesToString: JSON.stringify(response)
+                        userToString: JSON.stringify(dataObject)
                     }
                 });
             } catch(error){
