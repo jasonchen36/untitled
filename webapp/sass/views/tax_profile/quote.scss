@@ -12,8 +12,7 @@
   margin:20px 0px;
 }
 
-p{
-  &.line-item{
+.line-item{
     font-size: 1.3rem;
     &.item{
       text-align: left;
@@ -25,7 +24,7 @@ p{
     }
   }
 
-  &.label-fine-print{
+.label-fine-print{
     margin: 0px 0px 5px 0px;
     &.get-started{
       width:35%;
@@ -36,7 +35,7 @@ p{
     }
   }
 
-  &.label-blurb{
+.label-blurb{
     font-size: 1.4rem;
     width: 60%;
     margin: 50px auto;
@@ -46,10 +45,8 @@ p{
     }
   }
 
-  &.label-total-price{
+.label-total-price{
     font-size: 3rem;
     display: inline-block;
     margin: 10px 10px;
-  }
 }
-

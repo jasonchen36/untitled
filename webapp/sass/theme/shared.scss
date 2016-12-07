@@ -125,18 +125,16 @@ textarea {
   }
 }
 
-p{
-  &.side-info{
+.side-info-blurb{
     font-size: 0.9rem;
     @extend .f--futura-book;
-  }
-  &.checkbox-label{
+}
+
+.checkbox-label{
     display: inline-block;
     margin: 0px;
     padding: 5px 10px;
-  }
 }
-
 
 //helper classes
 //-----------------------------
