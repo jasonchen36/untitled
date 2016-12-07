@@ -24,7 +24,14 @@ dashboardPages.getDashboardPage = function(req, res, next){
         };
     requestPromise(options)
         .then(function (response) {
+            var newMessageCount = 0;
+            userObject.messages.forEach(function(entry){
+                if(entry.status && entry.status.toLowerCase() === 'new'){
+                    newMessageCount++;
+                }
+            });
             userObject.messages = response.messages;
+            userObject.newMessageCount = newMessageCount;
             try {
                 res.render('dashboard/dashboard', {
                     meta: {
