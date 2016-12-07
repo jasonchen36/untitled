@@ -43,7 +43,6 @@ input {
   }
   &.small{
     @extend .small-2;
-    @extend .text-center;
     min-width: 10%;
   }
 }
@@ -104,7 +103,7 @@ label{
 }
 
 h1{
-  @extend .text-center;
+  text-align: center;
   font-size: 24px;
   &.subtitle{
     text-align: left;
@@ -225,7 +224,7 @@ textarea {
 }
 
 .container-header{
-  @extend .border-bottom-dark-grey;
+  border-bottom: 1px solid $color-global-border-grey;
 }
 
 //content padding
@@ -243,13 +242,12 @@ textarea {
     margin-top: 300px;
     margin-left: 85px;
     margin-right: 85px;
-    @extend .text-center;
+    text-align: center;
     &.has-image{
       margin-top: 60px;
     }
   }
 }
-
 
 //visibility
 //-----------------------------

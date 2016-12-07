@@ -4,7 +4,6 @@
 
 .container-credits-form{
   width:64%;
-  @extend .horizontal-center;
 }
 
 .button-details{
@@ -38,11 +37,8 @@
 .label-blurb{
     font-size: 1.4rem;
     width: 60%;
-    margin: 50px auto;
-    @extend .text-center;
-    &.bottom{
-      @extend .horizontal-center;
-    }
+    margin: 10px auto;
+    text-align: center;
   }
 
 .label-total-price{
