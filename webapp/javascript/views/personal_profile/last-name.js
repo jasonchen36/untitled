@@ -3,6 +3,7 @@
     var $ = jQuery,
         that = app.views.personalProfile.lastName,
         helpers = app.helpers,
+        ajax = app.ajax,
         personalProfile = app.services.personalProfile,
         lastNameForm,
         lastNameSubmit,
@@ -20,7 +21,7 @@
             }
             if (!helpers.formHasErrors(lastNameForm)) {
                 lastNameSubmit.addClass(disabledClass);
-                app.ajax.ajax(
+                ajax.ajax(
                     'POST',
                     '/personal-profile',
                     {
@@ -33,7 +34,7 @@
                         personalProfile.goToNextPage(response.data);
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
-                        console.log(jqXHR,textStatus,errorThrown);
+                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         lastNameSubmit.removeClass(disabledClass);
                     });
             }

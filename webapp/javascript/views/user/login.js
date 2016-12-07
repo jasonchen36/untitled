@@ -3,6 +3,7 @@
     var $ = jQuery,
         that = app.views.user.login,
         helpers = app.helpers,
+        ajax = app.ajax,
         loginForm = $('#user-login-form'),
         loginSubmit = $('#login-submit'),
         loginEmailInput = $('#login-email'),
@@ -22,7 +23,7 @@
             }
             if (!helpers.formHasErrors(loginForm)) {
                 loginSubmit.addClass(disabledClass);
-                app.ajax.ajax(
+                ajax.ajax(
                     'PUT',
                     '/login',
                     {
@@ -37,7 +38,7 @@
                         window.location.href = '/personal-profile';
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
-                        console.log(jqXHR,textStatus,errorThrown);
+                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         loginSubmit.removeClass(disabledClass);
                     });
             }

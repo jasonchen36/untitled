@@ -3,7 +3,7 @@
         helpers = app.helpers,
         $ = jQuery;
 
-    this.ajax= function(method,url,data,contentType) {
+    this.ajax = function(method,url,data,contentType) {
         var parameters =  {
             method: method,
             url: url,
@@ -38,6 +38,13 @@
                     });
                 });
         });
+    };
+
+    this.ajaxCatch = function(jqXHR,textStatus,errorThrown){
+        console.log(jqXHR,textStatus,errorThrown);
+        if(textStatus === 'parsererror'){
+            window.location.href = '/login';
+        }
     };
 
 }).apply(app.ajax);

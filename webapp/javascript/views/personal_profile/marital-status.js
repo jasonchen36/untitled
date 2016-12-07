@@ -3,6 +3,7 @@
     var $ = jQuery,
         that = app.views.personalProfile.maritalStatus,
         helpers = app.helpers,
+        ajax = app.ajax,
         personalProfile = app.services.personalProfile,
         maritalStatusForm,
         maritalStatusSubmit,
@@ -18,7 +19,7 @@
                 alert('no selected option');
             } else {
                 maritalStatusSubmit.addClass(disabledClass);
-                app.ajax.ajax(
+                ajax.ajax(
                     'POST',
                     '/personal-profile',
                     {
@@ -31,7 +32,7 @@
                         personalProfile.goToNextPage(response.data);
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
-                        console.log(jqXHR,textStatus,errorThrown);
+                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         maritalStatusSubmit.removeClass(disabledClass);
                     });
             }

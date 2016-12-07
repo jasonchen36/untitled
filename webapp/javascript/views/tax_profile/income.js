@@ -3,6 +3,7 @@
     var $ = jQuery,
         that = app.views.taxProfile.income,
         helpers = app.helpers,
+        ajax = app.ajax,
         taxProfile = app.services.taxProfile,
         incomeForm,
         incomeSubmit,
@@ -19,7 +20,7 @@
                 alert('no selected option');
             } else {
                 incomeSubmit.addClass(disabledClass);
-                app.ajax.ajax(
+                ajax.ajax(
                     'POST',
                     '/tax-profile',
                     {
@@ -32,7 +33,7 @@
                         taxProfile.goToNextPage(response.data);
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
-                        console.log(jqXHR,textStatus,errorThrown);
+                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         incomeSubmit.removeClass(disabledClass);
                     });
             }
