@@ -29,7 +29,7 @@ p{
     margin: 0px 0px 5px 0px;
     &.get-started{
       width:35%;
-      margin:3% auto;
+      margin:15px auto;
     }
     &.tax{
       display:inline-block;
@@ -39,7 +39,7 @@ p{
   &.label-blurb{
     font-size: 1.4rem;
     width: 60%;
-    margin: 10% auto;
+    margin: 50px auto;
     @extend .text-center;
     &.bottom{
       @extend .horizontal-center;

@@ -242,12 +242,12 @@ p{
     margin-top: 400px;
   }
   &.side-info{
-    margin-top: 40%;
-    margin-left: 15%;
-    margin-right: 15%;
+    margin-top: 300px;
+    margin-left: 85px;
+    margin-right: 85px;
     @extend .text-center;
     &.has-image{
-      margin-top: 10%;
+      margin-top: 60px;
     }
   }
 }
