@@ -8,6 +8,8 @@ const //services
 
 router.route('/').get(dashboardController.getDashboardPage);
 
+router.route('/document').put(dashboardController.actionAddNewDocument);
+
 router.route('/chat').put(dashboardController.actionAddNewMessage);
 
 module.exports = router;

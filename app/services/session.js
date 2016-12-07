@@ -34,7 +34,7 @@ session.actionStartAccountSession = function(req){
                     try {
                         req.session.account = {
                             hasAccountSession: true,
-                            expiry: moment().add(7, 'days'),
+                            expiry: moment().add(7, 'days'),//todo, refresh expiry upon update
                             currentPage: 'welcome',
                             id: response.accountId,
                             firstName: response.name,
@@ -116,7 +116,7 @@ session.actionStartUserSession = function(req,token){
                         req.session.user = {
                             hasUserSession: true,
                             token: token,
-                            expiry: moment().add(1, 'hour'),
+                            expiry: moment().add(1, 'hour'),//todo, refresh expiry upon update
                             id: response.id,
                             role: response.role,
                             provider: response.provider,
@@ -190,7 +190,7 @@ session.actionStartPersonalProfileSession = function(req){
         .then(function(){
             req.session.personalProfile = {
                 hasPersonalProfileSession: true,
-                expiry: moment().add(7, 'days'),
+                expiry: moment().add(7, 'days'),//todo, refresh expiry upon update
                 activeTiles: {}
             };
             return promise.resolve();

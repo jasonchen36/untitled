@@ -1,10 +1,12 @@
 const //packages
     requestPromise = require('request-promise'),
     fs = require('fs'),
+// restler = require('restler'),
 //services
     util = require('../services/util'),
     session = require('../services/session'),
-    errors = require('../services/errors');
+    errors = require('../services/errors'),
+    uploads = require('../services/uploads');
 
 var dashboardPages = {};
 
@@ -82,17 +84,40 @@ dashboardPages.actionAddNewMessage = function(req, res, next){
     }
 };
 
-// dashboardPages.actionAddNewDocument = function(req, res, next) {
-//     if (req.validationErrors() || req.body.action !== 'api-dashboard-chat'){
-//         next(new errors.BadRequestError('dashboard upload - new document - validation errors',true));
-//     } else {
-//         res.setHeader("content-disposition", "attachment; filename=logo.png");
-//         request('http://google.com/images/srpr/logo11w.png').pipe(res);
-//         var readableStream = fs.createReadStream('file1.txt'),
-//             writableStream = fs.createWriteStream('file2.txt');
-//
-//         readableStream.pipe(writableStream);
-//     }
-// };
+dashboardPages.actionAddNewDocument = function(req, res, next) {
+    req.checkBody('fileName').notEmpty();
+
+    if (req.validationErrors() || req.body.action !== 'api-dashboard-upload'){
+        next(new errors.BadRequestError('dashboard upload - new document - validation errors',true));
+    } else {
+        const fileName = req.body.fileName,
+            options = {
+                method: 'POST',
+                uri: process.env.API_URL+'/quote/1/document',//todo dynamic quote id
+                headers: {
+                    'Authorization': 'Bearer '+session.getUserValue(req,'token')
+                },
+                formData: {
+                    taxReturnId: 1,//todo, dynamic tax return and checklist item values
+                    checklistItemId: 1,
+                    uploadFileName: fs.createReadStream(util.globals.uploadsFolderDirectory+fileName)
+                },
+                json: true
+            };
+        requestPromise(options)
+            .then(function (response) {
+                uploads.deleteFile(fileName)
+                    .then(function(){
+                        res.status(util.http.status.accepted).json({
+                            action: 'dashboard upload document added',
+                            status: 'success'
+                        });
+                    });
+            })
+            .catch(function (response) {
+                next(new errors.BadRequestError(response.error,true));
+            });
+    }
+};
 
 module.exports = dashboardPages;

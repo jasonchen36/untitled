@@ -40,7 +40,8 @@ util.questionCategories = {
 util.globals = {
     metaTitlePrefix: 'Taxplan | ',
     apiUrl: process.env.API_URL,
-    apiProductId: process.env.API_PRODUCT_ID
+    apiProductId: process.env.API_PRODUCT_ID,
+    uploadsFolderDirectory: 'webapp/public/uploads/'
 };
 
 util.mergeObjects = function(objectArray){
