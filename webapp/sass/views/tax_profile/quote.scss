@@ -14,7 +14,7 @@
 
 p{
   &.line-item{
-    font-size: 1.3em;
+    font-size: 1.3rem;
     &.item{
       text-align: left;
       display: inline-block;
@@ -37,7 +37,7 @@ p{
   }
 
   &.label-blurb{
-    font-size: 1.4em;
+    font-size: 1.4rem;
     width: 60%;
     margin: 10% auto;
     @extend .text-center;
@@ -47,7 +47,7 @@ p{
   }
 
   &.label-total-price{
-    font-size: 3em;
+    font-size: 3rem;
     display: inline-block;
     margin: 10px 10px;
   }
