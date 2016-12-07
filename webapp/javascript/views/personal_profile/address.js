@@ -29,6 +29,11 @@
                 submitAddress();
             });
 
+            addressSubmit.on('click',function(event){
+                event.preventDefault();
+                submitAddress();
+            });
+
             addressBack.on('click',function(event){
                 event.preventDefault();
                 personalProfile.goToPreviousPage();

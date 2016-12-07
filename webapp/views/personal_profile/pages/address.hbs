@@ -1,7 +1,14 @@
-<section id="personal-profile-address">
-    <h1>address</h1>
-    <form id="address-form">
-        <button type="submit">Next</button>
-    </form>
-    <button id="address-back">Back</button>
+<section id="personal-profile-address" class="full-screen-grid-container main-container" >
+    <div class="small-12 medium-7">
+        <div class="content-form">
+            <div class="container-header">
+                <h1 class="header">Address</h1>
+                <button id="address-submit" class="green header">Next</button>
+                <button id="address-back" class="grey header">Previous</button>
+            </div>
+        <form id="address-form">
+        </form>
+        </div>
+    </div>
+    {{>personal-profile-sidebar sidebarTitle="Why do you need my address?"}}
 </section>
