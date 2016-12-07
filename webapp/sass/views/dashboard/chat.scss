@@ -19,10 +19,15 @@
 }
 
 .container-text-field{
-  margin: 0px;
+  margin: 0;
 }
 
 .button-send{
   float: right;
   margin-top: 25px;
+}
+
+#dashboard-chat-message {
+  outline: none;
+  padding: 10px 15px;
 }
