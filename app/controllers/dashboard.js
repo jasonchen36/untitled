@@ -71,9 +71,7 @@ dashboardPages.actionAddNewMessage = function(req, res, next){
                 'Authorization': 'Bearer '+session.getUserValue(req,'token')
             },
             body: {
-                //todo, remove subject after api is updated
                 from: session.getUserValue(req,'id'),
-                subject: 'subject is required',
                 body: req.body.message
             },
             json: true
