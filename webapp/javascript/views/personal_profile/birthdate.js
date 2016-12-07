@@ -12,7 +12,6 @@
 
     function submitBirthdate(){
         //todo
-        personalProfile.destroyPersonalProfileSession();
         window.location.href = '/dashboard';
     }
 
