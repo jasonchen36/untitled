@@ -282,15 +282,20 @@ textarea {
   display: inline-block;
   margin-right:10px;
   &.short{
-    width: 15%;
+    width: 14%;
   }
   &.long{
-    width: 45%;
+    width: 46%;
   }
 }
 
 .add-bottom-padding{
-  padding-bottom: 10px;
+  padding-bottom: 20px;
+}
+
+
+.add-top-padding{
+  padding-top: 20px;
 }
 
 //visibility
