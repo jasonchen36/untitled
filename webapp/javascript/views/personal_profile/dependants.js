@@ -8,6 +8,8 @@
         dependantsSubmit,
         dependantsBack,
         dependantsSave,
+        dependantsEdit,
+        dependantsDelete,
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
@@ -53,6 +55,8 @@
             dependantsSubmit = $('#dependants-submit');
             dependantsBack = $('#dependants-back');
             dependantsSave = $('#dependants-save');
+            dependantsEdit = $('#dependants-edit');
+            dependantsDelete = $('#dependants-delete');
 
             //listeners
             dependantsForm.on('submit',function(event){
@@ -68,6 +72,16 @@
             dependantsSave.on('click',function(event){
                 event.preventDefault();
                 //TODO: Save dependant function
+            });
+
+            dependantsEdit.on('click',function(event){
+                event.preventDefault();
+                //TODO: Edit dependant function
+            });
+
+            dependantsDelete.on('click',function(event){
+                event.preventDefault();
+                //TODO: Delete dependant function
             });
 
             dependantsBack.on('click',function(event){
