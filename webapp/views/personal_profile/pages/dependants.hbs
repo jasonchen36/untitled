@@ -9,8 +9,13 @@
             <form id="dependants-form">
                 <h1 class="subtitle">{{firstName}}, do you have any children or elderly parents as dependants?</h1>
                 {{>personal-profile-options questions=questions.dependants activeTiles=activeTiles.dependants}}
+                {{>personal-profile-dependants-form}}
+                <div class="border-bottom-light-gray add-bottom-padding">
+                    <div class="i--icon-add"></div>
+                    <label class="label-add">ADD A DEPENDANT FOR {{firstName}}</label>
+                </div>
             </form>
         </div>
     </div>
-    {{>personal-profile-sidebar sidebarTitle="what is a dependent?"}}
+    {{>personal-profile-sidebar sidebarImage="i--icon-dependants" sidebarTitle="what is a dependant?"}}
 </section>
