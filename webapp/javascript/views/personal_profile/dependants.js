@@ -17,6 +17,9 @@
             if(!helpers.hasSelectedTile(formData)){
                 //todo, real alert
                 alert('no selected option');
+            }else if ( helpers.hasMultipleSelectedTiles(formData)){
+                //todo, real alert
+                alert('please select only one option');
             } else {
                 dependantsSubmit.addClass(disabledClass);
                 app.ajax.ajax(
