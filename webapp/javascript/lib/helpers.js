@@ -88,7 +88,7 @@
         }
 
         return false;
-    }
+    };
 
     this.getBaseUrl = function(){
         //http://stackoverflow.com/questions/5817505/is-there-any-method-to-get-url-without-query-string-in-java-script
