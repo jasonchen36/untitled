@@ -17,7 +17,10 @@
             if(!helpers.hasSelectedTile(formData)){
                 //todo, real alert
                 alert('no selected option');
-            } else {
+            }else if ( helpers.hasMultipleSelectedTiles(formData)){
+                //todo, real alert
+                alert('please select only one option');
+            }  else {
                 maritalStatusSubmit.addClass(disabledClass);
                 ajax.ajax(
                     'POST',
