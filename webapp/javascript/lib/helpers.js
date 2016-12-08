@@ -73,6 +73,23 @@
         return Object.values(formData).indexOf(1) !== -1;
     };
 
+    this.hasMultipleSelectedTiles = function(formData){
+
+        var selectedCount = 0;
+
+        for(var element in formData){
+            if(formData[element] === 1){
+                selectedCount++;
+            }
+        }
+
+        if(selectedCount > 1){
+            return true;
+        }
+
+        return false;
+    }
+
     this.getBaseUrl = function(){
         //http://stackoverflow.com/questions/5817505/is-there-any-method-to-get-url-without-query-string-in-java-script
         return [location.protocol, '//', location.host, location.pathname].join('');
