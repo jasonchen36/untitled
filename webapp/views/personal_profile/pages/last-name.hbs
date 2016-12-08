@@ -6,11 +6,41 @@
                 <button id="last-name-submit" type="submit" class="green header">Next</button>
             </div>
             <form id="last-name-form">
-                <h1 class="subtitle">{{firstName}} please provide us with your last name:</h1>
-                <p>
-                    <label for="last-name">LAST NAME</label>
-                    <input type="text" id="last-name-input" name="name" placeholder="Last Name" value="{{lastName}}"/>
-                </p>
+                <h1 class="subtitle">{{firstName}}, can you complete the full legal name for all filers?</h1>
+                <div class="add-top-padding">
+                    <div class="container-inline-input long">
+                        <label for="last-name">FIRST NAME</label>
+                        <input type="text" class="inline-input" name="name" placeholder="Last Name" value="{{firstName}}"/>
+                    </div>
+                    <div class="container-inline-input long">
+                        <label for="last-name">LAST NAME</label>
+                        <input type="text" id="last-name-myself" class="inline-input" name="name" placeholder="Last Name" value="{{lastName}}"/>
+                    </div>
+                </div>
+                {{#compare filingType.spouse 1 operator="=="}}
+                <div class="add-top-padding">
+                    <div class="container-inline-input long">
+                        <label for="last-name">FIRST NAME</label>
+                        <input type="text" class="inline-input" name="name" placeholder="Last Name" value="{{firstName}}"/>
+                    </div>
+                    <div class="container-inline-input long">
+                        <label for="last-name">LAST NAME</label>
+                        <input type="text" id="last-name-spouse" class="inline-input" name="name" placeholder="Last Name" value="{{lastName}}"/>
+                    </div>
+                </div>
+                {{/compare}}
+                {{#compare filingType.other 1 operator="=="}}
+                <div class="add-top-padding">
+                    <div class="container-inline-input long">
+                        <label for="last-name">FIRST NAME</label>
+                        <input type="text" class="inline-input" name="name" placeholder="Last Name" value="{{firstName}}"/>
+                    </div>
+                    <div class="container-inline-input long">
+                        <label for="last-name">LAST NAME</label>
+                        <input type="text" id="last-name-other" class="inline-input" name="name" placeholder="Last Name" value="{{lastName}}"/>
+                    </div>
+                </div>
+                {{/compare}}
             </form>
         </div>
     </div>
