@@ -278,6 +278,17 @@ textarea {
   }
 }
 
+.container-inline-input{
+  display: inline-block;
+  margin-right:10px;
+  &.short{
+    width: 15%;
+  }
+  &.long{
+    width: 45%;
+  }
+}
+
 .add-bottom-padding{
   padding-bottom: 10px;
 }

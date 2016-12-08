@@ -5,14 +5,3 @@
 .container-same-as-above{
   padding-bottom: 10px;
 }
-
-.container-inline-input{
-  display: inline-block;
-  margin-right:10px;
-  &.short{
-    width: 15%;
-  }
-  &.long{
-    width: 45%;
-  }
-}
