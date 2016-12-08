@@ -7,6 +7,7 @@
         dependantsForm,
         dependantsSubmit,
         dependantsBack,
+        dependantsSave,
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
