@@ -48,6 +48,7 @@
             dependantsForm = $('#dependants-form');
             dependantsSubmit = $('#dependants-submit');
             dependantsBack = $('#dependants-back');
+            dependantsSave = $('#dependants-save');
 
             //listeners
             dependantsForm.on('submit',function(event){
@@ -58,6 +59,11 @@
             dependantsSubmit.on('click',function(event){
                 event.preventDefault();
                 submitDependants();
+            });
+
+            dependantsSave.on('click',function(event){
+                event.preventDefault();
+                //TODO: Save dependant function
             });
 
             dependantsBack.on('click',function(event){
