@@ -1,22 +1,9 @@
 <main id="page-user-dashboard" class="full-screen-grid-container main-container">
-    <div class="small-3">
-        <div>
-            <button id="dashboard-chat-activate">Chat Unread: {{data.newMessageCount}}</button>
-        </div>
-            <button id="dashboard-upload-activate">Upload</button>
-        <div>
-        {{#if data.enableTaxReturn}}
-            <button id="dashboard-my-return-activate">My Return</button>
-        {{/if}}
-        </div>
-    </div>
+    {{>dashboard-left-sidebar}}
     <div id="dashboard-container" class="small-6">
         <p>coming soon</p>
     </div>
-    <div class="small-3 grid-end">
-        <div class="i--icon-logo"></div>
-        <p>coming soon</p>
-    </div>
+    {{>dashboard-right-sidebar}}
 </main>
 <script type="text/javascript">
     var userObject = JSON.parse('{{{locals.userToString}}}'),
