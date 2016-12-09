@@ -6,7 +6,7 @@ var authenticationMiddleware = {};
 
 /************ account session ************/
 authenticationMiddleware.redirectWithoutAccountSession = function(req, res, next){
-    session.hasAccountSession(req)
+    session.hasTaxProfileSession(req)
         .then(function(hasSession){
             if (hasSession){
                 next();
@@ -17,7 +17,7 @@ authenticationMiddleware.redirectWithoutAccountSession = function(req, res, next
 };
 
 authenticationMiddleware.rejectWithoutAccountSession = function(req, res, next){
-    session.hasAccountSession(req)
+    session.hasTaxProfileSession(req)
         .then(function(hasSession) {
             if (hasSession) {
                 next();
@@ -32,7 +32,7 @@ authenticationMiddleware.rejectWithoutAccountSession = function(req, res, next){
 
 /************ user session ************/
 authenticationMiddleware.redirectWithUserSession = function(req, res, next){
-    session.hasUserSession(req)
+    session.hasUserProfileSession(req)
         .then(function(hasSession) {
             if (hasSession) {
                 res.redirect('/dashboard');
@@ -43,7 +43,7 @@ authenticationMiddleware.redirectWithUserSession = function(req, res, next){
 };
 
 authenticationMiddleware.redirectWithoutUserSession = function(req, res, next){
-    session.hasUserSession(req)
+    session.hasUserProfileSession(req)
         .then(function(hasSession) {
             if (hasSession) {
                 next();
@@ -54,7 +54,7 @@ authenticationMiddleware.redirectWithoutUserSession = function(req, res, next){
 };
 
 authenticationMiddleware.rejectWithoutUserSession = function(req, res, next){
-    session.hasUserSession(req)
+    session.hasUserProfileSession(req)
         .then(function(hasSession) {
             if (hasSession) {
                 next();

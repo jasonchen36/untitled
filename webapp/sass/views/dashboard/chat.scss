@@ -11,24 +11,18 @@
   overflow-y: auto;
 }
 
-.text-field-chat{
-  width: 80%;
-  margin: 15px 0px;
-  border-radius: 15px;
-  resize: none;
-}
-
-.container-text-field{
-  margin: 0;
-}
-
 .button-send{
-  float: right;
-  margin-top: 25px;
+  float: left;
+  margin-top: 30px;
 }
 
 #dashboard-chat-message {
   outline: none;
   padding: 10px 15px;
-  width: 100%;
+  width: calc(100% - 118px);
+  margin: 15px 20px 0px 0px;
+  border-radius: 15px;
+  border-color: $color-border-light-grey;
+  resize: none;
+  float: left;
 }

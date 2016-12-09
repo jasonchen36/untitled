@@ -7,8 +7,8 @@
                 <button id="deductions-back" class="grey header">Previous</button>
             </div>
             <form id="deductions-form">
-                <h1 class="subtitle">Last Question! {{firstName}} please select all your 2016 deductions:</h1>
-                {{>tax-profile-options questions=questions.deductions activeTiles=activeTiles.deductions}}
+                <h1 class="subtitle">Last Question! {{users.0.firstName}} please select all your 2016 deductions:</h1>
+                {{>tax-profile-options questions=questions.deductions activeTiles=users.0.activeTiles.deductions}}
             </form>
         </div>
     </div>

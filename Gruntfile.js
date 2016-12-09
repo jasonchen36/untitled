@@ -80,7 +80,6 @@ module.exports = function(grunt){
                 processPartialName: function(filePath) {
                     var pathPieces = filePath.split('/'),//get filename from path
                         filePieces = pathPieces[pathPieces.length-1].split('.');//return name of file without extension
-                    console.log('partial',filePath,filePieces[0]);
                     return filePieces[0];
                 },
                 partialsPathRegex: /\/partials\//,

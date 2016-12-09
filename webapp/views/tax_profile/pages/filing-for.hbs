@@ -8,9 +8,9 @@
             </div>
             <form id="filing-for-form">
                 <h1 class="subtitle">
-                    Hi {{firstName}}, can you please select all the people you are filing for:
+                    Hi {{users.0.firstName}}, can you please select all the people you are filing for:
                 </h1>
-                {{>tax-profile-options questions=questions.filingFor activeTiles=activeTiles.filingFor}}
+                {{>tax-profile-options questions=questions.filingFor activeTiles=users.0.activeTiles.filingFor}}
             </form>
         </div>
     </div>

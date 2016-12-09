@@ -6,7 +6,7 @@ const //services
 
 router.route('/')
     .get(taxProfileController.getPageTaxProfile)
-    .post(taxProfileController.actionSaveAccount);
+    .post(taxProfileController.actionSaveTaxProfile);
 
 // todo, delete route after development
 router.route('/logout')
