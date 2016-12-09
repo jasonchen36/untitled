@@ -29,6 +29,11 @@
                 submitBirthdate();
             });
 
+            birthdateSubmit.on('click',function(event){
+                event.preventDefault();
+                submitBirthdate();
+            });
+
             birthdateBack.on('click',function(event){
                 event.preventDefault();
                 personalProfile.goToPreviousPage();

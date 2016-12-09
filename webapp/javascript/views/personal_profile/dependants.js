@@ -7,12 +7,44 @@
         dependantsForm,
         dependantsSubmit,
         dependantsBack,
+        dependantsSave,
+        dependantsEdit,
+        dependantsDelete,
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
     function submitDependants(){
-        //todo
-        personalProfile.goToNextPage();
+        if (!dependantsSubmit.hasClass(disabledClass)) {
+            var formData = helpers.getTileFormData(dependantsForm);
+            if(!helpers.hasSelectedTile(formData)){
+                //todo, real alert
+                alert('no selected option');
+            }else if ( helpers.hasMultipleSelectedTiles(formData)){
+                //todo, real alert
+                alert('please select only one option');
+            } else {
+                dependantsSubmit.addClass(disabledClass);
+                app.ajax.ajax(
+                    'POST',
+                    '/personal-profile',
+                    {
+                        action: 'api-pp-dependants',
+                        data: formData
+                    },
+                    'json'
+                    )
+                    .then(function(response){
+                        personalProfile.goToNextPage(response.data);
+                    })
+                    .catch(function(jqXHR,textStatus,errorThrown){
+                        console.log(jqXHR,textStatus,errorThrown);
+                        dependantsSubmit.removeClass(disabledClass);
+                    });
+            }
+        }
+
+
+
     }
 
     this.init = function(){
@@ -22,6 +54,9 @@
             dependantsForm = $('#dependants-form');
             dependantsSubmit = $('#dependants-submit');
             dependantsBack = $('#dependants-back');
+            dependantsSave = $('#dependants-save');
+            dependantsEdit = $('#dependants-edit');
+            dependantsDelete = $('#dependants-delete');
 
             //listeners
             dependantsForm.on('submit',function(event){
@@ -32,6 +67,21 @@
             dependantsSubmit.on('click',function(event){
                 event.preventDefault();
                 submitDependants();
+            });
+
+            dependantsSave.on('click',function(event){
+                event.preventDefault();
+                //TODO: Save dependant function
+            });
+
+            dependantsEdit.on('click',function(event){
+                event.preventDefault();
+                //TODO: Edit dependant function
+            });
+
+            dependantsDelete.on('click',function(event){
+                event.preventDefault();
+                //TODO: Delete dependant function
             });
 
             dependantsBack.on('click',function(event){

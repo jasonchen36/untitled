@@ -28,8 +28,7 @@ img {
 input {
   background: white;
   border:0;
-  border-bottom-color: $color-global-border-grey;
-  border-bottom: 1px solid;
+  border-bottom: 1px solid $color-global-border-grey;
   outline: 0;
   height:50px;
   min-width: 50%;
@@ -43,8 +42,10 @@ input {
   }
   &.small{
     @extend .small-2;
-    @extend .text-center;
     min-width: 10%;
+  }
+  &.inline-input{
+    width: 100%;
   }
 }
 
@@ -104,13 +105,17 @@ label{
 }
 
 h1{
-  @extend .text-center;
+  text-align: center;
   font-size: 24px;
   &.subtitle{
     text-align: left;
     font-weight:bold;
     margin-top: 40px;
     margin-bottom: 40px;
+  }
+  &.filer-name{
+    text-align: left;
+    font-weight:bold;
   }
   &.header{
     display:inline-block;
@@ -125,18 +130,39 @@ textarea {
   }
 }
 
-p{
-  &.side-info{
-    font-size: 0.9em;
+.side-info-blurb{
+    font-size: 0.9rem;
     @extend .f--futura-book;
-  }
-  &.checkbox-label{
+}
+
+.checkbox-label{
     display: inline-block;
     margin: 0px;
     padding: 5px 10px;
-  }
 }
 
+//Dropdown styling
+//-----------------------------
+.drop-down {
+  display: inline-block;
+  position: relative;
+  height: 50px;
+  width: 100%;
+  background: white;
+}
+
+//Dropdown select element styling
+.drop-down-select {
+  position: relative;
+  width: 95%;
+  margin-left:5px;
+  height: 50px;
+  text-shadow: 0 1px white;
+  background: rgba(0, 0, 0, 0) !important; //"transparent" doesn't work with older Chrome versions/Safari?
+  border: 0;
+  border-radius: 0;
+  outline:none;
+}
 
 //helper classes
 //-----------------------------
@@ -227,7 +253,7 @@ p{
 }
 
 .container-header{
-  @extend .border-bottom-dark-grey;
+  border-bottom: 1px solid $color-global-border-grey;
 }
 
 //content padding
@@ -242,16 +268,40 @@ p{
     margin-top: 400px;
   }
   &.side-info{
-    margin-top: 40%;
-    margin-left: 15%;
-    margin-right: 15%;
-    @extend .text-center;
+    margin-top: 300px;
+    margin-left: 85px;
+    margin-right: 85px;
+    text-align: center;
     &.has-image{
-      margin-top: 10%;
+      margin-top: 60px;
     }
   }
 }
 
+.container-inline-input{
+  display: inline-block;
+  margin-right:10px;
+  &.short{
+    width: 14%;
+  }
+  &.long{
+    width: 46%;
+  }
+}
+
+.container-small-button{
+  float:right;
+  margin-top:10px;
+}
+
+.add-bottom-padding{
+  padding-bottom: 20px;
+}
+
+
+.add-top-padding{
+  padding-top: 20px;
+}
 
 //visibility
 //-----------------------------

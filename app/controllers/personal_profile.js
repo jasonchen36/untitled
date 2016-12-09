@@ -33,7 +33,9 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
             const personalProfileQuestions = {
                     specialScenarios: response[0],
                     credits: response[1],
-                    maritalStatus: questionsModel.getMaritalStatusData()
+                    maritalStatus: questionsModel.getMaritalStatusData(),
+                    dependants: questionsModel.getDependentsData()
+
                 },
                 dataObject = personalProfile.getDataObject(req);
             try {
@@ -81,6 +83,10 @@ personalProfilePages.actionSavePersonalProfile = function(req, res, next) {
                 case 'api-pp-marital-status':
                     return personalProfile.saveActiveTiles(req, 'maritalStatus');
                     break;
+                case 'api-pp-dependants':
+                    return personalProfile.saveActiveTiles(req, 'dependants');
+                    break;
+
                 default:
                     return promise.reject('tax profile - invalid action');
                     break;
