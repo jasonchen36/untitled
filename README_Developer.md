@@ -9,7 +9,7 @@ After cloning the repo:
 gem install foreman sass
 cp .env_example .env
 npm install
-npm install foreman grunt-cli bower -g
+npm install foreman grunt-cli bower nodemon -g
 bower install
 grunt build
 ```
