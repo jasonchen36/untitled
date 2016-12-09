@@ -89,8 +89,8 @@ session.getTaxProfileValue = function(req, key){
 
 
 /************ user ************/
-session.actionStartUserSession = function(req,token){
-    return session.actionDestroyUserSession(req)
+session.actionStartUserProfileSession = function(req, token){
+    return session.actionDestroyUserProfileSession(req)
         .then(function(){
             //get user object
             const options = {
@@ -109,7 +109,7 @@ session.actionStartUserSession = function(req,token){
                 .then(function (response) {
                     try {
                         response.token = token;
-                        req.session.user = sessionModel.getUserObject(response);
+                        req.session.userProfile = sessionModel.getUserProfileObject(response);
                         return promise.resolve();
                     } catch(error){
                         if(!error){
@@ -128,14 +128,14 @@ session.actionStartUserSession = function(req,token){
         });
 };
 
-session.hasUserSession = function(req){
+session.hasUserProfileSession = function(req){
     return promise.resolve()
         .then(function() {
-            if (req.session.hasOwnProperty('user') && session.getUserValue(req,'hasUserSession')){
-                if (moment().isBefore(session.getUserValue(req,'expiry'))){
+            if (req.session.hasOwnProperty('userProfile') && session.getUserProfileValue(req,'hasUserProfileSession')){
+                if (moment().isBefore(session.getUserProfileValue(req,'expiry'))){
                     return true;
                 } else {
-                    return session.actionDestroyUserSession(req)
+                    return session.actionDestroyUserProfileSession(req)
                         .then(function(){
                             return false;
                         });
@@ -146,19 +146,19 @@ session.hasUserSession = function(req){
         });
 };
 
-session.getUserObject = function(req){
-    return req.session.hasOwnProperty('user') ? req.session.user : {};
+session.getUserProfileObject = function(req){
+    return req.session.hasOwnProperty('userProfile') ? req.session.userProfile : {};
 };
 
-session.actionDestroyUserSession = function(req){
+session.actionDestroyUserProfileSession = function(req){
     return session.actionDestroyTaxProfileSession(req)
         .then(function() {
-            req.session.user = {};
+            req.session.userProfile = {};
         });
 };
 
-session.getUserValue = function(req, key){
-    const userSession = session.getUserObject(req);
+session.getUserProfileValue = function(req, key){
+    const userSession = session.getUserProfileObject(req);
     return userSession.hasOwnProperty(key) ? userSession[key] : '';
 };
 

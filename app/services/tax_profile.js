@@ -20,7 +20,7 @@ taxProfile.saveName = function(req){
             if (req.validationErrors() || req.body.action !== 'api-tp-welcome'){
                 return promise.reject('api - account session creation - validation errors');
             } else {
-                req.session.taxProfile.name = req.body.name;
+                req.session.taxProfile.users[0].name = req.body.name;
                 req.session.taxProfile.currentPage = getCurrentPage(req.body.action);
                 return promise.resolve();
             }
@@ -30,11 +30,11 @@ taxProfile.saveName = function(req){
 taxProfile.saveActiveTiles = function(req, group){
     return promise.resolve()
         .then(function() {
-            if (!req.session.taxProfile.activeTiles.hasOwnProperty(group)){
-                req.session.taxProfile.activeTiles[group] = {};
+            if (!req.session.taxProfile.users[0].activeTiles.hasOwnProperty(group)){
+                req.session.taxProfile.users[0].activeTiles[group] = {};
             }
             _.forOwn(req.body.data, function(value, key) {
-                req.session.taxProfile.activeTiles[group][key] = value;
+                req.session.taxProfile.users[0].activeTiles[group][key] = value;
             });
             req.session.taxProfile.currentPage = getCurrentPage(req.body.action);
             return promise.resolve();

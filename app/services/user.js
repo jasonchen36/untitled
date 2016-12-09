@@ -21,8 +21,8 @@ user.saveLastName = function(req){
             if (req.validationErrors() || req.body.action !== 'api-pp-last-name'){
                 return promise.reject('api - user session creation - validation errors');
             } else {
-                req.session.user.lastName = req.body.lastName;
-                req.session.user.currentPage = getCurrentPage(req.body.action);
+                req.session.userProfile.users[0].lastName = req.body.lastName;
+                req.session.userProfile.currentPage = getCurrentPage(req.body.action);
                 return promise.resolve();
             }
         });
@@ -31,13 +31,13 @@ user.saveLastName = function(req){
 user.saveActiveTiles = function(req, group){
     return promise.resolve()
         .then(function() {
-            if (!req.session.user.activeTiles.hasOwnProperty(group)){
-                req.session.user.activeTiles[group] = {};
+            if (!req.session.userProfile.users[0].activeTiles.hasOwnProperty(group)){
+                req.session.userProfile.users[0].activeTiles[group] = {};
             }
             _.forOwn(req.body.data, function(value, key) {
-                req.session.user.activeTiles[group][key] = value;
+                req.session.userProfile.users[0].activeTiles[group][key] = value;
             });
-            req.session.user.currentPage = getCurrentPage(req.body.action);
+            req.session.userProfile.currentPage = getCurrentPage(req.body.action);
             return promise.resolve();
         });
 };

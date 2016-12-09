@@ -14,7 +14,7 @@ userPages.getLoginPage = function(req, res, next){
             pageTitle: util.globals.metaTitlePrefix+'Sign In'
         },
         account: session.getTaxProfileObject(req),
-        user: session.getUserObject(req),
+        user: session.getUserProfileObject(req),
         locals: {}
     });
 };
@@ -40,7 +40,7 @@ userPages.actionLoginUser = function(req, res, next){
             .then(function (response) {
                 try{
                     const responseToken = response.token;
-                    session.actionStartUserSession(req,responseToken)
+                    session.actionStartUserProfileSession(req,responseToken)
                         .then(function(){
                             res.status(util.http.status.accepted).json({
                                 action: 'login',
@@ -67,7 +67,7 @@ userPages.getRegisterPage = function(req, res, next){
             pageTitle: util.globals.metaTitlePrefix + 'Register'
         },
         account: session.getTaxProfileObject(req),
-        user: session.getUserObject(req),
+        user: session.getUserProfileObject(req),
         locals: {}
     });
 };
@@ -96,7 +96,7 @@ userPages.actionRegisterUser = function(req, res, next){
             .then(function (response) {
                 try{
                     const responseToken = response.token;
-                    session.actionStartUserSession(req,responseToken)
+                    session.actionStartUserProfileSession(req,responseToken)
                         .then(function(){
                             res.status(util.http.status.accepted).json({
                                 action: 'register',
@@ -123,7 +123,7 @@ userPages.getPasswordResetPage = function(req, res, next){
             pageTitle: util.globals.metaTitlePrefix + 'Password Reset'
         },
         account: session.getTaxProfileObject(req),
-        user: session.getUserObject(req),
+        user: session.getUserProfileObject(req),
         locals: {}
     });
 };
@@ -162,7 +162,7 @@ userPages.getAuthorizedPasswordResetPage = function(req, res, next){
             pageTitle: util.globals.metaTitlePrefix + 'Password Reset'
         },
         account: session.getTaxProfileObject(req),
-        user: session.getUserObject(req),
+        user: session.getUserProfileObject(req),
         locals: {
             token: req.params.token
         }
@@ -198,14 +198,14 @@ userPages.actionAuthorizedPasswordReset = function(req, res, next){
 
 /************ logout ************/
 userPages.getLogoutPage = function(req, res, next) {
-    session.actionDestroyUserSession(req)
+    session.actionDestroyUserProfileSession(req)
         .then(function(){
             res.redirect('/login');
         });
 };
 
 userPages.actionLogoutUser = function(req, res, next) {
-    session.actionDestroyUserSession(req)
+    session.actionDestroyUserProfileSession(req)
         .then(function(){
             res.status(util.http.status.ok).json({
                 action: 'logout',

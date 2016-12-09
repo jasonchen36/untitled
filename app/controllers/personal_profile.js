@@ -37,7 +37,7 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
                     dependants: questionsModel.getDependentsData()
 
                 },
-                dataObject = session.getUserObject(req);
+                dataObject = session.getUserProfileObject(req);
             try {
                 res.render('personal_profile/personal_profile', {
                     meta: {
@@ -64,11 +64,11 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
 
 
 personalProfilePages.actionSavePersonalProfile = function(req, res, next) {
-    session.hasUserSession(req)
+    session.hasUserProfileSession(req)
         .then(function(hasSession){
             //check if session is initiated
             if (!hasSession){
-                return session.actionStartUserSession(req);
+                return session.actionStartUserProfileSession(req);
             }
         })
         .then(function(){
@@ -97,7 +97,7 @@ personalProfilePages.actionSavePersonalProfile = function(req, res, next) {
             res.status(util.http.status.accepted).json({
                 action: req.body.action,
                 status: 'success',
-                data: session.getUserObject(req)
+                data: session.getUserProfileObject(req)
             });
         })
         .catch(function(error){
