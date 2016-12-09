@@ -8,8 +8,8 @@
         welcomeForm,
         welcomeSubmit,
         welcomeNameInput,
-        errorClass = app.helpers.errorClass,
-        disabledClass = app.helpers.disabledClass;
+        errorClass = helpers.errorClass,
+        disabledClass = helpers.disabledClass;
 
     function submitWelcome(){
         if (!welcomeSubmit.hasClass(disabledClass)) {
