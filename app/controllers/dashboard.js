@@ -17,14 +17,14 @@ dashboardPages.getDashboardPage = function(req, res, next){
         method: 'GET',
         uri: process.env.API_URL+'/messages',
         headers: {
-            'Authorization': 'Bearer '+session.getUserValue(req,'token')
+            'Authorization': 'Bearer '+session.getUserProfileValue(req,'token')
         },
         body: {},
         json: true
     };
     requestPromise(options)
         .then(function (response) {
-            const dataObject = user.getDataObject(req);
+            const dataObject = session.getUserProfileObject(req);
             dataObject.newMessageCount = 0;
             dataObject.messages = response.messages;
             response.messages.forEach(function(entry){
@@ -73,10 +73,10 @@ dashboardPages.actionAddNewMessage = function(req, res, next){
             method: 'POST',
             uri: process.env.API_URL+'/messages/',
             headers: {
-                'Authorization': 'Bearer '+session.getUserValue(req,'token')
+                'Authorization': 'Bearer '+session.getUserProfileValue(req,'token')
             },
             body: {
-                from: session.getUserValue(req,'id'),
+                from: session.getUserProfileValue(req,'id'),
                 body: req.body.message
             },
             json: true
@@ -105,7 +105,7 @@ dashboardPages.actionAddNewDocument = function(req, res, next) {
                 method: 'POST',
                 uri: process.env.API_URL+'/quote/1/document',//todo dynamic quote id
                 headers: {
-                    'Authorization': 'Bearer '+session.getUserValue(req,'token')
+                    'Authorization': 'Bearer '+session.getUserProfileValue(req,'token')
                 },
                 formData: {
                     taxReturnId: 1,//todo, dynamic tax return and checklist item values
