@@ -6,7 +6,7 @@ const //packages
     util = require('../services/util'),
     session = require('../services/session'),
     errors = require('../services/errors'),
-    personalProfile = require('../services/personal_profile'),
+    user = require('../services/user'),
 //models
     questionsModel = require('../models/questions');
 
@@ -37,7 +37,7 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
                     dependants: questionsModel.getDependentsData()
 
                 },
-                dataObject = personalProfile.getDataObject(req);
+                dataObject = session.getUserObject(req);
             try {
                 res.render('personal_profile/personal_profile', {
                     meta: {
@@ -75,16 +75,16 @@ personalProfilePages.actionSavePersonalProfile = function(req, res, next) {
             //save account and qoute to session
             switch(req.body.action){
                 case 'api-pp-last-name':
-                    return personalProfile.saveLastName(req);
+                    return user.saveLastName(req);
                     break;
                 case 'api-pp-special-scenarios':
-                    return personalProfile.saveActiveTiles(req, 'specialScenarios');
+                    return user.saveActiveTiles(req, 'specialScenarios');
                     break;
                 case 'api-pp-marital-status':
-                    return personalProfile.saveActiveTiles(req, 'maritalStatus');
+                    return user.saveActiveTiles(req, 'maritalStatus');
                     break;
                 case 'api-pp-dependants':
-                    return personalProfile.saveActiveTiles(req, 'dependants');
+                    return user.saveActiveTiles(req, 'dependants');
                     break;
 
                 default:
@@ -97,7 +97,7 @@ personalProfilePages.actionSavePersonalProfile = function(req, res, next) {
             res.status(util.http.status.accepted).json({
                 action: req.body.action,
                 status: 'success',
-                data: personalProfile.getDataObject(req)
+                data: session.getUserObject(req)
             });
         })
         .catch(function(error){

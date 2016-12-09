@@ -128,7 +128,9 @@ session.actionStartUserSession = function(req,token){
                             accounts: response.accounts,
                             birthday: response.birthday,
                             resetKey: response.reset_key,
-                            accountId: response.account_id
+                            accountId: response.account_id,
+                            currentPage: '',//todo, determine current page for personal profile
+                            activeTiles: {}
                         };
                         return promise.resolve();
                     } catch(error){

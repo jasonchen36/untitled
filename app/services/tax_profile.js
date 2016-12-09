@@ -41,11 +41,4 @@ taxProfile.saveActiveTiles = function(req, group){
         });
 };
 
-taxProfile.getDataObject = function(req){
-    return util.mergeObjects([
-        session.getUserObject(req),//user
-        session.getTaxProfileObject(req)//account
-    ])
-};
-
 module.exports = taxProfile;
