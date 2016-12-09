@@ -64,11 +64,11 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
 
 
 personalProfilePages.actionSavePersonalProfile = function(req, res, next) {
-    session.hasPersonalProfileSession(req)
+    session.hasUserSession(req)
         .then(function(hasSession){
             //check if session is initiated
             if (!hasSession){
-                return session.actionStartPersonalProfileSession(req);
+                return session.actionStartUserSession(req);
             }
         })
         .then(function(){
