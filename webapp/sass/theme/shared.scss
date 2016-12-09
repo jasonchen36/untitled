@@ -244,12 +244,12 @@ textarea {
 
 .yellow-container{
   background: $color-global-yellow;
-  min-height:calc(100% - #{$header-height});
+  min-height:100%;
 }
 
 .white-container{
   background: white;
-  min-height:calc(100% - #{$header-height});
+  min-height:100%;
 }
 
 .container-header{
@@ -298,9 +298,16 @@ textarea {
   padding-bottom: 20px;
 }
 
-
 .add-top-padding{
   padding-top: 20px;
+}
+
+.add-bottom-margin{
+  margin-bottom: 20px;
+}
+
+.add-top-margin{
+  margin-top: 20px;
 }
 
 //visibility

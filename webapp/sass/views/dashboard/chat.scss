@@ -26,3 +26,18 @@
   resize: none;
   float: left;
 }
+
+#container-dashboard-welcome{
+  background: white;
+  border-radius: 30px;
+  padding: 15px;
+  margin-top: 20px;
+  text-align: center;
+  margin-right:30px;
+  .i--icon-logo{
+    height:40px;
+  }
+  .label-welcome{
+    width:60%;
+  }
+}
