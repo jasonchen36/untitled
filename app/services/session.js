@@ -2,6 +2,8 @@ const //packages
     requestPromise = require('request-promise'),
     promise = require('bluebird'),
     moment = require('moment'),
+    //models
+    sessionModel = require('../models/session'),
 //services
     errors = require('./errors'),
     session = {};
@@ -32,14 +34,7 @@ session.actionStartTaxProfileSession = function(req){
             return requestPromise(options)
                 .then(function (response) {
                     try {
-                        req.session.taxProfile = {
-                            hasTaxProfileSession: true,
-                            expiry: moment().add(7, 'days'),//todo, refresh expiry upon update
-                            currentPage: 'welcome',
-                            id: response.accountId,
-                            firstName: response.name,
-                            activeTiles: {}
-                        };
+                        req.session.taxProfile = sessionModel.getTaxProfileObject(response);
                         return promise.resolve();
                     } catch(error){
                         if(!error){
@@ -113,25 +108,8 @@ session.actionStartUserSession = function(req,token){
             return requestPromise(options)
                 .then(function (response) {
                     try {
-                        req.session.user = {
-                            hasUserSession: true,
-                            token: token,
-                            expiry: moment().add(1, 'hour'),//todo, refresh expiry upon update
-                            id: response.id,
-                            role: response.role,
-                            provider: response.provider,
-                            firstName: response.name && response.name.length > 0?response.name:response.first_name,
-                            email: response.email,
-                            phone: response.phone,
-                            username: response.username,
-                            lastName: response.last_name,
-                            accounts: response.accounts,
-                            birthday: response.birthday,
-                            resetKey: response.reset_key,
-                            accountId: response.account_id,
-                            currentPage: '',//todo, determine current page for personal profile
-                            activeTiles: {}
-                        };
+                        response.token = token;
+                        req.session.user = sessionModel.getUserObject(response);
                         return promise.resolve();
                     } catch(error){
                         if(!error){
