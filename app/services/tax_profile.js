@@ -20,8 +20,8 @@ taxProfile.saveName = function(req){
             if (req.validationErrors() || req.body.action !== 'api-tp-welcome'){
                 return promise.reject('api - account session creation - validation errors');
             } else {
-                req.session.account.name = req.body.name;
-                req.session.account.currentPage = getCurrentPage(req.body.action);
+                req.session.taxProfile.users[0].name = req.body.name;
+                req.session.taxProfile.currentPage = getCurrentPage(req.body.action);
                 return promise.resolve();
             }
         });
@@ -30,22 +30,15 @@ taxProfile.saveName = function(req){
 taxProfile.saveActiveTiles = function(req, group){
     return promise.resolve()
         .then(function() {
-            if (!req.session.account.activeTiles.hasOwnProperty(group)){
-                req.session.account.activeTiles[group] = {};
+            if (!req.session.taxProfile.users[0].activeTiles.hasOwnProperty(group)){
+                req.session.taxProfile.users[0].activeTiles[group] = {};
             }
             _.forOwn(req.body.data, function(value, key) {
-                req.session.account.activeTiles[group][key] = value;
+                req.session.taxProfile.users[0].activeTiles[group][key] = value;
             });
-            req.session.account.currentPage = getCurrentPage(req.body.action);
+            req.session.taxProfile.currentPage = getCurrentPage(req.body.action);
             return promise.resolve();
         });
-};
-
-taxProfile.getDataObject = function(req){
-    return util.mergeObjects([
-        session.getUserObject(req),//user
-        session.getAccountObject(req)//account
-    ])
 };
 
 module.exports = taxProfile;

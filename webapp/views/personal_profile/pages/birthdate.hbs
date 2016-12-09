@@ -1,7 +1,15 @@
-<section id="personal-profile-birthdate">
-    <h1>birthdate</h1>
-    <form id="birthdate-form">
-        <button type="submit">Next</button>
-    </form>
-    <button id="birthdate-back">Back</button>
+<section id="personal-profile-birthdate"  class="full-screen-grid-container main-container" >
+    <div class="small-12 medium-7">
+        <div class="content-form">
+            <div class="container-header">
+                <h1 class="header">Last couple of questions</h1>
+                <button id="birthdate-submit" class="green header">Next</button>
+                <button id="birthdate-back" class="grey header">Previous</button>
+            </div>
+        <form id="birthdate-form">
+            {{>personal-profile-birthdate-form}}
+        </form>
+        </div>
+    </div>
+    {{>personal-profile-sidebar sidebarImage="i--icon-cake" sidebarTitle="Why do you need my address?"}}
 </section>

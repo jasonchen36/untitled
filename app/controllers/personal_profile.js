@@ -6,7 +6,7 @@ const //packages
     util = require('../services/util'),
     session = require('../services/session'),
     errors = require('../services/errors'),
-    personalProfile = require('../services/personal_profile'),
+    user = require('../services/user'),
 //models
     questionsModel = require('../models/questions');
 
@@ -33,9 +33,11 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
             const personalProfileQuestions = {
                     specialScenarios: response[0],
                     credits: response[1],
-                    maritalStatus: questionsModel.getMaritalStatusData()
+                    maritalStatus: questionsModel.getMaritalStatusData(),
+                    dependants: questionsModel.getDependentsData()
+
                 },
-                dataObject = personalProfile.getDataObject(req);
+                dataObject = session.getUserProfileObject(req);
             try {
                 res.render('personal_profile/personal_profile', {
                     meta: {
@@ -62,25 +64,29 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
 
 
 personalProfilePages.actionSavePersonalProfile = function(req, res, next) {
-    session.hasPersonalProfileSession(req)
+    session.hasUserProfileSession(req)
         .then(function(hasSession){
             //check if session is initiated
             if (!hasSession){
-                return session.actionStartPersonalProfileSession(req);
+                return session.actionStartUserProfileSession(req);
             }
         })
         .then(function(){
             //save account and qoute to session
             switch(req.body.action){
                 case 'api-pp-last-name':
-                    return personalProfile.saveLastName(req);
+                    return user.saveLastName(req);
                     break;
                 case 'api-pp-special-scenarios':
-                    return personalProfile.saveActiveTiles(req, 'specialScenarios');
+                    return user.saveActiveTiles(req, 'specialScenarios');
                     break;
                 case 'api-pp-marital-status':
-                    return personalProfile.saveActiveTiles(req, 'maritalStatus');
+                    return user.saveActiveTiles(req, 'maritalStatus');
                     break;
+                case 'api-pp-dependants':
+                    return user.saveActiveTiles(req, 'dependants');
+                    break;
+
                 default:
                     return promise.reject('tax profile - invalid action');
                     break;
@@ -91,7 +97,7 @@ personalProfilePages.actionSavePersonalProfile = function(req, res, next) {
             res.status(util.http.status.accepted).json({
                 action: req.body.action,
                 status: 'success',
-                data: personalProfile.getDataObject(req)
+                data: session.getUserProfileObject(req)
             });
         })
         .catch(function(error){

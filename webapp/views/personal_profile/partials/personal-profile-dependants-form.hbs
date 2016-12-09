@@ -1,0 +1,58 @@
+<div id="container-dependants-form">
+    <h1 class="filer-name">{{fullName}}</h1>
+    <div class="border-bottom-light-gray border-top-light-gray add-bottom-padding add-top-padding">
+        <div>
+            <div class="container-inline-input long">
+                <label for="dependants-first-name">DEPENDANT FIRST NAME</label>
+                <input id="dependants-first-name" type="text" value="" class="inline-input"/>
+            </div>
+            <div class="container-inline-input long">
+                <label for="dependants-last-name">DEPENDANT LAST NAME</label>
+                <input id="dependants-last-name" type="text" value="" class="inline-input"/>
+            </div>
+            <div class="container-inline-input long">
+                <label class="under">DATE OF BIRTH</label>
+            </div>
+            <div class="container-inline-input long">
+                <label class="under" for="dependants-relationship">RELATIONSHIP</label>
+            </div>
+            <div class="container-inline-input short">
+                <input id="dependants-birthday-day" type="text" value="" class="inline-input text-center" placeholder="DD" maxlength="2"/>
+            </div>
+            <div class="container-inline-input short">
+                <input id="dependants-birthday-month" type="text" value="" class="inline-input text-center" placeholder="MM" maxlength="2"/>
+            </div>
+            <div class="container-inline-input short">
+                <input id="dependants-birthday-year" type="text" value="" class="inline-input text-center" placeholder="YY" maxlength="2"/>
+            </div>
+            <div class="container-inline-input long">
+                <div class="drop-down">
+                    <select id="dependants-relationship" class="drop-down-select">
+                        <option value="">Select…</option>
+                        <option value="1">Mother</option>
+                        <option value="2">Father</option>
+                        <option value="3">Sister</option>
+                        <option value="4">Brother</option>
+                        <option value="5">Aunt</option>
+                        <option value="6">Uncle</option>
+                        <option value="7">Niece</option>
+                        <option value="8">Nephew</option>
+                        <option value="9">Grandfather</option>
+                        <option value="10">Grandmother</option>
+                        <option value="11">Grandson</option>
+                        <option value="12">Granddaughter</option>
+                        <option value="13">Son</option>
+                        <option value="14">Daughter</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="add-top-padding">
+            <div class="checkbox"></div>
+            <p class="checkbox-label">THIS DEPENDANT IS ALSO SHARED WITH SPOUSE NAME</p>
+        </div>
+        <div class="add-top-padding">
+            <button id="dependants-save" class="green">Save</button>
+        </div>
+    </div>
+</div>

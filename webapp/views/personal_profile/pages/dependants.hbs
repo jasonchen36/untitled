@@ -7,19 +7,16 @@
                 <button id="dependants-back" class="grey header">Previous</button>
             </div>
             <form id="dependants-form">
-                <h1 class="subtitle">{{firstName}}, do you have any children or elderly parents as dependants?</h1>
-                <div class="taxplan-tile">
-                    <span class="taxplan-tile-label">
-                       Yes
-                   </span>
-                </div>
-                <div class="taxplan-tile">
-                    <span class="taxplan-tile-label">
-                       No
-                   </span>
+                <h1 class="subtitle">{{users.0.firstName}}, do you have any children or elderly parents as dependants?</h1>
+                {{>personal-profile-options questions=questions.dependants activeTiles=users.0.activeTiles.dependants}}
+                {{>personal-profile-dependants-form}}
+                {{>personal-profile-dependants-line}}
+                <div class="border-bottom-light-gray add-bottom-padding add-top-padding">
+                    <div class="i--icon-add"></div>
+                    <label class="label-add">ADD A DEPENDANT FOR {{users.0.firstName}}</label>
                 </div>
             </form>
         </div>
     </div>
-    {{>personal-profile-sidebar sidebarTitle="what is a dependent?"}}
+    {{>personal-profile-sidebar sidebarImage="i--icon-dependants" sidebarTitle="what is a dependant?"}}
 </section>

@@ -7,8 +7,8 @@
                 <button id="credits-back" class="grey header">Previous</button>
             </div>
             <form id="credits-form">
-                <h1 class="subtitle">{{firstName}} please select all your credit in 2016:</h1>
-                {{>tax-profile-options questions=questions.credits activeTiles=activeTiles.credits}}
+                <h1 class="subtitle">{{users.0.firstName}} please select all your credit in 2016:</h1>
+                {{>tax-profile-options questions=questions.credits activeTiles=users.0.activeTiles.credits}}
             </form>
         </div>
     </div>

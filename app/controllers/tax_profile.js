@@ -38,7 +38,7 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
                     credits: response[1],
                     deductions: response[2]
                 },
-                dataObject = taxProfile.getDataObject(req);
+                dataObject = session.getTaxProfileObject(req);
             try {
                 res.render('tax_profile/tax_profile', {
                     layout: 'layout-questionnaire',
@@ -63,12 +63,12 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
         });
 };
 
-taxReturnPages.actionSaveAccount = function(req, res, next) {
-    session.hasAccountSession(req)
+taxReturnPages.actionSaveTaxProfile = function(req, res, next) {
+    session.hasTaxProfileSession(req)
         .then(function(hasSession){
             //check if session is initiated
             if (!hasSession){
-                return session.actionStartAccountSession(req);
+                return session.actionStartTaxProfileSession(req);
             }
         })
         .then(function(){
@@ -99,7 +99,7 @@ taxReturnPages.actionSaveAccount = function(req, res, next) {
             res.status(util.http.status.accepted).json({
                 action: req.body.action,
                 status: 'success',
-                data: taxProfile.getDataObject(req)
+                data: session.getTaxProfileObject(req)
             });
         })
         .catch(function(error){
@@ -114,7 +114,7 @@ taxReturnPages.actionSaveAccount = function(req, res, next) {
 
 /************ logout ************/
 taxReturnPages.getLogoutPage = function(req, res, next){
-    session.actionDestroyAccountSession(req)
+    session.actionDestroyTaxProfileSession(req)
         .then(function(){
             res.redirect('/tax-profile');
         });
