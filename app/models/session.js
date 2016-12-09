@@ -3,7 +3,7 @@ const //packages
 
 var sessionModel = {};
 
-sessionModel.getTaxProfileUserObject = function(){
+sessionModel.getTaxProfileUserObject = function(data){
     return {
         id: data.accountId,
         firstName: data.name,
@@ -17,12 +17,12 @@ sessionModel.getTaxProfileObject = function(data){
         expiry: moment().add(7, 'days'),//todo, refresh expiry upon update
         currentPage: 'welcome',
         users: [
-            sessionModel.getTaxProfileObject(data)
+            sessionModel.getTaxProfileUserObject(data)
         ]
     };
 };
 
-sessionModel.getUserProfileObject = function(data){
+sessionModel.getUserProfileUserObject = function(data){
     return {
         id: data.id,
         role: data.role,
@@ -47,7 +47,7 @@ sessionModel.getUserProfileObject = function(data){
         expiry: moment().add(1, 'hour'),//todo, refresh expiry upon update
         currentPage: '',//todo, determine current page for personal profile
         users: [
-            sessionModel.getUserProfileObject(data)
+            sessionModel.getUserProfileUserObject(data)
         ]
     };
 };
