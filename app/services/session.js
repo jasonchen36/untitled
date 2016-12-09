@@ -6,16 +6,16 @@ const //packages
     errors = require('./errors'),
     session = {};
 
-/************ account ************/
-session.actionStartAccountSession = function(req){
-    return session.actionDestroyAccountSession(req)
+/************ tax profile ************/
+session.actionStartTaxProfileSession = function(req){
+    return session.actionDestroyTaxProfileSession(req)
         .then(function(){
             //validate
             req.checkBody('name').notEmpty();
 
-            //can only create an account on the name step
+            //can only create a tax profile on the name step
             if (req.validationErrors() || req.body.action !== 'api-tp-welcome'){
-                return promise.reject('api - account session creation - validation errors');
+                return promise.reject('api - tax profile session creation - validation errors');
             }
         })
         .then(function(){
@@ -32,8 +32,8 @@ session.actionStartAccountSession = function(req){
             return requestPromise(options)
                 .then(function (response) {
                     try {
-                        req.session.account = {
-                            hasAccountSession: true,
+                        req.session.taxProfile = {
+                            hasTaxProfileSession: true,
                             expiry: moment().add(7, 'days'),//todo, refresh expiry upon update
                             currentPage: 'welcome',
                             id: response.accountId,
@@ -43,7 +43,7 @@ session.actionStartAccountSession = function(req){
                         return promise.resolve();
                     } catch(error){
                         if(!error){
-                            error = 'Could not create account';
+                            error = 'Could not create tax profile';
                         }
                         return promise.reject(error);
                     }
@@ -58,14 +58,14 @@ session.actionStartAccountSession = function(req){
         });
 };
 
-session.hasAccountSession = function(req){
+session.hasTaxProfileSession = function(req){
     return promise.resolve()
         .then(function(){
-            if (req.session.hasOwnProperty('account') && session.getAccountValue(req,'hasAccountSession')){
-                if (moment().isBefore(session.getAccountValue(req,'expiry'))){
+            if (req.session.hasOwnProperty('account') && session.getTaxProfileValue(req,'hasAccountSession')){
+                if (moment().isBefore(session.getTaxProfileValue(req,'expiry'))){
                     return true;
                 } else {
-                    return session.actionDestroyAccountSession(req)
+                    return session.actionDestroyTaxProfileSession(req)
                         .then(function(){
                             return false;
                         });
@@ -76,20 +76,20 @@ session.hasAccountSession = function(req){
         });
 };
 
-session.actionDestroyAccountSession = function(req){
+session.actionDestroyTaxProfileSession = function(req){
     return promise.resolve()
         .then(function(){
-            req.session.account = {};
+            req.session.taxProfile = {};
         });
 };
 
-session.getAccountObject = function(req){
-    return req.session.hasOwnProperty('account')?req.session.account:{};
+session.getTaxProfileObject = function(req){
+    return req.session.hasOwnProperty('taxProfile')?req.session.taxProfile:{};
 };
 
-session.getAccountValue = function(req, key){
-    const accountSession = session.getAccountObject(req);
-    return accountSession.hasOwnProperty(key)?accountSession[key]:'';
+session.getTaxProfileValue = function(req, key){
+    const taxProfileSession = session.getTaxProfileObject(req);
+    return taxProfileSession.hasOwnProperty(key)?taxProfileSession[key]:'';
 };
 
 
@@ -133,7 +133,7 @@ session.actionStartUserSession = function(req,token){
                         return promise.resolve();
                     } catch(error){
                         if(!error){
-                            error = 'Could not create account';
+                            error = 'Could not create user account';
                         }
                         return promise.reject(error);
                     }
@@ -171,7 +171,7 @@ session.getUserObject = function(req){
 };
 
 session.actionDestroyUserSession = function(req){
-    return session.actionDestroyAccountSession(req)
+    return session.actionDestroyTaxProfileSession(req)
         .then(function() {
             req.session.user = {};
         });

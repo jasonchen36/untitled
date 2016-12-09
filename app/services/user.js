@@ -7,7 +7,7 @@ var user = {};
 user.getDataObject = function(req){
     return util.mergeObjects([
         session.getUserObject(req),//user
-        session.getAccountObject(req),//account,
+        session.getTaxProfileObject(req),//account,
         session.getPersonalProfileObject(req)//personal profile
     ]);
 };

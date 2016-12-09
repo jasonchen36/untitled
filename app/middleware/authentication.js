@@ -6,7 +6,7 @@ var authenticationMiddleware = {};
 
 /************ account session ************/
 authenticationMiddleware.redirectWithoutAccountSession = function(req, res, next){
-    session.hasAccountSession(req)
+    session.hasTaxProfileSession(req)
         .then(function(hasSession){
             if (hasSession){
                 next();
@@ -17,7 +17,7 @@ authenticationMiddleware.redirectWithoutAccountSession = function(req, res, next
 };
 
 authenticationMiddleware.rejectWithoutAccountSession = function(req, res, next){
-    session.hasAccountSession(req)
+    session.hasTaxProfileSession(req)
         .then(function(hasSession) {
             if (hasSession) {
                 next();

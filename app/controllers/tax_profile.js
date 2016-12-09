@@ -63,12 +63,12 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
         });
 };
 
-taxReturnPages.actionSaveAccount = function(req, res, next) {
-    session.hasAccountSession(req)
+taxReturnPages.actionSaveTaxProfile = function(req, res, next) {
+    session.hasTaxProfileSession(req)
         .then(function(hasSession){
             //check if session is initiated
             if (!hasSession){
-                return session.actionStartAccountSession(req);
+                return session.actionStartTaxProfileSession(req);
             }
         })
         .then(function(){
@@ -114,7 +114,7 @@ taxReturnPages.actionSaveAccount = function(req, res, next) {
 
 /************ logout ************/
 taxReturnPages.getLogoutPage = function(req, res, next){
-    session.actionDestroyAccountSession(req)
+    session.actionDestroyTaxProfileSession(req)
         .then(function(){
             res.redirect('/tax-profile');
         });

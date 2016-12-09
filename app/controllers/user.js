@@ -13,7 +13,7 @@ userPages.getLoginPage = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix+'Sign In'
         },
-        account: session.getAccountObject(req),
+        account: session.getTaxProfileObject(req),
         user: session.getUserObject(req),
         locals: {}
     });
@@ -66,7 +66,7 @@ userPages.getRegisterPage = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Register'
         },
-        account: session.getAccountObject(req),
+        account: session.getTaxProfileObject(req),
         user: session.getUserObject(req),
         locals: {}
     });
@@ -85,10 +85,10 @@ userPages.actionRegisterUser = function(req, res, next){
             uri: process.env.API_URL+'/users',
             body: {
                 password: req.body.password,
-                first_name: session.getAccountValue(req,'name'),
+                first_name: session.getTaxProfileValue(req,'name'),
                 last_name: 'todo',//todo, not entered until person profile section
                 email: req.body.email,
-                accountId: session.getAccountValue(req,'id')
+                accountId: session.getTaxProfileValue(req,'id')
             },
             json: true
         };
@@ -122,7 +122,7 @@ userPages.getPasswordResetPage = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Password Reset'
         },
-        account: session.getAccountObject(req),
+        account: session.getTaxProfileObject(req),
         user: session.getUserObject(req),
         locals: {}
     });
@@ -161,7 +161,7 @@ userPages.getAuthorizedPasswordResetPage = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Password Reset'
         },
-        account: session.getAccountObject(req),
+        account: session.getTaxProfileObject(req),
         user: session.getUserObject(req),
         locals: {
             token: req.params.token
