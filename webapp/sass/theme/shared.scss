@@ -22,6 +22,9 @@ $header-height: 85px;
   &.label-sidebar-menu-item{
     color: $color-sidebar-text-dark-grey;
   }
+  &.label-message-date{
+    color: $color-message-date;
+  }
 }
 
 img {
@@ -319,6 +322,11 @@ textarea {
 
 .add-margin-right{
   margin-right: 10px;
+}
+
+//TODO: Nich, clean up your inline-blocks with helper, please
+.display-inline-block{
+  display:inline-block;
 }
 
 //visibility
