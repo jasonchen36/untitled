@@ -19,6 +19,9 @@ $header-height: 85px;
   &.font-light-grey{
     color: $color-text-light-grey;
   }
+  &.label-sidebar-menu-item{
+    color: $color-sidebar-text-dark-grey;
+  }
 }
 
 img {
@@ -308,6 +311,14 @@ textarea {
 
 .add-top-margin{
   margin-top: 20px;
+}
+
+.add-margin-left{
+  margin-left: 10px;
+}
+
+.add-margin-right{
+  margin-right: 10px;
 }
 
 //visibility
