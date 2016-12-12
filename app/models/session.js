@@ -19,7 +19,7 @@ sessionModel.getTaxProfileUserObject = function(data){
 sessionModel.getTaxProfileObject = function(data){
     return {
         hasTaxProfileSession: true,
-        expiry: moment().add(7, 'days'),//todo, refresh expiry upon update
+        expiry: moment().add(7, 'days'),
         currentPage: 'welcome',
         users: [
             sessionModel.getTaxProfileUserObject(data),

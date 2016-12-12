@@ -6,7 +6,7 @@ const //packages
     util = require('../services/util'),
     session = require('../services/session'),
     errors = require('../services/errors'),
-    user = require('../services/user'),
+    userProfile = require('../services/user_profile'),
 //models
     questionsModel = require('../models/questions');
 
@@ -75,16 +75,16 @@ personalProfilePages.actionSavePersonalProfile = function(req, res, next) {
             //save account and qoute to session
             switch(req.body.action){
                 case 'api-pp-last-name':
-                    return user.saveLastName(req);
+                    return userProfile.saveLastName(req);
                     break;
                 case 'api-pp-special-scenarios':
-                    return user.saveActiveTiles(req, 'specialScenarios');
+                    return userProfile.saveActiveTiles(req, 'specialScenarios');
                     break;
                 case 'api-pp-marital-status':
-                    return user.saveActiveTiles(req, 'maritalStatus');
+                    return userProfile.saveActiveTiles(req, 'maritalStatus');
                     break;
                 case 'api-pp-dependants':
-                    return user.saveActiveTiles(req, 'dependants');
+                    return userProfile.saveActiveTiles(req, 'dependants');
                     break;
 
                 default:

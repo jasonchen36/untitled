@@ -6,8 +6,7 @@ const //packages
     util = require('../services/util'),
     session = require('../services/session'),
     errors = require('../services/errors'),
-    uploads = require('../services/uploads'),
-    user = require('../services/user');
+    uploads = require('../services/uploads');
 
 var dashboardPages = {};
 

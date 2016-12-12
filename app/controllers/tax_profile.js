@@ -20,6 +20,7 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
         body: {},
         json: true
     };
+    //todo, remove once quote tile questions are resolved
     var incomeRequest = _.clone(requestObject, true),
         creditsRequest = _.clone(requestObject, true),
         deductionsRequest = _.clone(requestObject, true);

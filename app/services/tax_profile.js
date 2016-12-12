@@ -1,6 +1,7 @@
 const //packages
     promise = require('bluebird'),
     _ = require('lodash'),
+    moment = require('moment'),
 //services
     session = require('./session'),
     util = require('./util'),
@@ -24,6 +25,7 @@ taxProfile.saveName = function(req){
                 const taxProfileSession = req.session.taxProfile;
                 taxProfileSession.users[0].name = req.body.name;
                 taxProfileSession.currentPage = getCurrentPage(req.body.action);
+                taxProfileSession.expiry = moment().add(7, 'days');//refresh after update
                 req.session.taxProfile = taxProfileSession;
                 return promise.resolve();
             }
@@ -66,6 +68,7 @@ taxProfile.saveFilersNames = function(req){
                     }
                 });
                 taxProfileSession.currentPage = getCurrentPage(req.body.action);
+                taxProfileSession.expiry = moment().add(7, 'days');//refresh after update
                 req.session.taxProfile = taxProfileSession;
                 return promise.resolve();
             }
@@ -126,6 +129,7 @@ taxProfile.saveActiveTiles = function(req){
                 }
             });
             taxProfileSession.currentPage = getCurrentPage(req.body.action);
+            taxProfileSession.expiry = moment().add(7, 'days');//refresh after update
             req.session.taxProfile = taxProfileSession;
             return promise.resolve();
         });
