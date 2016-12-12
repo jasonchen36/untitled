@@ -1,10 +1,10 @@
 (function(){
 
     var $ = jQuery,
-        that = app.views.taxProfile.income,
+        that = app.views.personalProfile.income,
         helpers = app.helpers,
         ajax = app.ajax,
-        taxProfile = app.services.taxProfile,
+        personalProfile = app.services.personalProfile,
         incomeForm,
         incomeSubmit,
         incomeBack,
@@ -22,15 +22,15 @@
                 incomeSubmit.addClass(disabledClass);
                 ajax.ajax(
                     'POST',
-                    '/tax-profile',
+                    '/personal-profile',
                     {
-                        action: 'api-tp-income',
+                        action: 'api-pp-income',
                         data: formData
                     },
                     'json'
                 )
                     .then(function(response){
-                        taxProfile.goToNextPage(response.data);
+                        personalProfile.goToNextPage(response.data);
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
@@ -41,7 +41,7 @@
     }
 
     this.init = function(){
-        if ($('#tax-profile-income').length > 0) {
+        if ($('#personal-profile-income').length > 0) {
 
             //variables
             incomeForm = $('#income-form');
@@ -61,9 +61,9 @@
 
             incomeBack.on('click',function(event){
                 event.preventDefault();
-                taxProfile.goToPreviousPage();
+                personalProfile.goToPreviousPage();
             });
         }
     };
 
-}).apply(app.views.taxProfile.income);
+}).apply(app.views.personalProfile.income);

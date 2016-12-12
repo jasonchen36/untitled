@@ -1,10 +1,10 @@
 (function(){
 
     var $ = jQuery,
-        that = app.views.taxProfile.deductions,
+        that = app.views.personalProfile.deductions,
         helpers = app.helpers,
         ajax = app.ajax,
-        taxProfile = app.services.taxProfile,
+        personalProfile = app.services.personalProfile,
         deductionsForm,
         deductionsSubmit,
         deductionsBack,
@@ -21,15 +21,15 @@
                 deductionsSubmit.addClass(disabledClass);
                 ajax.ajax(
                     'POST',
-                    '/tax-profile',
+                    '/personal-profile',
                     {
-                        action: 'api-tp-deductions',
+                        action: 'api-pp-deductions',
                         data: formData
                     },
                     'json'
                 )
                     .then(function(response){
-                        taxProfile.goToNextPage(response.data);
+                        personalProfile.goToNextPage(response.data);
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
@@ -40,7 +40,7 @@
     }
 
     this.init = function(){
-        if ($('#tax-profile-deductions').length > 0) {
+        if ($('#personal-profile-deductions').length > 0) {
 
             //variables
             deductionsForm = $('#deductions-form');
@@ -60,9 +60,9 @@
 
             deductionsBack.on('click',function(event){
                 event.preventDefault();
-                taxProfile.goToPreviousPage();
+                personalProfile.goToPreviousPage();
             });
         }
     };
 
-}).apply(app.views.taxProfile.deductions);
+}).apply(app.views.personalProfile.deductions);

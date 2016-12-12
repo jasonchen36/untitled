@@ -9,9 +9,6 @@
         lastNameSubmit,
         lastNameBack,
         lastNameInput,
-        lastNameMyself,
-        lastNameSpouse,
-        lastNameOther,
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
@@ -29,7 +26,7 @@
                     '/personal-profile',
                     {
                         action: 'api-pp-last-name',
-                        lastName: formData.name
+                        data: formData
                     },
                     'json'
                 )
@@ -52,10 +49,6 @@
             lastNameSubmit = $('#last-name-submit');
             lastNameBack = $('#last-name-back');
             lastNameInput = $('#last-name-input');
-
-            lastNameMyself = $('#last-name-myself');
-            lastNameSpouse = $('#last-name-spouse');
-            lastNameOther = $('#last-name-other');
 
             //listeners
             lastNameForm.on('submit',function(event){

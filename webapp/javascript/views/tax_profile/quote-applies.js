@@ -1,29 +1,30 @@
 (function(){
 
     var $ = jQuery,
-        that = app.views.taxProfile.credits,
+        that = app.views.taxProfile.quoteApplies,
         helpers = app.helpers,
         ajax = app.ajax,
         taxProfile = app.services.taxProfile,
-        creditsForm,
-        creditsSubmit,
-        creditsBack,
-        errorClass = app.helpers.errorClass,
-        disabledClass = app.helpers.disabledClass;
+        quoteAppliesForm,
+        quoteAppliesSubmit,
+        quoteAppliesBack,
+        activeClass = helpers.activeClass,
+        errorClass = helpers.errorClass,
+        disabledClass = helpers.disabledClass;
 
-    function submitCredits(){
-        if (!creditsSubmit.hasClass(disabledClass)) {
-            var formData = helpers.getTileFormData(creditsForm);
+    function submitQuoteApplies(){
+        if (!quoteAppliesSubmit.hasClass(disabledClass)) {
+            var formData = helpers.getTileFormData(quoteAppliesForm);
             if(!helpers.hasSelectedTile(formData)){
                 //todo, real alert
                 alert('no selected option');
             } else {
-                creditsSubmit.addClass(disabledClass);
+                quoteAppliesSubmit.addClass(disabledClass);
                 ajax.ajax(
                     'POST',
                     '/tax-profile',
                     {
-                        action: 'api-tp-credits',
+                        action: 'api-tp-quote-applies',
                         data: formData
                     },
                     'json'
@@ -33,36 +34,36 @@
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
-                        creditsSubmit.removeClass(disabledClass);
+                        quoteAppliesSubmit.removeClass(disabledClass);
                     });
             }
         }
     }
 
     this.init = function(){
-        if ($('#tax-profile-credits').length > 0) {
+        if ($('#tax-profile-quote-applies').length > 0) {
 
             //variables
-            creditsForm = $('#credits-form');
-            creditsSubmit = $('#credits-submit');
-            creditsBack = $('#credits-back');
+            quoteAppliesForm = $('#quote-applies-form');
+            quoteAppliesSubmit = $('#quote-applies-submit');
+            quoteAppliesBack = $('#quote-applies-back');
 
             //listeners
-            creditsForm.on('submit',function(event){
+            quoteAppliesForm.on('submit',function(event){
                 event.preventDefault();
-                submitCredits();
+                submitQuoteApplies();
             });
 
-            creditsSubmit.on('click',function(event){
+            quoteAppliesSubmit.on('click',function(event){
                 event.preventDefault();
-                submitCredits();
+                submitQuoteApplies();
             });
 
-            creditsBack.on('click',function(event){
+            quoteAppliesBack.on('click',function(event){
                 event.preventDefault();
                 taxProfile.goToPreviousPage();
             });
         }
     };
 
-}).apply(app.views.taxProfile.credits);
+}).apply(app.views.taxProfile.quoteApplies);

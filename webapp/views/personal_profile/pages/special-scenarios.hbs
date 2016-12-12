@@ -8,7 +8,7 @@
             </div>
             <form id="special-scenarios-form">
                 <h1 class="subtitle">{{users.0.firstName}} please select all scenarios that applied to you in 2016:</h1>
-                {{>personal-profile-options questions=questions.specialScenarios activeTiles=users.0.activeTiles.specialScenarios}}
+                {{>personal-profile-options questions=questions.specialScenarios activeTiles=users.0.activeTiles.specialScenarios tileContainerId=users.0.id}}
             </form>
         </div>
     </div>

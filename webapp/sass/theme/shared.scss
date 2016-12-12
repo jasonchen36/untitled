@@ -19,6 +19,12 @@ $header-height: 85px;
   &.font-light-grey{
     color: $color-text-light-grey;
   }
+  &.label-sidebar-menu-item{
+    color: $color-sidebar-text-dark-grey;
+  }
+  &.label-message-date{
+    color: $color-message-date;
+  }
 }
 
 img {
@@ -244,12 +250,12 @@ textarea {
 
 .yellow-container{
   background: $color-global-yellow;
-  height:100%;
+  min-height:100%;
 }
 
 .white-container{
   background: white;
-  height:100%;
+  min-height:100%;
 }
 
 .container-header{
@@ -298,9 +304,29 @@ textarea {
   padding-bottom: 20px;
 }
 
-
 .add-top-padding{
   padding-top: 20px;
+}
+
+.add-bottom-margin{
+  margin-bottom: 20px;
+}
+
+.add-top-margin{
+  margin-top: 20px;
+}
+
+.add-margin-left{
+  margin-left: 10px;
+}
+
+.add-margin-right{
+  margin-right: 10px;
+}
+
+//TODO: Nich, clean up your inline-blocks with helper, please
+.display-inline-block{
+  display:inline-block;
 }
 
 //visibility

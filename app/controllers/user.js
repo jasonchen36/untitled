@@ -86,7 +86,7 @@ userPages.actionRegisterUser = function(req, res, next){
             body: {
                 password: req.body.password,
                 first_name: session.getTaxProfileValue(req,'name'),
-                last_name: 'todo',//todo, not entered until person profile section
+                last_name: ' ',//not entered until person profile section
                 email: req.body.email,
                 accountId: session.getTaxProfileValue(req,'id')
             },

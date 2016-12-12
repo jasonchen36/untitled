@@ -1,0 +1,22 @@
+<section id="tax-profile-quote-applies" class="full-screen-grid-container main-container">
+    <div class="small-12 medium-7">
+        <div class="content-form">
+            <div class="container-header">
+                <h1 class="header">quote applies</h1>
+                <button id="quote-applies-submit" type="submit" class="green header">Next</button>
+                <button id="quote-applies-back" class="grey header">Previous</button>
+            </div>
+            <form id="quote-applies-form">
+                <h1 class="subtitle">{{users.0.firstName}} please select all that applied to you in 2016:</h1>
+                {{>tax-profile-options questions=questions.quoteApplies activeTiles=users.0.activeTiles.quoteApplies tileContainerId=users.0.id}}
+                {{#offsetEach users 1}}
+                    {{#if id}}
+                        <h1 class="subtitle">please select all that applied to {{firstName}} in 2016:</h1>
+                        {{>tax-profile-options questions=../questions.quoteApplies activeTiles=activeTiles.quoteApplies tileContainerId=id}}
+                    {{/if}}
+                {{/offsetEach}}
+            </form>
+        </div>
+    </div>
+    {{>tax-profile-sidebar sidebarTitle="quote applies"}}
+</section>

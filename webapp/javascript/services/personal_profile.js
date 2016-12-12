@@ -11,6 +11,9 @@
 
     this.personalProfileFlow = [
         'last-name',
+        'income',
+        'credits',
+        'deductions',
         'special-scenarios',
         'marital-status',
         'dependants',
@@ -22,7 +25,7 @@
     /* *************** private methods ***************/
     function changePage(newPage){
         return new Promise(function(resolve,reject) {
-            var data = getPersonalProfileSession();
+            var data = that.getPersonalProfileSession();
             //update session with new page
             updatePersonalProfileSession(data, newPage);
             animateProgressBar();
@@ -37,13 +40,16 @@
     }
 
     function triggerInitScripts(){
-        var personalProfile = app.views.personalProfile;
-        personalProfile.lastName.init();
-        personalProfile.specialScenarios.init();
-        personalProfile.maritalStatus.init();
-        personalProfile.dependants.init();
-        personalProfile.address.init();
-        personalProfile.birthdate.init();
+        var personalProfileViews = app.views.personalProfile;
+        personalProfileViews.lastName.init();
+        personalProfileViews.specialScenarios.init();
+        personalProfileViews.maritalStatus.init();
+        personalProfileViews.dependants.init();
+        personalProfileViews.address.init();
+        personalProfileViews.birthdate.init();
+        personalProfileViews.income.init();
+        personalProfileViews.deductions.init();
+        personalProfileViews.credits.init();
     }
 
     function startPersonalProfileSession(){
@@ -57,28 +63,13 @@
         }
     }
 
-    function getPersonalProfileSession(){
-        return personalProfileSessionStore;
-    }
-
     function getCurrentPage(){
-        var personalProfileSession = getPersonalProfileSession();
+        var personalProfileSession = that.getPersonalProfileSession();
         if (!personalProfileSession) {
             return startPersonalProfileSession().currentPage;
         } else {
             return personalProfileSession.currentPage;
         }
-    }
-
-    function updatePersonalProfileSession(data,newPage){
-        if(!data || typeof data !== 'object'){
-            data = getPersonalProfileSession();
-        }
-        if(newPage && newPage.length > 0){
-            data.currentPage = newPage;
-        }
-        data.questions = questionsObject;
-        personalProfileSessionStore = data;
     }
 
     function animateProgressBar(){
@@ -88,6 +79,17 @@
                 width: percentageComplete+'%'
             }
         });
+    }
+
+    function updatePersonalProfileSession(data,newPage){
+        if(!data || typeof data !== 'object'){
+            data = that.getPersonalProfileSession();
+        }
+        if(newPage && newPage.length > 0){
+            data.currentPage = newPage;
+        }
+        data.questions = questionsObject;
+        personalProfileSessionStore = data;
     }
 
     /* *************** public methods ***************/
@@ -111,6 +113,20 @@
         }
     };
 
+    this.refreshPage = function(data){
+        var currentPage = getCurrentPage(),
+            currentPageIndex = that.personalProfileFlow.indexOf(currentPage),
+            newPage;
+        //update session with new data
+        updatePersonalProfileSession(data);
+        newPage = that.personalProfileFlow[currentPageIndex];
+        changePage(newPage);
+    };
+
+    this.getPersonalProfileSession = function(){
+        return personalProfileSessionStore;
+    };
+    
     this.init = function(){
         if (personalProfilePageContainer.length > 0) {
             startPersonalProfileSession();

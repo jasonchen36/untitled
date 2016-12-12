@@ -9,30 +9,18 @@
         profileBar = $('#tax-profile-progress-bar'),
         accountSessionStore;
 
-    this.singleFilerFlow = [
-        'welcome',
-        'filing-for',
-        'income',
-        'credits',
-        'deductions',
-        'quote'
-    ];
-
-    this.multiFilerFlow = [
+    this.taxProfileFlow = [
         'welcome',
         'filing-for',
         'filers-names',
-        'income-multi',
-        'credits-multi',
-        'deductions-multi',
-        'quote-multi'
+        'quote-applies',
+        'quote'
     ];
-
 
     /* *************** private methods ***************/
     function changePage(newPage){
         return new Promise(function(resolve,reject) {
-            var data = getAccountSession();
+            var data = that.getAccountSession();
             //update session with new page
             updateAccountSession(data, newPage);
             animateProgressBar();
@@ -51,14 +39,8 @@
         taxProfileViews.welcome.init();
         taxProfileViews.filingFor.init();
         taxProfileViews.filersNames.init();
-        taxProfileViews.income.init();
-        taxProfileViews.incomeMulti.init();
-        taxProfileViews.deductions.init();
-        taxProfileViews.deductionsMulti.init();
-        taxProfileViews.credits.init();
-        taxProfileViews.creditsMulti.init();
         taxProfileViews.quote.init();
-        taxProfileViews.quoteMulti.init();
+        taxProfileViews.quoteApplies.init();
         taxProfileViews.modalQuote.init();
     }
 
@@ -66,33 +48,20 @@
         accountSessionStore = accountObject;
         accountSessionStore.questions = questionsObject;
         if(!accountSessionStore.hasOwnProperty('currentPage') || accountSessionStore.currentPage.length < 1){
-            accountSessionStore.currentPage = that.singleFilerFlow[0];
+            accountSessionStore.currentPage = that.taxProfileFlow[0];
             changePage(accountSessionStore.currentPage);
         } else {
             that.goToNextPage();
         }
     }
 
-    function getAccountSession(){
-        return accountSessionStore;
-    }
-
-    function isMultiFiler(){
-        var accountSession = getAccountSession();
-        if(!accountSession.hasOwnProperty('activeTiles')) {
-            return false;
-        } else {
-            return accountSession.activeTiles.hasOwnProperty('filingFor') && Object.values(accountSession.activeTiles.filingFor).filter(function (x) {return x == 1;}).length > 1;
-        }
-    }
-
     function getCurrentPage(){
-        return getAccountSession().currentPage;
+        return that.getAccountSession().currentPage;
     }
 
     function updateAccountSession(data,newPage){
         if(!data || typeof data !== 'object'){
-            data = getAccountSession();
+            data = that.getAccountSession();
         }
         if(newPage && newPage.length > 0){
             data.currentPage = newPage;
@@ -102,12 +71,7 @@
     }
 
     function animateProgressBar(){
-        var percentageComplete;
-        if(isMultiFiler()){
-            percentageComplete = helpers.getAverage(that.multiFilerFlow.indexOf(getCurrentPage()),that.multiFilerFlow.length);
-        } else {
-            percentageComplete = helpers.getAverage(that.singleFilerFlow.indexOf(getCurrentPage()),that.singleFilerFlow.length);
-        }
+        var percentageComplete = helpers.getAverage(that.taxProfileFlow.indexOf(getCurrentPage()),that.taxProfileFlow.length);
         animations.animateElement(profileBar,{
             properties: {
                 width: percentageComplete+'%'
@@ -119,45 +83,52 @@
     /* *************** public methods ***************/
     this.goToNextPage = function(data){
         var currentPage = getCurrentPage(),
-            currentPageIndex,
-            newPage;
+            currentPageIndex = that.taxProfileFlow.indexOf(currentPage),
+            newPage,
+            accountSession;
         //update session from ajax response
         updateAccountSession(data);
-        if (isMultiFiler()){
-            currentPageIndex = that.multiFilerFlow.indexOf(currentPage);
-            if (currentPageIndex !== that.multiFilerFlow.length-1){
-                newPage = that.multiFilerFlow[currentPageIndex+1];
-                changePage(newPage);
+        if (currentPageIndex !== that.taxProfileFlow.length-1){
+            accountSession = that.getAccountSession();
+            newPage = that.taxProfileFlow[currentPageIndex+1];
+            if(newPage === 'filers-names' && !accountSession.users[1].hasOwnProperty('id') && !accountSession.users[2].hasOwnProperty('id')){
+                //skip if only one filer
+                newPage = that.taxProfileFlow[currentPageIndex+2];
             }
-        } else {
-            currentPageIndex = that.singleFilerFlow.indexOf(currentPage);
-            if (currentPageIndex !== that.singleFilerFlow.length-1){
-                newPage = that.singleFilerFlow[currentPageIndex+1];
-                changePage(newPage);
-            }
+            changePage(newPage);
         }
-
     };
 
     this.goToPreviousPage = function(data){
         var currentPage = getCurrentPage(),
-            currentPageIndex,
-            newPage;
+            currentPageIndex = that.taxProfileFlow.indexOf(currentPage),
+            newPage,
+            accountSession;
         //update session from ajax response
         updateAccountSession(data);
-        if (isMultiFiler()){
-            currentPageIndex = that.multiFilerFlow.indexOf(currentPage);
-            if (currentPageIndex !== 0){
-                newPage = that.multiFilerFlow[currentPageIndex-1];
-                changePage(newPage);
+        if (currentPageIndex !== 0){
+            accountSession = that.getAccountSession();
+            newPage = that.taxProfileFlow[currentPageIndex-1];
+            if(newPage === 'filers-names' && !accountSession.users[1].hasOwnProperty('id') && !accountSession.users[2].hasOwnProperty('id')){
+                //skip if only one filer
+                newPage = that.taxProfileFlow[currentPageIndex-2];
             }
-        } else {
-            currentPageIndex = that.singleFilerFlow.indexOf(currentPage);
-            if (currentPageIndex !== 0){
-                newPage = that.singleFilerFlow[currentPageIndex-1];
-                changePage(newPage);
-            }
+            changePage(newPage);
         }
+    };
+
+    this.refreshPage = function(data){
+        var currentPage = getCurrentPage(),
+            currentPageIndex = that.taxProfileFlow.indexOf(currentPage),
+            newPage;
+        //update session with new data
+        updateAccountSession(data);
+        newPage = that.taxProfileFlow[currentPageIndex];
+        changePage(newPage);
+    };
+
+    this.getAccountSession = function(){
+        return accountSessionStore;
     };
 
     this.init = function(){

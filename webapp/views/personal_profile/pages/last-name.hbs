@@ -7,40 +7,18 @@
             </div>
             <form id="last-name-form">
                 <h1 class="subtitle">{{users.0.firstName}}, can you complete the full legal name for all filers?</h1>
-                <div class="add-top-padding">
-                    <div class="container-inline-input long">
-                        <label for="last-name">FIRST NAME</label>
-                        <input type="text" class="inline-input" name="name" placeholder="Last Name" value="{{users.0.firstName}}"/>
+                {{#each users}}
+                    <div class="add-top-padding taxplan-form-container" data-id="{{id}}">
+                        <div class="container-inline-input long">
+                            <label for="last-name-{{id}}">FIRST NAME</label>
+                            <input type="text" class="inline-input" name="firstName" placeholder="First Name" value="{{firstName}}" readonly="readonly"/>
+                        </div>
+                        <div class="container-inline-input long">
+                            <label for="last-name">LAST NAME</label>
+                            <input type="text" id="last-name-{{id}}" class="inline-input" name="lastName" placeholder="Last Name" value="{{lastName}}"/>
+                        </div>
                     </div>
-                    <div class="container-inline-input long">
-                        <label for="last-name">LAST NAME</label>
-                        <input type="text" id="last-name-myself" class="inline-input" name="name" placeholder="Last Name" value="{{users.0.lastName}}"/>
-                    </div>
-                </div>
-                {{#compare filingType.spouse 1 operator="=="}}
-                <div class="add-top-padding">
-                    <div class="container-inline-input long">
-                        <label for="last-name">FIRST NAME</label>
-                        <input type="text" class="inline-input" name="name" placeholder="Last Name" value="{{firstName}}"/>
-                    </div>
-                    <div class="container-inline-input long">
-                        <label for="last-name">LAST NAME</label>
-                        <input type="text" id="last-name-spouse" class="inline-input" name="name" placeholder="Last Name" value="{{lastName}}"/>
-                    </div>
-                </div>
-                {{/compare}}
-                {{#compare filingType.other 1 operator="=="}}
-                <div class="add-top-padding">
-                    <div class="container-inline-input long">
-                        <label for="last-name">FIRST NAME</label>
-                        <input type="text" class="inline-input" name="name" placeholder="Last Name" value="{{firstName}}"/>
-                    </div>
-                    <div class="container-inline-input long">
-                        <label for="last-name">LAST NAME</label>
-                        <input type="text" id="last-name-other" class="inline-input" name="name" placeholder="Last Name" value="{{lastName}}"/>
-                    </div>
-                </div>
-                {{/compare}}
+                {{/each}}
             </form>
         </div>
     </div>
