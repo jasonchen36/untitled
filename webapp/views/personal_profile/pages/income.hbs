@@ -1,4 +1,4 @@
-<section id="tax-profile-income" class="full-screen-grid-container main-container">
+<section id="personal-profile-income" class="full-screen-grid-container main-container">
     <div class="small-12 medium-7">
         <div class="content-form">
             <div class="container-header">
@@ -8,9 +8,9 @@
             </div>
             <form id="income-form">
                 <h1 class="subtitle">{{users.0.firstName}} please select all your sources of income in 2016:</h1>
-                {{>tax-profile-options questions=questions.income activeTiles=users.0.activeTiles.income}}
+                {{>personal-profile-options questions=questions.income activeTiles=users.0.activeTiles.income}}
             </form>
         </div>
     </div>
-    {{>tax-profile-sidebar sidebarTitle="income"}}
+    {{>personal-profile-sidebar sidebarTitle="income"}}
 </section>

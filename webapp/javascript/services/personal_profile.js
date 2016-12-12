@@ -37,13 +37,16 @@
     }
 
     function triggerInitScripts(){
-        var personalProfile = app.views.personalProfile;
-        personalProfile.lastName.init();
-        personalProfile.specialScenarios.init();
-        personalProfile.maritalStatus.init();
-        personalProfile.dependants.init();
-        personalProfile.address.init();
-        personalProfile.birthdate.init();
+        var personalProfileViews = app.views.personalProfile;
+        personalProfileViews.lastName.init();
+        personalProfileViews.specialScenarios.init();
+        personalProfileViews.maritalStatus.init();
+        personalProfileViews.dependants.init();
+        personalProfileViews.address.init();
+        personalProfileViews.birthdate.init();
+        personalProfileViews.income.init();
+        personalProfileViews.deductions.init();
+        personalProfileViews.credits.init();
     }
 
     function startPersonalProfileSession(){

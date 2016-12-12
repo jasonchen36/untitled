@@ -1,10 +1,10 @@
 (function(){
 
     var $ = jQuery,
-        that = app.views.taxProfile.credits,
+        that = app.views.personalProfile.credits,
         helpers = app.helpers,
         ajax = app.ajax,
-        taxProfile = app.services.taxProfile,
+        personalProfile = app.services.personalProfile,
         creditsForm,
         creditsSubmit,
         creditsBack,
@@ -21,7 +21,7 @@
                 creditsSubmit.addClass(disabledClass);
                 ajax.ajax(
                     'POST',
-                    '/tax-profile',
+                    '/personal-profile',
                     {
                         action: 'api-tp-credits',
                         data: formData
@@ -29,7 +29,7 @@
                     'json'
                 )
                     .then(function(response){
-                        taxProfile.goToNextPage(response.data);
+                        personalProfile.goToNextPage(response.data);
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
@@ -40,7 +40,7 @@
     }
 
     this.init = function(){
-        if ($('#tax-profile-credits').length > 0) {
+        if ($('#personal-profile-credits').length > 0) {
 
             //variables
             creditsForm = $('#credits-form');
@@ -60,9 +60,9 @@
 
             creditsBack.on('click',function(event){
                 event.preventDefault();
-                taxProfile.goToPreviousPage();
+                personalProfile.goToPreviousPage();
             });
         }
     };
 
-}).apply(app.views.taxProfile.credits);
+}).apply(app.views.personalProfile.credits);

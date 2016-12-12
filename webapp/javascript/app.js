@@ -36,20 +36,16 @@ var app = {
             maritalStatus: {},
             dependants: {},
             address: {},
-            birthdate: {}
+            birthdate: {},
+            income: {},
+            credits: {},
+            deductions: {}
         },
         taxProfile: {
             welcome: {},
             filingFor: {},
             filersNames: {},
-            income: {},
-            incomeMulti: {},
-            credits: {},
-            creditsMulti: {},
-            deductions: {},
-            deductionsMulti: {},
             quote: {},
-            quoteMulti: {},
             modalQuote: {}
         },
         user: {

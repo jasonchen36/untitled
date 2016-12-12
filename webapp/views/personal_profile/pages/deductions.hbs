@@ -1,4 +1,4 @@
-<section id="tax-profile-deductions" class="full-screen-grid-container main-container">
+<section id="personal-profile-deductions" class="full-screen-grid-container main-container">
     <div class="small-12 medium-7">
         <div class="content-form">
             <div class="container-header">
@@ -8,9 +8,9 @@
             </div>
             <form id="deductions-form">
                 <h1 class="subtitle">Last Question! {{users.0.firstName}} please select all your 2016 deductions:</h1>
-                {{>tax-profile-options questions=questions.deductions activeTiles=users.0.activeTiles.deductions}}
+                {{>personal-profile-options questions=questions.deductions activeTiles=users.0.activeTiles.deductions}}
             </form>
         </div>
     </div>
-    {{>tax-profile-sidebar sidebarTitle="deductions"}}
+    {{>personal-profile-sidebar sidebarTitle="deductions"}}
 </section>

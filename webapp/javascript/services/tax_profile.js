@@ -12,9 +12,7 @@
     this.taxProfileFlow = [
         'welcome',
         'filing-for',
-        'income',
-        'credits',
-        'deductions',
+        'filers-names',
         'quote'
     ];
 
@@ -40,14 +38,7 @@
         taxProfileViews.welcome.init();
         taxProfileViews.filingFor.init();
         taxProfileViews.filersNames.init();
-        taxProfileViews.income.init();
-        taxProfileViews.incomeMulti.init();
-        taxProfileViews.deductions.init();
-        taxProfileViews.deductionsMulti.init();
-        taxProfileViews.credits.init();
-        taxProfileViews.creditsMulti.init();
         taxProfileViews.quote.init();
-        taxProfileViews.quoteMulti.init();
         taxProfileViews.modalQuote.init();
     }
 
