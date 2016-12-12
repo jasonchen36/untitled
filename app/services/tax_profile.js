@@ -42,10 +42,11 @@ taxProfile.saveFilersNames = function(req){
                 return promise.reject('api - tax profile filers names - validation errors');
             } else {
                 const taxProfileSession = req.session.taxProfile,
-                    dataLengthDifference = Math.max(_.size(req.body.data),3)-taxProfileSession.users.length;//minimum of 3 as per model declaration
+                    otherFilerData = _.filter(req.body.data, function(value, key) { return key.indexOf('other') !== -1; }),//case where multiple "other"s are selected but not "spouse"
+                    otherFilerCountDifference = Math.max(_.size(otherFilerData),1)-(taxProfileSession.users.length-2);//don't count primary and spouse filers
 
                 //expand or contract tax profile users array to match data
-                if (dataLengthDifference > 0){
+                if (otherFilerCountDifference > 0){
                     var taxProfileObject;
                     _.forOwn(req.body.data, function(value, key) {
                         if(!_.find(taxProfileSession.users, ['id', key])){
@@ -54,8 +55,9 @@ taxProfile.saveFilersNames = function(req){
                             taxProfileSession.users.push(taxProfileObject);
                         }
                     });
-                } else if (dataLengthDifference < 0) {
-                    for(var i = 0; i < taxProfileSession.users.length; i++){
+                } else if (otherFilerCountDifference < 0) {
+                    //remove unused other entries
+                    for(var i = 2; i < taxProfileSession.users.length; i++){
                         if(!req.body.data.hasOwnProperty(taxProfileSession.users[i].id)){
                             taxProfileSession.users.splice(i,1);
                         }
@@ -119,7 +121,7 @@ taxProfile.saveActiveTiles = function(req){
                                 }
                             } else {
                                 taxProfileSession.users[2] = {};
-                                taxProfileSession.users.slice(0, 3);//delete all extra other entries
+                                taxProfileSession.users = taxProfileSession.users.slice(0, 3);//delete all extra other entries
                             }
                         }
                     });
