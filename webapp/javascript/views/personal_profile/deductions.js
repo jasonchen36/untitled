@@ -23,7 +23,7 @@
                     'POST',
                     '/personal-profile',
                     {
-                        action: 'api-tp-deductions',
+                        action: 'api-pp-deductions',
                         data: formData
                     },
                     'json'

@@ -22,20 +22,27 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
         json: true
     };
     var specialScenariosRequest = _.clone(requestObject, true),
-        creditsRequest = _.clone(requestObject, true);
-    specialScenariosRequest.uri = creditsRequest.uri+util.questionCategories.credits2;
-    creditsRequest.uri = creditsRequest.uri+util.questionCategories.credits2;
+        creditsRequest = _.clone(requestObject, true),
+        deductionsRequest = _.clone(requestObject, true),
+        incomeRequest = _.clone(requestObject, true);
+    incomeRequest.uri += util.questionCategories.income;
+    creditsRequest.uri += util.questionCategories.credits;
+    deductionsRequest.uri += util.questionCategories.deductions;
+    specialScenariosRequest.uri += util.questionCategories.specialScenarios;
     promise.all([
-        requestPromise(specialScenariosRequest),
-        requestPromise(creditsRequest)
+        requestPromise(incomeRequest),
+        requestPromise(creditsRequest),
+        requestPromise(deductionsRequest),
+        requestPromise(specialScenariosRequest)
     ])
         .then(function (response) {
             const personalProfileQuestions = {
-                    specialScenarios: response[0],
+                    income: response[0],
                     credits: response[1],
+                    deductions: response[2],
+                    specialScenarios: response[3],
                     maritalStatus: questionsModel.getMaritalStatusData(),
                     dependants: questionsModel.getDependentsData()
-
                 },
                 dataObject = session.getUserProfileObject(req);
             try {
@@ -78,13 +85,12 @@ personalProfilePages.actionSavePersonalProfile = function(req, res, next) {
                     return userProfile.saveLastName(req);
                     break;
                 case 'api-pp-special-scenarios':
-                    return userProfile.saveActiveTiles(req, 'specialScenarios');
-                    break;
                 case 'api-pp-marital-status':
-                    return userProfile.saveActiveTiles(req, 'maritalStatus');
-                    break;
                 case 'api-pp-dependants':
-                    return userProfile.saveActiveTiles(req, 'dependants');
+                case 'api-pp-income':
+                case 'api-pp-credits':
+                case 'api-pp-deductions':
+                    return userProfile.saveActiveTiles(req);
                     break;
 
                 default:

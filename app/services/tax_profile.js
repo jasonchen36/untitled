@@ -61,7 +61,6 @@ taxProfile.saveFilersNames = function(req){
                         }
                     }
                 }
-                console.log(taxProfileSession.users);
                 //update names
                 taxProfileSession.users.forEach(function(entry) {
                     if (entry.hasOwnProperty('id')) {

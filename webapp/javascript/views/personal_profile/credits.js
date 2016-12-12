@@ -23,7 +23,7 @@
                     'POST',
                     '/personal-profile',
                     {
-                        action: 'api-tp-credits',
+                        action: 'api-pp-credits',
                         data: formData
                     },
                     'json'

@@ -36,14 +36,27 @@ personalProfile.saveActiveTiles = function(req, group){
     return promise.resolve()
         .then(function() {
             const userProfileSession = req.session.userProfile;
-            if (!userProfileSession.users[0].activeTiles.hasOwnProperty(group)){
-                userProfileSession.users[0].activeTiles[group] = {};
+            var group = getCurrentPage(req.body.action);
+            //group nicename
+            switch(group){
+                case 'special-scenarios':
+                    group = 'specialScenarios';
+                    break;
+                case 'marital-status':
+                    group = 'maritalStatus';
+                    break;
             }
-            _.forOwn(req.body.data, function(value, key) {
-                userProfileSession.users[0].activeTiles[group][key] = value;
+            //save active tiles
+            userProfileSession.users.forEach(function(entry) {
+                if (entry.hasOwnProperty('activeTiles')) {
+                    if (!entry.activeTiles.hasOwnProperty(group) && req.body.data.hasOwnProperty(entry.id)) {
+                        entry.activeTiles[group] = {};
+                    }
+                    entry.activeTiles[group] = req.body.data[entry.id];
+                }
             });
             userProfileSession.currentPage = getCurrentPage(req.body.action);
-            userProfileSession.expiry = moment().add(1, 'hour');//refresh after update
+            userProfileSession.expiry = moment().add(7, 'days');//refresh after update
             req.session.userProfile = userProfileSession;
             return promise.resolve();
         });

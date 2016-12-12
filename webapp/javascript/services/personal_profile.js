@@ -11,6 +11,9 @@
 
     this.personalProfileFlow = [
         'last-name',
+        'income',
+        'credits',
+        'deductions',
         'special-scenarios',
         'marital-status',
         'dependants',

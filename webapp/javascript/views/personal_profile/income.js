@@ -24,7 +24,7 @@
                     'POST',
                     '/personal-profile',
                     {
-                        action: 'api-tp-income',
+                        action: 'api-pp-income',
                         data: formData
                     },
                     'json'
