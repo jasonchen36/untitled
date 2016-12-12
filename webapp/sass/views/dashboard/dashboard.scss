@@ -116,4 +116,43 @@
   }
 }
 
+#container-dashboard-taxpro{
+  background: white;
+  border-radius: 30px;
+  padding: 15px;
+  text-align: center;
+  margin: 20px 30px 0px 0px;
+ .i--icon-message-taxplan{
+   display: inline-block;
+   float: left;
+   height: 80px;
+   width: 30%;
+ }
+}
+
+.container-taxpro-introduction{
+  margin: 0px;
+  height: 80px;
+  width: 60%;
+  float: left;
+  text-align: left;
+  margin-left: 10px;
+  .label-introduction-line{
+    font-size: 0.5rem;
+  }
+  .label-introduction-name{
+    font-size: 1.2rem;
+  }
+  .description-symbol{
+    font-size: 1.7rem;
+  }
+}
+
+.label-taxpro-description{
+  margin-top: 100px;
+  display: block;
+  text-align: left;
+  padding: 5px;
+}
+
 
