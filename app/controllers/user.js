@@ -85,10 +85,10 @@ userPages.actionRegisterUser = function(req, res, next){
             uri: process.env.API_URL+'/users',
             body: {
                 password: req.body.password,
-                first_name: session.getTaxProfileValue(req,'name'),
+                first_name: req.session.taxProfile.users[0].firstName,
                 last_name: ' ',//not entered until person profile section
                 email: req.body.email,
-                accountId: session.getTaxProfileValue(req,'id')
+                accountId: req.session.taxProfile.users[0].id
             },
             json: true
         };
