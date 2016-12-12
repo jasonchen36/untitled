@@ -135,7 +135,6 @@
             $(document)
                 .on('click', '.'+helpers.tileClass, function (event) {
                     event.preventDefault();
-                    console.log('toggle original');
                     $(this).toggleClass(helpers.activeClass);
                 })
                 .on('click', '.'+helpers.tileClass+'-instructions', function (event) {
