@@ -105,7 +105,7 @@ taxProfile.saveActiveTiles = function(req){
                             }
                         } else {
                             taxProfileSession.users[2] = {};
-                            taxProfileSession.users.slice(0, 3);//delete all extra other entries
+                            taxProfileSession.users = taxProfileSession.users.slice(0, 3);//delete all extra other entries
                         }
                     }
                 });
