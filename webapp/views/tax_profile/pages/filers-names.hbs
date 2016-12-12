@@ -23,10 +23,12 @@
                     {{/if}}
                 {{/offsetEach}}
             </form>
-            <div>
-                <div class="i--icon-add"></div>
-                <label class="label-add">ADD AN ADDITIONAL FILER</label>
-            </div>
+            {{#if users.2.id}}
+                <div id="filers-names-new-filer">
+                    <div class="i--icon-add"></div>
+                    <p class="label-add">ADD AN ADDITIONAL FILER</p>
+                </div>
+            {{/if}}
         </div>
     </div>
     <div class="hide-for-small small-12 medium-5 grid-end white-container">

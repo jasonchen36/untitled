@@ -8,6 +8,7 @@
         filersNamesForm,
         filersNamesSubmit,
         filersNamesBack,
+        filersNamesNewFiler,
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
@@ -38,6 +39,18 @@
             }
         }
     }
+    
+    function addFiler(){
+        var accountSession = taxProfile.getAccountSession();
+        accountSession.users.push({
+            id: accountSession.users[0].id+'-other-'+(accountSession.users.length-1)
+        });
+        taxProfile.refreshPage(accountSession);
+    }
+    
+    function deleteFiler(){
+        
+    }
 
     this.init = function(){
         if ($('#tax-profile-filers-names').length > 0) {
@@ -46,6 +59,7 @@
             filersNamesForm = $('#filers-names-form');
             filersNamesSubmit = $('#filers-names-submit');
             filersNamesBack = $('#filers-names-back');
+            filersNamesNewFiler = $('#filers-names-new-filer');
 
             //listeners
             filersNamesForm.on('submit',function(event){
@@ -61,6 +75,11 @@
             filersNamesBack.on('click',function(event){
                 event.preventDefault();
                 taxProfile.goToPreviousPage();
+            });
+
+            filersNamesNewFiler.on('click',function(event){
+                event.preventDefault();
+                addFiler();
             });
         }
     };

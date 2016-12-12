@@ -19,7 +19,7 @@
     /* *************** private methods ***************/
     function changePage(newPage){
         return new Promise(function(resolve,reject) {
-            var data = getAccountSession();
+            var data = that.getAccountSession();
             //update session with new page
             updateAccountSession(data, newPage);
             animateProgressBar();
@@ -53,17 +53,13 @@
         }
     }
 
-    function getAccountSession(){
-        return accountSessionStore;
-    }
-
     function getCurrentPage(){
-        return getAccountSession().currentPage;
+        return that.getAccountSession().currentPage;
     }
 
     function updateAccountSession(data,newPage){
         if(!data || typeof data !== 'object'){
-            data = getAccountSession();
+            data = that.getAccountSession();
         }
         if(newPage && newPage.length > 0){
             data.currentPage = newPage;
@@ -105,6 +101,20 @@
             newPage = that.taxProfileFlow[currentPageIndex-1];
             changePage(newPage);
         }
+    };
+
+    this.refreshPage = function(data){
+        var currentPage = getCurrentPage(),
+            currentPageIndex = that.taxProfileFlow.indexOf(currentPage),
+            newPage;
+        //update session with new data
+        updateAccountSession(data);
+        newPage = that.taxProfileFlow[currentPageIndex];
+        changePage(newPage);
+    };
+
+    this.getAccountSession = function(){
+        return accountSessionStore;
     };
 
     this.init = function(){

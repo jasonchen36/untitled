@@ -39,7 +39,23 @@ taxProfile.saveFilersNames = function(req){
             if (req.validationErrors() || req.body.action !== 'api-tp-filers-names'){
                 return promise.reject('api - account session creation - validation errors');
             } else {
-                const taxProfileSession = req.session.taxProfile;
+                const taxProfileSession = req.session.taxProfile,
+                    dataLengthDifference = _.size(req.body.data)-taxProfileSession.users.length;
+
+                //expand or contract tax profile users array to match data
+                if (dataLengthDifference > 0){
+                    var taxProfileObject;
+                    _.forOwn(req.body.data, function(value, key) {
+                       if(!_.find(taxProfileSession.users, ['id', key])){
+                           taxProfileObject = sessionModel.getTaxProfileUserObject();
+                           taxProfileObject.id = key;
+                           taxProfileSession.users.push(taxProfileObject);
+                       }
+                    });
+                } else if (dataLengthDifference < 0) {
+                    taxProfileSession.users.slice(0, _.size(req.body.data));
+                }
+                //update names
                 taxProfileSession.users.forEach(function(entry) {
                     if (entry.hasOwnProperty('firstName')) {
                         entry.firstName = req.body.data[entry.id];
@@ -71,6 +87,7 @@ taxProfile.saveActiveTiles = function(req){
                     if (parseInt(key) === 9998){
                         //spouse
                         if (parseInt(value) === 1) {
+                            //don't write over existing objects
                             if (!taxProfileSession.users[1].hasOwnProperty('id')){
                                 taxProfileSession.users[1] = sessionModel.getTaxProfileUserObject();
                                 taxProfileSession.users[1].id = taxProfileSession.users[0].id + '-spouse';
@@ -81,12 +98,14 @@ taxProfile.saveActiveTiles = function(req){
                     } else if (parseInt(key) === 9997){
                         //other
                         if (parseInt(value) === 1){
+                            //don't write over existing objects
                             if (!taxProfileSession.users[2].hasOwnProperty('id')) {
                                 taxProfileSession.users[2] = sessionModel.getTaxProfileUserObject();
                                 taxProfileSession.users[2].id = taxProfileSession.users[0].id + '-other';
                             }
                         } else {
                             taxProfileSession.users[2] = {};
+                            taxProfileSession.users.slice(0, 3);//delete all extra other entries
                         }
                     }
                 });
