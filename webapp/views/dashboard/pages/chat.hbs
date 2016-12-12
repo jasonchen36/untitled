@@ -2,14 +2,18 @@
     <div id="dashboard-chat-container">
         {{#each messages}}
             <div id="chat-message" class="add-top-padding add-bottom-padding">
-                <p class="label-message-date">{{date}}</p>
                 {{#if isFromUser}}
+                    <p class="label-message-date add-right-padding text-right">{{date}}</p>
+                    <p class="label-message-content user display-inline-block side-info-blurb">
+                        {{{body}}}
+                    </p>
                 {{else}}
                     <div class="i--icon-message-taxplan"></div>
+                    <p class="label-message-content taxpro display-inline-block side-info-blurb">
+                        {{{body}}}
+                    </p>
+                    <p class="label-message-date add-left-padding">{{date}}</p>
                 {{/if}}
-                <p class="label-message-content from-user display-inline-block side-info-blurb">
-                    {{{body}}}
-                </p>
             </div>
         {{/each}}
     </div>

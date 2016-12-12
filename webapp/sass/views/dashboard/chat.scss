@@ -22,22 +22,38 @@
 .label-message-content {
   padding: 20px;
   border-radius: 20px;
-  width: 100%;
   float: right;
   vertical-align: middle;
-  background: $color-global-yellow;
+  &.user{
+    width: 100%;
+    background: $color-global-yellow;
+  }
+  &.taxpro{
+    width: 95%;
+    background: $color-global-white;
+    border: 2px solid $color-global-yellow;
+  }
+  &.taxplan{
+    background: $color-global-white;
+    border: 2px solid$color-message-taxplan-border;
+  }
 }
 
 .label-message-date{
   display: table-cell;
   vertical-align: middle;
-  text-align: right;
   width: 30%;
-  padding-right: 20px;
 }
 
 #chat-message{
   width:100%;
   overflow: auto;
   display:table;
+  .i--icon-message-taxplan{
+    height: 40px;
+    width: 40px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: right;
+  }
 }
