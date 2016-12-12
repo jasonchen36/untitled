@@ -4,20 +4,27 @@ const //packages
 var sessionModel = {};
 
 sessionModel.getTaxProfileUserObject = function(data){
-    return {
-        id: data.accountId,
-        firstName: data.name,
+    var userObject = {
+        id: '',
+        firstName: '',
         activeTiles: {}
+    };
+    if (typeof data !== 'undefined' && data.hasOwnProperty('accountId') && data.accountId){
+        userObject.id = String(data.accountId);
+        userObject.firstName = data.name;
     }
+    return userObject;
 };
 
 sessionModel.getTaxProfileObject = function(data){
     return {
         hasTaxProfileSession: true,
-        expiry: moment().add(7, 'days'),//todo, refresh expiry upon update
+        expiry: moment().add(7, 'days'),
         currentPage: 'welcome',
         users: [
-            sessionModel.getTaxProfileUserObject(data)
+            sessionModel.getTaxProfileUserObject(data),
+            {},//spouse
+            {}//other
         ]
     };
 };

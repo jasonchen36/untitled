@@ -1,4 +1,4 @@
-<section id="tax-profile-credits" class="full-screen-grid-container main-container">
+<section id="personal-profile-credits" class="full-screen-grid-container main-container">
     <div class="small-12 medium-7">
         <div class="content-form">
             <div class="container-header">
@@ -8,9 +8,9 @@
             </div>
             <form id="credits-form">
                 <h1 class="subtitle">{{users.0.firstName}} please select all your credit in 2016:</h1>
-                {{>tax-profile-options questions=questions.credits activeTiles=users.0.activeTiles.credits}}
+                {{>personal-profile-options questions=questions.credits activeTiles=users.0.activeTiles.credits  tileContainerId=users.0.id}}
             </form>
         </div>
     </div>
-    {{>tax-profile-sidebar sidebarTitle="credits"}}
+    {{>personal-profile-sidebar sidebarTitle="credits"}}
 </section>

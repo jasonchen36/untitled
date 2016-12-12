@@ -1,14 +1,13 @@
 <section id="dashboard-chat">
     <div id="dashboard-chat-container">
         {{#each messages}}
-            <div class="chat-message">
-                <p>{{date}}</p>
+            <div id="chat-message" class="add-top-padding add-bottom-padding">
+                <p class="label-message-date">{{date}}</p>
                 {{#if isFromUser}}
-                    <p>I sent this</p>
                 {{else}}
-                    <p>taxplan sent this (just styling difference?)</p>
+                    <div class="i--icon-message-taxplan"></div>
                 {{/if}}
-                <p>
+                <p class="label-message-content from-user display-inline-block side-info-blurb">
                     {{{body}}}
                 </p>
             </div>

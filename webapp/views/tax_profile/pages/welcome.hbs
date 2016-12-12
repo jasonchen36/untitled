@@ -5,13 +5,12 @@
                 <h1 class="header">Welcome to TAXplan</h1>
                 <button type="submit" id="welcome-submit" class="green header">Next</button>
             </div>
-
             <form id="welcome-form">
                 <h1 class="subtitle">To start off we just need your first name…</h1>
-                <p>
+                <div class="taxplan-form-container" data-id="{{users.0.id}}">
                     <label for="welcome-name">ENTER YOUR FIRST NAME</label>
                     <input type="text" id="welcome-name" name="name" placeholder="First Name" value="{{users.0.firstName}}"/>
-                </p>
+                </div>
             </form>
         </div>
     </div>

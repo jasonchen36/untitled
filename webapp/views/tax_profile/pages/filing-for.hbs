@@ -10,7 +10,7 @@
                 <h1 class="subtitle">
                     Hi {{users.0.firstName}}, can you please select all the people you are filing for:
                 </h1>
-                {{>tax-profile-options questions=questions.filingFor activeTiles=users.0.activeTiles.filingFor}}
+                {{>tax-profile-options questions=questions.filingFor activeTiles=users.0.activeTiles.filingFor  tileContainerId=users.0.id}}
             </form>
         </div>
     </div>
