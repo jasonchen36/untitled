@@ -45,14 +45,14 @@
             container.find('input').each(function(){
                 input = $(this);
                 if (input.attr('type') === 'checkbox'){
-                    data[input.attr('name')] = input.prop('checked')?1:0;
+                    data[containerId][input.attr('name')] = input.prop('checked')?1:0;
                 } else {
-                    data[input.attr('name')] = input.val();
+                    data[containerId][input.attr('name')] = input.val();
                 }
             });
             container.find('textarea').each(function(){
                 input = $(this);
-                data[input.attr('name')] = input.val();
+                data[containerId][input.attr('name')] = input.val();
             });
         });
         return data;

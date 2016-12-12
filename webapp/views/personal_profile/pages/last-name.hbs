@@ -8,7 +8,7 @@
             <form id="last-name-form">
                 <h1 class="subtitle">{{users.0.firstName}}, can you complete the full legal name for all filers?</h1>
                 {{#each users}}
-                    <div class="add-top-padding taxplan-form-container">
+                    <div class="add-top-padding taxplan-form-container" data-id="{{id}}">
                         <div class="container-inline-input long">
                             <label for="last-name-{{id}}">FIRST NAME</label>
                             <input type="text" class="inline-input" name="name" placeholder="Last Name" value="{{firstName}}"/>

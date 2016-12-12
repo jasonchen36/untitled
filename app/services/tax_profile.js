@@ -16,14 +16,14 @@ taxProfile.saveName = function(req){
     return promise.resolve()
         .then(function(){
             //validate
-            req.checkBody('name').notEmpty();
+            req.checkBody('firstName').notEmpty();
 
             //can only create an account on the name step
             if (req.validationErrors() || req.body.action !== 'api-tp-welcome'){
                 return promise.reject('api - account session creation - validation errors');
             } else {
                 const taxProfileSession = req.session.taxProfile;
-                taxProfileSession.users[0].name = req.body.name;
+                taxProfileSession.users[0].firstName = req.body.firstName;
                 taxProfileSession.currentPage = getCurrentPage(req.body.action);
                 taxProfileSession.expiry = moment().add(7, 'days');//refresh after update
                 req.session.taxProfile = taxProfileSession;
