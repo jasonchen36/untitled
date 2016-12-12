@@ -38,23 +38,38 @@
             container,
             containerId,
             input;
-        formElement.find('.'+that.formContainerClass).each(function(){
-            container = $(this);
-            containerId = container.attr('data-id');
-            data[containerId] = {};
-            container.find('input').each(function(){
-                input = $(this);
-                if (input.attr('type') === 'checkbox'){
-                    data[containerId][input.attr('name')] = input.prop('checked')?1:0;
-                } else {
+        if (formElement.find('.'+that.formContainerClass).length > 0){
+            //for multi-user forms
+            formElement.find('.'+that.formContainerClass).each(function(){
+                container = $(this);
+                containerId = container.attr('data-id');
+                data[containerId] = {};
+                container.find('input').each(function(){
+                    input = $(this);
+                    if (input.attr('type') === 'checkbox'){
+                        data[containerId][input.attr('name')] = input.prop('checked')?1:0;
+                    } else {
+                        data[containerId][input.attr('name')] = input.val();
+                    }
+                });
+                container.find('textarea').each(function(){
+                    input = $(this);
                     data[containerId][input.attr('name')] = input.val();
+                });
+            });
+        } else {
+            //for regular forms like login, register, etc
+            formElement.find('input').each(function(){
+                if ($(this).attr('type') === 'checkbox'){
+                    data[$(this).attr('name')] = $(this).prop('checked')?1:0;
+                } else {
+                    data[$(this).attr('name')] = $(this).val();
                 }
             });
-            container.find('textarea').each(function(){
-                input = $(this);
-                data[containerId][input.attr('name')] = input.val();
+            formElement.find('textarea').each(function(){
+                data[$(this).attr('name')] = $(this).val();
             });
-        });
+        }
         return data;
     };
 

@@ -45,11 +45,18 @@
         }
     }
 
-    function updateUserDependants(){
+    function updateUserDependants(selectedTile,parentContainer){
         var accountSession = personalProfile.getPersonalProfileSession(),
             formData = helpers.getTileFormData(dependantsForm);
+        //enforce toggle
+        _.forOwn(formData[parentContainer.attr('data-id')], function(value, key) {
+            if(key !== selectedTile.attr('data-id')){
+                formData[parentContainer.attr('data-id')][key] = 0;
+            }
+        });
         //save temporary changes
         accountSession.users.forEach(function(entry){
+            entry.activeTiles.dependants = formData[entry.id];
             try {
                 //if "yes" is selected
                 entry.hasDependants = formData[entry.id][9201];//todo, find better way of linking model id
@@ -109,7 +116,7 @@
             tileOptions.on('click',function(event){
                 event.preventDefault();
                 $(this).toggleClass(helpers.activeClass);
-                updateUserDependants();
+                updateUserDependants($(this),$(this).parent());
             });
         }
     };

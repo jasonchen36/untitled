@@ -13,11 +13,9 @@
 
     function submitWelcome(){
         if (!welcomeSubmit.hasClass(disabledClass)) {
-            var accountSession = taxProfile.getAccountSession(),
-                formData = helpers.getFormData(welcomeForm),
-                firstName = formData.hasOwnProperty(accountSession.users[0].id)?formData[accountSession.users[0].id].name:'';
+            var formData = helpers.getFormData(welcomeForm);
             helpers.resetForm(welcomeForm);
-            if (helpers.isEmpty(firstName)){
+            if (helpers.isEmpty(formData.firstName)){
                 welcomeNameInput.addClass(errorClass);
             }
             if (!helpers.formHasErrors(welcomeForm)) {
@@ -27,7 +25,7 @@
                     '/tax-profile',
                     {
                         action: 'api-tp-welcome',
-                        firstName: firstName
+                        firstName: formData.firstName
                     },
                     'json'
                 )

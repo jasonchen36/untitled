@@ -13,7 +13,7 @@ session.actionStartTaxProfileSession = function(req){
     return session.actionDestroyTaxProfileSession(req)
         .then(function(){
             //validate
-            req.checkBody('name').notEmpty();
+            req.checkBody('firstName').notEmpty();
 
             //can only create a tax profile on the name step
             if (req.validationErrors() || req.body.action !== 'api-tp-welcome'){
@@ -26,7 +26,7 @@ session.actionStartTaxProfileSession = function(req){
                 method: 'POST',
                 uri: process.env.API_URL+'/account',
                 body: {
-                    name: req.body.name,
+                    name: req.body.firstName,
                     productId: process.env.API_PRODUCT_ID
                 },
                 json: true
@@ -100,7 +100,7 @@ session.actionStartUserProfileSession = function(req, token){
                     'Authorization': 'Bearer '+token
                 },
                 body: {
-                    name: req.body.name,
+                    name: req.body.firstName,
                     productId: process.env.API_PRODUCT_ID
                 },
                 json: true
