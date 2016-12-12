@@ -81,13 +81,11 @@
 
     this.hasSelectedTile = function(formData){
         var hasSelectedTile = false;
-        for (var key in formData) {
-            if (formData.hasOwnProperty(key)) {
-                if(Object.values(formData[key]).indexOf(1) !== -1){
-                    hasSelectedTile = true;
-                }
+        _.forOwn(formData, function(value, key) {
+            if(Object.values(formData[key]).indexOf(1) !== -1){
+                hasSelectedTile = true;
             }
-        }
+        });
         return hasSelectedTile;
     };
 
@@ -151,7 +149,7 @@
     this.isEmpty = function(input){
         return !input || input.length < 1;
     };
-    
+
     this.getAverage = function(index, length) {
         return Math.round(index / length * 100);
     };

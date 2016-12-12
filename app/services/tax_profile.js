@@ -42,7 +42,7 @@ taxProfile.saveFilersNames = function(req){
                 return promise.reject('api - account session creation - validation errors');
             } else {
                 const taxProfileSession = req.session.taxProfile,
-                    dataLengthDifference = _.size(req.body.data)-taxProfileSession.users.length;
+                    dataLengthDifference = Math.max(_.size(req.body.data),3)-taxProfileSession.users.length;//minimum of 3 as per model declaration
 
                 //expand or contract tax profile users array to match data
                 if (dataLengthDifference > 0){
@@ -61,9 +61,10 @@ taxProfile.saveFilersNames = function(req){
                         }
                     }
                 }
+                console.log(taxProfileSession.users);
                 //update names
                 taxProfileSession.users.forEach(function(entry) {
-                    if (entry.hasOwnProperty('firstName')) {
+                    if (entry.hasOwnProperty('id')) {
                         entry.firstName = req.body.data[entry.id];
                     }
                 });

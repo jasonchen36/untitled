@@ -9,6 +9,7 @@
         filersNamesSubmit,
         filersNamesBack,
         filersNamesNewFiler,
+        filersNamesDeleteFiler,
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
@@ -42,15 +43,18 @@
 
     function addFiler(){
         var accountSession = taxProfile.getAccountSession(),
-            formData = helpers.getFormData(filersNamesForm);
+            formData = helpers.getFormData(filersNamesForm),
+            userId = accountSession.users[0].id+'-other-'+(accountSession.users.length-1);
         //save temporary changes
         accountSession.users.forEach(function(entry){
             entry.firstName = formData[entry.id];
         });
         //add new filer to the array
-        accountSession.users.push({
-            id: accountSession.users[0].id+'-other-'+(accountSession.users.length-1)
-        });
+        if(!_.find(accountSession.users, ['id', userId])){
+            accountSession.users.push({
+                id: userId
+            });
+        }
         taxProfile.refreshPage(accountSession);
     }
 
@@ -59,7 +63,9 @@
             formData = helpers.getFormData(filersNamesForm);
         //save temporary changes
         accountSession.users.forEach(function(entry){
-            entry.firstName = formData[entry.id];
+            if (formData.hasOwnProperty(entry.id)){
+                entry.firstName = formData[entry.id];
+            }
         });
         //remove filer to the array
         accountSession.users.splice(indexToDelete+2, 1);
@@ -74,7 +80,7 @@
             filersNamesSubmit = $('#filers-names-submit');
             filersNamesBack = $('#filers-names-back');
             filersNamesNewFiler = $('#filers-names-new-filer');
-
+            filersNamesDeleteFiler = $('.filers-names-delete-filer');
             //listeners
             filersNamesForm.on('submit',function(event){
                 event.preventDefault();
@@ -96,11 +102,10 @@
                 addFiler();
             });
 
-            //shared bindings
-            $(document).on('click', '.filers-names-delete-filer', function (event) {
-                    event.preventDefault();
-                    deleteFiler(parseInt($(this).attr('data-index')));
-                });
+            filersNamesDeleteFiler.on('click', function (event) {
+                event.preventDefault();
+                deleteFiler(parseInt($(this).attr('data-index')));
+            });
         }
     };
 
