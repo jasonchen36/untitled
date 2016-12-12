@@ -8,6 +8,7 @@
     this.disabledClass = 'disabled';
     this.tileClass = 'taxplan-tile';
     this.tileContainerClass = 'taxplan-tile-container';
+    this.formContainerClass = 'taxplan-form-container';
 
     this.sizeOfObject = function(data){
         if (data){
@@ -33,16 +34,26 @@
     };
 
     this.getFormData = function(formElement){
-        var data = {};
-        formElement.find('input').each(function(){
-            if ($(this).attr('type') === 'checkbox'){
-                data[$(this).attr('name')] = $(this).prop('checked')?1:0;
-            } else {
-                data[$(this).attr('name')] = $(this).val();
-            }
-        });
-        formElement.find('textarea').each(function(){
-            data[$(this).attr('name')] = $(this).val();
+        var data = {},
+            container,
+            containerId,
+            input;
+        formElement.find('.'+that.formContainerClass).each(function(){
+            container = $(this);
+            containerId = container.attr('data-id');
+            data[containerId] = {};
+            container.find('input').each(function(){
+                input = $(this);
+                if (input.attr('type') === 'checkbox'){
+                    data[input.attr('name')] = input.prop('checked')?1:0;
+                } else {
+                    data[input.attr('name')] = input.val();
+                }
+            });
+            container.find('textarea').each(function(){
+                input = $(this);
+                data[input.attr('name')] = input.val();
+            });
         });
         return data;
     };
