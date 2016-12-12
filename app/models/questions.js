@@ -6,7 +6,7 @@ questionsModel.getFilingForData = function(){
             category_id: 0,
             has_multiple_answers: 0,
             id: 9999,
-            instructions: 'Are you filing for yourself guy?',
+            instructions: '',
             product_id: process.env.API_PRODUCT_ID,
             question_id: 9999,
             text: 'Myself',

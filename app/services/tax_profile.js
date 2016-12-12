@@ -4,6 +4,7 @@ const //packages
 //services
     session = require('./session'),
     util = require('./util'),
+    sessionModel = require('../models/session'),
     taxProfile = {};
 
 function getCurrentPage(action){
@@ -20,23 +21,63 @@ taxProfile.saveName = function(req){
             if (req.validationErrors() || req.body.action !== 'api-tp-welcome'){
                 return promise.reject('api - account session creation - validation errors');
             } else {
-                req.session.taxProfile.users[0].name = req.body.name;
-                req.session.taxProfile.currentPage = getCurrentPage(req.body.action);
+                const taxProfileSession = req.session.taxProfile;
+                taxProfileSession.users[0].name = req.body.name;
+                taxProfileSession.currentPage = getCurrentPage(req.body.action);
+                req.session.taxProfile = taxProfileSession;
                 return promise.resolve();
             }
         });
 };
 
-taxProfile.saveActiveTiles = function(req, group){
+taxProfile.saveActiveTiles = function(req){
     return promise.resolve()
         .then(function() {
-            if (!req.session.taxProfile.users[0].activeTiles.hasOwnProperty(group)){
-                req.session.taxProfile.users[0].activeTiles[group] = {};
+            const taxProfileSession = req.session.taxProfile;
+            var group = getCurrentPage(req.body.action);
+            //group nicename
+            switch(group){
+                case 'filing-for':
+                    group = 'filingFor';
+                    break;
+                case '':
+                    break;
             }
-            _.forOwn(req.body.data, function(value, key) {
-                req.session.taxProfile.users[0].activeTiles[group][key] = value;
+            //special actions
+            if (group === 'filingFor'){
+                _.forOwn(req.body.data, function(value, key) {
+                    if (parseInt(key) === 9998){
+                        //spouse
+                        if (parseInt(value) === 1) {
+                            taxProfileSession.users[1] = sessionModel.getTaxProfileUserObject();
+                            taxProfileSession.users[1].id = taxProfileSession.users[0].id + '-spouse';
+                        } else {
+                            taxProfileSession.users[1] = {};
+                        }
+                    } else if (parseInt(key) === 9997){
+                        //other
+                        if (parseInt(value) === 1){
+                            taxProfileSession.users[2] = sessionModel.getTaxProfileUserObject();
+                            taxProfileSession.users[2].id = taxProfileSession.users[0].id+'-other';
+                        } else {
+                            taxProfileSession.users[2] = {};
+                        }
+                    }
+                });
+            }
+            //save active tiles
+            taxProfileSession.users.forEach(function(entry) {
+                if (entry.hasOwnProperty('activeTiles')) {
+                    if (!entry.activeTiles.hasOwnProperty(group)) {
+                        entry.activeTiles[group] = {};
+                    }
+                    _.forOwn(req.body.data, function (value, key) {
+                        entry.activeTiles[group][key] = value;
+                    });
+                }
             });
-            req.session.taxProfile.currentPage = getCurrentPage(req.body.action);
+            taxProfileSession.currentPage = getCurrentPage(req.body.action);
+            req.session.taxProfile = taxProfileSession;
             return promise.resolve();
         });
 };

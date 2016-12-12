@@ -9,7 +9,7 @@
         profileBar = $('#tax-profile-progress-bar'),
         accountSessionStore;
 
-    this.singleFilerFlow = [
+    this.taxProfileFlow = [
         'welcome',
         'filing-for',
         'income',
@@ -17,17 +17,6 @@
         'deductions',
         'quote'
     ];
-
-    this.multiFilerFlow = [
-        'welcome',
-        'filing-for',
-        'filers-names',
-        'income-multi',
-        'credits-multi',
-        'deductions-multi',
-        'quote-multi'
-    ];
-
 
     /* *************** private methods ***************/
     function changePage(newPage){
@@ -66,7 +55,7 @@
         accountSessionStore = accountObject;
         accountSessionStore.questions = questionsObject;
         if(!accountSessionStore.hasOwnProperty('currentPage') || accountSessionStore.currentPage.length < 1){
-            accountSessionStore.currentPage = that.singleFilerFlow[0];
+            accountSessionStore.currentPage = that.taxProfileFlow[0];
             changePage(accountSessionStore.currentPage);
         } else {
             that.goToNextPage();
@@ -75,15 +64,6 @@
 
     function getAccountSession(){
         return accountSessionStore;
-    }
-
-    function isMultiFiler(){
-        var accountSession = getAccountSession();
-        if(!accountSession.hasOwnProperty('activeTiles')) {
-            return false;
-        } else {
-            return accountSession.activeTiles.hasOwnProperty('filingFor') && Object.values(accountSession.activeTiles.filingFor).filter(function (x) {return x == 1;}).length > 1;
-        }
     }
 
     function getCurrentPage(){
@@ -102,12 +82,7 @@
     }
 
     function animateProgressBar(){
-        var percentageComplete;
-        if(isMultiFiler()){
-            percentageComplete = helpers.getAverage(that.multiFilerFlow.indexOf(getCurrentPage()),that.multiFilerFlow.length);
-        } else {
-            percentageComplete = helpers.getAverage(that.singleFilerFlow.indexOf(getCurrentPage()),that.singleFilerFlow.length);
-        }
+        var percentageComplete = helpers.getAverage(that.taxProfileFlow.indexOf(getCurrentPage()),that.taxProfileFlow.length);
         animations.animateElement(profileBar,{
             properties: {
                 width: percentageComplete+'%'
@@ -119,44 +94,25 @@
     /* *************** public methods ***************/
     this.goToNextPage = function(data){
         var currentPage = getCurrentPage(),
-            currentPageIndex,
+            currentPageIndex = that.taxProfileFlow.indexOf(currentPage),
             newPage;
         //update session from ajax response
         updateAccountSession(data);
-        if (isMultiFiler()){
-            currentPageIndex = that.multiFilerFlow.indexOf(currentPage);
-            if (currentPageIndex !== that.multiFilerFlow.length-1){
-                newPage = that.multiFilerFlow[currentPageIndex+1];
-                changePage(newPage);
-            }
-        } else {
-            currentPageIndex = that.singleFilerFlow.indexOf(currentPage);
-            if (currentPageIndex !== that.singleFilerFlow.length-1){
-                newPage = that.singleFilerFlow[currentPageIndex+1];
-                changePage(newPage);
-            }
+        if (currentPageIndex !== that.taxProfileFlow.length-1){
+            newPage = that.taxProfileFlow[currentPageIndex+1];
+            changePage(newPage);
         }
-
     };
 
     this.goToPreviousPage = function(data){
         var currentPage = getCurrentPage(),
-            currentPageIndex,
+            currentPageIndex = that.taxProfileFlow.indexOf(currentPage),
             newPage;
         //update session from ajax response
         updateAccountSession(data);
-        if (isMultiFiler()){
-            currentPageIndex = that.multiFilerFlow.indexOf(currentPage);
-            if (currentPageIndex !== 0){
-                newPage = that.multiFilerFlow[currentPageIndex-1];
-                changePage(newPage);
-            }
-        } else {
-            currentPageIndex = that.singleFilerFlow.indexOf(currentPage);
-            if (currentPageIndex !== 0){
-                newPage = that.singleFilerFlow[currentPageIndex-1];
-                changePage(newPage);
-            }
+        if (currentPageIndex !== 0){
+            newPage = that.taxProfileFlow[currentPageIndex-1];
+            changePage(newPage);
         }
     };
 
