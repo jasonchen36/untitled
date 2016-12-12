@@ -26,7 +26,7 @@
                     '/personal-profile',
                     {
                         action: 'api-pp-last-name',
-                        lastName: formData.name
+                        data: formData
                     },
                     'json'
                 )
