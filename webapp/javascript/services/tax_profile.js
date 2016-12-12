@@ -84,11 +84,17 @@
     this.goToNextPage = function(data){
         var currentPage = getCurrentPage(),
             currentPageIndex = that.taxProfileFlow.indexOf(currentPage),
-            newPage;
+            newPage,
+            accountSession;
         //update session from ajax response
         updateAccountSession(data);
         if (currentPageIndex !== that.taxProfileFlow.length-1){
+            accountSession = that.getAccountSession();
             newPage = that.taxProfileFlow[currentPageIndex+1];
+            if(newPage === 'filers-names' && !accountSession.users[1].hasOwnProperty('id') && !accountSession.users[2].hasOwnProperty('id')){
+                //skip if only one filer
+                newPage = that.taxProfileFlow[currentPageIndex+2];
+            }
             changePage(newPage);
         }
     };
@@ -96,11 +102,17 @@
     this.goToPreviousPage = function(data){
         var currentPage = getCurrentPage(),
             currentPageIndex = that.taxProfileFlow.indexOf(currentPage),
-            newPage;
+            newPage,
+            accountSession;
         //update session from ajax response
         updateAccountSession(data);
         if (currentPageIndex !== 0){
+            accountSession = that.getAccountSession();
             newPage = that.taxProfileFlow[currentPageIndex-1];
+            if(newPage === 'filers-names' && !accountSession.users[1].hasOwnProperty('id') && !accountSession.users[2].hasOwnProperty('id')){
+                //skip if only one filer
+                newPage = that.taxProfileFlow[currentPageIndex-2];
+            }
             changePage(newPage);
         }
     };
