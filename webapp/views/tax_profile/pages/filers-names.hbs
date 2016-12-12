@@ -21,6 +21,11 @@
                         <label for="filers-names-{{id}}" class="under">FIRST NAME OF YOUR ADDITIONAL FILER</label>
                         <input id="filers-names-{{id}}" type="text" value="{{firstName}}" name="{{id}}"/>
                     {{/if}}
+                    {{#compare customIndex 0 operator=">"}}
+                        <div class="filers-names-delete-filer" data-index="{{customIndex}}">
+                            delete
+                        </div>
+                    {{/compare}}
                 {{/offsetEach}}
             </form>
             {{#if users.2.id}}

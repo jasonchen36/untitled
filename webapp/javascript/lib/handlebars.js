@@ -57,6 +57,7 @@
             var buffer = '';
             for (var i = 0; i < array.length-offset; i++) {
                 var item = array[i+offset];
+                item.customIndex = i;
                 // show the inside of the block
                 buffer += options.fn(item);
             }

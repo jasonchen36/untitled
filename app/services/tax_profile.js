@@ -53,7 +53,11 @@ taxProfile.saveFilersNames = function(req){
                        }
                     });
                 } else if (dataLengthDifference < 0) {
-                    taxProfileSession.users.slice(0, _.size(req.body.data));
+                    for(var i = 0; i < taxProfileSession.users.length; i++){
+                        if(!req.body.data.hasOwnProperty(taxProfileSession.users[i].id)){
+                            taxProfileSession.users.splice(i,1);
+                        }
+                    }
                 }
                 //update names
                 taxProfileSession.users.forEach(function(entry) {

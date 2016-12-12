@@ -39,17 +39,31 @@
             }
         }
     }
-    
+
     function addFiler(){
-        var accountSession = taxProfile.getAccountSession();
+        var accountSession = taxProfile.getAccountSession(),
+            formData = helpers.getFormData(filersNamesForm);
+        //save temporary changes
+        accountSession.users.forEach(function(entry){
+            entry.firstName = formData[entry.id];
+        });
+        //add new filer to the array
         accountSession.users.push({
             id: accountSession.users[0].id+'-other-'+(accountSession.users.length-1)
         });
         taxProfile.refreshPage(accountSession);
     }
-    
-    function deleteFiler(){
-        
+
+    function deleteFiler(indexToDelete){
+        var accountSession = taxProfile.getAccountSession(),
+            formData = helpers.getFormData(filersNamesForm);
+        //save temporary changes
+        accountSession.users.forEach(function(entry){
+            entry.firstName = formData[entry.id];
+        });
+        //remove filer to the array
+        accountSession.users.splice(indexToDelete+2, 1);
+        taxProfile.refreshPage(accountSession);
     }
 
     this.init = function(){
@@ -81,6 +95,12 @@
                 event.preventDefault();
                 addFiler();
             });
+
+            //shared bindings
+            $(document).on('click', '.filers-names-delete-filer', function (event) {
+                    event.preventDefault();
+                    deleteFiler(parseInt($(this).attr('data-index')));
+                });
         }
     };
 
