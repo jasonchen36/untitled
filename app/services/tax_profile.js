@@ -48,11 +48,11 @@ taxProfile.saveFilersNames = function(req){
                 if (dataLengthDifference > 0){
                     var taxProfileObject;
                     _.forOwn(req.body.data, function(value, key) {
-                       if(!_.find(taxProfileSession.users, ['id', key])){
-                           taxProfileObject = sessionModel.getTaxProfileUserObject();
-                           taxProfileObject.id = key;
-                           taxProfileSession.users.push(taxProfileObject);
-                       }
+                        if(!_.find(taxProfileSession.users, ['id', key])){
+                            taxProfileObject = sessionModel.getTaxProfileUserObject();
+                            taxProfileObject.id = key;
+                            taxProfileSession.users.push(taxProfileObject);
+                        }
                     });
                 } else if (dataLengthDifference < 0) {
                     for(var i = 0; i < taxProfileSession.users.length; i++){
@@ -113,7 +113,7 @@ taxProfile.saveActiveTiles = function(req){
                             }
                         } else {
                             taxProfileSession.users[2] = {};
-                            taxProfileSession.users = taxProfileSession.users.slice(0, 3);//delete all extra other entries
+                            taxProfileSession.users.slice(0, 3);//delete all extra other entries
                         }
                     }
                 });
@@ -121,7 +121,7 @@ taxProfile.saveActiveTiles = function(req){
             //save active tiles
             taxProfileSession.users.forEach(function(entry) {
                 if (entry.hasOwnProperty('activeTiles')) {
-                    if (!entry.activeTiles.hasOwnProperty(group)) {
+                    if (!entry.activeTiles.hasOwnProperty(group) && req.body.data.hasOwnProperty(entry.id)) {
                         entry.activeTiles[group] = {};
                     }
                     entry.activeTiles[group] = req.body.data[entry.id];
