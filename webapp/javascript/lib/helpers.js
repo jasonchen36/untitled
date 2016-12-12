@@ -7,6 +7,7 @@
     this.errorClass = 'error';
     this.disabledClass = 'disabled';
     this.tileClass = 'taxplan-tile';
+    this.tileContainerClass = 'taxplan-tile-container';
 
     this.sizeOfObject = function(data){
         if (data){
@@ -47,9 +48,18 @@
     };
 
     this.getTileFormData = function(formElement){
-        var data = {};
-        formElement.find('.'+that.tileClass).each(function(){
-            data[parseInt($(this).attr('data-id'))] = $(this).hasClass(that.activeClass)?1:0;
+        var data = {},
+            container,
+            containerId,
+            tile;
+        formElement.find('.'+that.tileContainerClass).each(function(){
+            container = $(this);
+            containerId = container.attr('data-id');
+            data[containerId] = {};
+            container.find('.'+that.tileClass).each(function(){
+                tile = $(this);
+                data[containerId][parseInt(tile.attr('data-id'))] = tile.hasClass(that.activeClass)?1:0;
+            });
         });
         return data;
     };
@@ -70,7 +80,15 @@
     };
 
     this.hasSelectedTile = function(formData){
-        return Object.values(formData).indexOf(1) !== -1;
+        var hasSelectedTile = false;
+        for (var key in formData) {
+            if (formData.hasOwnProperty(key)) {
+                if(Object.values(formData[key]).indexOf(1) !== -1){
+                    hasSelectedTile = true;
+                }
+            }
+        }
+        return hasSelectedTile;
     };
 
     this.hasMultipleSelectedTiles = function(formData){

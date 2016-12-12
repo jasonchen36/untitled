@@ -8,7 +8,7 @@
             </div>
             <form id="income-form">
                 <h1 class="subtitle">{{users.0.firstName}} please select all your sources of income in 2016:</h1>
-                {{>personal-profile-options questions=questions.income activeTiles=users.0.activeTiles.income}}
+                {{>personal-profile-options questions=questions.income activeTiles=users.0.activeTiles.income tileContainerId=users.0.id}}
             </form>
         </div>
     </div>

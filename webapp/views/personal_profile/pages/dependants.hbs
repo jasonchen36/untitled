@@ -8,7 +8,7 @@
             </div>
             <form id="dependants-form">
                 <h1 class="subtitle">{{users.0.firstName}}, do you have any children or elderly parents as dependants?</h1>
-                {{>personal-profile-options questions=questions.dependants activeTiles=users.0.activeTiles.dependants}}
+                {{>personal-profile-options questions=questions.dependants activeTiles=users.0.activeTiles.dependants tileContainerId=users.0.id}}
                 {{>personal-profile-dependants-form}}
                 {{>personal-profile-dependants-line}}
                 <div class="border-bottom-light-gray add-bottom-padding add-top-padding">

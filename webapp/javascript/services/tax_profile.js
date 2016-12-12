@@ -13,6 +13,7 @@
         'welcome',
         'filing-for',
         'filers-names',
+        'quote-applies',
         'quote'
     ];
 
@@ -39,6 +40,7 @@
         taxProfileViews.filingFor.init();
         taxProfileViews.filersNames.init();
         taxProfileViews.quote.init();
+        taxProfileViews.quoteApplies.init();
         taxProfileViews.modalQuote.init();
     }
 

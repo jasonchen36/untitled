@@ -1,4 +1,4 @@
-<section class="grid-container">
+<section data-id="{{tileContainerId}}" class="grid-container taxplan-tile-container">
     {{#each questions}}
         <div data-id="{{id}}" class="taxplan-tile{{#isActiveTile id ../activeTiles}} active{{/isActiveTile}}">
             {{#if instructions}}

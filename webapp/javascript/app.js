@@ -46,6 +46,7 @@ var app = {
             filingFor: {},
             filersNames: {},
             quote: {},
+            quoteApplies: {},
             modalQuote: {}
         },
         user: {

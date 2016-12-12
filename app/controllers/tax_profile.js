@@ -21,23 +21,16 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
         json: true
     };
     //todo, remove once quote tile questions are resolved
-    var incomeRequest = _.clone(requestObject, true),
-        creditsRequest = _.clone(requestObject, true),
-        deductionsRequest = _.clone(requestObject, true);
+    var incomeRequest = _.clone(requestObject, true);
     incomeRequest.uri = incomeRequest.uri+util.questionCategories.income;
-    creditsRequest.uri += util.questionCategories.credits;
-    deductionsRequest.uri += util.questionCategories.deductions;
     promise.all([
-        requestPromise(incomeRequest),
-        requestPromise(creditsRequest),
-        requestPromise(deductionsRequest)
+        requestPromise(incomeRequest)
     ])
         .then(function (response) {
             const taxProfileQuestions = {
                     filingFor: questionsModel.getFilingForData(),
                     income: response[0],
-                    credits: response[1],
-                    deductions: response[2]
+                    quoteApplies: questionsModel.getQuoteAppliesData()
                 },
                 dataObject = session.getTaxProfileObject(req);
             try {
@@ -87,6 +80,7 @@ taxReturnPages.actionSaveTaxProfile = function(req, res, next) {
                         return taxProfile.saveFilersNames(req);
                         break;
                     case 'api-tp-filing-for':
+                    case 'api-tp-quote-applies':
                         return taxProfile.saveActiveTiles(req);
                         break;
                     default:

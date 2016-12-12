@@ -85,13 +85,14 @@ taxProfile.saveActiveTiles = function(req){
                 case 'filing-for':
                     group = 'filingFor';
                     break;
-                case '':
+                case 'quote-applies':
+                    group = 'quoteApplies';
                     break;
             }
             //special actions
             if (group === 'filingFor'){
-                _.forOwn(req.body.data, function(value, key) {
-                    if (parseInt(key) === 9998){
+                _.forOwn(req.body.data[taxProfileSession.users[0].id], function(value, key) {
+                    if (parseInt(key) === 9002){//todo, find better way of linking these questions
                         //spouse
                         if (parseInt(value) === 1) {
                             //don't write over existing objects
@@ -102,7 +103,7 @@ taxProfile.saveActiveTiles = function(req){
                         } else {
                             taxProfileSession.users[1] = {};
                         }
-                    } else if (parseInt(key) === 9997){
+                    } else if (parseInt(key) === 9003){//todo, find better way of linking these questions
                         //other
                         if (parseInt(value) === 1){
                             //don't write over existing objects
@@ -123,9 +124,7 @@ taxProfile.saveActiveTiles = function(req){
                     if (!entry.activeTiles.hasOwnProperty(group)) {
                         entry.activeTiles[group] = {};
                     }
-                    _.forOwn(req.body.data, function (value, key) {
-                        entry.activeTiles[group][key] = value;
-                    });
+                    entry.activeTiles[group] = req.body.data[entry.id];
                 }
             });
             taxProfileSession.currentPage = getCurrentPage(req.body.action);
