@@ -10,16 +10,16 @@
                 Next we just need the first names of all the people you are filing for:
             </h1>
             <form id="filers-names-form">
-                <label for="filers-names-myself">YOUR FIRST NAME</label>
-                <input id="filers-names-myself" type="text" readonly="readonly" value="{{users.0.firstName}}"/>
+                <label for="filers-names-{{users.0.id}}">YOUR FIRST NAME</label>
+                <input id="filers-names-{{users.0.id}}" type="text" value="{{users.0.firstName}}" name="{{users.0.id}}"/>
                 {{#if users.1.id}}
-                    <label for="filers-names-spouse" class="under">YOUR SPOUSE OR PARTNER’S FIRST NAME</label>
-                    <input id="filers-names-spouse" type="text" value="{{users.1.firstName}}"/>
+                    <label for="filers-names-{{users.1.id}}" class="under">YOUR SPOUSE OR PARTNER’S FIRST NAME</label>
+                    <input id="filers-names-{{users.1.id}}" type="text" value="{{users.1.firstName}}" name="{{users.1.id}}"/>
                 {{/if}}
                 {{#offsetEach users 2}}
                     {{#if id}}
-                        <label for="filers-names-other" class="under">FIRST NAME OF YOUR ADDITIONAL FILER</label>
-                        <input id="filers-names-other" type="text" value="{{firstName}}"/>
+                        <label for="filers-names-{{id}}" class="under">FIRST NAME OF YOUR ADDITIONAL FILER</label>
+                        <input id="filers-names-{{id}}" type="text" value="{{firstName}}" name="{{id}}"/>
                     {{/if}}
                 {{/offsetEach}}
             </form>

@@ -64,44 +64,50 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
 };
 
 taxReturnPages.actionSaveTaxProfile = function(req, res, next) {
-    session.hasTaxProfileSession(req)
-        .then(function(hasSession){
-            //check if session is initiated
-            if (!hasSession){
-                return session.actionStartTaxProfileSession(req);
-            }
-        })
-        .then(function(){
-            //save account and qoute to session
-            switch(req.body.action){
-                case 'api-tp-welcome':
-                    return taxProfile.saveName(req);
-                    break;
-                case 'api-tp-filing-for':
-                case 'api-tp-income':
-                case 'api-tp-credits':
-                case 'api-tp-deductions':
-                    return taxProfile.saveActiveTiles(req);
-                    break;
-                default:
-                    return promise.reject('tax profile - invalid action');
-                    break;
-            }
-        })
-        .then(function(){
-            //success
-            res.status(util.http.status.accepted).json({
-                action: req.body.action,
-                status: 'success',
-                data: session.getTaxProfileObject(req)
+    req.checkBody('action').notEmpty();
+
+    if (req.validationErrors()){
+        return promise.reject('api - tax profile - validation errors');
+    } else {
+        session.hasTaxProfileSession(req)
+            .then(function (hasSession) {
+                //check if session is initiated
+                if (!hasSession) {
+                    return session.actionStartTaxProfileSession(req);
+                }
+            })
+            .then(function () {
+                //save account and qoute to session
+                switch (req.body.action) {
+                    case 'api-tp-welcome':
+                        return taxProfile.saveName(req);
+                        break;
+                    case 'api-tp-filers-names':
+                        return taxProfile.saveFilersNames(req);
+                        break;
+                    case 'api-tp-filing-for':
+                        return taxProfile.saveActiveTiles(req);
+                        break;
+                    default:
+                        return promise.reject('tax profile - invalid action');
+                        break;
+                }
+            })
+            .then(function () {
+                //success
+                res.status(util.http.status.accepted).json({
+                    action: req.body.action,
+                    status: 'success',
+                    data: session.getTaxProfileObject(req)
+                });
+            })
+            .catch(function (error) {
+                if (!error) {
+                    error = 'Could not save account';
+                }
+                next(new errors.BadRequestError(error, true));
             });
-        })
-        .catch(function(error){
-            if(!error){
-                error = 'Could not save account';
-            }
-            next(new errors.BadRequestError(error,true));
-        });
+    }
 };
 
 

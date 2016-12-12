@@ -30,6 +30,28 @@ taxProfile.saveName = function(req){
         });
 };
 
+taxProfile.saveFilersNames = function(req){
+    return promise.resolve()
+        .then(function(){
+            //validate
+            req.checkBody('data').notEmpty();
+
+            if (req.validationErrors() || req.body.action !== 'api-tp-filers-names'){
+                return promise.reject('api - account session creation - validation errors');
+            } else {
+                const taxProfileSession = req.session.taxProfile;
+                taxProfileSession.users.forEach(function(entry) {
+                    if (entry.hasOwnProperty('firstName')) {
+                        entry.firstName = req.body.data[entry.id];
+                    }
+                });
+                taxProfileSession.currentPage = getCurrentPage(req.body.action);
+                req.session.taxProfile = taxProfileSession;
+                return promise.resolve();
+            }
+        });
+};
+
 taxProfile.saveActiveTiles = function(req){
     return promise.resolve()
         .then(function() {
