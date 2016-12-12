@@ -11,7 +11,7 @@ sessionModel.getTaxProfileUserObject = function(data){
     };
     if (typeof data !== 'undefined' && data.hasOwnProperty('accountId') && data.accountId){
         userObject.id = String(data.accountId);
-        userObject.firstName = data.name;
+        userObject.firstName = data.firstName;
     }
     return userObject;
 };

@@ -20,7 +20,7 @@ taxProfile.saveName = function(req){
 
             //can only create an account on the name step
             if (req.validationErrors() || req.body.action !== 'api-tp-welcome'){
-                return promise.reject('api - account session creation - validation errors');
+                return promise.reject('api - tax profile welcome - validation errors');
             } else {
                 const taxProfileSession = req.session.taxProfile;
                 taxProfileSession.users[0].firstName = req.body.firstName;
@@ -39,7 +39,7 @@ taxProfile.saveFilersNames = function(req){
             req.checkBody('data').notEmpty();
 
             if (req.validationErrors() || req.body.action !== 'api-tp-filers-names'){
-                return promise.reject('api - account session creation - validation errors');
+                return promise.reject('api - tax profile filers names - validation errors');
             } else {
                 const taxProfileSession = req.session.taxProfile,
                     dataLengthDifference = Math.max(_.size(req.body.data),3)-taxProfileSession.users.length;//minimum of 3 as per model declaration
