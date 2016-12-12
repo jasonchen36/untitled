@@ -43,8 +43,8 @@ personalProfile.saveActiveTiles = function(req, group){
             //validate
             req.checkBody('data').notEmpty();
 
-            if (req.validationErrors() || req.body.action !== 'api-tp-filers-names'){
-                return promise.reject('api - account session creation - validation errors');
+            if (req.validationErrors()){
+                return promise.reject('api - user profile update - validation errors');
             } else {
                 const userProfileSession = req.session.userProfile;
                 var group = getCurrentPage(req.body.action);
