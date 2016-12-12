@@ -27,7 +27,7 @@
         return new Promise(function(resolve,reject) {
             var data = getPersonalProfileSession();
             //update session with new page
-            updatePersonalProfileSession(data, newPage);
+            that.updatePersonalProfileSession(data, newPage);
             animateProgressBar();
             var template = Handlebars.templates[newPage],
                 html = template(data);
@@ -76,17 +76,6 @@
         }
     }
 
-    function updatePersonalProfileSession(data,newPage){
-        if(!data || typeof data !== 'object'){
-            data = getPersonalProfileSession();
-        }
-        if(newPage && newPage.length > 0){
-            data.currentPage = newPage;
-        }
-        data.questions = questionsObject;
-        personalProfileSessionStore = data;
-    }
-
     function animateProgressBar(){
         var percentageComplete = helpers.getAverage(that.personalProfileFlow.indexOf(getCurrentPage()),that.personalProfileFlow.length);
         animations.animateElement(profileBar,{
@@ -101,7 +90,7 @@
         var currentPage = getCurrentPage(),
             currentPageIndex = that.personalProfileFlow.indexOf(currentPage);
         //update session from ajax response
-        updatePersonalProfileSession(data);
+        that.updatePersonalProfileSession(data);
         if (currentPageIndex !== that.personalProfileFlow.length-1){
             changePage(that.personalProfileFlow[currentPageIndex+1]);
         }
@@ -111,12 +100,33 @@
         var currentPage = getCurrentPage(),
             currentPageIndex = that.personalProfileFlow.indexOf(currentPage);
         //update session from ajax response
-        updatePersonalProfileSession(data);
+        that.updatePersonalProfileSession(data);
         if (currentPageIndex !== 0){
             changePage(that.personalProfileFlow[currentPageIndex-1]);
         }
     };
 
+    this.refreshPage = function(data){
+        var currentPage = getCurrentPage(),
+            currentPageIndex = that.personalProfileFlow.indexOf(currentPage),
+            newPage;
+        //update session with new data
+        that.updatePersonalProfileSession(data);
+        newPage = that.personalProfileFlow[currentPageIndex];
+        changePage(newPage);
+    };
+
+    this.updatePersonalProfileSession = function(data,newPage){
+        if(!data || typeof data !== 'object'){
+            data = getPersonalProfileSession();
+        }
+        if(newPage && newPage.length > 0){
+            data.currentPage = newPage;
+        }
+        data.questions = questionsObject;
+        personalProfileSessionStore = data;
+    };
+    
     this.init = function(){
         if (personalProfilePageContainer.length > 0) {
             startPersonalProfileSession();
