@@ -126,7 +126,7 @@
     this.getPersonalProfileSession = function(){
         return personalProfileSessionStore;
     };
-    
+
     this.init = function(){
         if (personalProfilePageContainer.length > 0) {
             startPersonalProfileSession();
