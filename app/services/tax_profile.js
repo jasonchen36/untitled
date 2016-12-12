@@ -71,16 +71,20 @@ taxProfile.saveActiveTiles = function(req){
                     if (parseInt(key) === 9998){
                         //spouse
                         if (parseInt(value) === 1) {
-                            taxProfileSession.users[1] = sessionModel.getTaxProfileUserObject();
-                            taxProfileSession.users[1].id = taxProfileSession.users[0].id + '-spouse';
+                            if (!taxProfileSession.users[1].hasOwnProperty('id')){
+                                taxProfileSession.users[1] = sessionModel.getTaxProfileUserObject();
+                                taxProfileSession.users[1].id = taxProfileSession.users[0].id + '-spouse';
+                            }
                         } else {
                             taxProfileSession.users[1] = {};
                         }
                     } else if (parseInt(key) === 9997){
                         //other
                         if (parseInt(value) === 1){
-                            taxProfileSession.users[2] = sessionModel.getTaxProfileUserObject();
-                            taxProfileSession.users[2].id = taxProfileSession.users[0].id+'-other';
+                            if (!taxProfileSession.users[2].hasOwnProperty('id')) {
+                                taxProfileSession.users[2] = sessionModel.getTaxProfileUserObject();
+                                taxProfileSession.users[2].id = taxProfileSession.users[0].id + '-other';
+                            }
                         } else {
                             taxProfileSession.users[2] = {};
                         }
