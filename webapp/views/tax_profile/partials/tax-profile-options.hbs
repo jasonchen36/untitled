@@ -1,10 +1,10 @@
 <section data-id="{{tileContainerId}}" class="grid-container taxplan-tile-container">
     {{#each questions}}
-        <div data-id="{{id}}" class="taxplan-tile{{#isActiveTile id ../activeTiles}} active{{/isActiveTile}}">
-            {{#if instructions}}
-                <div class="taxplan-tile-instructions i--icon-question" data-instructions="{{{instructions}}}"></div>
-            {{/if}}
+        {{#if instructions}}
+        <div data-id="{{id}}" class="taxplan-tile {{customTileClass}} {{#isActiveTile id ../activeTiles}} active{{/isActiveTile}}" data-instructions="{{{instructions}}}">
+
             <span class="taxplan-tile-label">{{text}}</span>
+        {{/if}}
         </div>
     {{/each}}
 </section>
