@@ -195,4 +195,16 @@
         return Math.round(index / length * 100);
     };
 
+    this.hasName = function(data){
+
+        var hasName = true;
+
+        _.forOwn(data, function(value, key) {
+            if( ( typeof ( Object.values(data[key])[1]) == 'undefined' ) || ( (Object.values(data[key])[1]).length < 1) ){
+                hasName = false;
+            }
+        });
+        return hasName;
+    };
+
 }).apply(app.helpers);
