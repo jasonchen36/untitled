@@ -245,6 +245,7 @@ textarea {
 .main-container{
   background: $color-global-bg;
   position: relative;
+  overflow-y: auto;
   min-height:calc(100% - #{$header-height});
 }
 
