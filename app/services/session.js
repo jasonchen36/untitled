@@ -105,11 +105,42 @@ session.actionStartUserProfileSession = function(req, token){
                 },
                 json: true
             };
+
+
+
             return requestPromise(options)
                 .then(function (response) {
                     try {
                         response.token = token;
                         req.session.userProfile = sessionModel.getUserProfileObject(response);
+                        var accountID = (req.session.userProfile.users[0].accountId);
+                        const getAccountOptions = {
+                            method: 'GET',
+                            uri: process.env.API_URL+'/account/'+accountID,
+                            headers: {
+                                'Authorization': 'Bearer '+token
+                            },
+                            body: {
+                                name: req.body.firstName,
+                                productId: process.env.API_PRODUCT_ID
+                            },
+                            json: true
+                        };
+
+                        requestPromise(getAccountOptions)
+                            .then(function (response) {
+                                try {
+                                    req.session.userProfile = sessionModel.getUserTaxReturns(response);
+                                    return promise.resolve();
+                                } catch(error){
+                                    if(!error){
+                                        error = 'Could not create user account';
+                                    }
+                                    return promise.reject(error);
+                                }
+                            });
+
+
                         return promise.resolve();
                     } catch(error){
                         if(!error){

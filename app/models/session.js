@@ -1,5 +1,6 @@
 const //packages
-    moment = require('moment');
+    moment = require('moment'),
+    _ = require('lodash');
 
 var sessionModel = {};
 
@@ -57,6 +58,34 @@ sessionModel.getUserProfileObject = function(data){
             sessionModel.getUserProfileUserObject(data)
         ]
     };
+};
+
+
+sessionModel.getUserTaxReturns = function(data){
+
+    var taxReturnsArr = [];
+
+        _.forEach(data.taxReturns, function(item){
+
+            var taxReturn = {};
+
+            taxReturn.taxReturnid = item.id;
+            taxReturn.productId = item.product_id;
+            taxReturn.accountId = item.account_id;
+            taxReturn.statusId = item.status_id;
+            taxReturn.firstName = item.first_name;
+            taxReturn.lastName = item.last_name;
+            taxReturn.provinceOfResidence = item.province_of_redidence; // todo, update after fixed in DB
+            taxReturn.dateOfBirth = item.date_of_birth;
+            taxReturn.canadianCitizen = item.canadian_citizen;
+            taxReturn.authorizeCRA = item.authorize_cra;
+
+            taxReturnsArr.push(taxReturn);
+        });
+
+
+
+    return taxReturnsArr;
 };
 
 module.exports = sessionModel;
