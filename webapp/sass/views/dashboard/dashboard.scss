@@ -6,6 +6,7 @@
 }
 
 
+//TODO: Nich, clean up your sass classes and styles, please.
 //left sidebar styles
 //-----------------------------
 .sidebar-menu-item{
@@ -29,12 +30,22 @@
       color: $color-global-white;
     }
   }
+  &.collapsed{
+    padding-top: 15px;
+  }
 }
 
 .label-sidebar-menu-item{
   display: inline-block;
   float: left;
   margin: 30px 10px 0px 10px;
+  &.collapsed{
+    font-size:0.9rem;
+    display: block;
+    float: none;
+    text-align: center;
+    margin: auto;
+  }
 }
 
 .label-sidebar-messages-count {
@@ -53,6 +64,13 @@
   display: inline-block;
   float: left;
   margin: 20px 0px 0px 10px;
+  &.collapsed{
+    height: 40px;
+    width: 37px;
+    display: block;
+    float: none;
+    margin: auto;
+  }
 }
 
 //left sidebar icons
@@ -94,11 +112,21 @@
     display: inline-block;
     height: 50px;
     width: 20%;
+    &.collapsed{
+      width:40%;
+    }
   }
   .label-sidekick-blurb{
     display: inline-block;
     width: 75%;
     text-align: left;
+  }
+  &.collapsed{
+    padding:5px;
+    background: white;
+    border-radius: 20px;
+    text-align: center;
+    margin: 0px 5px 0px 5px;
   }
 }
 
@@ -128,6 +156,20 @@
    height: 80px;
    width: 30%;
  }
+}
+
+#container-collapsed-sidebar{
+  padding: 0px;
+  display: inline-block;
+  width: 20%;
+  float: left;
+  &.checklist-items{
+    display: inline-block;
+    width: 80%;
+    height: 100%;
+    background: white;
+    float: left;
+  }
 }
 
 .container-taxpro-introduction{

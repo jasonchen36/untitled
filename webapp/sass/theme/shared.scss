@@ -19,7 +19,10 @@ $header-height: 85px;
   &.font-light-grey{
     color: $color-text-light-grey;
   }
-  &.label-sidebar-menu-item{
+  &.font-green{
+    color: $color-global-green;
+  }
+  &.font-sidebar-dark-grey{
     color: $color-sidebar-text-dark-grey;
   }
   &.label-message-date{

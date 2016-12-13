@@ -1,0 +1,29 @@
+<div class="small-2 medium-3 yellow-container">
+    <div id="container-collapsed-sidebar" class="no-margin">
+        <div class="sidebar-menu-item collapsed">
+            <div class="i--icon-chat icon-sidebar-item collapsed"></div>
+            <p id="dashboard-chat-activate" class="label-sidebar-menu-item collapsed font-sidebar-dark-grey">CHAT</p>
+        </div>
+        <div class="sidebar-menu-item collapsed">
+            <div class="i--icon-upload icon-sidebar-item collapsed"></div>
+            <p id="dashboard-upload-activate" class="label-sidebar-menu-item collapsed font-sidebar-dark-grey">UPLOAD</p>
+        </div>
+        <div class="sidebar-menu-item collapsed">
+        {{#if data.enableTaxReturn}}
+                <div class="i--icon-return icon-sidebar-item collapsed"></div>
+                <p id="dashboard-my-return-activate" class="label-sidebar-menu-item collapsed font-sidebar-dark-grey">RETURN</p>
+        {{/if}}
+        </div>
+        <div id="container-dashboard-sidekick-ad" class="collapsed">
+            <div class="i--icon-get-app collapsed"></div>
+            <p class="label-sidebar-menu-item collapsed font-green">GET THE APP</p>
+        </div>
+    </div>
+    <div id="container-collapsed-sidebar" class="checklist-items">
+        <div id="container-dashboard-sidekick-ad">
+            <div class="i--icon-get-app"></div>
+            <p class="label-sidekick-blurb">Photograph & upload your tax docs with TaxPlan’s FREE Sidekick app.</p>
+            <button class="green">Get it now</button>
+        </div>
+    </div>
+</div>
