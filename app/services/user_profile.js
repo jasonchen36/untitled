@@ -31,7 +31,7 @@ personalProfile.saveLastName = function(req){
                 });
                 userProfileSession.currentPage = getCurrentPage(req.body.action);
                 userProfileSession.expiry = moment().add(1, 'hour');//refresh after update
-                session.setUserProfileObject(userProfileSession);
+                session.setUserProfileObject(req, userProfileSession);
                 return promise.resolve();
             }
         });
@@ -68,7 +68,7 @@ personalProfile.saveActiveTiles = function(req, group){
                 });
                 userProfileSession.currentPage = getCurrentPage(req.body.action);
                 userProfileSession.expiry = moment().add(7, 'days');//refresh after update
-                session.setUserProfileObject(userProfileSession);
+                session.setUserProfileObject(req, userProfileSession);
                 return promise.resolve();
             }
         });

@@ -29,7 +29,7 @@ taxProfile.saveName = function(req){
                 taxProfileSession.users[0].firstName = req.body.firstName;
                 taxProfileSession.currentPage = getCurrentPage(req.body.action);
                 taxProfileSession.expiry = moment().add(7, 'days');//refresh after update
-                session.setTaxProfileObject(taxProfileSession);
+                session.setTaxProfileObject(req, taxProfileSession);
                 return promise.resolve();
             }
         });
@@ -74,7 +74,7 @@ taxProfile.saveFilersNames = function(req){
                 });
                 taxProfileSession.currentPage = getCurrentPage(req.body.action);
                 taxProfileSession.expiry = moment().add(7, 'days');//refresh after update
-                session.setTaxProfileObject(taxProfileSession);
+                session.setTaxProfileObject(req, taxProfileSession);
                 return promise.resolve();
             }
         });
@@ -140,15 +140,16 @@ taxProfile.saveActiveTiles = function(req){
                 });
                 taxProfileSession.currentPage = getCurrentPage(req.body.action);
                 taxProfileSession.expiry = moment().add(7, 'days');//refresh after update
-                session.setTaxProfileObject(taxProfileSession);
+                session.setTaxProfileObject(req, taxProfileSession);
                 return promise.resolve();
             }
         });
 };
 
-taxProfile.getTaxReturnQuote = function(req){
+taxProfile.getTaxReturnQuote = function(){
     return promise.resolve()
         .then(function() {
+            console.log('in tax return quote');
             //create tax return ids
             const taxProfileSession = session.getTaxProfileObject(),
                 requestObject = {

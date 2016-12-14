@@ -34,7 +34,7 @@ session.actionStartTaxProfileSession = function(req){
             return requestPromise(options)
                 .then(function (response) {
                     try {
-                        session.setTaxProfileObject(sessionModel.getTaxProfileObject(response));
+                        session.setTaxProfileObject(req, sessionModel.getTaxProfileObject(response));
                         return promise.resolve();
                     } catch(error){
                         if(!error){
@@ -74,7 +74,7 @@ session.hasTaxProfileSession = function(req){
 session.actionDestroyTaxProfileSession = function(req){
     return promise.resolve()
         .then(function(){
-            session.setTaxProfileObject({});
+            session.setTaxProfileObject(req, {});
         });
 };
 
@@ -82,7 +82,7 @@ session.getTaxProfileObject = function(req){
     return req.session.hasOwnProperty('taxProfile')?req.session.taxProfile:{};
 };
 
-session.setTaxProfileObject = function(data){
+session.setTaxProfileObject = function(req, data){
     return req.session.taxProfile = data;
 };
 
@@ -113,7 +113,7 @@ session.actionStartUserProfileSession = function(req, token){
                 .then(function (response) {
                     try {
                         response.token = token;
-                        session.setUserProfileObject(sessionModel.getUserProfileObject(response));
+                        session.setUserProfileObject(req, sessionModel.getUserProfileObject(response));
                         return promise.resolve();
                     } catch(error){
                         if(!error){
@@ -154,14 +154,14 @@ session.getUserProfileObject = function(req){
     return req.session.hasOwnProperty('userProfile') ? req.session.userProfile : {};
 };
 
-session.setUserProfileObject = function(data){
+session.setUserProfileObject = function(req, data){
     return req.session.userProfile = data;
 };
 
 session.actionDestroyUserProfileSession = function(req){
     return session.actionDestroyTaxProfileSession(req)
         .then(function() {
-            session.setUserProfileObject({});
+            session.setUserProfileObject(req, {});
         });
 };
 

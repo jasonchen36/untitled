@@ -91,7 +91,7 @@ taxReturnPages.actionSaveTaxProfile = function(req, res, next) {
             .then(function(){
                 //get quote if moving to quote page
                 if (req.body.action === 'api-tp-quote-applies') {
-                    return taxProfile.getTaxReturnQuote(req);
+                    return taxProfile.getTaxReturnQuote();
                 }
             })
             .then(function () {
