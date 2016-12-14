@@ -45,6 +45,7 @@ sessionModel.getUserProfileUserObject = function(data){
         birthday: data.birthday,
         resetKey: data.reset_key,
         accountId: data.account_id,
+        taxReturns: [],
         activeTiles: {}
     }
 };
@@ -74,6 +75,21 @@ sessionModel.getDocumentChecklistObject = function(data){
         checklistItems: _.map(data.checklistitems, sessionModel.getDocumentChecklistItemObject),
         additionalDocuments: data.additionalDocuments
     };
+};
+
+sessionModel.getUserTaxReturns = function(data){
+    return {
+        taxReturnId: data.id,
+        productId: data.product_id,
+        accountId: data.account_id,
+        statusId: data.status_id,
+        firstName: data.first_name,
+        lastName: data.last_name,
+        province: data.province_of_redidence, // todo, update after fixed in DB
+        dateOfBirth: data.date_of_birth,
+        canadianCitizen: data.canadian_citizen,
+        authorizeCRA: data.authorize_cra
+    }
 };
 
 module.exports = sessionModel;

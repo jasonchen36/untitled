@@ -2,7 +2,8 @@ const //packages
     requestPromise = require('request-promise'),
     promise = require('bluebird'),
     moment = require('moment'),
-    //models
+    _ = require('lodash'),
+//models
     sessionModel = require('../models/session'),
 //services
     errors = require('./errors'),
@@ -113,8 +114,7 @@ session.actionStartUserProfileSession = function(req, token){
                 .then(function (response) {
                     try {
                         response.token = token;
-                        session.setUserProfileSession(req, sessionModel.getUserProfileObject(response));
-                        return promise.resolve();
+                        return promise.resolve(session.setUserProfileSession(req, sessionModel.getUserProfileObject(response)));
                     } catch(error){
                         if(!error){
                             error = 'Could not create user account';
@@ -129,7 +129,42 @@ session.actionStartUserProfileSession = function(req, token){
                     }
                     return promise.reject(error);
                 });
-        });
+        })
+        .then(function(userProfileSession){
+            const accountID = userProfileSession.users[0].accountId,
+                getTaxReturnsRequest = {
+                    method: 'GET',
+                    uri: process.env.API_URL+'/account/'+accountID,
+                    headers: {
+                        'Authorization': 'Bearer '+token
+                    },
+                    body: {
+                        name: req.body.firstName,
+                        productId: process.env.API_PRODUCT_ID
+                    },
+                    json: true
+                };
+            return requestPromise(getTaxReturnsRequest)
+                .then(function (response) {
+                    try {
+                        userProfileSession.taxReturns = _.map(response.taxReturns, sessionModel.getUserTaxReturns);
+                        session.setUserProfileSession(req, userProfileSession);
+                        return promise.resolve();
+                    } catch(error){
+                        if(!error){
+                            error = 'Could not get user\'s tax returns';
+                        }
+                        return promise.reject(error);
+                    }
+                })
+                .catch(function (response) {
+                    var error = response;
+                    if (response && response.hasOwnProperty('error')){
+                        error = response.error;
+                    }
+                    return promise.reject(error);
+                });
+        })
 };
 
 session.hasUserProfileSession = function(req){
