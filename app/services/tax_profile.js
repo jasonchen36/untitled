@@ -25,11 +25,11 @@ taxProfile.saveName = function(req){
             if (req.validationErrors() || req.body.action !== 'api-tp-welcome'){
                 return promise.reject('api - tax profile welcome - validation errors');
             } else {
-                const taxProfileSession = session.getTaxProfileObject(req);
+                const taxProfileSession = session.getTaxProfileSession(req);
                 taxProfileSession.users[0].firstName = req.body.firstName;
                 taxProfileSession.currentPage = getCurrentPage(req.body.action);
                 taxProfileSession.expiry = moment().add(7, 'days');//refresh after update
-                session.setTaxProfileObject(req, taxProfileSession);
+                session.setTaxProfileSession(req, taxProfileSession);
                 return promise.resolve();
             }
         });
@@ -44,7 +44,7 @@ taxProfile.saveFilersNames = function(req){
             if (req.validationErrors() || req.body.action !== 'api-tp-filers-names'){
                 return promise.reject('api - tax profile filers names - validation errors');
             } else {
-                const taxProfileSession = session.getTaxProfileObject(req),
+                const taxProfileSession = session.getTaxProfileSession(req),
                     otherFilerData = _.filter(req.body.data, function(value, key) { return key.indexOf('other') !== -1; }),//case where multiple "other"s are selected but not "spouse"
                     otherFilerCountDifference = Math.max(_.size(otherFilerData),1)-(taxProfileSession.users.length-2);//don't count primary and spouse filers
 
@@ -74,7 +74,7 @@ taxProfile.saveFilersNames = function(req){
                 });
                 taxProfileSession.currentPage = getCurrentPage(req.body.action);
                 taxProfileSession.expiry = moment().add(7, 'days');//refresh after update
-                session.setTaxProfileObject(req, taxProfileSession);
+                session.setTaxProfileSession(req, taxProfileSession);
                 return promise.resolve();
             }
         });
@@ -89,7 +89,7 @@ taxProfile.saveActiveTiles = function(req){
             if (req.validationErrors()){
                 return promise.reject('api - tax profile update - validation errors');
             } else {
-                const taxProfileSession = session.getTaxProfileObject();
+                const taxProfileSession = session.getTaxProfileSession(req);
                 var group = getCurrentPage(req.body.action);
                 //group nicename
                 switch (group) {
@@ -140,7 +140,7 @@ taxProfile.saveActiveTiles = function(req){
                 });
                 taxProfileSession.currentPage = getCurrentPage(req.body.action);
                 taxProfileSession.expiry = moment().add(7, 'days');//refresh after update
-                session.setTaxProfileObject(req, taxProfileSession);
+                session.setTaxProfileSession(req, taxProfileSession);
                 return promise.resolve();
             }
         });
@@ -151,7 +151,7 @@ taxProfile.getTaxReturnQuote = function(){
         .then(function() {
             console.log('in tax return quote');
             //create tax return ids
-            const taxProfileSession = session.getTaxProfileObject(),
+            const taxProfileSession = session.getTaxProfileSession(),
                 requestObject = {
                     method: 'GET',
                     uri: process.env.API_URL+'/tax_return',

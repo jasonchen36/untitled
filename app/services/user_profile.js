@@ -22,8 +22,7 @@ personalProfile.saveLastName = function(req){
             if (req.validationErrors() || req.body.action !== 'api-pp-last-name'){
                 return promise.reject('api - user session creation - validation errors');
             } else {
-                const userProfileSession = session.getUserProfileObject();
-                //save last names
+                const userProfileSession = session.getUserProfileSession(req);
                 userProfileSession.users.forEach(function (entry) {
                     if (entry.hasOwnProperty('id') && req.body.data.hasOwnProperty(entry.id)) {
                         entry.lastName = req.body.data[entry.id].lastName;
@@ -31,7 +30,7 @@ personalProfile.saveLastName = function(req){
                 });
                 userProfileSession.currentPage = getCurrentPage(req.body.action);
                 userProfileSession.expiry = moment().add(1, 'hour');//refresh after update
-                session.setUserProfileObject(req, userProfileSession);
+                session.setUserProfileSession(req, userProfileSession);
                 return promise.resolve();
             }
         });
@@ -46,7 +45,7 @@ personalProfile.saveActiveTiles = function(req, group){
             if (req.validationErrors()){
                 return promise.reject('api - user profile update - validation errors');
             } else {
-                const userProfileSession = session.getUserProfileObject();
+                const userProfileSession = session.getUserProfileSession(req);
                 var group = getCurrentPage(req.body.action);
                 //group nicename
                 switch (group) {
@@ -68,7 +67,7 @@ personalProfile.saveActiveTiles = function(req, group){
                 });
                 userProfileSession.currentPage = getCurrentPage(req.body.action);
                 userProfileSession.expiry = moment().add(7, 'days');//refresh after update
-                session.setUserProfileObject(req, userProfileSession);
+                session.setUserProfileSession(req, userProfileSession);
                 return promise.resolve();
             }
         });

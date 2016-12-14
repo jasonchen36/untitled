@@ -34,7 +34,7 @@ session.actionStartTaxProfileSession = function(req){
             return requestPromise(options)
                 .then(function (response) {
                     try {
-                        session.setTaxProfileObject(req, sessionModel.getTaxProfileObject(response));
+                        session.setTaxProfileSession(req, sessionModel.getTaxProfileObject(response));
                         return promise.resolve();
                     } catch(error){
                         if(!error){
@@ -74,20 +74,20 @@ session.hasTaxProfileSession = function(req){
 session.actionDestroyTaxProfileSession = function(req){
     return promise.resolve()
         .then(function(){
-            session.setTaxProfileObject(req, {});
+            session.setTaxProfileSession(req, {});
         });
 };
 
-session.getTaxProfileObject = function(req){
+session.getTaxProfileSession = function(req){
     return req.session.hasOwnProperty('taxProfile')?req.session.taxProfile:{};
 };
 
-session.setTaxProfileObject = function(req, data){
+session.setTaxProfileSession = function(req, data){
     return req.session.taxProfile = data;
 };
 
 session.getTaxProfileValue = function(req, key){
-    const taxProfileSession = session.getTaxProfileObject(req);
+    const taxProfileSession = session.getTaxProfileSession(req);
     return taxProfileSession.hasOwnProperty(key)?taxProfileSession[key]:'';
 };
 
@@ -113,7 +113,7 @@ session.actionStartUserProfileSession = function(req, token){
                 .then(function (response) {
                     try {
                         response.token = token;
-                        session.setUserProfileObject(req, sessionModel.getUserProfileObject(response));
+                        session.setUserProfileSession(req, sessionModel.getUserProfileObject(response));
                         return promise.resolve();
                     } catch(error){
                         if(!error){
@@ -150,23 +150,23 @@ session.hasUserProfileSession = function(req){
         });
 };
 
-session.getUserProfileObject = function(req){
+session.getUserProfileSession = function(req){
     return req.session.hasOwnProperty('userProfile') ? req.session.userProfile : {};
 };
 
-session.setUserProfileObject = function(req, data){
+session.setUserProfileSession = function(req, data){
     return req.session.userProfile = data;
 };
 
 session.actionDestroyUserProfileSession = function(req){
     return session.actionDestroyTaxProfileSession(req)
         .then(function() {
-            session.setUserProfileObject(req, {});
+            session.setUserProfileSession(req, {});
         });
 };
 
 session.getUserProfileValue = function(req, key){
-    const userSession = session.getUserProfileObject(req);
+    const userSession = session.getUserProfileSession(req);
     return userSession.hasOwnProperty(key) ? userSession[key] : '';
 };
 

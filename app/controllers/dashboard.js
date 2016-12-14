@@ -23,7 +23,7 @@ dashboardPages.getDashboardPage = function(req, res, next){
     };
     requestPromise(options)
         .then(function (response) {
-            const dataObject = session.getUserProfileObject(req);
+            const dataObject = session.getUserProfileSession(req);
             dataObject.newMessageCount = 0;
             dataObject.messages = response.messages;
             response.messages.forEach(function(entry){

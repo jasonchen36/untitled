@@ -13,8 +13,8 @@ userPages.getLoginPage = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix+'Sign In'
         },
-        account: session.getTaxProfileObject(req),
-        user: session.getUserProfileObject(req),
+        account: session.getTaxProfileSession(req),
+        user: session.getUserProfileSession(req),
         locals: {}
     });
 };
@@ -66,8 +66,8 @@ userPages.getRegisterPage = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Register'
         },
-        account: session.getTaxProfileObject(req),
-        user: session.getUserProfileObject(req),
+        account: session.getTaxProfileSession(req),
+        user: session.getUserProfileSession(req),
         locals: {}
     });
 };
@@ -80,7 +80,7 @@ userPages.actionRegisterUser = function(req, res, next){
     if (req.validationErrors() || req.body.action !== 'api-register'){
         next(new errors.BadRequestError('register - validation errors',true));
     } else {
-        const taxProfileSession = session.getTaxProfileObject(req),
+        const taxProfileSession = session.getTaxProfileSession(req),
             options = {
             method: 'POST',
             uri: process.env.API_URL+'/users',
@@ -123,8 +123,8 @@ userPages.getPasswordResetPage = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Password Reset'
         },
-        account: session.getTaxProfileObject(req),
-        user: session.getUserProfileObject(req),
+        account: session.getTaxProfileSession(req),
+        user: session.getUserProfileSession(req),
         locals: {}
     });
 };
@@ -162,8 +162,8 @@ userPages.getAuthorizedPasswordResetPage = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Password Reset'
         },
-        account: session.getTaxProfileObject(req),
-        user: session.getUserProfileObject(req),
+        account: session.getTaxProfileSession(req),
+        user: session.getUserProfileSession(req),
         locals: {
             token: req.params.token
         }

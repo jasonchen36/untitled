@@ -9,8 +9,8 @@ errorPages.get404Page = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + '404 Not Found'
         },
-        account: session.getTaxProfileObject(req),
-        user: session.getUserProfileObject(req),
+        account: session.getTaxProfileSession(req),
+        user: session.getUserProfileSession(req),
         locals: {},
         layout: 'layout-error'
     });
@@ -21,8 +21,8 @@ errorPages.get500Page = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + '500 Error'
         },
-        account: session.getTaxProfileObject(req),
-        user: session.getUserProfileObject(req),
+        account: session.getTaxProfileSession(req),
+        user: session.getUserProfileSession(req),
         locals: {},
         layout: 'layout-error'
     });
