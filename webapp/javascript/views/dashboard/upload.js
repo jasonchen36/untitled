@@ -6,6 +6,7 @@
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass,
         dashboard = app.services.dashboard,
+        animations = app.animations,
         fileUpload,
         uploadChecklistItemsClass = '.upload-checklist-item',
         fileUploadSubmitId = '#dashboard-upload-submit',
@@ -55,8 +56,12 @@
                 console.log(data);
             },
             progressall: function (e, data) {
-                var progress = parseInt(data.loaded / data.total * 100, 10);
-                progressBar.text(progress + '%');
+                var percentageComplete = parseInt(data.loaded / data.total * 100, 10);
+                animations.animateElement(progressBar,{
+                    properties: {
+                        width: percentageComplete+'%'
+                    }
+                });
             }
         });
     }

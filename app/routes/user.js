@@ -15,7 +15,7 @@ router.route('/login')
     .put(userController.actionLoginUser);
 
 router.route('/register')
-    .get(authenticationMiddleware.redirectWithUserSession,authenticationMiddleware.redirectWithoutAccountSession,userController.getRegisterPage)
+    .get(authenticationMiddleware.redirectWithUserSession,authenticationMiddleware.redirectWithoutTaxProfileSession,userController.getRegisterPage)
     .post(userController.actionRegisterUser);
 
 router.route('/password-reset')

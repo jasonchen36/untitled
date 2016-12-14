@@ -40,7 +40,6 @@ dashboardPages.getDashboardPage = function(req, res, next){
         .then(function (response) {
             const dataObject = session.getUserProfileSession(req);
             dataObject.documentChecklist = sessionModel.getDocumentChecklistObject(response[1]);
-            console.log(dataObject.documentChecklist);
             dataObject.newMessageCount = 0;
             dataObject.messages = response[0].messages;
             dataObject.messages.forEach(function(entry){
