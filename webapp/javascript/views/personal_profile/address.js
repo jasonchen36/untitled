@@ -7,14 +7,47 @@
         addressForm,
         addressSubmit,
         addressBack,
+        addressLine1Input,
+        cityInput,
+        postalCodeInput,
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
     function submitAddress(){
-        //todo
-        personalProfile.goToNextPage();
+        var formData = helpers.getFormData(addressForm);
+        if (helpers.hasName(formData.addressLine1)){
+            addressLine1Input.addClass(addressLine1Input);
+        }
+        if (helpers.hasName(formData.city)){
+            cityInput.addClass(errorClass);
+        }
+        if (helpers.hasName(formData.postalCode)){
+            postalCodeInput.addClass(errorClass);
+        }
+        if (!helpers.formHasErrors(addressForm)) {
+            addressSubmit.addClass(disabledClass);
+            ajax.ajax(
+                'POST',
+                '/personal-profile',
+                {
+                    action: 'api-tp-address',
+                    addressLine1: formData.addressLine1,
+                    Province: formData.province,
+                    City: formData.city,
+                    postalCode: formData.postalCode
+                },
+                'json'
+            )
+                .then(function(response){
+                    taxProfile.goToNextPage(response.data);
+                })
+                .catch(function(jqXHR,textStatus,errorThrown){
+                    ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
+                    addressSubmit.removeClass(disabledClass);
+                });
+        }
     }
-    
+
     this.init = function(){
         if ($('#personal-profile-address').length > 0) {
 
@@ -22,6 +55,10 @@
             addressForm = $('#address-form');
             addressSubmit = $('#address-submit');
             addressBack = $('#address-back');
+            addressLine1Input = $('#address-first-line');
+            cityInput = $('#address-city');
+            postalCodeInput = $('#address-postal-code');
+
 
             //listeners
             addressForm.on('submit',function(event){
