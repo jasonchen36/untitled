@@ -15,13 +15,13 @@
 
     function submitAddress(){
         var formData = helpers.getFormData(addressForm);
-        if (helpers.hasName(formData.addressLine1)){
+        if (helpers.isEmpty(formData.addressLine1)){
             addressLine1Input.addClass(addressLine1Input);
         }
-        if (helpers.hasName(formData.city)){
+        if (helpers.isEmpty(formData.city)){
             cityInput.addClass(errorClass);
         }
-        if (helpers.hasName(formData.postalCode)){
+        if (helpers.isEmpty(formData.postalCode)){
             postalCodeInput.addClass(errorClass);
         }
         if (!helpers.formHasErrors(addressForm)) {
