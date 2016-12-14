@@ -13,8 +13,8 @@ userPages.getLoginPage = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix+'Sign In'
         },
-        account: session.getTaxProfileObject(req),
-        user: session.getUserProfileObject(req),
+        account: session.getTaxProfileSession(req),
+        user: session.getUserProfileSession(req),
         locals: {}
     });
 };
@@ -55,7 +55,11 @@ userPages.actionLoginUser = function(req, res, next){
                 }
             })
             .catch(function (response) {
-                next(new errors.BadRequestError(response.error,true));
+                var error = response;
+                if (response && response.hasOwnProperty('error')){
+                    error = response.error;
+                }
+                next(new errors.BadRequestError(error,true));
             });
     }
 };
@@ -66,8 +70,8 @@ userPages.getRegisterPage = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Register'
         },
-        account: session.getTaxProfileObject(req),
-        user: session.getUserProfileObject(req),
+        account: session.getTaxProfileSession(req),
+        user: session.getUserProfileSession(req),
         locals: {}
     });
 };
@@ -80,15 +84,16 @@ userPages.actionRegisterUser = function(req, res, next){
     if (req.validationErrors() || req.body.action !== 'api-register'){
         next(new errors.BadRequestError('register - validation errors',true));
     } else {
-        const options = {
+        const taxProfileSession = session.getTaxProfileSession(req),
+            options = {
             method: 'POST',
             uri: process.env.API_URL+'/users',
             body: {
                 password: req.body.password,
-                first_name: req.session.taxProfile.users[0].firstName,
+                first_name: taxProfileSession.users[0].firstName,
                 last_name: ' ',//not entered until person profile section
                 email: req.body.email,
-                accountId: req.session.taxProfile.users[0].id
+                accountId: taxProfileSession.users[0].id
             },
             json: true
         };
@@ -111,7 +116,11 @@ userPages.actionRegisterUser = function(req, res, next){
                 }
             })
             .catch(function (response) {
-                next(new errors.BadRequestError(response.error,true));
+                var error = response;
+                if (response && response.hasOwnProperty('error')){
+                    error = response.error;
+                }
+                next(new errors.BadRequestError(error,true));
             });
     }
 };
@@ -122,8 +131,8 @@ userPages.getPasswordResetPage = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Password Reset'
         },
-        account: session.getTaxProfileObject(req),
-        user: session.getUserProfileObject(req),
+        account: session.getTaxProfileSession(req),
+        user: session.getUserProfileSession(req),
         locals: {}
     });
 };
@@ -151,7 +160,11 @@ userPages.actionPasswordReset = function(req, res, next){
                 });
             })
             .catch(function (response) {
-                next(new errors.BadRequestError(response.error,true));
+                var error = response;
+                if (response && response.hasOwnProperty('error')){
+                    error = response.error;
+                }
+                next(new errors.BadRequestError(error,true));
             });
     }
 };
@@ -161,8 +174,8 @@ userPages.getAuthorizedPasswordResetPage = function(req, res, next){
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Password Reset'
         },
-        account: session.getTaxProfileObject(req),
-        user: session.getUserProfileObject(req),
+        account: session.getTaxProfileSession(req),
+        user: session.getUserProfileSession(req),
         locals: {
             token: req.params.token
         }
@@ -191,7 +204,11 @@ userPages.actionAuthorizedPasswordReset = function(req, res, next){
                 });
             })
             .catch(function (response) {
-                next(new errors.BadRequestError(response.error,true));
+                var error = response;
+                if (response && response.hasOwnProperty('error')){
+                    error = response.error;
+                }
+                next(new errors.BadRequestError(error,true));
             });
     }
 };

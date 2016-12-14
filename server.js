@@ -142,6 +142,11 @@ app.use('/public', express.static(path.join(__dirname, 'webapp/public'),{
 app.use('/bower_components', express.static(path.join(__dirname, 'webapp/bower_components')));
 
 
+app.use(function (req, res, next) {
+    //for debugging routes
+    // logger.info('calling '+req.method+' '+req.originalUrl);
+    next();
+});
 /**
  * routes
  */

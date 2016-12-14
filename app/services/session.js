@@ -2,7 +2,8 @@ const //packages
     requestPromise = require('request-promise'),
     promise = require('bluebird'),
     moment = require('moment'),
-    //models
+    _ = require('lodash'),
+//models
     sessionModel = require('../models/session'),
 //services
     errors = require('./errors'),
@@ -34,7 +35,7 @@ session.actionStartTaxProfileSession = function(req){
             return requestPromise(options)
                 .then(function (response) {
                     try {
-                        req.session.taxProfile = sessionModel.getTaxProfileObject(response);
+                        session.setTaxProfileSession(req, sessionModel.getTaxProfileObject(response));
                         return promise.resolve();
                     } catch(error){
                         if(!error){
@@ -74,16 +75,20 @@ session.hasTaxProfileSession = function(req){
 session.actionDestroyTaxProfileSession = function(req){
     return promise.resolve()
         .then(function(){
-            req.session.taxProfile = {};
+            session.setTaxProfileSession(req, {});
         });
 };
 
-session.getTaxProfileObject = function(req){
+session.getTaxProfileSession = function(req){
     return req.session.hasOwnProperty('taxProfile')?req.session.taxProfile:{};
 };
 
+session.setTaxProfileSession = function(req, data){
+    return req.session.taxProfile = data;
+};
+
 session.getTaxProfileValue = function(req, key){
-    const taxProfileSession = session.getTaxProfileObject(req);
+    const taxProfileSession = session.getTaxProfileSession(req);
     return taxProfileSession.hasOwnProperty(key)?taxProfileSession[key]:'';
 };
 
@@ -109,8 +114,7 @@ session.actionStartUserProfileSession = function(req, token){
                 .then(function (response) {
                     try {
                         response.token = token;
-                        req.session.userProfile = sessionModel.getUserProfileObject(response);
-                        return promise.resolve();
+                        return promise.resolve(sessionModel.getUserProfileObject(response));
                     } catch(error){
                         if(!error){
                             error = 'Could not create user account';
@@ -125,7 +129,41 @@ session.actionStartUserProfileSession = function(req, token){
                     }
                     return promise.reject(error);
                 });
-        });
+        })
+        .then(function(userProfileSession){
+            const accountID = userProfileSession.users[0].accountId,
+                getTaxReturnsRequest = {
+                    method: 'GET',
+                    uri: process.env.API_URL+'/account/'+accountID,
+                    headers: {
+                        'Authorization': 'Bearer '+userProfileSession.token
+                    },
+                    body: {
+                        name: req.body.firstName,
+                        productId: process.env.API_PRODUCT_ID
+                    },
+                    json: true
+                };
+            return requestPromise(getTaxReturnsRequest)
+                .then(function (response) {
+                    try {
+                        userProfileSession.taxReturns = _.map(response.taxReturns, sessionModel.getUserTaxReturns);
+                        return promise.resolve(session.setUserProfileSession(req, userProfileSession));
+                    } catch(error){
+                        if(!error){
+                            error = 'Could not get user\'s tax returns';
+                        }
+                        return promise.reject(error);
+                    }
+                })
+                .catch(function (response) {
+                    var error = response;
+                    if (response && response.hasOwnProperty('error')){
+                        error = response.error;
+                    }
+                    return promise.reject(error);
+                });
+        })
 };
 
 session.hasUserProfileSession = function(req){
@@ -146,19 +184,23 @@ session.hasUserProfileSession = function(req){
         });
 };
 
-session.getUserProfileObject = function(req){
+session.getUserProfileSession = function(req){
     return req.session.hasOwnProperty('userProfile') ? req.session.userProfile : {};
+};
+
+session.setUserProfileSession = function(req, data){
+    return req.session.userProfile = data;
 };
 
 session.actionDestroyUserProfileSession = function(req){
     return session.actionDestroyTaxProfileSession(req)
         .then(function() {
-            req.session.userProfile = {};
+            session.setUserProfileSession(req, {});
         });
 };
 
 session.getUserProfileValue = function(req, key){
-    const userSession = session.getUserProfileObject(req);
+    const userSession = session.getUserProfileSession(req);
     return userSession.hasOwnProperty(key) ? userSession[key] : '';
 };
 

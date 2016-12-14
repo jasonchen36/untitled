@@ -8,7 +8,6 @@ router.route('/')
     .get(taxProfileController.getPageTaxProfile)
     .post(taxProfileController.actionSaveTaxProfile);
 
-// todo, delete route after development
 router.route('/logout')
     .get(taxProfileController.getLogoutPage);
 

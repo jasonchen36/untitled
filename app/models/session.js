@@ -1,16 +1,18 @@
 const //packages
-    moment = require('moment');
+    moment = require('moment'),
+    _ = require('lodash');
 
 var sessionModel = {};
 
 sessionModel.getTaxProfileUserObject = function(data){
     var userObject = {
-        id: '',
+        id: '',//for tax profile accountId === id
         firstName: '',
+        taxReturnId: '',
         activeTiles: {}
     };
     if (typeof data !== 'undefined' && data.hasOwnProperty('accountId') && data.accountId){
-        userObject.id = String(data.accountId);
+        userObject.id = data.accountId;
         userObject.firstName = data.firstName;
     }
     return userObject;
@@ -43,6 +45,7 @@ sessionModel.getUserProfileUserObject = function(data){
         birthday: data.birthday,
         resetKey: data.reset_key,
         accountId: data.account_id,
+        taxReturns: [],
         activeTiles: {}
     }
 };
@@ -51,12 +54,55 @@ sessionModel.getUserProfileObject = function(data){
     return {
         hasUserProfileSession: true,
         token: data.token,
-        expiry: moment().add(1, 'hour'),//todo, refresh expiry upon update
+        expiry: moment().add(1, 'hour'),
         currentPage: '',//todo, determine current page for personal profile
         users: [
             sessionModel.getUserProfileUserObject(data)
         ]
     };
+};
+
+sessionModel.getDocumentChecklistItemObject = function(data){
+    return {
+        checklistItemId: data.checklist_item_id,
+        name: data.name,
+        documents: data.documents
+    }
+};
+
+sessionModel.getDocumentChecklistObject = function(data){
+    return {
+        checklistItems: _.map(data.checklistitems, sessionModel.getDocumentChecklistItemObject),
+        additionalDocuments: data.additionalDocuments
+    };
+};
+
+sessionModel.getChatMessageObject = function(data){
+    return {
+        status: data.status,
+        body: data.body,
+        subject: data.subject,
+        clientId: data.client_id,
+        fromName: data.fromname,
+        fromId: data.from_id,
+        data: moment(data.date).format('MMM D [-] h:mm A').toString(),
+        isFromUser: data.client_id === data.from_id
+    };
+};
+
+sessionModel.getUserTaxReturns = function(data){
+    return {
+        taxReturnId: data.id,
+        productId: data.product_id,
+        accountId: data.account_id,
+        statusId: data.status_id,
+        firstName: data.first_name,
+        lastName: data.last_name,
+        province: data.province_of_redidence, // todo, update after fixed in DB
+        dateOfBirth: data.date_of_birth,
+        canadianCitizen: data.canadian_citizen,
+        authorizeCRA: data.authorize_cra
+    }
 };
 
 module.exports = sessionModel;

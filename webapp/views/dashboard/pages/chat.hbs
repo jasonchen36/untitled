@@ -1,4 +1,5 @@
-<section id="dashboard-chat">
+{{>dashboard-left-sidebar}}
+<section id="dashboard-chat" class="small-7 medium-6">
     <div id="dashboard-chat-container">
         <p class="message-today-header line-behind"><span class="hide-line-behind">TODAY</span></p>
         {{#each messages}}
@@ -29,3 +30,4 @@
         <button type="submit" id="dashboard-chat-submit" class="green short button-send">Send</button>
     </form>
 </section>
+{{>dashboard-right-sidebar}}

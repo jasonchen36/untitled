@@ -3,11 +3,10 @@
     /* *************** variables ***************/
     var $ = jQuery,
         that = app.services.dashboard,
-        sidebarUploadActivate,
-        sidebarChatActivate,
-        sidebarMyReturnActivate,
+        cookies = app.cookies,
         userSessionStore,
-        landingPageContainer = $('#dashboard-container');
+        landingPageContainer = $('#dashboard-container'),
+        dashboardStateCookie = 'store-dashboard-state';
 
     this.dashboardOrder = [
         'chat',
@@ -19,7 +18,7 @@
     /* *************** private methods ***************/
     function updateUserSession(data, newPage){
         if(!data || typeof data !== 'object'){
-            data = getUserSession();
+            data = that.getUserSession();
         }
         if(newPage && newPage.length > 0){
             data.currentPage = newPage;
@@ -40,16 +39,19 @@
         return userSessionStore;
     }
 
-    function getUserSession(){
-        return userSessionStore;
-    }
-
     function getCurrentPage(){
-        var userSession = getUserSession();
+        var userSession = that.getUserSession(),
+            dashboardState = cookies.getCookie(dashboardStateCookie);
         if (!userSession) {
-            return startUserSession().currentPage;
+            startUserSession();
+        }
+        if(dashboardState && dashboardState.hasOwnProperty('currentPage')){
+            return dashboardState.currentPage;
         } else {
-            return userSession.currentPage;
+            cookies.setCookie(dashboardStateCookie, {
+                currentPage: that.dashboardOrder[0]
+            });
+            return that.dashboardOrder[0];
         }
     }
 
@@ -64,10 +66,13 @@
     this.changePage = function(newPage, data){
         return new Promise(function (resolve, reject) {
             if(typeof data !== 'object'){
-                data = getUserSession();
+                data = that.getUserSession();
             }
             //update session with new page
             updateUserSession(data, newPage);
+            cookies.setCookie(dashboardStateCookie, {
+                currentPage: newPage
+            });
             var template = Handlebars.templates[newPage],
                 html = template(data);
             landingPageContainer.html(html);
@@ -78,29 +83,38 @@
             });
     };
 
+
+    this.refreshPage = function(data){
+        var currentPage = getCurrentPage(),
+            currentPageIndex = that.dashboardOrder.indexOf(currentPage),
+            newPage;
+        //update session with new data
+        updateUserSession(data);
+        newPage = that.dashboardOrder[currentPageIndex];
+        that.changePage(newPage);
+    };
+
+    this.getUserSession = function(){
+        return userSessionStore;
+    };
+
     this.init = function(){
         if (landingPageContainer.length > 0) {
 
-            //variables
-            sidebarUploadActivate = $('#dashboard-upload-activate');
-            sidebarChatActivate = $('#dashboard-chat-activate');
-            sidebarMyReturnActivate = $('#dashboard-my-return-activate');
-
-            //listeners
-            sidebarUploadActivate.on('click',function(event){
-                event.preventDefault();
-                changePageHelper('upload');
-            });
-
-            sidebarChatActivate.on('click',function(event){
-                event.preventDefault();
-                changePageHelper('chat');
-            });
-
-            sidebarMyReturnActivate.on('click',function(event){
-                event.preventDefault();
-                changePageHelper('my-return');
-            });
+            //shared bindings
+            $(document)
+                .on('click', '#dashboard-upload-activate', function (event) {
+                    event.preventDefault();
+                    changePageHelper('upload');
+                })
+                .on('click', '#dashboard-chat-activate', function (event) {
+                    event.preventDefault();
+                    changePageHelper('chat');
+                })
+                .on('click', '#dashboard-my-return-activate', function (event) {
+                    event.preventDefault();
+                    changePageHelper('my-return');
+                });
 
             //functions
             that.changePage(getCurrentPage(), true);

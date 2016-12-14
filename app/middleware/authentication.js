@@ -5,7 +5,7 @@ const //services
 var authenticationMiddleware = {};
 
 /************ account session ************/
-authenticationMiddleware.redirectWithoutAccountSession = function(req, res, next){
+authenticationMiddleware.redirectWithoutTaxProfileSession = function(req, res, next){
     session.hasTaxProfileSession(req)
         .then(function(hasSession){
             if (hasSession){
@@ -16,7 +16,7 @@ authenticationMiddleware.redirectWithoutAccountSession = function(req, res, next
         });
 };
 
-authenticationMiddleware.rejectWithoutAccountSession = function(req, res, next){
+authenticationMiddleware.rejectWithoutTaxProfileSession = function(req, res, next){
     session.hasTaxProfileSession(req)
         .then(function(hasSession) {
             if (hasSession) {
