@@ -1,5 +1,6 @@
 const //packages
-    moment = require('moment');
+    moment = require('moment'),
+    _ = require('lodash');
 
 var sessionModel = {};
 
@@ -57,6 +58,21 @@ sessionModel.getUserProfileObject = function(data){
         users: [
             sessionModel.getUserProfileUserObject(data)
         ]
+    };
+};
+
+sessionModel.getDocumentChecklistItemObject = function(data){
+    return {
+        checklistItemId: data.checklist_item_id,
+        name: data.name,
+        documents: data.documents
+    }
+};
+
+sessionModel.getDocumentChecklistObject = function(data){
+    return {
+        checklistItems: _.map(data.checklistitems, sessionModel.getDocumentChecklistItemObject),
+        additionalDocuments: data.additionalDocuments
     };
 };
 

@@ -16,7 +16,7 @@
     /* *************** private methods ***************/
     function updateUserSession(data, newPage){
         if(!data || typeof data !== 'object'){
-            data = getUserSession();
+            data = that.getUserSession();
         }
         if(newPage && newPage.length > 0){
             data.currentPage = newPage;
@@ -37,12 +37,8 @@
         return userSessionStore;
     }
 
-    function getUserSession(){
-        return userSessionStore;
-    }
-
     function getCurrentPage(){
-        var userSession = getUserSession();
+        var userSession = that.getUserSession();
         if (!userSession) {
             return startUserSession().currentPage;
         } else {
@@ -61,7 +57,7 @@
     this.changePage = function(newPage, data){
         return new Promise(function (resolve, reject) {
             if(typeof data !== 'object'){
-                data = getUserSession();
+                data = that.getUserSession();
             }
             //update session with new page
             updateUserSession(data, newPage);
@@ -73,6 +69,21 @@
             .then(function () {
                 triggerInitScripts();
             });
+    };
+
+
+    this.refreshPage = function(data){
+        var currentPage = getCurrentPage(),
+            currentPageIndex = that.dashboardOrder.indexOf(currentPage),
+            newPage;
+        //update session with new data
+        updateUserSession(data);
+        newPage = that.dashboardOrder[currentPageIndex];
+        that.changePage(newPage);
+    };
+
+    this.getUserSession = function(){
+        return userSessionStore;
     };
 
     this.init = function(){

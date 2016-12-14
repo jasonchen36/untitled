@@ -7,7 +7,9 @@ const //packages
     util = require('../services/util'),
     session = require('../services/session'),
     errors = require('../services/errors'),
-    uploads = require('../services/uploads');
+    uploads = require('../services/uploads'),
+//models
+    sessionModel = require('../models/session');
 
 var dashboardPages = {};
 
@@ -37,8 +39,7 @@ dashboardPages.getDashboardPage = function(req, res, next){
     ])
         .then(function (response) {
             const dataObject = session.getUserProfileSession(req);
-            dataObject.documentChecklist = response[1];
-            console.log(dataObject.documentChecklist);
+            dataObject.documentChecklist = sessionModel.getDocumentChecklistObject(response[1]);
             dataObject.newMessageCount = 0;
             dataObject.messages = response[0].messages;
             dataObject.messages.forEach(function(entry){

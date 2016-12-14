@@ -5,11 +5,15 @@
         helpers = app.helpers,
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass,
+        dashboard = app.services.dashboard,
         fileUpload,
         fileUploadSubmit,
         fileUploadCancel,
         fileUploadSelect,
-        progressBar;
+        uploadChecklistItems,
+        progressBar,
+        activeItem,
+        initialized = false;
 
     function initializeFileUpload(){
         fileUpload.fileupload({
@@ -32,7 +36,8 @@
                     '/dashboard/document',
                     {
                         action: 'api-dashboard-upload',
-                        fileName: data.files[0].name
+                        fileName: data.files[0].name,
+                        checklistItemId: activeItem.checklistItemId
                     },
                     'json'
                 )
@@ -55,28 +60,58 @@
         });
     }
 
+    function setActiveItem(dataId){
+        var userSession = dashboard.getUserSession();
+        if(userSession.hasOwnProperty('activeItem') || userSession.activeItem !== dataId) {
+            if (dataId === 0) {
+                //additional documents
+                userSession.activeItem = {
+                    name: 'Additional Documents',
+                    checklistItemId: 0
+                };
+            } else {
+                userSession.activeItem = _.find(userSession.documentChecklist.checklistItems, ['checklistItemId', dataId]);
+            }
+            dashboard.refreshPage(userSession);
+        }
+    }
+
     this.init = function(){
         if ($('#dashboard-upload').length > 0) {
+            //set initial active item
+            if (!initialized){
+                initialized = true;
+                setActiveItem(dashboard.getUserSession().documentChecklist.checklistItems[0].checklistItemId);
+            }
+
             //variables
             fileUpload = $('#dashboard-upload-input');
             progressBar = $('#dashboard-upload-progress');
             fileUploadCancel = $('#dashboard-upload-cancel');
             fileUploadSubmit = $('#dashboard-upload-submit');
             fileUploadSelect = $('#dashboard-upload-select');
+            uploadChecklistItems = $('.upload-checklist-item');
 
             //listeners
             fileUploadSubmit.on('click', function (event) {
                 event.preventDefault();
             });
+
             fileUploadCancel.on('click', function (event) {
                 event.preventDefault();
                 fileUpload.abort();
                 fileUploadCancel.addClass(disabledClass);
                 fileUploadSubmit.removeClass(disabledClass);
             });
+
             fileUploadSelect.on('click',function(event){
                 event.preventDefault();
                 fileUpload.click();
+            });
+
+            uploadChecklistItems.on('click',function(event){
+                event.preventDefault();
+                setActiveItem(parseInt($(this).attr('data-id')));
             });
 
             //functions

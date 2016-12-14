@@ -65,6 +65,14 @@
             return buffer;
         });
 
+        Handlebars.registerHelper('count',function(array){
+            var arrayLength = 0;
+            if(array && array.length > 0) {
+                arrayLength = array.length;
+            }
+            return arrayLength;
+        });
+        
     };
     
 }).apply(app.handlebars);
