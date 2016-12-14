@@ -91,6 +91,7 @@ personalProfilePages.actionSavePersonalProfile = function(req, res, next) {
                 case 'api-pp-dependants':
                 case 'api-pp-income':
                 case 'api-pp-credits':
+                case 'api-pp-address':
                 case 'api-pp-deductions':
                     return userProfile.saveActiveTiles(req);
                     break;
