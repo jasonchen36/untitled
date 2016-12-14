@@ -3,8 +3,10 @@
     /* *************** variables ***************/
     var $ = jQuery,
         that = app.services.dashboard,
+        cookies = app.cookies,
         userSessionStore,
-        landingPageContainer = $('#dashboard-container');
+        landingPageContainer = $('#dashboard-container'),
+        dashboardStateCookie = 'store-dashboard-state';
 
     this.dashboardOrder = [
         'chat',
@@ -38,11 +40,18 @@
     }
 
     function getCurrentPage(){
-        var userSession = that.getUserSession();
+        var userSession = that.getUserSession(),
+            dashboardState = cookies.getCookie(dashboardStateCookie);
         if (!userSession) {
-            return startUserSession().currentPage;
+            startUserSession();
+        }
+        if(dashboardState && dashboardState.hasOwnProperty('currentPage')){
+            return dashboardState.currentPage;
         } else {
-            return userSession.currentPage;
+            cookies.setCookie(dashboardStateCookie, {
+                currentPage: that.dashboardOrder[0]
+            });
+            return that.dashboardOrder[0];
         }
     }
 
@@ -61,6 +70,9 @@
             }
             //update session with new page
             updateUserSession(data, newPage);
+            cookies.setCookie(dashboardStateCookie, {
+                currentPage: newPage
+            });
             var template = Handlebars.templates[newPage],
                 html = template(data);
             landingPageContainer.html(html);
