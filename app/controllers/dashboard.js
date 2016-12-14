@@ -44,11 +44,17 @@ dashboardPages.getDashboardPage = function(req, res, next){
                 dataObject.documentChecklist = sessionModel.getDocumentChecklistObject(response[1]);
                 dataObject.newMessageCount = 0;
                 dataObject.messages = _.map(response[0].messages, sessionModel.getChatMessageObject);//todo, fix bug where session data is lost due to this line
+                var today = moment();
+                var foundToday = false;
                 dataObject.messages.forEach(function(entry){
                     //count unread messages
                     if(entry.status.toLowerCase() === 'new'){
                         dataObject.newMessageCount++;
                     }
+                    if(moment(entry.rawDate).month() === moment(today).month() && moment(today).date() === moment(entry.rawDate).date() && foundToday === false){
+                        entry.isFirst = true;
+                        foundToday = true;
+                     }
                 });
                 res.render('dashboard/dashboard', {
                     meta: {

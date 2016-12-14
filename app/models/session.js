@@ -77,7 +77,6 @@ sessionModel.getDocumentChecklistObject = function(data){
 };
 
 sessionModel.getChatMessageObject = function(data){
-
     return {
         status: data.status,
         body: data.body,
