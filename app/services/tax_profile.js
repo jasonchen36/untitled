@@ -207,7 +207,7 @@ taxProfile.getTaxReturnQuote = function(req){
                 };
             var taxReturnRequestObject,
                 taxReturnRequests = taxProfileSession.users.map(function(entry) {
-                    if (entry.hasOwnProperty('id') && entry.id.length > 0) {
+                    if (entry.hasOwnProperty('id') && parseInt(entry.id) > 0) {
                         taxReturnRequestObject = _.clone(requestObject, true);
                         taxReturnRequestObject.body = {
                             accountId: entry.id,
@@ -221,7 +221,7 @@ taxProfile.getTaxReturnQuote = function(req){
                 .then(function (response) {
                     var i = 0;
                     taxProfileSession.users.forEach(function(entry){
-                        if (entry.hasOwnProperty('id') && entry.id.length > 0) {
+                        if (entry.hasOwnProperty('id') && parseInt(entry.id) > 0) {
                             entry.taxReturnId = response[i].taxReturnId;
                         }
                         i++;
