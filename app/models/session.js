@@ -77,6 +77,19 @@ sessionModel.getDocumentChecklistObject = function(data){
     };
 };
 
+sessionModel.getChatMessageObject = function(data){
+    return {
+        status: data.status,
+        body: data.body,
+        subject: data.subject,
+        clientId: data.client_id,
+        fromName: data.fromname,
+        fromId: data.from_id,
+        data: moment(data.date).format('MMM D [-] h:mm A').toString(),
+        isFromUser: data.client_id === data.from_id
+    };
+};
+
 sessionModel.getUserTaxReturns = function(data){
     return {
         taxReturnId: data.id,

@@ -3,6 +3,7 @@ const //packages
     fs = require('fs'),
     moment = require('moment'),
     promise = require('bluebird'),
+    _ = require('lodash'),
 //services
     util = require('../services/util'),
     session = require('../services/session'),
@@ -32,29 +33,23 @@ dashboardPages.getDashboardPage = function(req, res, next){
             },
             body: {},
             json: true
-        } ;
+        };
     promise.all([
         requestPromise(messageRequest),
         requestPromise(documentChecklistRequest)
     ])
         .then(function (response) {
             const dataObject = session.getUserProfileSession(req);
-            dataObject.documentChecklist = sessionModel.getDocumentChecklistObject(response[1]);
-            dataObject.newMessageCount = 0;
-            dataObject.messages = response[0].messages;
-            dataObject.messages.forEach(function(entry){
-                //count unread messages
-                if(entry.status && entry.status.toLowerCase() === 'new'){
-                    dataObject.newMessageCount++;
-                }
-                //determine if message if from user or tax pro
-                if(entry.client_id === entry.from_id){
-                    entry.isFromUser = true;
-                }
-                //format timestamp nicely
-                entry.date = moment(entry.date).format('MMM D [-] h:mm A').toString();
-            });
             try {
+                dataObject.documentChecklist = sessionModel.getDocumentChecklistObject(response[1]);
+                dataObject.newMessageCount = 0;
+                dataObject.messages = _.map(response[0].messages, sessionModel.getChatMessageObject);//todo, fix bug where session data is lost due to this line
+                dataObject.messages.forEach(function(entry){
+                    //count unread messages
+                    if(entry.status.toLowerCase() === 'new'){
+                        dataObject.newMessageCount++;
+                    }
+                });
                 res.render('dashboard/dashboard', {
                     meta: {
                         pageTitle: util.globals.metaTitlePrefix + 'Dashboard'
