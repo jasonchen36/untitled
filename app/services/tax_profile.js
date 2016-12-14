@@ -178,7 +178,7 @@ taxProfile.getTaxReturnQuote = function(req){
                         i++;
                     });
                     session.setTaxProfileSession(req, taxProfileSession);
-                    return promise.resolve();
+                    return promise.resolve(session.setTaxProfileSession(req, taxProfileSession));
                 })
                 .catch(function (response) {
                     var error = response;
@@ -188,11 +188,9 @@ taxProfile.getTaxReturnQuote = function(req){
                     return promise.reject(new errors.InternalServerError(error));
                 });
         })
-        .then(function(){
-            console.log('quote request');
+        .then(function(taxProfileSession){
             //create quote request
-            const taxProfileSession = session.getTaxProfileSession(req),
-                requestObject = {
+            const requestObject = {
                     method: 'POST',
                     uri: process.env.API_URL+'/quote',
                     body: {
@@ -203,17 +201,14 @@ taxProfile.getTaxReturnQuote = function(req){
                     json: true
                 };
             var quoteBodyObject;
-            console.log(taxProfileSession.users);
             taxProfileSession.users.forEach(function(entry) {
-                console.log('in each');
-                if (entry.hasOwnProperty('taxReturnId') && entry.taxReturnId.length > 0) {
+                if (entry.hasOwnProperty('taxReturnId') && entry.taxReturnId > 0) {
                     quoteBodyObject = {
                         taxReturnId: entry.taxReturnId,
                         answers: []
                     };
-                    console.log('got here',entry.activeTiles);
                     _.forOwn(entry.activeTiles, function(groupValue, groupKey) {
-                        console.log(groupValue);
+                        //todo, uncomment when real tile ids are on quote applies all screen
                         // _.forOwn(groupValue, function(value, key) {
                         //     quoteBodyObject.answers.push({
                         //         questionId: key,
@@ -226,8 +221,7 @@ taxProfile.getTaxReturnQuote = function(req){
             });
             return requestPromise(requestObject)
                 .then(function (response) {
-                    console.log(response);
-
+                    taxProfileSession.quote = response;
                     session.setTaxProfileSession(req, taxProfileSession);
                     return promise.resolve();
                 })
