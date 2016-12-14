@@ -17,10 +17,7 @@
             if(!helpers.hasSelectedTile(formData)){
                 //todo, real alert
                 alert('no selected option');
-            } else if(helpers.noneAppliedMultipleSelectedTiles(formData)) {
-+                //todo, real alert
-+                alert('cannot select None Apply with other options');
-             } else {
+            }else {
                 filingForSubmit.addClass(disabledClass);
                 ajax.ajax(
                     'POST',
