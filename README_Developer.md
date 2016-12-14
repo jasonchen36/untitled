@@ -28,29 +28,6 @@ nvm use 6.3.1
 Nodemon is used in Procfile_dev so that any changes to the Node.js code are automatically applied and the app is restarted
 ```
 foreman start -f Procfile_dev
-
-If you get a "foreman: command not found" error try the following:
-- Check your node/npm versions:
-npm -v
-3.10.3
-node -v
-v6.3.1
-To switch node versions using nvm:
-nvm install 6.3.1
-nvm use 6.3.1
-
-- Install Foreman with Node:
-npm install foreman grunt-cli bower nodemon -g
-
-- If that doesn't work install with Ruby:
-gem install foreman -v 0.78.0
-
-- If you have a gem installed that is the wrong version uninstall it first:
-gem uninstall gem_name
-
-- If you get a "Could not find 'sass' " error:
-gem install sass
-
 ```
 The site is served at [http://localhost:3000](http://localhost:3000)
 
