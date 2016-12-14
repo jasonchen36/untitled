@@ -110,6 +110,9 @@ session.actionStartUserProfileSession = function(req, token){
                 },
                 json: true
             };
+
+
+
             return requestPromise(options)
                 .then(function (response) {
                     try {

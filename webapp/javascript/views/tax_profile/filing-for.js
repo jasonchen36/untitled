@@ -17,7 +17,7 @@
             if(!helpers.hasSelectedTile(formData)){
                 //todo, real alert
                 alert('no selected option');
-            } else {
+            }else {
                 filingForSubmit.addClass(disabledClass);
                 ajax.ajax(
                     'POST',
@@ -41,7 +41,6 @@
 
     this.init = function(){
         if ($('#tax-profile-filing-for').length > 0) {
-            
             //variables
             filingForForm = $('#filing-for-form');
             filingForSubmit = $('#filing-for-submit');
