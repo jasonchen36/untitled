@@ -5,7 +5,7 @@ var sessionModel = {};
 
 sessionModel.getTaxProfileUserObject = function(data){
     var userObject = {
-        id: '',
+        id: '',//todo, for tax profile i believe accountId === id
         firstName: '',
         taxReturnId: '',
         activeTiles: {}

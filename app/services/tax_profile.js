@@ -146,39 +146,104 @@ taxProfile.saveActiveTiles = function(req){
         });
 };
 
-taxProfile.getTaxReturnQuote = function(){
+taxProfile.getTaxReturnQuote = function(req){
     return promise.resolve()
         .then(function() {
-            console.log('in tax return quote');
             //create tax return ids
-            const taxProfileSession = session.getTaxProfileSession(),
+            const taxProfileSession = session.getTaxProfileSession(req),
                 requestObject = {
-                    method: 'GET',
+                    method: 'POST',
                     uri: process.env.API_URL+'/tax_return',
                     json: true
                 };
-            var taxReturnRequests = [],
-                taxReturnRequestObject;
-            taxProfileSession.users.forEach(function(entry){
-                taxReturnRequestObject = _.clone(requestObject, true);
-                taxReturnRequestObject.body = {
-                    'accountId': entry.id,//todo, figure out where account id is coming from
-                    'productId': process.env.API_PRODUCT_ID,
-                    'firstName': entry.firstName
-                };
-                taxReturnRequests.push(requestPromise(taxReturnRequestObject));
-            });
+            var taxReturnRequestObject,
+                taxReturnRequests = taxProfileSession.users.map(function(entry) {
+                    if (entry.hasOwnProperty('id') && entry.id.length > 0) {
+                        taxReturnRequestObject = _.clone(requestObject, true);
+                        taxReturnRequestObject.body = {
+                            accountId: entry.id,
+                            productId: process.env.API_PRODUCT_ID,
+                            firstName: entry.firstName
+                        };
+                        return requestPromise(taxReturnRequestObject);
+                    }
+                });
             return promise.all(taxReturnRequests)
                 .then(function (response) {
-                    console.log('got here');
-                    console.log(response);
+                    var i = 0;
+                    taxProfileSession.users.forEach(function(entry){
+                        if (entry.hasOwnProperty('id') && entry.id.length > 0) {
+                            entry.taxReturnId = response[i].taxReturnId;
+                        }
+                        i++;
+                    });
+                    session.setTaxProfileSession(req, taxProfileSession);
+                    return promise.resolve();
                 })
-                .catch(function (error) {
-                    if (!error){
-                        error = 'Could not generate tax return ids'
+                .catch(function (response) {
+                    var error = response;
+                    if (response && response.hasOwnProperty('error')){
+                        error = response.error;
                     }
-                    promise.reject(new errors.InternalServerError(error));
+                    return promise.reject(new errors.InternalServerError(error));
                 });
+        })
+        .then(function(){
+            console.log('quote request');
+            //create quote request
+            const taxProfileSession = session.getTaxProfileSession(req),
+                requestObject = {
+                    method: 'POST',
+                    uri: process.env.API_URL+'/quote',
+                    body: {
+                        accountId: taxProfileSession.users[0].id,
+                        productId: process.env.API_PRODUCT_ID,
+                        taxReturns: []
+                    },
+                    json: true
+                };
+            var quoteBodyObject;
+            console.log(taxProfileSession.users);
+            taxProfileSession.users.forEach(function(entry) {
+                console.log('in each');
+                if (entry.hasOwnProperty('taxReturnId') && entry.taxReturnId.length > 0) {
+                    quoteBodyObject = {
+                        taxReturnId: entry.taxReturnId,
+                        answers: []
+                    };
+                    console.log('got here',entry.activeTiles);
+                    _.forOwn(entry.activeTiles, function(groupValue, groupKey) {
+                        console.log(groupValue);
+                        // _.forOwn(groupValue, function(value, key) {
+                        //     quoteBodyObject.answers.push({
+                        //         questionId: key,
+                        //         text: parseInt(value) === 1 ? 'Yes' : 'No'
+                        //     });
+                        // });
+                    });
+                    requestObject.body.taxReturns.push(quoteBodyObject);
+                }
+            });
+            return requestPromise(requestObject)
+                .then(function (response) {
+                    console.log(response);
+
+                    session.setTaxProfileSession(req, taxProfileSession);
+                    return promise.resolve();
+                })
+                .catch(function (response) {
+                    var error = response;
+                    if (response && response.hasOwnProperty('error')){
+                        error = response.error;
+                    }
+                    return promise.reject(new errors.InternalServerError(error));
+                });
+        })
+        .catch(function (error) {
+            if (!error){
+                error = 'Could not get quote';
+            }
+            return promise.reject(new errors.InternalServerError(error));
         });
 };
 

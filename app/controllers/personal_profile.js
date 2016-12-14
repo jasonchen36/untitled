@@ -61,9 +61,10 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
                 next(new errors.InternalServerError(error));
             }
         })
-        .catch(function (error) {
-            if (!error){
-                error = 'Could not retrieve questions'
+        .catch(function (response) {
+            var error = response;
+            if (response && response.hasOwnProperty('error')){
+                error = response.error;
             }
             next(new errors.InternalServerError(error));
         });

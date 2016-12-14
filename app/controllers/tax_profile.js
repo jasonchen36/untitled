@@ -49,9 +49,10 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
                 next(new errors.InternalServerError(error));
             }
         })
-        .catch(function (error) {
-            if (!error){
-                error = 'Could not retrieve questions'
+        .catch(function (response) {
+            var error = response;
+            if (response && response.hasOwnProperty('error')){
+                error = response.error;
             }
             next(new errors.InternalServerError(error));
         });
@@ -71,7 +72,6 @@ taxReturnPages.actionSaveTaxProfile = function(req, res, next) {
                 }
             })
             .then(function () {
-                console.log('ave tiles');
                 //save account to session
                 switch (req.body.action) {
                     case 'api-tp-welcome':
@@ -90,10 +90,9 @@ taxReturnPages.actionSaveTaxProfile = function(req, res, next) {
                 }
             })
             .then(function(){
-                console.log('quote page?');
                 //get quote if moving to quote page
                 if (req.body.action === 'api-tp-quote-applies') {
-                    return taxProfile.getTaxReturnQuote();
+                    return taxProfile.getTaxReturnQuote(req);
                 }
             })
             .then(function () {

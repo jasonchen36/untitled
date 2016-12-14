@@ -52,9 +52,10 @@ dashboardPages.getDashboardPage = function(req, res, next){
                 next(new errors.InternalServerError(error));
             }
         })
-        .catch(function (error) {
-            if (!error){
-                error = 'Could not retrieve messages'
+        .catch(function (response) {
+            var error = response;
+            if (response && response.hasOwnProperty('error')){
+                error = response.error;
             }
             next(new errors.InternalServerError(error));
         });
@@ -88,7 +89,11 @@ dashboardPages.actionAddNewMessage = function(req, res, next){
                 });
             })
             .catch(function (response) {
-                next(new errors.BadRequestError(response.error,true));
+                var error = response;
+                if (response && response.hasOwnProperty('error')){
+                    error = response.error;
+                }
+                next(new errors.BadRequestError(error,true));
             });
     }
 };
@@ -124,7 +129,11 @@ dashboardPages.actionAddNewDocument = function(req, res, next) {
                     });
             })
             .catch(function (response) {
-                next(new errors.BadRequestError(response.error,true));
+                var error = response;
+                if (response && response.hasOwnProperty('error')){
+                    error = response.error;
+                }
+                next(new errors.BadRequestError(error,true));
             });
     }
 };

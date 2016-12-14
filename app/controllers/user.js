@@ -55,7 +55,11 @@ userPages.actionLoginUser = function(req, res, next){
                 }
             })
             .catch(function (response) {
-                next(new errors.BadRequestError(response.error,true));
+                var error = response;
+                if (response && response.hasOwnProperty('error')){
+                    error = response.error;
+                }
+                next(new errors.BadRequestError(error,true));
             });
     }
 };
@@ -112,7 +116,11 @@ userPages.actionRegisterUser = function(req, res, next){
                 }
             })
             .catch(function (response) {
-                next(new errors.BadRequestError(response.error,true));
+                var error = response;
+                if (response && response.hasOwnProperty('error')){
+                    error = response.error;
+                }
+                next(new errors.BadRequestError(error,true));
             });
     }
 };
@@ -152,7 +160,11 @@ userPages.actionPasswordReset = function(req, res, next){
                 });
             })
             .catch(function (response) {
-                next(new errors.BadRequestError(response.error,true));
+                var error = response;
+                if (response && response.hasOwnProperty('error')){
+                    error = response.error;
+                }
+                next(new errors.BadRequestError(error,true));
             });
     }
 };
@@ -192,7 +204,11 @@ userPages.actionAuthorizedPasswordReset = function(req, res, next){
                 });
             })
             .catch(function (response) {
-                next(new errors.BadRequestError(response.error,true));
+                var error = response;
+                if (response && response.hasOwnProperty('error')){
+                    error = response.error;
+                }
+                next(new errors.BadRequestError(error,true));
             });
     }
 };
