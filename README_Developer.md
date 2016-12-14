@@ -14,6 +14,15 @@ bower install
 grunt build
 ```
 
+
+## How to switch Node versions using NVM ##
+
+```
+nvm install 6.3.1
+nvm use 6.3.1
+```
+
+
 ## How to run the project for development after setup ##
 
 Nodemon is used in Procfile_dev so that any changes to the Node.js code are automatically applied and the app is restarted

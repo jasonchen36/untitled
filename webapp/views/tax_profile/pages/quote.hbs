@@ -10,24 +10,30 @@
                 <p class="label-blurb">The fee for TAXplan Canada to
                     prepare your 2015
                     taxes for 2 filers are:</p>
-                <div class="border-bottom-light-gray border-top-light-gray">
-                    <p class="line-item item">Tax Prep. - Carmela Doctor</p>
-                    <button id="quote-submit" type="submit" class="green-outline button-details">Details</button>
-                    <p class="line-item price">$89.00</p>
-                </div>
-                <div class="border-bottom-light-gray">
-                        <p class="line-item item">Tax Prep. - Carmela Doctor</p>
-                        <button id="quote-submit" type="submit" class="green-outline button-details">Details</button>
-                        <p class="line-item price">$89.00</p>
-                        <p class="side-info-blurb">*with conditions</p>
-                </div>
+                {{#each quote.lineItems}}
+                    {{#each ../users}}
+                        {{#compare taxReturnId ../taxReturnId operator="=="}}
+                            <div class="border-bottom-light-gray border-top-light-gray">
+                                <p class="line-item item">Tax Prep. - {{firstName}}</p>
+                                <button id="quote-submit" type="submit" class="green-outline button-details">Details</button>
+                                <p class="line-item price">${{../price}}</p>
+                            </div>
+                            <!--<div class="border-bottom-light-gray">-->
+                                <!--<p class="line-item item">Tax Prep. - {{firstName}}</p>-->
+                                <!--<button id="quote-submit" type="submit" class="green-outline button-details">Details</button>-->
+                                <!--<p class="line-item price">${{../price}}</p>-->
+                                <!--<p class="side-info-blurb">*with conditions</p>-->
+                            <!--</div>-->
+                        {{/compare}}
+                    {{/each}}
+                {{/each}}
                 <div class="border-bottom-light-gray">
                     <p class="line-item item font-light-grey">Direct Deposit</p>
                     <p class="line-item price font-light-grey">$5.00</p>
                 </div>
                 <div class="text-center">
                     <div>
-                        <p class="label-total-price">$191.00</p>
+                        <p class="label-total-price">${{quote.totalPrice}}</p>
                         <p class="side-info-blurb label-fine-print tax">Plus Provincial Tax</p>
                     </div>
                     <p class="label-blurb horizontal-center">You don't need to pay now</p>

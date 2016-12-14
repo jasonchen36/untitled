@@ -1,16 +1,33 @@
-<section id="dashboard-upload">
-    <div class="border-bottom-dark-grey">
-        <p class="display-inline-block side-info-blurb label-instruction-header">After you have finished uploading all your documents you can submit your uploads to TaxPlan by clicking “Start My Return”</p>
-        <button class="green header long">Start My Return</button>
+{{>dashboard-left-sidebar sectionClass="medium-2"}}
+<section id="dashboard-upload-checklist" class="medium-2">
+    <div>
+        <h2>Document Checklist</h2>
     </div>
-    <h1>upload</h1>
-    <p>drop files here to upload</p>
-    <p>or</p>
-    <form id="dashboard-upload-form">
-        <input id="dashboard-upload-input" type="file" name="files[]" data-url="/dashboard/upload">
-        <button id="dashboard-upload-select" type="button">Select Files</button>
-        <button id="dashboard-upload-submit" type="submit" class="disabled">Upload</button>
-        <button id="dashboard-upload-cancel" type="reset" class="disabled">Cancel</button>
-        <div id="dashboard-upload-progress"></div>
-    </form>
+    {{#each documentChecklist.checklistItems}}
+        <div class="upload-checklist-item" data-id="{{checklistItemId}}">
+            {{name}}
+            count: {{count documents}}
+        </div>
+    {{/each}}
+    <div class="upload-checklist-item" data-id="0">
+        Additional Documents
+        count: {{count documents}}
+    </div>
 </section>
+<section id="dashboard-upload" class="small-6 medium-5">
+    {{#if activeItem}}
+        <h1>{{activeItem.name}}</h1>
+        <div id="dashboard-upload-progress" class="progress-bar"></div>
+        <p>drop files here to upload</p>
+        <p>or</p>
+        <form id="dashboard-upload-form">
+            <input id="dashboard-upload-input" type="file" name="files[]" data-url="/dashboard/upload">
+            <button id="dashboard-upload-select" type="button">Select Files</button>
+            <button id="dashboard-upload-submit" type="submit" class="disabled">Upload</button>
+            <button id="dashboard-upload-cancel" type="reset" class="disabled">Cancel</button>
+        </form>
+    {{else}}
+        No documents in checklist
+    {{/if}}
+</section>
+{{>dashboard-right-sidebar}}

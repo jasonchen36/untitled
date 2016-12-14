@@ -44,7 +44,7 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
                     maritalStatus: questionsModel.getMaritalStatusData(),
                     dependants: questionsModel.getDependentsData()
                 },
-                dataObject = session.getUserProfileObject(req);
+                dataObject = session.getUserProfileSession(req);
             try {
               
                 res.render('personal_profile/personal_profile', {
@@ -62,9 +62,10 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
                 next(new errors.InternalServerError(error));
             }
         })
-        .catch(function (error) {
-            if (!error){
-                error = 'Could not retrieve questions'
+        .catch(function (response) {
+            var error = response;
+            if (response && response.hasOwnProperty('error')){
+                error = response.error;
             }
             next(new errors.InternalServerError(error));
         });
@@ -104,7 +105,7 @@ personalProfilePages.actionSavePersonalProfile = function(req, res, next) {
             res.status(util.http.status.accepted).json({
                 action: req.body.action,
                 status: 'success',
-                data: session.getUserProfileObject(req)
+                data: session.getUserProfileSession(req)
             });
         })
         .catch(function(error){

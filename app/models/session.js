@@ -6,12 +6,13 @@ var sessionModel = {};
 
 sessionModel.getTaxProfileUserObject = function(data){
     var userObject = {
-        id: '',
+        id: '',//for tax profile accountId === id
         firstName: '',
+        taxReturnId: '',
         activeTiles: {}
     };
     if (typeof data !== 'undefined' && data.hasOwnProperty('accountId') && data.accountId){
-        userObject.id = String(data.accountId);
+        userObject.id = data.accountId;
         userObject.firstName = data.firstName;
     }
     return userObject;
@@ -44,15 +45,16 @@ sessionModel.getUserProfileUserObject = function(data){
         birthday: data.birthday,
         resetKey: data.reset_key,
         accountId: data.account_id,
+        taxReturns: [],
         activeTiles: {}
-    }
+    };
 };
 
 sessionModel.getUserProfileObject = function(data){
     return {
         hasUserProfileSession: true,
         token: data.token,
-        expiry: moment().add(1, 'hour'),//todo, refresh expiry upon update
+        expiry: moment().add(1, 'hour'),
         currentPage: '',//todo, determine current page for personal profile
         users: [
             sessionModel.getUserProfileUserObject(data)
@@ -60,32 +62,34 @@ sessionModel.getUserProfileObject = function(data){
     };
 };
 
+sessionModel.getDocumentChecklistItemObject = function(data){
+    return {
+        checklistItemId: data.checklist_item_id,
+        name: data.name,
+        documents: data.documents
+    };
+};
+
+sessionModel.getDocumentChecklistObject = function(data){
+    return {
+        checklistItems: _.map(data.checklistitems, sessionModel.getDocumentChecklistItemObject),
+        additionalDocuments: data.additionalDocuments
+    };
+};
 
 sessionModel.getUserTaxReturns = function(data){
-
-    var taxReturnsArr = [];
-
-        _.forEach(data.taxReturns, function(item){
-
-            var taxReturn = {};
-
-            taxReturn.taxReturnid = item.id;
-            taxReturn.productId = item.product_id;
-            taxReturn.accountId = item.account_id;
-            taxReturn.statusId = item.status_id;
-            taxReturn.firstName = item.first_name;
-            taxReturn.lastName = item.last_name;
-            taxReturn.provinceOfResidence = item.province_of_redidence; // todo, update after fixed in DB
-            taxReturn.dateOfBirth = item.date_of_birth;
-            taxReturn.canadianCitizen = item.canadian_citizen;
-            taxReturn.authorizeCRA = item.authorize_cra;
-
-            taxReturnsArr.push(taxReturn);
-        });
-
-
-
-    return taxReturnsArr;
+    return {
+        taxReturnId: data.id,
+        productId: data.product_id,
+        accountId: data.account_id,
+        statusId: data.status_id,
+        firstName: data.first_name,
+        lastName: data.last_name,
+        province: data.province_of_redidence, // todo, update after fixed in DB
+        dateOfBirth: data.date_of_birth,
+        canadianCitizen: data.canadian_citizen,
+        authorizeCRA: data.authorize_cra
+    };
 };
 
 module.exports = sessionModel;

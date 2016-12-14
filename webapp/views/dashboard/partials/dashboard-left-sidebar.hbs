@@ -1,0 +1,24 @@
+<section class="{{#if sectionClass}}{{sectionClass}}{{else}}small-2 medium-3{{/if}} yellow-container">
+    <div id="dashboard-chat-activate" class="sidebar-menu-item">
+        <div class="i--icon-chat icon-sidebar-item"></div>
+        <p class="label-sidebar-menu-item">Chat Unread</p>
+        {{#if newMessageCount}}
+            <div class="label-sidebar-messages-count">{{newMessageCount}}</div>
+        {{/if}}
+    </div>
+    <div id="dashboard-upload-activate" class="sidebar-menu-item">
+        <div class="i--icon-upload icon-sidebar-item"></div>
+        <p class="label-sidebar-menu-item">Upload</p>
+    </div>
+    {{#if enableTaxReturn}}
+        <div id="dashboard-my-return-activate" class="sidebar-menu-item">
+            <div class="i--icon-return icon-sidebar-item"></div>
+            <button class="label-sidebar-menu-item">My Return</button>
+        </div>
+    {{/if}}
+    <div id="container-dashboard-sidekick-ad">
+        <div class="i--icon-get-app"></div>
+        <p class="label-sidekick-blurb">Photograph & upload your tax docs with TaxPlan’s FREE Sidekick app.</p>
+        <button class="green">Get it now</button>
+    </div>
+</section>
