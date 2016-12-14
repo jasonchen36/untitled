@@ -5,7 +5,7 @@ var sessionModel = {};
 
 sessionModel.getTaxProfileUserObject = function(data){
     var userObject = {
-        id: '',//todo, for tax profile i believe accountId === id
+        id: '',//for tax profile accountId === id
         firstName: '',
         taxReturnId: '',
         activeTiles: {}
@@ -52,7 +52,7 @@ sessionModel.getUserProfileObject = function(data){
     return {
         hasUserProfileSession: true,
         token: data.token,
-        expiry: moment().add(1, 'hour'),//todo, refresh expiry upon update
+        expiry: moment().add(1, 'hour'),
         currentPage: '',//todo, determine current page for personal profile
         users: [
             sessionModel.getUserProfileUserObject(data)
