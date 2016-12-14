@@ -113,7 +113,7 @@ session.actionStartUserProfileSession = function(req, token){
                 .then(function (response) {
                     try {
                         response.token = token;
-                        req.session.userProfile = sessionModel.getUserProfileObject(response);
+                        session.setUserProfileObject(sessionModel.getUserProfileObject(response));
                         return promise.resolve();
                     } catch(error){
                         if(!error){
@@ -154,10 +154,14 @@ session.getUserProfileObject = function(req){
     return req.session.hasOwnProperty('userProfile') ? req.session.userProfile : {};
 };
 
+session.setUserProfileObject = function(data){
+    return req.session.userProfile = data;
+};
+
 session.actionDestroyUserProfileSession = function(req){
     return session.actionDestroyTaxProfileSession(req)
         .then(function() {
-            req.session.userProfile = {};
+            session.setUserProfileObject({});
         });
 };
 
