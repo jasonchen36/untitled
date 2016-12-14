@@ -71,7 +71,7 @@ sessionModel.getUserTaxReturns = function(data){
 
             var taxReturn = {};
 
-            taxReturn.taxReturnid = item.id;
+            taxReturn.taxReturnId = item.id;
             taxReturn.productId = item.product_id;
             taxReturn.accountId = item.account_id;
             taxReturn.statusId = item.status_id;
