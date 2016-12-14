@@ -116,24 +116,29 @@ dashboardPages.actionAddNewMessage = function(req, res, next){
 
 dashboardPages.actionAddNewDocument = function(req, res, next) {
     req.checkBody('fileName').notEmpty();
+    req.checkBody('checklistItemId').notEmpty();
 
     if (req.validationErrors() || req.body.action !== 'api-dashboard-upload'){
         next(new errors.BadRequestError('dashboard upload - new document - validation errors',true));
     } else {
         const fileName = req.body.fileName,
-            options = {
-                method: 'POST',
-                uri: process.env.API_URL+'/quote/1/document',//todo dynamic quote id
-                headers: {
-                    'Authorization': 'Bearer '+session.getUserProfileValue(req,'token')
-                },
-                formData: {
-                    taxReturnId: 1,//todo, dynamic tax return and checklist item values
-                    checklistItemId: 1,
-                    uploadFileName: fs.createReadStream(util.globals.uploadsFolderDirectory+fileName)
-                },
-                json: true
-            };
+            checklistItemId = parseInt(req.body.checklistItemId);
+        var options = {
+            method: 'POST',
+            uri: process.env.API_URL+'/quote/1/document',//todo dynamic quote id
+            headers: {
+                'Authorization': 'Bearer '+session.getUserProfileValue(req,'token')
+            },
+            formData: {
+                taxReturnId: 1,//todo, dynamic tax return
+                uploadFileName: fs.createReadStream(util.globals.uploadsFolderDirectory+fileName)
+            },
+            json: true
+        };
+        if (checklistItemId !== 0){
+            //additional document id = 0
+            options.formData.checklistItemId = checklistItemId;
+        }
         requestPromise(options)
             .then(function (response) {
                 uploads.deleteFile(fileName)

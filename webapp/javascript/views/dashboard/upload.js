@@ -7,26 +7,26 @@
         disabledClass = app.helpers.disabledClass,
         dashboard = app.services.dashboard,
         fileUpload,
-        fileUploadSubmit,
-        fileUploadCancel,
-        fileUploadSelect,
-        uploadChecklistItems,
+        uploadChecklistItemsClass = '.upload-checklist-item',
+        fileUploadSubmitId = '#dashboard-upload-submit',
+        fileUploadCancelId = '#dashboard-upload-cancel',
+        fileUploadSelectId = '#dashboard-upload-select',
         progressBar,
-        activeItem,
         initialized = false;
 
     function initializeFileUpload(){
+        var userSession = dashboard.getUserSession();
         fileUpload.fileupload({
             acceptFileTypes: /(\.|\/)(gif|jpe?g|png|pdf|txt|doc|docx|csv|xls|xlsx|ppt|pptx|odt|ott)$/i,
             dataType: 'json',
             add: function (e, data) {
                 // console.log(data.originalFiles[0].name);
-                fileUploadSubmit.removeClass(disabledClass);
-                data.context = fileUploadSubmit
+                $(fileUploadSubmitId).removeClass(disabledClass);
+                data.context = $(fileUploadSubmitId)
                     .click(function () {
-                        data.context = fileUploadSubmit.text('Uploading...');
-                        fileUploadCancel.removeClass(disabledClass);
-                        fileUploadSubmit.addClass(disabledClass);
+                        data.context = $(fileUploadSubmitId).text('Uploading...');
+                        $(fileUploadCancelId).removeClass(disabledClass);
+                        $(fileUploadSubmitId).addClass(disabledClass);
                         data.submit();
                     });
             },
@@ -37,17 +37,17 @@
                     {
                         action: 'api-dashboard-upload',
                         fileName: data.files[0].name,
-                        checklistItemId: activeItem.checklistItemId
+                        checklistItemId: userSession.activeItem.checklistItemId
                     },
                     'json'
                 )
                     .then(function(response){
-                        fileUploadSubmit.text('Upload finished').removeClass(disabledClass);
+                        $(fileUploadSubmitId).text('Upload finished').removeClass(disabledClass);
                         //todo, clear form and or refresh template
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         console.log(jqXHR,textStatus,errorThrown);
-                        fileUploadSubmit.removeClass(disabledClass);
+                        $(fileUploadSubmitId).removeClass(disabledClass);
                     });
             },
             cancel: function (e, data) {
@@ -87,32 +87,31 @@
             //variables
             fileUpload = $('#dashboard-upload-input');
             progressBar = $('#dashboard-upload-progress');
-            fileUploadCancel = $('#dashboard-upload-cancel');
-            fileUploadSubmit = $('#dashboard-upload-submit');
-            fileUploadSelect = $('#dashboard-upload-select');
-            uploadChecklistItems = $('.upload-checklist-item');
 
             //listeners
-            fileUploadSubmit.on('click', function (event) {
-                event.preventDefault();
-            });
-
-            fileUploadCancel.on('click', function (event) {
-                event.preventDefault();
-                fileUpload.abort();
-                fileUploadCancel.addClass(disabledClass);
-                fileUploadSubmit.removeClass(disabledClass);
-            });
-
-            fileUploadSelect.on('click',function(event){
-                event.preventDefault();
-                fileUpload.click();
-            });
-
-            uploadChecklistItems.on('click',function(event){
-                event.preventDefault();
-                setActiveItem(parseInt($(this).attr('data-id')));
-            });
+            $(document)
+                .off('click', uploadChecklistItemsClass)
+                .on('click', uploadChecklistItemsClass, function (event) {
+                    event.preventDefault();
+                    setActiveItem(parseInt($(this).attr('data-id')));
+                })
+                .off('click', fileUploadCancelId)
+                .on('click', fileUploadCancelId, function (event) {
+                    event.preventDefault();
+                    fileUpload.abort();
+                    $(fileUploadCancelId).addClass(disabledClass);
+                    $(fileUploadSubmitId).removeClass(disabledClass);
+                })
+                .off('click', fileUploadSelectId)
+                .on('click', fileUploadSelectId, function (event) {
+                    event.preventDefault();
+                    fileUpload.click();
+                })
+                .off('click', fileUploadSubmitId)
+                .on('click', fileUploadSubmitId, function (event) {
+                    event.preventDefault();
+                })
+            ;
 
             //functions
             initializeFileUpload();
