@@ -12,6 +12,7 @@
         disabledClass = app.helpers.disabledClass;
 
     function submitSpecialScenarios(){
+
         if (!specialScenariosSubmit.hasClass(disabledClass)) {
             var formData = helpers.getTileFormData(specialScenariosForm);
             if(!helpers.hasSelectedTile(formData)){
@@ -50,6 +51,8 @@
             specialScenariosForm = $('#special-scenarios-form');
             specialScenariosSubmit = $('#special-scenarios-submit');
             specialScenariosBack = $('#special-scenarios-back');
+
+
 
             //listeners
             specialScenariosForm.on('submit',function(event){

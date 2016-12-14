@@ -29,7 +29,6 @@ Nodemon is used in Procfile_dev so that any changes to the Node.js code are auto
 ```
 foreman start -f Procfile_dev
 ```
-
 The site is served at [http://localhost:3000](http://localhost:3000)
 
 

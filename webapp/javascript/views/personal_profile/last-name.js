@@ -16,10 +16,11 @@
         if (!lastNameSubmit.hasClass(disabledClass)) {
             var formData = helpers.getFormData(lastNameForm);
             helpers.resetForm(lastNameForm);
-            if (helpers.isEmpty(formData.name)){
-                lastNameInput.addClass(errorClass);
-            }
-            if (!helpers.formHasErrors(lastNameForm)) {
+            if (!helpers.hasName(formData)){
+                alert("Please enter your last name.");
+                //lastNameForm.addClass(errorClass);
+            } else {
+            //if (!helpers.formHasErrors(lastNameForm)) {
                 lastNameSubmit.addClass(disabledClass);
                 ajax.ajax(
                     'POST',

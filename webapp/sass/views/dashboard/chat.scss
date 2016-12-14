@@ -22,22 +22,64 @@
 .label-message-content {
   padding: 20px;
   border-radius: 20px;
-  width: 100%;
   float: right;
   vertical-align: middle;
-  background: $color-global-yellow;
+  &.user{
+    width: 100%;
+    background: $color-global-yellow;
+  }
+  &.taxpro{
+    width: 95%;
+    background: $color-global-white;
+    border: 2px solid $color-global-yellow;
+  }
+  &.taxplan{
+    width: 95%;
+    background: $color-global-white;
+    border: 2px solid$color-message-taxplan-border;
+  }
 }
 
 .label-message-date{
   display: table-cell;
   vertical-align: middle;
-  text-align: right;
   width: 30%;
-  padding-right: 20px;
 }
 
 .chat-message{
   width:100%;
   overflow: auto;
   display:table;
+  .i--icon-message-taxplan{
+    height: 40px;
+    width: 40px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: right;
+  }
+}
+
+.message-today-header {
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.message-today-header.line-behind {
+  position: relative;
+  z-index: 1;
+  &:before {
+    border-top: 2px solid #dfdfdf;
+    content:"";
+    margin: 0 auto; /* this centers the line to the full width specified */
+    position: absolute; /* positioning must be absolute here, and relative positioning must be applied to the parent */
+    top: 50%; left: 0; right: 0; bottom: 0;
+    width: 95%;
+    z-index: -1;
+  }
+  .hide-line-behind {
+    /* to hide the lines from behind the text, you have to set the background color the same as the container */
+    background: $color-global-bg;
+    padding: 0 35px;
+    color: $color-message-date;
+  }
 }
