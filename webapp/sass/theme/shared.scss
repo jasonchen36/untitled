@@ -19,7 +19,10 @@ $header-height: 85px;
   &.font-light-grey{
     color: $color-text-light-grey;
   }
-  &.label-sidebar-menu-item{
+  &.font-green{
+    color: $color-global-green;
+  }
+  &.font-sidebar-dark-grey{
     color: $color-sidebar-text-dark-grey;
   }
   &.label-message-date{
@@ -245,6 +248,7 @@ textarea {
 .main-container{
   background: $color-global-bg;
   position: relative;
+  overflow-y: auto;
   min-height:calc(100% - #{$header-height});
 }
 
@@ -275,8 +279,8 @@ textarea {
   }
   &.side-info{
     margin-top: 300px;
-    margin-left: 85px;
-    margin-right: 85px;
+    margin-left: 35px;
+    margin-right: 35px;
     text-align: center;
     &.has-image{
       margin-top: 60px;
@@ -300,12 +304,24 @@ textarea {
   margin-top:10px;
 }
 
+.no-margin{
+  margin: 0;
+}
+
 .add-bottom-padding{
   padding-bottom: 20px;
 }
 
 .add-top-padding{
   padding-top: 20px;
+}
+
+.add-left-padding{
+  padding-left: 20px;
+}
+
+.add-right-padding{
+  padding-right: 20px;
 }
 
 .add-bottom-margin{

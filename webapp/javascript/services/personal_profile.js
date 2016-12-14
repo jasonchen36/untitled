@@ -126,7 +126,7 @@
     this.getPersonalProfileSession = function(){
         return personalProfileSessionStore;
     };
-    
+
     this.init = function(){
         if (personalProfilePageContainer.length > 0) {
             startPersonalProfileSession();
@@ -137,7 +137,7 @@
                     event.preventDefault();
                     $(this).toggleClass(helpers.activeClass);
                 })
-                .on('click', '.'+helpers.tileClass+'-instructions', function (event) {
+                .on('mouseover', '.'+helpers.tileClass, function (event) {
                     event.preventDefault();
                     event.stopPropagation();
                     $('#personal-profile-instructions').html($(this).data('instructions'));

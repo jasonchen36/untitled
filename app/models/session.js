@@ -47,7 +47,7 @@ sessionModel.getUserProfileUserObject = function(data){
         accountId: data.account_id,
         taxReturns: [],
         activeTiles: {}
-    }
+    };
 };
 
 sessionModel.getUserProfileObject = function(data){
@@ -55,7 +55,6 @@ sessionModel.getUserProfileObject = function(data){
         hasUserProfileSession: true,
         token: data.token,
         expiry: moment().add(1, 'hour'),
-        currentPage: '',//todo, determine current page for personal profile
         users: [
             sessionModel.getUserProfileUserObject(data)
         ]
@@ -67,7 +66,7 @@ sessionModel.getDocumentChecklistItemObject = function(data){
         checklistItemId: data.checklist_item_id,
         name: data.name,
         documents: data.documents
-    }
+    };
 };
 
 sessionModel.getDocumentChecklistObject = function(data){
@@ -102,7 +101,7 @@ sessionModel.getUserTaxReturns = function(data){
         dateOfBirth: data.date_of_birth,
         canadianCitizen: data.canadian_citizen,
         authorizeCRA: data.authorize_cra
-    }
+    };
 };
 
 module.exports = sessionModel;

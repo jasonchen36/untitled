@@ -7,10 +7,10 @@
                 <button id="deductions-back" class="grey header">Previous</button>
             </div>
             <form id="deductions-form">
-                <h1 class="subtitle">Last Question! {{users.0.firstName}} please select all your 2016 deductions:</h1>
+                <h1 class="subtitle">{{users.0.firstName}} please select all your 2016 deductions:</h1>
                 {{>personal-profile-options questions=questions.deductions activeTiles=users.0.activeTiles.deductions tileContainerId=users.0.id}}
             </form>
         </div>
     </div>
-    {{>personal-profile-sidebar sidebarTitle="deductions"}}
+    {{>personal-profile-sidebar sidebarTitle="Deductions"}}
 </section>

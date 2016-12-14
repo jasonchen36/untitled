@@ -119,11 +119,14 @@
 
         var selectedCount = 0;
 
-        for(var element in formData){
-            if(formData[element] === 1){
-                selectedCount++;
-            }
-        }
+        _.forOwn(formData, function(value, key) {
+            Object.values(formData[key]).forEach(function (entry) {
+                if (entry === 1) {
+                    selectedCount++;
+                }
+            });
+
+        });
 
         if(selectedCount > 1){
             return true;
@@ -135,7 +138,19 @@
     this.noneAppliedMultipleSelectedTiles = function(formData){
         //todo, is none apply always last tile?
 
-        var lastFormVal = formData[Object.keys(formData)[Object.keys(formData).length - 1]];
+        var lastFormVal = -1;
+
+        _.forOwn(formData, function(value, key) {
+
+            Object.values(formData[key]).forEach(function (entry, index) {
+                if(index === (Object.values(formData[key]).length - 1)){
+                    if(entry === 1) {
+                        lastFormVal = 1;
+                    }
+                }
+
+            });
+        });
 
         if( (lastFormVal === 1) && (this.hasMultipleSelectedTiles(formData)) ) {
             return true;
@@ -178,6 +193,18 @@
 
     this.getAverage = function(index, length) {
         return Math.round(index / length * 100);
+    };
+
+    this.hasName = function(data){
+
+        var hasName = true;
+
+        _.forOwn(data, function(value, key) {
+            if( ( typeof ( Object.values(data[key])[1]) == 'undefined' ) || ( (Object.values(data[key])[1]).length < 1) ){
+                hasName = false;
+            }
+        });
+        return hasName;
     };
 
 }).apply(app.helpers);
