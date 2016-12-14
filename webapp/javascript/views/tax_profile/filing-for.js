@@ -41,7 +41,6 @@
 
     this.init = function(){
         if ($('#tax-profile-filing-for').length > 0) {
-
             //variables
             filingForForm = $('#filing-for-form');
             filingForSubmit = $('#filing-for-submit');
