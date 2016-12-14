@@ -40,6 +40,7 @@ dashboardPages.getDashboardPage = function(req, res, next){
         .then(function (response) {
             const dataObject = session.getUserProfileSession(req);
             dataObject.documentChecklist = sessionModel.getDocumentChecklistObject(response[1]);
+            console.log(dataObject.documentChecklist);
             dataObject.newMessageCount = 0;
             dataObject.messages = response[0].messages;
             dataObject.messages.forEach(function(entry){
@@ -125,7 +126,7 @@ dashboardPages.actionAddNewDocument = function(req, res, next) {
             checklistItemId = parseInt(req.body.checklistItemId);
         var options = {
             method: 'POST',
-            uri: process.env.API_URL+'/quote/1/document',//todo dynamic quote id
+            uri: process.env.API_URL+'/quote/4/document',//todo dynamic quote id
             headers: {
                 'Authorization': 'Bearer '+session.getUserProfileValue(req,'token')
             },

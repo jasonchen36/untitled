@@ -44,6 +44,7 @@
                     .then(function(response){
                         $(fileUploadSubmitId).text('Upload finished').removeClass(disabledClass);
                         //todo, clear form and or refresh template
+                        window.location.reload();
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         console.log(jqXHR,textStatus,errorThrown);
@@ -81,7 +82,9 @@
             //set initial active item
             if (!initialized){
                 initialized = true;
-                setActiveItem(dashboard.getUserSession().documentChecklist.checklistItems[0].checklistItemId);
+                if (dashboard.getUserSession().documentChecklist.checklistItems.length > 0){
+                    setActiveItem(dashboard.getUserSession().documentChecklist.checklistItems[0].checklistItemId);
+                }
             }
 
             //variables
