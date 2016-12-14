@@ -32,7 +32,7 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
                     income: response[0],
                     quoteApplies: questionsModel.getQuoteAppliesData()
                 },
-                dataObject = session.getTaxProfileObject(req);
+                dataObject = session.getTaxProfileSession(req);
             try {
                 res.render('tax_profile/tax_profile', {
                     layout: 'layout-questionnaire',
@@ -49,9 +49,10 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
                 next(new errors.InternalServerError(error));
             }
         })
-        .catch(function (error) {
-            if (!error){
-                error = 'Could not retrieve questions'
+        .catch(function (response) {
+            var error = response;
+            if (response && response.hasOwnProperty('error')){
+                error = response.error;
             }
             next(new errors.InternalServerError(error));
         });
@@ -71,7 +72,7 @@ taxReturnPages.actionSaveTaxProfile = function(req, res, next) {
                 }
             })
             .then(function () {
-                //save account and qoute to session
+                //save account to session
                 switch (req.body.action) {
                     case 'api-tp-welcome':
                         return taxProfile.saveName(req);
@@ -88,12 +89,18 @@ taxReturnPages.actionSaveTaxProfile = function(req, res, next) {
                         break;
                 }
             })
+            .then(function(){
+                //get quote if moving to quote page
+                if (req.body.action === 'api-tp-quote-applies') {
+                    return taxProfile.getTaxReturnQuote(req);
+                }
+            })
             .then(function () {
                 //success
                 res.status(util.http.status.accepted).json({
                     action: req.body.action,
                     status: 'success',
-                    data: session.getTaxProfileObject(req)
+                    data: session.getTaxProfileSession(req)
                 });
             })
             .catch(function (error) {
@@ -104,7 +111,6 @@ taxReturnPages.actionSaveTaxProfile = function(req, res, next) {
             });
     }
 };
-
 
 
 /************ logout ************/

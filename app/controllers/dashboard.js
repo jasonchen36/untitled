@@ -2,31 +2,48 @@ const //packages
     requestPromise = require('request-promise'),
     fs = require('fs'),
     moment = require('moment'),
+    promise = require('bluebird'),
 //services
     util = require('../services/util'),
     session = require('../services/session'),
     errors = require('../services/errors'),
-    uploads = require('../services/uploads');
+    uploads = require('../services/uploads'),
+//models
+    sessionModel = require('../models/session');
 
 var dashboardPages = {};
 
 /************ dashboard ************/
 dashboardPages.getDashboardPage = function(req, res, next){
-    const options = {
-        method: 'GET',
-        uri: process.env.API_URL+'/messages',
-        headers: {
-            'Authorization': 'Bearer '+session.getUserProfileValue(req,'token')
+    const messageRequest = {
+            method: 'GET',
+            uri: process.env.API_URL+'/messages',
+            headers: {
+                'Authorization': 'Bearer '+session.getUserProfileValue(req,'token')
+            },
+            body: {},
+            json: true
         },
-        body: {},
-        json: true
-    };
-    requestPromise(options)
+        documentChecklistRequest = {
+            method: 'GET',
+            uri: process.env.API_URL+'/quote/4/checklist',//todo, dynamic quote id
+            headers: {
+                'Authorization': 'Bearer '+session.getUserProfileValue(req,'token')
+            },
+            body: {},
+            json: true
+        } ;
+    promise.all([
+        requestPromise(messageRequest),
+        requestPromise(documentChecklistRequest)
+    ])
         .then(function (response) {
-            const dataObject = session.getUserProfileObject(req);
+            const dataObject = session.getUserProfileSession(req);
+            dataObject.documentChecklist = sessionModel.getDocumentChecklistObject(response[1]);
+            console.log(dataObject.documentChecklist);
             dataObject.newMessageCount = 0;
-            dataObject.messages = response.messages;
-            response.messages.forEach(function(entry){
+            dataObject.messages = response[0].messages;
+            dataObject.messages.forEach(function(entry){
                 //count unread messages
                 if(entry.status && entry.status.toLowerCase() === 'new'){
                     dataObject.newMessageCount++;
@@ -52,9 +69,10 @@ dashboardPages.getDashboardPage = function(req, res, next){
                 next(new errors.InternalServerError(error));
             }
         })
-        .catch(function (error) {
-            if (!error){
-                error = 'Could not retrieve messages'
+        .catch(function (response) {
+            var error = response;
+            if (response && response.hasOwnProperty('error')){
+                error = response.error;
             }
             next(new errors.InternalServerError(error));
         });
@@ -88,31 +106,40 @@ dashboardPages.actionAddNewMessage = function(req, res, next){
                 });
             })
             .catch(function (response) {
-                next(new errors.BadRequestError(response.error,true));
+                var error = response;
+                if (response && response.hasOwnProperty('error')){
+                    error = response.error;
+                }
+                next(new errors.BadRequestError(error,true));
             });
     }
 };
 
 dashboardPages.actionAddNewDocument = function(req, res, next) {
     req.checkBody('fileName').notEmpty();
+    req.checkBody('checklistItemId').notEmpty();
 
     if (req.validationErrors() || req.body.action !== 'api-dashboard-upload'){
         next(new errors.BadRequestError('dashboard upload - new document - validation errors',true));
     } else {
         const fileName = req.body.fileName,
-            options = {
-                method: 'POST',
-                uri: process.env.API_URL+'/quote/1/document',//todo dynamic quote id
-                headers: {
-                    'Authorization': 'Bearer '+session.getUserProfileValue(req,'token')
-                },
-                formData: {
-                    taxReturnId: 1,//todo, dynamic tax return and checklist item values
-                    checklistItemId: 1,
-                    uploadFileName: fs.createReadStream(util.globals.uploadsFolderDirectory+fileName)
-                },
-                json: true
-            };
+            checklistItemId = parseInt(req.body.checklistItemId);
+        var options = {
+            method: 'POST',
+            uri: process.env.API_URL+'/quote/4/document',//todo dynamic quote id
+            headers: {
+                'Authorization': 'Bearer '+session.getUserProfileValue(req,'token')
+            },
+            formData: {
+                taxReturnId: 1,//todo, dynamic tax return
+                uploadFileName: fs.createReadStream(util.globals.uploadsFolderDirectory+fileName)
+            },
+            json: true
+        };
+        if (checklistItemId !== 0){
+            //additional document id = 0
+            options.formData.checklistItemId = checklistItemId;
+        }
         requestPromise(options)
             .then(function (response) {
                 uploads.deleteFile(fileName)
@@ -124,7 +151,11 @@ dashboardPages.actionAddNewDocument = function(req, res, next) {
                     });
             })
             .catch(function (response) {
-                next(new errors.BadRequestError(response.error,true));
+                var error = response;
+                if (response && response.hasOwnProperty('error')){
+                    error = response.error;
+                }
+                next(new errors.BadRequestError(error,true));
             });
     }
 };

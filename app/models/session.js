@@ -6,12 +6,13 @@ var sessionModel = {};
 
 sessionModel.getTaxProfileUserObject = function(data){
     var userObject = {
-        id: '',
+        id: '',//for tax profile accountId === id
         firstName: '',
+        taxReturnId: '',
         activeTiles: {}
     };
     if (typeof data !== 'undefined' && data.hasOwnProperty('accountId') && data.accountId){
-        userObject.id = String(data.accountId);
+        userObject.id = data.accountId;
         userObject.firstName = data.firstName;
     }
     return userObject;
@@ -52,7 +53,7 @@ sessionModel.getUserProfileObject = function(data){
     return {
         hasUserProfileSession: true,
         token: data.token,
-        expiry: moment().add(1, 'hour'),//todo, refresh expiry upon update
+        expiry: moment().add(1, 'hour'),
         currentPage: '',//todo, determine current page for personal profile
         users: [
             sessionModel.getUserProfileUserObject(data)
@@ -86,6 +87,21 @@ sessionModel.getUserTaxReturns = function(data){
 
 
     return taxReturnsArr;
+};
+
+sessionModel.getDocumentChecklistItemObject = function(data){
+    return {
+        checklistItemId: data.checklist_item_id,
+        name: data.name,
+        documents: data.documents
+    }
+};
+
+sessionModel.getDocumentChecklistObject = function(data){
+    return {
+        checklistItems: _.map(data.checklistitems, sessionModel.getDocumentChecklistItemObject),
+        additionalDocuments: data.additionalDocuments
+    };
 };
 
 module.exports = sessionModel;
