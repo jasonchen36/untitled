@@ -2,6 +2,7 @@ const //packages
     requestPromise = require('request-promise'),
     fs = require('fs'),
     moment = require('moment'),
+    promise = require('bluebird'),
 //services
     util = require('../services/util'),
     session = require('../services/session'),
@@ -12,21 +13,35 @@ var dashboardPages = {};
 
 /************ dashboard ************/
 dashboardPages.getDashboardPage = function(req, res, next){
-    const options = {
-        method: 'GET',
-        uri: process.env.API_URL+'/messages',
-        headers: {
-            'Authorization': 'Bearer '+session.getUserProfileValue(req,'token')
+    const messageRequest = {
+            method: 'GET',
+            uri: process.env.API_URL+'/messages',
+            headers: {
+                'Authorization': 'Bearer '+session.getUserProfileValue(req,'token')
+            },
+            body: {},
+            json: true
         },
-        body: {},
-        json: true
-    };
-    requestPromise(options)
+        documentChecklistRequest = {
+            method: 'GET',
+            uri: process.env.API_URL+'/quote/4/checklist',//todo, dynamic quote id
+            headers: {
+                'Authorization': 'Bearer '+session.getUserProfileValue(req,'token')
+            },
+            body: {},
+            json: true
+        } ;
+    promise.all([
+        requestPromise(messageRequest),
+        requestPromise(documentChecklistRequest)
+    ])
         .then(function (response) {
             const dataObject = session.getUserProfileSession(req);
+            dataObject.documentChecklist = response[1];
+            console.log(dataObject.documentChecklist);
             dataObject.newMessageCount = 0;
-            dataObject.messages = response.messages;
-            response.messages.forEach(function(entry){
+            dataObject.messages = response[0].messages;
+            dataObject.messages.forEach(function(entry){
                 //count unread messages
                 if(entry.status && entry.status.toLowerCase() === 'new'){
                     dataObject.newMessageCount++;

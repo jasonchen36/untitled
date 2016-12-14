@@ -3,9 +3,6 @@
     /* *************** variables ***************/
     var $ = jQuery,
         that = app.services.dashboard,
-        sidebarUploadActivate,
-        sidebarChatActivate,
-        sidebarMyReturnActivate,
         userSessionStore,
         landingPageContainer = $('#dashboard-container');
 
@@ -81,26 +78,20 @@
     this.init = function(){
         if (landingPageContainer.length > 0) {
 
-            //variables
-            sidebarUploadActivate = $('#dashboard-upload-activate');
-            sidebarChatActivate = $('#dashboard-chat-activate');
-            sidebarMyReturnActivate = $('#dashboard-my-return-activate');
-
-            //listeners
-            sidebarUploadActivate.on('click',function(event){
-                event.preventDefault();
-                changePageHelper('upload');
-            });
-
-            sidebarChatActivate.on('click',function(event){
-                event.preventDefault();
-                changePageHelper('chat');
-            });
-
-            sidebarMyReturnActivate.on('click',function(event){
-                event.preventDefault();
-                changePageHelper('my-return');
-            });
+            //shared bindings
+            $(document)
+                .on('click', '#dashboard-upload-activate', function (event) {
+                    event.preventDefault();
+                    changePageHelper('upload');
+                })
+                .on('click', '#dashboard-chat-activate', function (event) {
+                    event.preventDefault();
+                    changePageHelper('chat');
+                })
+                .on('click', '#dashboard-my-return-activate', function (event) {
+                    event.preventDefault();
+                    changePageHelper('my-return');
+                });
 
             //functions
             that.changePage(getCurrentPage(), true);

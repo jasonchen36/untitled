@@ -1,4 +1,8 @@
-<section id="dashboard-upload">
+{{>dashboard-left-sidebar}}
+<section id="dashboard-upload" class="small-7 medium-6">
+    {{#each documentChecklist.checklistitems}}
+        {{name}}
+    {{/each}}
     <h1>upload</h1>
     <p>drop files here to upload</p>
     <p>or</p>
@@ -10,3 +14,4 @@
         <div id="dashboard-upload-progress"></div>
     </form>
 </section>
+{{>dashboard-right-sidebar}}
