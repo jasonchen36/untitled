@@ -1,19 +1,19 @@
 <div class="small-2 medium-3 yellow-container">
-    <div class="sidebar-menu-item">
+    <div id="dashboard-chat-activate" class="sidebar-menu-item">
         <div class="i--icon-chat icon-sidebar-item"></div>
-        <p id="dashboard-chat-activate" class="label-sidebar-menu-item">Chat Unread</p>
+        <p class="label-sidebar-menu-item">Chat Unread</p>
         <div class="label-sidebar-messages-count">{{data.newMessageCount}}</div>
     </div>
-    <div class="sidebar-menu-item">
+    <div id="dashboard-upload-activate" class="sidebar-menu-item">
         <div class="i--icon-upload icon-sidebar-item"></div>
-        <p id="dashboard-upload-activate" class="label-sidebar-menu-item">Upload</p>
+        <p class="label-sidebar-menu-item">Upload</p>
     </div>
-    <div class="sidebar-menu-item">
-        {{#if data.enableTaxReturn}}
+    {{#if data.enableTaxReturn}}
+        <div id="dashboard-my-return-activate" class="sidebar-menu-item">
             <div class="i--icon-return icon-sidebar-item"></div>
-            <button id="dashboard-my-return-activate" class="label-sidebar-menu-item">My Return</button>
-        {{/if}}
-    </div>
+            <button class="label-sidebar-menu-item">My Return</button>
+        </div>
+    {{/if}}
 
     <div id="container-dashboard-sidekick-ad">
         <div class="i--icon-get-app"></div>

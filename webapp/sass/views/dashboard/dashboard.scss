@@ -10,6 +10,7 @@
 //-----------------------------
 .sidebar-menu-item{
   height:85px;
+  cursor: pointer;
   @include unselectable;
   &.active, &:hover {
     background-color: $color-sidebar-dark-yellow;
