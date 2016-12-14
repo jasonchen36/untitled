@@ -88,6 +88,12 @@ taxReturnPages.actionSaveTaxProfile = function(req, res, next) {
                         break;
                 }
             })
+            .then(function(){
+                //get quote if moving to quote page
+                if (req.body.action === 'api-tp-quote-applies') {
+                    return taxProfile.getTaxReturnQuote(req);
+                }
+            })
             .then(function () {
                 //success
                 res.status(util.http.status.accepted).json({
@@ -104,7 +110,6 @@ taxReturnPages.actionSaveTaxProfile = function(req, res, next) {
             });
     }
 };
-
 
 
 /************ logout ************/

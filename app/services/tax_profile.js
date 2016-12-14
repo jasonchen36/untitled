@@ -2,9 +2,12 @@ const //packages
     promise = require('bluebird'),
     _ = require('lodash'),
     moment = require('moment'),
+    requestPromise = require('request-promise'),
 //services
     session = require('./session'),
     util = require('./util'),
+    errors = require('./errors'),
+//models
     sessionModel = require('../models/session'),
     taxProfile = {};
 
@@ -22,11 +25,11 @@ taxProfile.saveName = function(req){
             if (req.validationErrors() || req.body.action !== 'api-tp-welcome'){
                 return promise.reject('api - tax profile welcome - validation errors');
             } else {
-                const taxProfileSession = req.session.taxProfile;
+                const taxProfileSession = session.getTaxProfileObject(req);
                 taxProfileSession.users[0].firstName = req.body.firstName;
                 taxProfileSession.currentPage = getCurrentPage(req.body.action);
                 taxProfileSession.expiry = moment().add(7, 'days');//refresh after update
-                req.session.taxProfile = taxProfileSession;
+                session.setTaxProfileObject(taxProfileSession);
                 return promise.resolve();
             }
         });
@@ -41,7 +44,7 @@ taxProfile.saveFilersNames = function(req){
             if (req.validationErrors() || req.body.action !== 'api-tp-filers-names'){
                 return promise.reject('api - tax profile filers names - validation errors');
             } else {
-                const taxProfileSession = req.session.taxProfile,
+                const taxProfileSession = session.getTaxProfileObject(req),
                     otherFilerData = _.filter(req.body.data, function(value, key) { return key.indexOf('other') !== -1; }),//case where multiple "other"s are selected but not "spouse"
                     otherFilerCountDifference = Math.max(_.size(otherFilerData),1)-(taxProfileSession.users.length-2);//don't count primary and spouse filers
 
@@ -71,7 +74,7 @@ taxProfile.saveFilersNames = function(req){
                 });
                 taxProfileSession.currentPage = getCurrentPage(req.body.action);
                 taxProfileSession.expiry = moment().add(7, 'days');//refresh after update
-                req.session.taxProfile = taxProfileSession;
+                session.setTaxProfileObject(taxProfileSession);
                 return promise.resolve();
             }
         });
@@ -86,7 +89,7 @@ taxProfile.saveActiveTiles = function(req){
             if (req.validationErrors()){
                 return promise.reject('api - tax profile update - validation errors');
             } else {
-                const taxProfileSession = req.session.taxProfile;
+                const taxProfileSession = session.getTaxProfileObject();
                 var group = getCurrentPage(req.body.action);
                 //group nicename
                 switch (group) {
@@ -137,9 +140,44 @@ taxProfile.saveActiveTiles = function(req){
                 });
                 taxProfileSession.currentPage = getCurrentPage(req.body.action);
                 taxProfileSession.expiry = moment().add(7, 'days');//refresh after update
-                req.session.taxProfile = taxProfileSession;
+                session.setTaxProfileObject(taxProfileSession);
                 return promise.resolve();
             }
+        });
+};
+
+taxProfile.getTaxReturnQuote = function(req){
+    return promise.resolve()
+        .then(function() {
+            //create tax return ids
+            const taxProfileSession = session.getTaxProfileObject(),
+                requestObject = {
+                    method: 'GET',
+                    uri: process.env.API_URL+'/tax_return',
+                    json: true
+                };
+            var taxReturnRequests = [],
+                taxReturnRequestObject;
+            taxProfileSession.users.forEach(function(entry){
+                taxReturnRequestObject = _.clone(requestObject, true);
+                taxReturnRequestObject.body = {
+                    'accountId': entry.id,//todo, figure out where account id is coming from
+                    'productId': process.env.API_PRODUCT_ID,
+                    'firstName': entry.firstName
+                };
+                taxReturnRequests.push(requestPromise(taxReturnRequestObject));
+            });
+            return promise.all(taxReturnRequests)
+                .then(function (response) {
+                    console.log('got here');
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    if (!error){
+                        error = 'Could not generate tax return ids'
+                    }
+                    promise.reject(new errors.InternalServerError(error));
+                });
         });
 };
 

@@ -34,7 +34,7 @@ session.actionStartTaxProfileSession = function(req){
             return requestPromise(options)
                 .then(function (response) {
                     try {
-                        req.session.taxProfile = sessionModel.getTaxProfileObject(response);
+                        session.setTaxProfileObject(sessionModel.getTaxProfileObject(response));
                         return promise.resolve();
                     } catch(error){
                         if(!error){
@@ -74,12 +74,16 @@ session.hasTaxProfileSession = function(req){
 session.actionDestroyTaxProfileSession = function(req){
     return promise.resolve()
         .then(function(){
-            req.session.taxProfile = {};
+            session.setTaxProfileObject({});
         });
 };
 
 session.getTaxProfileObject = function(req){
     return req.session.hasOwnProperty('taxProfile')?req.session.taxProfile:{};
+};
+
+session.setTaxProfileObject = function(data){
+    return req.session.taxProfile = data;
 };
 
 session.getTaxProfileValue = function(req, key){

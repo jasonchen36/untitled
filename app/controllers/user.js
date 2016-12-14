@@ -80,15 +80,16 @@ userPages.actionRegisterUser = function(req, res, next){
     if (req.validationErrors() || req.body.action !== 'api-register'){
         next(new errors.BadRequestError('register - validation errors',true));
     } else {
-        const options = {
+        const taxProfileSession = session.getTaxProfileObject(req),
+            options = {
             method: 'POST',
             uri: process.env.API_URL+'/users',
             body: {
                 password: req.body.password,
-                first_name: req.session.taxProfile.users[0].firstName,
+                first_name: taxProfileSession.users[0].firstName,
                 last_name: ' ',//not entered until person profile section
                 email: req.body.email,
-                accountId: req.session.taxProfile.users[0].id
+                accountId: taxProfileSession.users[0].id
             },
             json: true
         };

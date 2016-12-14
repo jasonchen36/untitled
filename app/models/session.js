@@ -7,6 +7,7 @@ sessionModel.getTaxProfileUserObject = function(data){
     var userObject = {
         id: '',
         firstName: '',
+        taxReturnId: '',
         activeTiles: {}
     };
     if (typeof data !== 'undefined' && data.hasOwnProperty('accountId') && data.accountId){
