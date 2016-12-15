@@ -87,6 +87,8 @@ sessionModel.getChatMessageObject = function(data){
         rawDate: moment(data.date),
         date: moment(data.date).format('MMM D [-] h:mm A').toString(),
         isFromUser: data.client_id === data.from_id,
+        isFromTaxPro: data.from_role === 'Tax Pro', //todo is this the final role name?
+        isFromTaxPlan: data.from_role === 'TAXPlan', // todo is this the final role name?
         isFirst: false
     };
 };
