@@ -78,6 +78,10 @@
             dependantsEdit = $('#dependants-edit');
             dependantsDelete = $('#dependants-delete');
             tileOptions = $('.taxplan-tile');
+            dependantsContainer = $('#container-dependants-form');
+            add = $('.i--icon-add');
+            dependantsDelete = $('#dependants-delete');
+            dependantsContainerLine = $('.side-info-blurb');
 
             //overwrite standard tile selector active toggle
             $(document).off('click', '.'+helpers.tileClass);
@@ -117,6 +121,16 @@
                 event.preventDefault();
                 $(this).toggleClass(helpers.activeClass);
                 updateUserDependants($(this),$(this).parent());
+            });
+
+            add.on('click',function(event){
+                event.preventDefault();
+                dependantsContainer.toggle();
+            });
+
+            dependantsDelete.on('click',function(event){
+                event.preventDefault();
+                dependantsContainerLine.remove();
             });
         }
     };
