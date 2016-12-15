@@ -84,8 +84,8 @@
             postalCodeInput = $('#address-postal-code');
             addressLine1SpouseInput = $('#address-first-line-spouse');
             citySpouseInput = $('#address-city-spouse');
-            provinceSpouseInput = $('#province-spouse');
-            residenceSpouseInput = $('#province2-spouse');
+            provinceSpouseInput = $('#province3');
+            residenceSpouseInput = $('#province4');
             postalCodeSpouseInput = $('#address-postal-code-spouse');
 
 
