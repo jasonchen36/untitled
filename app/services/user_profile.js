@@ -1,4 +1,5 @@
 const //packages
+    requestPromise = require('request-promise'),
     promise = require('bluebird'),
     _ = require('lodash'),
     moment = require('moment'),
@@ -27,9 +28,37 @@ personalProfile.saveLastName = function(req){
                 var index = 0;
                 var lastNameKeys = Object.keys(req.body.data);
                 userProfileSession.taxReturns.forEach(function (entry){
-                   var obj = lastNameKeys[index];
-                    entry.lastName = req.body.data[obj].lastName;
+                    // add formData into taxReturn data
+                    var obj = lastNameKeys[index];
                     index++;
+                    entry.lastName = req.body.data[obj].lastName;
+
+                    // PUT request to update lastname
+                    const options = {
+                        method: 'PUT',
+                        uri: process.env.API_URL+'/tax_return/'+entry.taxReturnId,
+                        headers: {}
+                        ,
+                        body: {
+                            accountId: entry.accountId,
+                            productId: process.env.API_PRODUCT_ID,
+                            lastName: entry.lastName
+                        },
+                        json: true
+                    };
+                    return requestPromise(options)
+                        .then(function (response) {
+                            try {
+                                if(response.statusCode === 200){
+                                    return promise.resolve();
+                                }
+                            } catch(error) {
+                                if(!error){
+                                    error = 'Could not update lastname';
+                                }
+                                return promise.reject(error);
+                            }
+                        });
                 });
 
                 userProfileSession.currentPage = getCurrentPage(req.body.action);
