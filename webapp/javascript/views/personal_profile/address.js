@@ -124,6 +124,10 @@
             checkbox.on('click',function(event){
                 event.preventDefault();
                 $(this).toggleClass(helpers.activeClass);
+                addressLine1SpouseInput.val(addressLine1Input.val());
+                citySpouseInput.val(cityInput.val());
+                postalCodeSpouseInput.val(postalCodeInput.val());
+                provinceSpouseInput[0].value = provinceInput[0].value;
             });
         }
     };
