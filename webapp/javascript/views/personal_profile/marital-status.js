@@ -42,28 +42,6 @@
         }
     }
 
-    function updateUserMaritalStatus(selectedTile,parentContainer){
-        var accountSession = personalProfile.getPersonalProfileSession(),
-            formData = helpers.getTileFormData(maritalStatusForm);
-        //enforce toggle
-        _.forOwn(formData[parentContainer.attr('data-id')], function(value, key) {
-            if(key !== selectedTile.attr('data-id')){
-                formData[parentContainer.attr('data-id')][key] = 0;
-            }
-        });
-        //save temporary changes
-        accountSession.users.forEach(function(entry){
-            entry.activeTiles.dependants = formData[entry.id];
-            try {
-                //if "yes" is selected
-                entry.hasDependants = formData[entry.id]['.checkbox'];//todo, find better way of linking model id
-            } catch(exception){
-//do nothing
-            }
-        });
-        personalProfile.refreshPage(accountSession);
-    }
-
     this.init = function(){
         if ($('#personal-profile-marital-status').length > 0) {
 
@@ -71,6 +49,9 @@
             maritalStatusForm = $('#marital-status-form');
             maritalStatusSubmit = $('#marital-status-submit');
             maritalStatusBack = $('#marital-status-back');
+            checkbox = $('.checkbox');
+            day = $('#DD');
+            month = $('#MM');
 
             //listeners
             maritalStatusForm.on('submit',function(event){
@@ -86,6 +67,13 @@
             maritalStatusBack.on('click',function(event){
                 event.preventDefault();
                 personalProfile.goToPreviousPage();
+            });
+
+            checkbox.on('click',function(event){
+                event.preventDefault();
+                $(this).toggleClass(helpers.activeClass);
+                day.toggle();
+                month.toggle();
             });
         }
     };
