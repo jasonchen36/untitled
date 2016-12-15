@@ -21,7 +21,11 @@
 </section>
 <section id="dashboard-upload" class="small-6 medium-7">
     <div class="border-bottom-dark-grey">
-        <p class="display-inline-block side-info-blurb label-instruction-header">After you have finished uploading all your documents you can submit your uploads to TaxPlan by clicking “Start My Return”</p>
+        <!--TODO: Show after done uploading-->
+        {{#if false}}
+            <div class="i--icon-green-check"></div>
+        {{/if}}
+        <p id="label-upload-instructions" class="display-inline-block side-info-blurb label-instruction-header">After you have finished uploading all your documents you can submit your uploads to TaxPlan by clicking “Start My Return”</p>
         <button class="green header long">Start My Return</button>
     </div>
     {{#if activeItem}}
