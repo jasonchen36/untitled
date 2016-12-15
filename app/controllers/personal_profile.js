@@ -46,7 +46,7 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
                 },
                 dataObject = session.getUserProfileSession(req);
             try {
-              
+
                 res.render('personal_profile/personal_profile', {
                     meta: {
                         pageTitle: util.globals.metaTitlePrefix + 'Personal Profile'
@@ -88,6 +88,7 @@ personalProfilePages.actionSavePersonalProfile = function(req, res, next) {
                     break;
                 case 'api-pp-special-scenarios':
                 case 'api-pp-marital-status':
+                case 'api-pp-date-of-birth':
                 case 'api-pp-dependants':
                 case 'api-pp-income':
                 case 'api-pp-credits':
