@@ -15,7 +15,7 @@
     {{/each}}
     <div class="upload-checklist-item" data-id="0">
         <div class="i--icon-question"></div>
-        <div class="f--futura-book">Additional Documents</div>
+        <div class="label-document-name">Additional Documents</div>
         <div class="label-document-count">{{count documents}}</div>
     </div>
 </section>
@@ -25,15 +25,16 @@
         <button class="green header long">Start My Return</button>
     </div>
     {{#if activeItem}}
-        <h1>{{activeItem.name}}</h1>
+        <h1 class="label-activeItem-name display-inline-block">{{activeItem.name}}</h1>
+        <div class="label-activeItem-subtitle f--futura-book add-margin-left display-inline-block">Statement of Renumeration Paid</div>
         <div id="dashboard-upload-progress" class="progress-bar"></div>
-        <p>drop files here to upload</p>
-        <p>or</p>
         <form id="dashboard-upload-form">
+            <p class="label-instruction-upload">Drop files here to upload</p>
+            <p class="f--futura-book">or</p>
             <input id="dashboard-upload-input" type="file" name="files[]" data-url="/dashboard/upload">
-            <button id="dashboard-upload-select" type="button">Select Files</button>
-            <button id="dashboard-upload-submit" type="submit" class="disabled">Upload</button>
-            <button id="dashboard-upload-cancel" type="reset" class="disabled">Cancel</button>
+            <button id="dashboard-upload-select" type="button" class="purple long">Select Files</button>
+            <button id="dashboard-upload-submit" type="submit" class="disabled long purple">Upload</button>
+            <button id="dashboard-upload-cancel" type="reset" class="disabled long purple">Cancel</button>
         </form>
     {{else}}
         <div id="container-upload-explained">

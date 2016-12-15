@@ -10,6 +10,17 @@
   width:44%;
 }
 
+#dashboard-upload-form{
+  text-align: center;
+  padding: 20px;
+  background: white;
+  border-radius: 20px;
+  border: 3px dashed $color-border-light-grey;
+  .label-instruction-upload{
+    font-size:1.7rem;
+  }
+}
+
 #container-upload-explained{
   width: 50%;
   text-align: center;
@@ -63,4 +74,13 @@
 
 .label-document-filers{
   color:$color-global-red;
+}
+
+.label-activeItem-name{
+  text-align: left;
+  font-size: 2rem;
+}
+
+.label-activeItem-subtitle{
+  font-size:1.1rem;
 }
