@@ -38,7 +38,7 @@
                'json'
            )
                .then(function(response){
-                   personalProfile.goToNextPage(response.data);
+                   window.location.href = '/dashboard';
                })
                .catch(function(jqXHR,textStatus,errorThrown){
                    ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
