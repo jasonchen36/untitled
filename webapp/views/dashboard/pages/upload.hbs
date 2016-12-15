@@ -1,17 +1,22 @@
 {{>dashboard-left-sidebar}}
 <section id="dashboard-upload-checklist" class="medium-2">
-    <div>
-        <h2>Document Checklist</h2>
+    <div id="container-checklist-header-cell">
+        <h2 class="label-checklist-header f--futura-book">Document Checklist</h2>
+        <div class="i--icon-printer"></div>
     </div>
     {{#each documentChecklist.checklistItems}}
         <div class="upload-checklist-item" data-id="{{checklistItemId}}">
-            {{name}}
-            count: {{count documents}}
+            <div class="i--icon-question"></div>
+            <div class="label-document-name">{{name}}</div>
+            <div class="f--futura-book">Statement of Renumeration Paid</div> <!--TODO: Bind to subtitle-->
+            <div class="label-document-filers f--futura-book">Doug Doctor<br>Carmela Doctor</div> <!--TODO: Bind to list of filers, new line after each name-->
+            <div class="label-document-count">{{count documents}}</div>
         </div>
     {{/each}}
     <div class="upload-checklist-item" data-id="0">
-        Additional Documents
-        count: {{count documents}}
+        <div class="i--icon-question"></div>
+        <div class="f--futura-book">Additional Documents</div>
+        <div class="label-document-count">{{count documents}}</div>
     </div>
 </section>
 <section id="dashboard-upload" class="small-6 medium-7">

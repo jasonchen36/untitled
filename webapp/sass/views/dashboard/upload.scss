@@ -16,7 +16,51 @@
   margin: 50px auto;
 }
 
+#container-checklist-header-cell{
+  height:85px;
+  border-top: 1px solid $color-border-light-grey;
+  border-bottom: 1px solid $color-border-light-grey;
+  .label-checklist-header{
+    display: inline-block;
+    float: left;
+    font-size: 1.15rem;
+    margin: 30px 5px;
+  }
+  .i--icon-printer{
+    height: 30px;
+    width: 30px;
+    float: right;
+    margin: 25px 5px;
+  }
+}
+
+#dashboard-upload-checklist{
+  padding:0px;
+  background: $color-global-white;
+  height:100%;
+}
+
 .upload-checklist-item {
-  margin: 10px 0;
-  border: 1px solid grey;
+  height: 150px;
+  padding: 20px 5px 5px 5px;
+  border-bottom: 1px solid $color-border-light-grey;
+  position: relative;
+}
+
+.label-document-count{
+  right: 10px;
+  bottom: 10px;
+  position: absolute;
+  padding: 5px;
+  background: $color-global-purple;
+  border-radius: 10px;
+  color: white;
+}
+
+.label-document-name{
+  font-size:1.3rem;
+}
+
+.label-document-filers{
+  color:$color-global-red;
 }
