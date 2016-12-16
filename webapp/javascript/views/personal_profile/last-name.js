@@ -17,8 +17,9 @@
             var formData = helpers.getFormData(lastNameForm);
             helpers.resetForm(lastNameForm);
             if (!helpers.hasName(formData)){
+                //todo, proper error message
                 alert("Please enter your last name.");
-                //lastNameForm.addClass(errorClass);
+                lastNameForm.addClass(errorClass);
             } else {
             //if (!helpers.formHasErrors(lastNameForm)) {
                 lastNameSubmit.addClass(disabledClass);

@@ -23,11 +23,15 @@ personalProfile.saveLastName = function(req){
                 return promise.reject('api - user session creation - validation errors');
             } else {
                 const userProfileSession = session.getUserProfileSession(req);
-                userProfileSession.users.forEach(function (entry) {
-                    if (entry.hasOwnProperty('id') && req.body.data.hasOwnProperty(entry.id)) {
-                        entry.lastName = req.body.data[entry.id].lastName;
-                    }
+
+                var index = 0;
+                var lastNameKeys = Object.keys(req.body.data);
+                userProfileSession.taxReturns.forEach(function (entry){
+                   var obj = lastNameKeys[index];
+                    entry.lastName = req.body.data[obj].lastName;
+                    index++;
                 });
+
                 userProfileSession.currentPage = getCurrentPage(req.body.action);
                 userProfileSession.expiry = moment().add(1, 'hour');//refresh after update
                 session.setUserProfileSession(req, userProfileSession);
