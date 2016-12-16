@@ -25,43 +25,43 @@
     function submitAddress(){
         var formData = helpers.getFormData(addressForm);
         helpers.resetForm(addressForm);
-        if (helpers.isEmpty(addressLine1Input.val())){
+        if (helpers.isEmpty(addressLine1Input.val().trim())){
             addressLine1Input.addClass(errorClass);
             alert("Pleae enter the street address correctly");
         }
-        if (helpers.isEmpty(cityInput.val())){
+        if (helpers.isEmpty(cityInput.val().trim())){
             cityInput.addClass(errorClass);
             alert("Pleae enter the city correctly");
         }
-        if (helpers.isEmpty(postalCodeInput.val()) || checkPostal(postalCodeInput.val())){
+        if (helpers.isEmpty(postalCodeInput.val().trim()) || checkPostal(postalCodeInput.val())){
             postalCodeInput.addClass(errorClass);
             alert("Pleae enter the postal code correctly");
         }
-        if(helpers.isEmpty(provinceInput[0].value)) {
+        if(helpers.isEmpty(provinceInput[0].value.trim())) {
           postalCodeInput.addClass(errorClass);
           alert("Pleae enter the province correctly");
         }
-        if(helpers.isEmpty(residenceInput[0].value)) {
+        if(helpers.isEmpty(residenceInput[0].value.trim())) {
           postalCodeInput.addClass(errorClass);
           alert("Pleae enter the province of residence correctly");
         }
-        if (helpers.isEmpty(addressLine1SpouseInput.val())){
+        if (helpers.isEmpty(addressLine1SpouseInput.val().trim())){
             addressLine1SpouseInput.addClass(errorClass);
             alert("Pleae enter the spousal street address correctly");
         }
-        if (helpers.isEmpty(citySpouseInput.val())){
+        if (helpers.isEmpty(citySpouseInput.val().trim())){
             citySpouseInput.addClass(errorClass);
             alert("Pleae enter the spousal city correctly");
         }
-        if (helpers.isEmpty(postalCodeSpouseInput.val())|| checkPostal(postalCodeSpouseInput.val())){
+        if (helpers.isEmpty(postalCodeSpouseInput.val().trim())|| checkPostal(postalCodeSpouseInput.val())){
             postalCodeSpouseInput.addClass(errorClass);
             alert("Pleae enter the spousal postal code correctly");
         }
-        if(helpers.isEmpty(provinceSpouseInput[0].value)) {
+        if(helpers.isEmpty(provinceSpouseInput[0].value.trim())) {
           postalCodeInput.addClass(errorClass);
           alert("Pleae enter the spousal province correctly");
         }
-        if(helpers.isEmpty(residenceSpouseInput[0].value)) {
+        if(helpers.isEmpty(residenceSpouseInput[0].value.trim())) {
           postalCodeInput.addClass(errorClass);
           alert("Pleae enter the spousal province of residence correctly");
         }
