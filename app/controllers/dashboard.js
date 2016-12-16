@@ -16,7 +16,7 @@ var dashboardPages = {};
 
 /************ dashboard ************/
 dashboardPages.getDashboardPage = function(req, res, next){
-  var accountId = sessionModel.getUserTaxReturns.accountId;
+  var accountId = req.session.userProfile.users[0].accountId;
   const accountRequest = {
         method: 'GET',
         uri: process.env.API_URL+'/account/' + accountId,
@@ -28,7 +28,7 @@ dashboardPages.getDashboardPage = function(req, res, next){
     };
 
 requestPromise(accountRequest).then(function(accountData) {
-    var productId = sessionModel.getUserTaxReturns.productId;
+    var productId = process.env.API_PRODUCT_ID;
     var quoteObj = _.find(accountData.quotes, productId);
     var quoteId = quoteObj.id;
 
