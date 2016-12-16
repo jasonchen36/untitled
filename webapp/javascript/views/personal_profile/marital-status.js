@@ -49,6 +49,9 @@
             maritalStatusForm = $('#marital-status-form');
             maritalStatusSubmit = $('#marital-status-submit');
             maritalStatusBack = $('#marital-status-back');
+            checkbox = $('.checkbox');
+            day = $('#birth-day');
+            month = $('#birth-month');
 
             //listeners
             maritalStatusForm.on('submit',function(event){
@@ -64,6 +67,13 @@
             maritalStatusBack.on('click',function(event){
                 event.preventDefault();
                 personalProfile.goToPreviousPage();
+            });
+
+            checkbox.on('click',function(event){
+                event.preventDefault();
+                $(this).toggleClass(helpers.activeClass);
+                day.toggle();
+                month.toggle();
             });
         }
     };

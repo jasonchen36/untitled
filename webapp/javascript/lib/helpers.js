@@ -188,7 +188,13 @@
     };
 
     this.isEmpty = function(input){
-        return !input || input.length < 1;
+        if (!input){
+          return true;
+        } else if (input.length < 1){
+          return true;
+        } else {
+          return false;
+        }
     };
 
     this.getAverage = function(index, length) {
