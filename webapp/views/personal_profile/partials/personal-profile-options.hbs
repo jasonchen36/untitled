@@ -1,7 +1,7 @@
 <section data-id="{{tileContainerId}}" class="grid-container taxplan-tile-container">
     {{#each questions}}
         <div data-id="{{id}}" class="taxplan-tile {{customTileClass}} {{#isActiveTile id ../activeTiles}} active{{/isActiveTile}}" data-instructions="{{{instructions}}}">
-        <span class="taxplan-tile-label">{{text}}</span>
+            <span class="taxplan-tile-label">{{text}}</span>
         </div>
     {{/each}}
 </section>

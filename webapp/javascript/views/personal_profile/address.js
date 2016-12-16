@@ -25,7 +25,7 @@
     function submitAddress(){
         var formData = helpers.getFormData(addressForm);
         helpers.resetForm(addressForm);
-        if (addressLine1Input.val().length === 0){
+        if (helpers.isEmpty(addressLine1Input.val())){
             addressLine1Input.addClass(errorClass);
             alert("Pleae enter the street address correctly");
         }
@@ -95,13 +95,13 @@
             addressBack = $('#address-back');
             addressLine1Input = $('#address-first-line');
             cityInput = $('#address-city');
-            provinceInput = $('#province');
-            residenceInput = $('#province2');
+            provinceInput = $('#mailing-province');
+            residenceInput = $('#residential-province');
             postalCodeInput = $('#address-postal-code');
             addressLine1SpouseInput = $('#address-first-line-spouse');
             citySpouseInput = $('#address-city-spouse');
-            provinceSpouseInput = $('#province3');
-            residenceSpouseInput = $('#province4');
+            provinceSpouseInput = $('#spousal-mailing-province');
+            residenceSpouseInput = $('#spousal-residential-province');
             postalCodeSpouseInput = $('#address-postal-code-spouse');
             checkbox = $('.checkbox');
 

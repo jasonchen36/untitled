@@ -24,16 +24,22 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
     var specialScenariosRequest = _.clone(requestObject, true),
         creditsRequest = _.clone(requestObject, true),
         deductionsRequest = _.clone(requestObject, true),
-        incomeRequest = _.clone(requestObject, true);
+        incomeRequest = _.clone(requestObject, true),
+        maritalStatusRequest = _.clone(requestObject, true),
+        dependantsRequest = _.clone(requestObject, true);
     incomeRequest.uri += util.questionCategories.income;
     creditsRequest.uri += util.questionCategories.credits;
     deductionsRequest.uri += util.questionCategories.deductions;
     specialScenariosRequest.uri += util.questionCategories.specialScenarios;
+    maritalStatusRequest.uri += util.questionCategories.maritalStatus;
+    dependantsRequest.uri += util.questionCategories.dependants;
     promise.all([
         requestPromise(incomeRequest),
         requestPromise(creditsRequest),
         requestPromise(deductionsRequest),
-        requestPromise(specialScenariosRequest)
+        requestPromise(specialScenariosRequest),
+        requestPromise(maritalStatusRequest),
+        requestPromise(dependantsRequest)
     ])
         .then(function (response) {
             const personalProfileQuestions = {
@@ -41,8 +47,8 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
                     credits: response[1],
                     deductions: response[2],
                     specialScenarios: response[3],
-                    maritalStatus: questionsModel.getMaritalStatusData(),
-                    dependants: questionsModel.getDependentsData()
+                    maritalStatus: response[4],
+                    dependants: response[5]
                 },
                 dataObject = session.getUserProfileSession(req);
             try {

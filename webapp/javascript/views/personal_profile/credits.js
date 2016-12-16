@@ -14,6 +14,7 @@
     function submitCredits(){
         if (!creditsSubmit.hasClass(disabledClass)) {
             var formData = helpers.getTileFormData(creditsForm);
+            console.log(formData[38][146]);
             if(!helpers.hasSelectedTile(formData)){
                 //todo, real alert
                 alert('no selected option');
