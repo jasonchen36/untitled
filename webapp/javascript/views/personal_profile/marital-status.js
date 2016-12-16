@@ -50,8 +50,8 @@
             maritalStatusSubmit = $('#marital-status-submit');
             maritalStatusBack = $('#marital-status-back');
             checkbox = $('.checkbox');
-            day = $('#DD');
-            month = $('#MM');
+            day = $('#birth-day');
+            month = $('#birth-day');
 
             //listeners
             maritalStatusForm.on('submit',function(event){
