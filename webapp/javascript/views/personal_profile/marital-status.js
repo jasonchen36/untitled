@@ -51,7 +51,7 @@
             maritalStatusBack = $('#marital-status-back');
             checkbox = $('.checkbox');
             day = $('#birth-day');
-            month = $('#birth-day');
+            month = $('#birth-month');
 
             //listeners
             maritalStatusForm.on('submit',function(event){
