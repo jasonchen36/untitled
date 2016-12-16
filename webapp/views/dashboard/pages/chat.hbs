@@ -1,17 +1,29 @@
-{{>dashboard-left-sidebar}}
+{{>dashboard-left-sidebar isChat="true"}}
 <section id="dashboard-chat" class="small-7 medium-6">
     <div id="dashboard-chat-container">
         {{#each messages}}
+            {{#if isFirst}}<p class="message-today-header line-behind"><span class="hide-line-behind">TODAY</span></p>{{/if}}
             <div class="chat-message add-top-padding add-bottom-padding">
-                <p class="label-message-date">{{date}}</p>
                 {{#if isFromUser}}
+                    <p class="label-message-date add-right-padding text-right">{{date}}</p>
+                    <p class="label-message-content user display-inline-block side-info-blurb">
+                        {{{body}}}
+                    </p>
+                {{else if isFromTaxPro}}
+                    <div class="i--icon-message-taxplan"></div>
+                    <p class="label-message-content taxpro display-inline-block side-info-blurb">
+                        {{{body}}}
+                    </p>
+                    <p class="label-message-date add-left-padding">{{date}}</p>
                 {{else}}
                     <div class="i--icon-message-taxplan"></div>
+                    <p class="label-message-content taxplan display-inline-block side-info-blurb">
+                        {{{body}}}
+                    </p>
+                    <p class="label-message-date add-left-padding">{{date}}</p>
                 {{/if}}
-                <p class="label-message-content from-user display-inline-block side-info-blurb">
-                    {{{body}}}
-                </p>
             </div>
+
         {{/each}}
     </div>
     <form id="dashboard-chat-form" class="border-top-light-gray">

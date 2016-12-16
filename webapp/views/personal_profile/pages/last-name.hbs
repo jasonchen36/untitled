@@ -7,15 +7,16 @@
             </div>
             <form id="last-name-form">
                 <h1 class="subtitle">{{users.0.firstName}}, can you complete the full legal name for all filers?</h1>
-                {{#each users}}
-                    <div class="add-top-padding taxplan-form-container" data-id="{{id}}">
+                {{#each taxReturns}}
+
+                    <div class="add-top-padding taxplan-form-container" data-id="{{firstName}}">
                         <div class="container-inline-input long">
-                            <label for="last-name-{{id}}">FIRST NAME</label>
-                            <input type="text" class="inline-input" name="firstName" placeholder="First Name" value="{{firstName}}" readonly="readonly"/>
+                            <label for=”last-name-{{taxReturnId}}”>FIRST NAME</label>
+                            <input type="text" id="last-name-{{taxReturnId}}" class="inline-input" name="firstName" placeholder="First Name" value="{{firstName}}" readonly="readonly"/>
                         </div>
                         <div class="container-inline-input long">
                             <label for="last-name">LAST NAME</label>
-                            <input type="text" id="last-name-{{id}}" class="inline-input" name="lastName" placeholder="Last Name" value="{{lastName}}"/>
+                            <input type="text" id="last-name-{{taxReturnId}}" class="inline-input" name="lastName" placeholder="Last Name" value="{{lastName}}"/>
                         </div>
                     </div>
                 {{/each}}
