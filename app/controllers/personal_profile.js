@@ -52,7 +52,7 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
                 },
                 dataObject = session.getUserProfileSession(req);
             try {
-              
+
                 res.render('personal_profile/personal_profile', {
                     meta: {
                         pageTitle: util.globals.metaTitlePrefix + 'Personal Profile'
@@ -97,6 +97,7 @@ personalProfilePages.actionSavePersonalProfile = function(req, res, next) {
                 case 'api-pp-dependants':
                 case 'api-pp-income':
                 case 'api-pp-credits':
+                case 'api-pp-address':
                 case 'api-pp-deductions':
                     return userProfile.saveActiveTiles(req);
                     break;
