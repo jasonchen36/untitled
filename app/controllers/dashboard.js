@@ -16,6 +16,7 @@ var dashboardPages = {};
 
 /************ dashboard ************/
 dashboardPages.getDashboardPage = function(req, res, next){
+  var accountId = req.accountId;
   const accountRequest = {
         method: 'GET',
         uri: process.env.API_URL+'/account/' + accountId,
