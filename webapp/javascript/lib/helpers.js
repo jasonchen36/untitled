@@ -189,11 +189,11 @@
 
     this.isEmpty = function(input){
         if (!input){
-          return false;
-        } else if (input.length < 1){
-          return false;
-        } else {
           return true;
+        } else if (input.length < 1){
+          return true;
+        } else {
+          return false;
         }
     };
 
