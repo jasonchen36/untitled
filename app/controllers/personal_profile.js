@@ -94,6 +94,7 @@ personalProfilePages.actionSavePersonalProfile = function(req, res, next) {
                     break;
                 case 'api-pp-special-scenarios':
                 case 'api-pp-marital-status':
+                case 'api-pp-date-of-birth':
                 case 'api-pp-dependants':
                 case 'api-pp-income':
                 case 'api-pp-credits':
