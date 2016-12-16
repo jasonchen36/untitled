@@ -34,8 +34,10 @@ util.questionCategories = {
     credits2: 4,
     specialScenarios: 5,
     other: 6,
-    maritalStatus: 7,
-    dependants: 8
+    filingFor: 7,
+    maritalStatus: 8,
+    dependants: 9,
+    quote: 10
 
 };
 

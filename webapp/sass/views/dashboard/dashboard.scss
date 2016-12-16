@@ -1,7 +1,6 @@
 #page-user-dashboard{
   .yellow-container{
     padding:0;
-    min-height:calc(100% - #{$header-height});
   }
 }
 
@@ -108,7 +107,7 @@
   border-radius: 30px;
   padding: 15px;
   text-align: center;
-  margin: 0px 20px 0px 20px;
+  margin: 100px 20px 0px 20px;
   .i--icon-get-app{
     display: inline-block;
     height: 50px;
@@ -127,7 +126,7 @@
     background: white;
     border-radius: 20px;
     text-align: center;
-    margin: 0px 5px 0px 5px;
+    margin: 100px 5px 0px 5px;
   }
 }
 
@@ -162,7 +161,7 @@
 #container-collapsed-sidebar{
   padding: 0px;
   display: inline-block;
-  width: 20%;
+  width: 5%;
   float: left;
   &.checklist-items{
     display: inline-block;
