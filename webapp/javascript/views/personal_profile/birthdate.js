@@ -14,15 +14,15 @@
     function submitBirthdate(){
       var formData = helpers.getFormData(birthdateForm);
       helpers.resetForm(birthdateForm);
-      if (dayInput.val().length === 0){
+      if (isEmpty(dayInput.val().trim())){
            dayInput.addClass(errorClass);
            alert("Pleae enter the day correctly");
       }
-      if (monthInput.val().length === 0){
+      if (isEmpty(monthInput.val().trim())){
            monthInput.addClass(errorClass);
            alert("Pleae enter the month correctly");
        }
-      if (yearInput.val().length === 0){
+      if (isEmpty(yearInput.val().trim())){
            yearInput.addClass(errorClass);
            alert("Pleae enter the year correctly");
       }
