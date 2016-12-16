@@ -16,6 +16,22 @@ var dashboardPages = {};
 
 /************ dashboard ************/
 dashboardPages.getDashboardPage = function(req, res, next){
+  const accountRequest = {
+        method: 'GET',
+        uri: process.env.API_URL+'/account/' + accountId,
+        headers: {
+            'Authorization': 'Bearer '+session.getUserProfileValue(req,'token')
+        },
+        body: {},
+        json: true
+    };
+
+requestPromise(accountRequest).then(function(accountData) {
+    var productId = data.productId;
+    var quoteObj = _.find(accountData.quotes, productId);
+    var quoteId = quoteObj.id;
+
+
     const messageRequest = {
             method: 'GET',
             uri: process.env.API_URL+'/messages',
@@ -27,7 +43,7 @@ dashboardPages.getDashboardPage = function(req, res, next){
         },
         documentChecklistRequest = {
             method: 'GET',
-            uri: process.env.API_URL+'/quote/4/checklist',//todo, dynamic quote id
+            uri: process.env.API_URL+'/quote/' + quoteId + '/checklist',//todo, dynamic quote id
             headers: {
                 'Authorization': 'Bearer '+session.getUserProfileValue(req,'token')
             },
@@ -68,7 +84,8 @@ dashboardPages.getDashboardPage = function(req, res, next){
             } catch(error){
                 next(new errors.InternalServerError(error));
             }
-        })
+        });
+      })
         .catch(function (response) {
             var error = response;
             if (response && response.hasOwnProperty('error')){
