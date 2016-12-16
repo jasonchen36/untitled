@@ -1,3 +1,5 @@
+
+
 (function(){
 
     var $ = jQuery,
@@ -14,35 +16,65 @@
 
     function submitLastName(){
         if (!lastNameSubmit.hasClass(disabledClass)) {
-            var formData = helpers.getFormData(lastNameForm);
+            var formData = helpers.getFormDataArray(lastNameForm);
+            var accountInfo = helpers.getAccountInformation(lastNameForm);
             helpers.resetForm(lastNameForm);
             if (!helpers.hasName(formData)){
                 //todo, proper error message
                 alert("Please enter your last name.");
                 lastNameForm.addClass(errorClass);
-            } else {
-            //if (!helpers.formHasErrors(lastNameForm)) {
+            } else if (!helpers.formHasErrors(lastNameForm)) {
                 lastNameSubmit.addClass(disabledClass);
-                ajax.ajax(
-                    'POST',
-                    '/personal-profile',
-                    {
-                        action: 'api-pp-last-name',
-                        data: formData
-                    },
-                    'json'
-                )
-                    .then(function(response){
-                        personalProfile.goToNextPage(response.data);
+
+                return Promise.resolve()
+                    .then(function() {
+                        var promiseArrayPut = [];
+                        var promiseArrayGet = [];
+
+                        _.each(formData, function(entry) {
+
+                            // todo, insert staging api url
+                            var uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId;
+                            var ajaxOne =ajax.ajax(
+                                'PUT',
+                                uri,
+                                {
+                                    accountId: accountInfo.accountId,
+                                    productId: accountInfo.productId,
+                                    lastName: entry.lastName
+                                },
+                                'json'
+                            );
+
+                            uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId + '/answers';
+
+                           var ajaxTwo = ajax.ajax(
+                             'GET',
+                             uri,
+                             {
+                             },
+                             'json'
+                             ).then(function(getResponse) {
+                             });
+
+                            promiseArrayPut.push(ajaxOne);
+                            promiseArrayGet.push(ajaxTwo);
+
+                        });
+
+                        console.log('now return promises',promiseArrayPut,promiseArrayGet);
+                        return Promise.all([Promise.all(promiseArrayPut),
+                            Promise.all(promiseArrayGet)]);
+
                     })
-                    .catch(function(jqXHR,textStatus,errorThrown){
-                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
-                        lastNameSubmit.removeClass(disabledClass);
+                    .then(function(response) {
+
+                        console.log(response[1]);
+                        personalProfile.goToNextPage(response[1]);
                     });
             }
         }
     }
-
     this.init = function(){
         if ($('#personal-profile-last-name').length > 0) {
 

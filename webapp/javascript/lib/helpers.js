@@ -73,6 +73,65 @@
         return data;
     };
 
+    this.getFormDataArray = function(formElement){
+        var data = [],
+            container,
+            containerId,
+            input;
+        if (formElement.find('.'+that.formContainerClass).length > 0){
+            //for multi-user forms
+            formElement.find('.'+that.formContainerClass).each(function(){
+                container = $(this);
+                containerId = container.attr('data-id');
+                var userData = {name:containerId};
+                container.find('input').each(function(){
+                    input = $(this);
+                    if (input.attr('type') === 'checkbox'){
+                        //data[containerId][input.attr('name')] = input.prop('checked')?1:0;
+                        userData[input.attr('name')] = input.prop('checked')?1:0;
+                    } else {
+                        //data[containerId][input.attr('name')] = input.val();
+                        userData[input.attr('name')] = input.val();
+                    }
+                });
+                container.find('textarea').each(function(){
+                    input = $(this);
+                    //data[containerId][input.attr('name')] = input.val();
+                    userData[input.attr('name')] = input.val();
+                });
+                data.push(userData);
+            });
+        } else {
+            //for regular forms like login, register, etc
+            var userData = {};
+            formElement.find('input').each(function(){
+                if ($(this).attr('type') === 'checkbox'){
+                    //data[$(this).attr('name')] = $(this).prop('checked')?1:0;
+                    userData[input.attr('name')] = $(this).prop('checked')?1:0;
+                } else {
+                    data[$(this).attr('name')] = $(this).val();
+                    userData[input.attr('name')] = $(this).val();
+                }
+            });
+            formElement.find('textarea').each(function(){
+                //data[$(this).attr('name')] = $(this).val();
+                userData[input.attr('name')] = $(this).val();
+            });
+            data.push(userData);
+        }
+        return data;
+    };
+
+    this.getAccountInformation= function(container){
+        var data = {};
+
+        data.accountId = container.find('input[name="accountId"]').attr('value');
+        data.productId = container.find('input[name="productId"]').attr('value');
+
+        return data;
+
+    };
+
     this.getTileFormData = function(formElement){
         var data = {},
             container,
