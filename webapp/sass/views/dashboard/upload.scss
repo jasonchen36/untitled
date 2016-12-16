@@ -1,4 +1,11 @@
+//TODO: Nich, just make y-scrollable helper, please
+
 #dashboard-upload{
+  height:100%;
+  overflow-y: auto;
+}
+
+#dashboard-document-preview{
   height:100%;
   overflow-y: auto;
 }
@@ -79,6 +86,11 @@
   font-size:1.3rem;
 }
 
+.label-document-name-header{
+  font-size: 2.5rem;
+  margin: 15px 0px;
+}
+
 .label-document-filers{
   color:$color-global-red;
 }
@@ -126,4 +138,16 @@
   float: left;
   height:46px;
   width:46px;
+}
+
+.i--icon-red-x{
+  display: inline-block;
+  margin: 20px 10px 0px 0px;
+  float: right;
+  height:46px;
+  width:46px;
+}
+
+.image-document-preview{
+
 }
