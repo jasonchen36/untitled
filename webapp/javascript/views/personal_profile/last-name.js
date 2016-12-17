@@ -1,3 +1,5 @@
+
+
 (function(){
 
     var $ = jQuery,
@@ -14,26 +16,97 @@
 
     function submitLastName(){
         if (!lastNameSubmit.hasClass(disabledClass)) {
-            var formData = helpers.getFormData(lastNameForm);
+            var formData = helpers.getFormDataArray(lastNameForm);
+            var accountInfo = helpers.getAccountInformation(lastNameForm);
             helpers.resetForm(lastNameForm);
+
+
+            var sessionData = personalProfile.getPersonalProfileSession();
+
+            // todo, error checking for lastname entered
             if (!helpers.hasName(formData)){
                 //todo, proper error message
                 alert("Please enter your last name.");
                 lastNameForm.addClass(errorClass);
-            } else {
-            //if (!helpers.formHasErrors(lastNameForm)) {
+            } else if (!helpers.formHasErrors(lastNameForm)) {
                 lastNameSubmit.addClass(disabledClass);
-                ajax.ajax(
-                    'POST',
-                    '/personal-profile',
-                    {
-                        action: 'api-pp-last-name',
-                        data: formData
-                    },
-                    'json'
-                )
-                    .then(function(response){
-                        personalProfile.goToNextPage(response.data);
+
+                return Promise.resolve()
+                    .then(function() {
+                        var promiseArrayPut = [];
+                        var promiseArrayGet = [];
+                        var promiseArrayQuestions = [];
+
+                        //todo, product and question category in variable
+                        var uri = 'http://staging.taxplancanada.ca/api' + '/questions/product/' + 10 + '/category/' + 1;
+
+                        var ajaxAnswers = ajax.ajax(
+                            'GET',
+                            uri,
+                            {
+                            },
+                            'json'
+                        );
+
+                        promiseArrayQuestions.push(ajaxAnswers);
+
+                        _.each(formData, function(entry) {
+
+                            // todo, insert staging api url
+                            var uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId;
+                            var ajaxUpdate =ajax.ajax(
+                                'PUT',
+                                uri,
+                                {
+                                    accountId: accountInfo.accountId,
+                                    productId: accountInfo.productId,
+                                    lastName: entry.lastName
+                                },
+                                'json',
+                                {
+                                  'Authorization': 'Bearer '+ sessionData.token
+                                }
+                            );
+
+                             uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId + '/answers';
+
+                             var ajaxAnswers = ajax.ajax(
+                             'GET',
+                             uri,
+                             {
+                             },
+                             'json',
+                             {
+                               'Authorization': 'Bearer '+ sessionData.token
+                             }
+                             );
+
+                            promiseArrayPut.push(ajaxUpdate);
+                            promiseArrayGet.push(ajaxAnswers);
+
+                        });
+
+                        return Promise.all([Promise.all(promiseArrayPut),
+                            Promise.all(promiseArrayGet),
+                            Promise.all(promiseArrayQuestions)]);
+
+                    })
+                    .then(function(response) {
+
+                        var data = {};
+                        data.accountInfo = accountInfo;
+                        data.taxReturns = formData;
+                        data.taxReturns.answers = response[1];
+                        data.taxReturns.questions = response[2];
+
+                        var index = 0;
+                        _.each(data.taxReturns, function(taxReturn){
+                            taxReturn.answers = response[1][index];
+                            taxReturn.questions = response[2][0];
+                            index++;
+                        });
+
+                        personalProfile.goToNextPage(data);
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
@@ -42,7 +115,6 @@
             }
         }
     }
-
     this.init = function(){
         if ($('#personal-profile-last-name').length > 0) {
 

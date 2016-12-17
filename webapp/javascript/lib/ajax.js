@@ -3,14 +3,15 @@
         helpers = app.helpers,
         $ = jQuery;
 
-    this.ajax = function(method,url,data,contentType) {
+    this.ajax = function(method,url,data,contentType, headers) {
         var parameters =  {
             method: method,
             url: url,
             data: data,
             xhrFields: {
                 withCredentials: true
-            }
+            },
+            headers: headers
         };
         if(data && helpers.sizeOfObject(data) > 0) {
             if (contentType === 'json') {
@@ -46,5 +47,7 @@
             window.location.href = '/login';
         }
     };
+     
+
 
 }).apply(app.ajax);

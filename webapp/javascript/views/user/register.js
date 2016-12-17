@@ -20,6 +20,7 @@
             }
             if (!helpers.isValidPassword(formData.password)) {
                 registerPasswordInput.addClass(errorClass);
+                alert('Please enter a password with at least 8 characters.');
             }
             if (!helpers.formHasErrors(registerForm)) {
                 registerSubmit.addClass(disabledClass);
@@ -31,7 +32,8 @@
                         email: formData.email,
                         password: formData.password
                     },
-                    'json'
+                    'json',
+                    { }
                 )
                     .then(function(response){
                         //todo, show success and then redirect

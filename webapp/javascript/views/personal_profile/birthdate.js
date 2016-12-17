@@ -35,7 +35,8 @@
                  action: 'api-pp-date-of-birth',
                  data: formData
                },
-               'json'
+               'json',
+               { }
            )
                .then(function(response){
                    window.location.href = '/dashboard';

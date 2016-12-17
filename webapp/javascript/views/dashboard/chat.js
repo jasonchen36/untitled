@@ -25,7 +25,8 @@
                         action: 'api-dashboard-chat',
                         message: formData.message
                     },
-                    'json'
+                    'json',
+                    { }
                 )
                     .then(function(response){
                         //todo, show success and refresh?
