@@ -22,7 +22,6 @@
 
 
             var sessionData = personalProfile.getPersonalProfileSession();
-            console.log(JSON.stringify(sessionData));
 
             // todo, error checking for lastname entered
             if (!helpers.hasName(formData)){
