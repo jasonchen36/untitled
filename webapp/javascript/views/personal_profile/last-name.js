@@ -49,7 +49,8 @@
 
                             uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId + '/answers';
 
-                           var ajaxTwo = ajax.ajax(
+                            //todo, update with new API route to get tax return with questions and answers in one object
+                            var ajaxTwo = ajax.ajax(
                              'GET',
                              uri,
                              {
