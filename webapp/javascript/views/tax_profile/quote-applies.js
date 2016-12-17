@@ -30,7 +30,8 @@
                         action: 'api-tp-quote-applies',
                         data: formData
                     },
-                    'json'
+                    'json',
+                     { }
                 )
                     .then(function(response){
                         taxProfile.goToNextPage(response.data);

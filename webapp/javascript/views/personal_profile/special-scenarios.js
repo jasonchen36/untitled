@@ -31,7 +31,8 @@
                         action: 'api-pp-special-scenarios',
                         data: formData
                     },
-                    'json'
+                    'json',
+                    { }
                 )
                     .then(function(response){
                         personalProfile.goToNextPage(response.data);

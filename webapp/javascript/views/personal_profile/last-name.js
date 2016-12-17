@@ -19,6 +19,11 @@
             var formData = helpers.getFormDataArray(lastNameForm);
             var accountInfo = helpers.getAccountInformation(lastNameForm);
             helpers.resetForm(lastNameForm);
+
+
+            var sessionData = personalProfile.getPersonalProfileSession();
+            console.log(JSON.stringify(sessionData));
+
             // todo, error checking for lastname entered
             if (!helpers.hasName(formData)){
                 //todo, proper error message
@@ -58,7 +63,10 @@
                                     productId: accountInfo.productId,
                                     lastName: entry.lastName
                                 },
-                                'json'
+                                'json',
+                                {
+                                  'Authorization': 'Bearer '+ sessionData.token
+                                }
                             );
 
                              uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId + '/answers';
@@ -68,7 +76,10 @@
                              uri,
                              {
                              },
-                             'json'
+                             'json',
+                             {
+                               'Authorization': 'Bearer '+ sessionData.token
+                             }
                              );
 
                             promiseArrayPut.push(ajaxUpdate);

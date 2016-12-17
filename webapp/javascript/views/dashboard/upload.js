@@ -40,7 +40,8 @@
                         fileName: data.files[0].name,
                         checklistItemId: userSession.activeItem.checklistItemId
                     },
-                    'json'
+                    'json',
+                    {  }
                 )
                     .then(function(response){
                         $(fileUploadSubmitId).text('Upload finished').removeClass(disabledClass);

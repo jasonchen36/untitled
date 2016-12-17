@@ -32,7 +32,8 @@
                         email: formData.email,
                         password: formData.password
                     },
-                    'json'
+                    'json',
+                    { }
                 )
                     .then(function(response){
                         //todo, show success and then redirect

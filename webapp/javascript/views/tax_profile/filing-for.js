@@ -26,7 +26,8 @@
                         action: 'api-tp-filing-for',
                         data: formData
                     },
-                    'json'
+                    'json',
+                    { }
                 )
                     .then(function(response){
                         taxProfile.goToNextPage(response.data);
