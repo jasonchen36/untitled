@@ -123,7 +123,6 @@
         data.firstName = container.find('input[name="firstName"]').attr('value');
         data.accountId = container.find('input[name="accountId"]').attr('value');
         data.productId = container.find('input[name="productId"]').attr('value');
-
         return data;
 
     };
@@ -141,6 +140,26 @@
                 tile = $(this);
                 data[containerId][parseInt(tile.attr('data-id'))] = tile.hasClass(that.activeClass)?1:0;
             });
+        });
+        return data;
+    };
+
+    this.getTileFormDataArray = function(formElement){
+        var data = [],
+            container,
+            containerId,
+            tile;
+        formElement.find('.'+that.tileContainerClass).each(function(){
+            container = $(this);
+            containerId = container.attr('data-id');
+            var userData = {taxReturnId:container.attr('data-id')};
+            //data[containerId] = {};
+            container.find('.'+that.tileClass).each(function(){
+                tile = $(this);
+                //data[containerId][parseInt(tile.attr('data-id'))] = tile.hasClass(that.activeClass)?1:0;
+                userData[parseInt(tile.attr('data-id'))] = tile.hasClass(that.activeClass)?1:0;
+            });
+            data.push(userData);
         });
         return data;
     };
