@@ -14,12 +14,11 @@ const //packages
 
 var dashboardPages = {};
 var dashboardForm;
-var $ = jQuery;
-
-dashBoardForm = $('#dashboard-container');
 
 /************ dashboard ************/
 dashboardPages.getDashboardPage = function(req, res, next){
+  var $ = jQuery;
+  dashBoardForm = $('#dashboard-container');
   var accountInfo = helpers.getAccountInformation(dashboardForm);
   var accountId = accountInfo.accountId;
   const accountRequest = {
