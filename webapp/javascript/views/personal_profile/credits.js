@@ -29,7 +29,8 @@
                         action: 'api-pp-credits',
                         data: formData
                     },
-                    'json'
+                    'json',
+                    { }
                 )
                     .then(function(response){
                         personalProfile.goToNextPage(response.data);

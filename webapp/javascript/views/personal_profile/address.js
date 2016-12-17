@@ -74,7 +74,8 @@
                   action: 'api-pp-address',
                   data: formData
                 },
-                'json'
+                'json',
+                { }
             )
                 .then(function(response){
                     personalProfile.goToNextPage(response.data);

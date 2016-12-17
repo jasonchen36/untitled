@@ -28,7 +28,8 @@
                         action: 'api-tp-filers-names',
                         data: formData
                     },
-                    'json'
+                    'json',
+                    { }
                 )
                     .then(function(response){
                         taxProfile.goToNextPage(response.data);

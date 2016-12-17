@@ -27,7 +27,8 @@
                         action: 'api-tp-welcome',
                         firstName: formData.firstName
                     },
-                    'json'
+                    'json',
+                     { } 
                 )
                     .then(function(response){
                         taxProfile.goToNextPage(response.data);
