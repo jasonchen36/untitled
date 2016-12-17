@@ -61,12 +61,19 @@
                             promiseArrayGet.push(ajaxTwo);
 
                         });
+
                         return Promise.all([Promise.all(promiseArrayPut),
                             Promise.all(promiseArrayGet)]);
 
                     })
                     .then(function(response) {
-                        personalProfile.goToNextPage(response[1]);
+
+                        var data = {};
+                        data.accountInfo = accountInfo;
+                        data.taxReturns = formData;
+                        data.answers = response[1];
+
+                        personalProfile.goToNextPage(data);
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);

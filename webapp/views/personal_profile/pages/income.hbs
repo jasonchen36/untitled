@@ -7,8 +7,23 @@
                 <button id="income-back" class="grey header">Previous</button>
             </div>
             <form id="income-form">
-                <h1 class="subtitle">{{users.0.firstName}} please select all your sources of income in 2016:</h1>
-                {{>personal-profile-options questions=questions.income activeTiles=users.0.activeTiles.income tileContainerId=users.0.id}}
+                <h1 class="subtitle">{{accountInfo.firstName}} please select all your sources of income in 2016:</h1>
+                <input type="hidden" id="account-id-{{accountInfo.accountId}}" name="accountId" value="{{accountInfo.accountId}}"/>
+                <input type="hidden" id="product-id-10" name="productId" value="{{accountInfo.productId}}"/>
+                {{#each taxReturns}}
+                    <p>{{taxReturnId}}</p>
+                    {{>personal-profile-options questions=questions.income activeTiles=answers tileContainerId=taxReturnId}}
+                    <input type="hidden" id="tax-return-id-{{taxReturnId}}" name="taxReturnId" value="{{taxReturnId}}"/>
+
+                    <section data-id="{{tileContainerId}}" class="grid-container taxplan-tile-container">
+                        {{#each questions.income}}
+                            <div data-id="{{taxReturnId}}" class="taxplan-tile {{customTileClass}} {{#isActiveTile id ../activeTiles}} active{{/isActiveTile}}" data-instructions="{{{instructions}}}">
+                                <span class="taxplan-tile-label">{{text}}</span>
+                            </div>
+                        {{/each}}
+                    </section>
+
+                {{/each}}
             </form>
         </div>
     </div>

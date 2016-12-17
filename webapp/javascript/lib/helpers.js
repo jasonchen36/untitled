@@ -87,16 +87,13 @@
                 container.find('input').each(function(){
                     input = $(this);
                     if (input.attr('type') === 'checkbox'){
-                        //data[containerId][input.attr('name')] = input.prop('checked')?1:0;
                         userData[input.attr('name')] = input.prop('checked')?1:0;
                     } else {
-                        //data[containerId][input.attr('name')] = input.val();
                         userData[input.attr('name')] = input.val();
                     }
                 });
                 container.find('textarea').each(function(){
                     input = $(this);
-                    //data[containerId][input.attr('name')] = input.val();
                     userData[input.attr('name')] = input.val();
                 });
                 data.push(userData);
@@ -106,15 +103,12 @@
             var userData = {};
             formElement.find('input').each(function(){
                 if ($(this).attr('type') === 'checkbox'){
-                    //data[$(this).attr('name')] = $(this).prop('checked')?1:0;
                     userData[input.attr('name')] = $(this).prop('checked')?1:0;
                 } else {
-                    data[$(this).attr('name')] = $(this).val();
                     userData[input.attr('name')] = $(this).val();
                 }
             });
             formElement.find('textarea').each(function(){
-                //data[$(this).attr('name')] = $(this).val();
                 userData[input.attr('name')] = $(this).val();
             });
             data.push(userData);
@@ -125,6 +119,8 @@
     this.getAccountInformation= function(container){
         var data = {};
 
+        data.token = container.find('input[name="token"]').attr('value');
+        data.firstName = container.find('input[name="firstName"]').attr('value');
         data.accountId = container.find('input[name="accountId"]').attr('value');
         data.productId = container.find('input[name="productId"]').attr('value');
 
