@@ -14,6 +14,7 @@ const //packages
 
 var dashboardPages = {};
 var dashboardForm;
+var $ = jQuery;
 
 dashBoardForm = $('#dashboard-container');
 
