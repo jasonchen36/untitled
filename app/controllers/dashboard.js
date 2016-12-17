@@ -13,10 +13,14 @@ const //packages
     sessionModel = require('../models/session');
 
 var dashboardPages = {};
+var dashboardForm;
+
+dashBoardForm = $('#dashboard-container');
 
 /************ dashboard ************/
 dashboardPages.getDashboardPage = function(req, res, next){
-  var accountId = req.session.userProfile.users[0].accountId;
+  var accountInfo = helpers.getAccountInformation(dashboardForm);
+  var accountId = accountInfo.accountId;
   const accountRequest = {
         method: 'GET',
         uri: process.env.API_URL+'/account/' + accountId,
@@ -28,7 +32,7 @@ dashboardPages.getDashboardPage = function(req, res, next){
     };
 
 requestPromise(accountRequest).then(function(accountData) {
-    var productId = process.env.API_PRODUCT_ID;
+    var productId = accountInfo.productId;
     var quoteObj = _.find(accountData.quotes, productId);
     var quoteId = quoteObj.id;
 
