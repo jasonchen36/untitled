@@ -19,6 +19,7 @@
             var formData = helpers.getFormDataArray(lastNameForm);
             var accountInfo = helpers.getAccountInformation(lastNameForm);
             helpers.resetForm(lastNameForm);
+            // todo, error checking for lastname entered
             if (!helpers.hasName(formData)){
                 //todo, proper error message
                 alert("Please enter your last name.");
@@ -54,23 +55,22 @@
                              {
                              },
                              'json'
-                             ).then(function(getResponse) {
-                             });
+                             );
 
                             promiseArrayPut.push(ajaxOne);
                             promiseArrayGet.push(ajaxTwo);
 
                         });
-
-                        console.log('now return promises',promiseArrayPut,promiseArrayGet);
                         return Promise.all([Promise.all(promiseArrayPut),
                             Promise.all(promiseArrayGet)]);
 
                     })
                     .then(function(response) {
-
-                        console.log(response[1]);
                         personalProfile.goToNextPage(response[1]);
+                    })
+                    .catch(function(jqXHR,textStatus,errorThrown){
+                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
+                        lastNameSubmit.removeClass(disabledClass);
                     });
             }
         }
