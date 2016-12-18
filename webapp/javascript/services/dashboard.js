@@ -1,3 +1,4 @@
+
 (function(){
 
     /* *************** variables ***************/
@@ -16,15 +17,7 @@
 
 
     /* *************** private methods ***************/
-    function updateUserSession(data, newPage){
-        if(!data || typeof data !== 'object'){
-            data = that.getUserSession();
-        }
-        if(newPage && newPage.length > 0){
-            data.currentPage = newPage;
-        }
-        userSessionStore = data;
-    }
+
 
     function triggerInitScripts(){
         var dashboardViews = app.views.dashboard;
@@ -61,6 +54,81 @@
         }
     }
 
+    function changePageChat(){
+
+            var uri = 'http://staging.taxplancanada.ca/api' + '/messages';
+
+            app.ajax.ajax(
+                    'GET',
+                    uri,
+                    {
+                    },
+                    'json',
+                    {
+                      'Authorization': 'Bearer '+ userSessionStore.token
+                    }
+                )
+               .then(function(response){
+                
+
+                    var dataObject = {};
+                
+                    dataObject.newMessageCount = 0;
+
+                    dataObject.messages  = [];
+
+                    var today = moment();
+                    var foundToday = false;
+                    response.messages.forEach(function(entry){
+
+                        dataObject.messages.push(getChatMessageObject(entry));
+
+                        //count unread messages
+                        if(entry.status.toLowerCase() === 'new'){
+                            dataObject.newMessageCount++;
+                        }
+                        if(moment(entry.rawDate).month() === moment(today).month() && 
+                            moment(today).date() === moment(entry.rawDate).date() && 
+                            foundToday === false){
+                            entry.isFirst = true;
+                            foundToday = true;
+                         }
+                     });
+
+                   that.changePage('chat', dataObject);
+                })
+               .catch(function(jqXHR,textStatus,errorThrown){
+                     console.log(jqXHR,textStatus,errorThrown);
+                   
+            });
+
+       
+    };
+
+
+
+    function getChatMessageObject(data){
+
+
+        return {
+            status: data.status,
+            body: data.body,
+            subject: data.subject,
+            clientId: data.client_id,
+            fromName: data.fromname,
+            fromId: data.from_id,
+            rawDate: moment(data.date),
+            date: moment(data.date).format('MMM D [-] h:mm A').toString(),
+            isFromUser: data.client_id === data.from_id,
+            isFromTaxPro: data.from_role === 'Tax Pro', //todo is this the final role name?
+            isFromTaxPlan: data.from_role === 'TAXPlan', // todo is this the final role name?  
+            isFirst: false
+        };
+     }
+
+
+
+
 
     /* *************** public methods ***************/
     this.changePage = function(newPage, data){
@@ -68,8 +136,6 @@
             if(typeof data !== 'object'){
                 data = that.getUserSession();
             }
-            //update session with new page
-            updateUserSession(data, newPage);
             cookies.setCookie(dashboardStateCookie, {
                 currentPage: newPage
             });
@@ -88,8 +154,7 @@
         var currentPage = getCurrentPage(),
             currentPageIndex = that.dashboardOrder.indexOf(currentPage),
             newPage;
-        //update session with new data
-        updateUserSession(data);
+   
         newPage = that.dashboardOrder[currentPageIndex];
         that.changePage(newPage);
     };
@@ -97,6 +162,10 @@
     this.getUserSession = function(){
         return userSessionStore;
     };
+
+
+
+
 
     this.init = function(){
         if (landingPageContainer.length > 0) {
@@ -109,7 +178,7 @@
                 })
                 .on('click', '#dashboard-chat-activate', function (event) {
                     event.preventDefault();
-                    changePageHelper('chat');
+                    changePageChat();
                 })
                 .on('click', '#dashboard-my-return-activate', function (event) {
                     event.preventDefault();
