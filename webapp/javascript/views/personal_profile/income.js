@@ -14,8 +14,7 @@
 
     function submitIncome(){
         if (!incomeSubmit.hasClass(disabledClass)) {
-            //var formData = helpers.getTileFormData(incomeForm);
-            var formData = helpers.getFormDataArray(incomeForm);
+            var formData = helpers.getTileFormDataArray(incomeForm);
             var accountInfo = helpers.getAccountInformation(incomeForm);
             if(!helpers.hasSelectedTile(formData)){
                 //todo, real alert
@@ -24,50 +23,62 @@
                 //todo, real alert
                 alert('cannot select None Apply with other options');
             } else {
-                /*incomeSubmit.addClass(disabledClass);
-                ajax.ajax(
-                    'POST',
-                    '/personal-profile',
-                    {
-                        action: 'api-pp-income',
-                        data: formData
-                    },
-                    'json',
-                    { }
-                )
-                    .then(function(response){
-                        personalProfile.goToNextPage(response.data);
-                    })
-                    .catch(function(jqXHR,textStatus,errorThrown){
-                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
-                        incomeSubmit.removeClass(disabledClass);
-                    });*/
-
                 return Promise.resolve()
                     .then(function() {
                         var promiseArrayPut = [];
                         var promiseArrayGet = [];
+                        var promiseArrayQuestions = [];
+
+                        //todo, product and question category in variable
+                        var uri = 'http://staging.taxplancanada.ca/api' + '/questions/product/' + 10 + '/category/' + 2;
+
+                        var ajaxAnswers = ajax.ajax(
+                            'GET',
+                            uri,
+                            {
+                            },
+                            'json'
+                        );
+
+                        promiseArrayQuestions.push(ajaxAnswers);
 
                         _.each(formData, function(entry) {
 
-                            // todo, verify this PUT answers loop after API routes in place
-                            _.each(entry.answers, function(answer) {
 
-                                // todo, update after answers PUT route is created
+                            var answerIndex = 0;
+                            var answerKeys = Object.keys(entry);
+
+                            _.each(entry, function(answer) {
+
+                                answerIndex++;
                                 // todo, insert staging api url
-                                var uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId + '/answers/' + answer.id;
-                                var ajaxOne = ajax.ajax(
-                                    'PUT',
-                                    uri,
-                                    {
-                                        accountId: accountInfo.accountId,
-                                        productId: accountInfo.productId,
-                                        lastName: entry.lastName
-                                    },
-                                    'json'
-                                );
+                                var uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId + '/answers/';
 
-                                promiseArrayPut.push(ajaxOne);
+                                var text= '';
+
+                                if(answer === 1){
+                                    text = 'Yes';
+                                } else if (answer === 0){
+                                    text = 'No';
+                                }
+
+                                if(text.length > 1) {
+                                    var ajaxOne = ajax.ajax(
+                                        'POST',
+                                        uri,
+                                        {
+                                            answers: [
+                                                {
+                                                    questionId: answerKeys[answerIndex],
+                                                    text: text
+                                                }
+                                            ]
+
+                                        },
+                                        'json'
+                                    );
+                                    promiseArrayPut.push(ajaxOne);
+                                }
                             });
 
                             //todo, update with new API route to get tax return with questions and answers in one object
@@ -90,17 +101,24 @@
                     })
                     .then(function(response) {
 
-                        // todo update data with right fields when API route updated
                         var data = {};
                         data.accountInfo = accountInfo;
                         data.taxReturns = formData;
-                        data.answers = response[1];
+                        data.taxReturns.answers = response[1];
+                        data.taxReturns.questions = response[2];
+
+                        var index = 0;
+                        _.each(data.taxReturns, function(taxReturn){
+                            taxReturn.answers = response[1][index];
+                            taxReturn.questions = response[2][0];
+                            index++;
+                        });
 
                         personalProfile.goToNextPage(data);
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
-                        lastNameSubmit.removeClass(disabledClass);
+                        incomeSubmit.removeClass(disabledClass);
                     });
             }
         }

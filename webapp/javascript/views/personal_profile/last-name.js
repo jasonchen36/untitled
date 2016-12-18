@@ -22,7 +22,6 @@
 
 
             var sessionData = personalProfile.getPersonalProfileSession();
-            console.log(JSON.stringify(sessionData));
 
             // todo, error checking for lastname entered
             if (!helpers.hasName(formData)){
@@ -36,12 +35,26 @@
                     .then(function() {
                         var promiseArrayPut = [];
                         var promiseArrayGet = [];
+                        var promiseArrayQuestions = [];
+
+                        //todo, product and question category in variable
+                        var uri = 'http://staging.taxplancanada.ca/api' + '/questions/product/' + 10 + '/category/' + 1;
+
+                        var ajaxAnswers = ajax.ajax(
+                            'GET',
+                            uri,
+                            {
+                            },
+                            'json'
+                        );
+
+                        promiseArrayQuestions.push(ajaxAnswers);
 
                         _.each(formData, function(entry) {
 
                             // todo, insert staging api url
                             var uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId;
-                            var ajaxOne =ajax.ajax(
+                            var ajaxUpdate =ajax.ajax(
                                 'PUT',
                                 uri,
                                 {
@@ -55,10 +68,9 @@
                                 }
                             );
 
-                            uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId + '/answers';
+                             uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId + '/answers';
 
-                            //todo, update with new API route to get tax return with questions and answers in one object
-                            var ajaxTwo = ajax.ajax(
+                             var ajaxAnswers = ajax.ajax(
                              'GET',
                              uri,
                              {
@@ -69,22 +81,30 @@
                              }
                              );
 
-                            promiseArrayPut.push(ajaxOne);
-                            promiseArrayGet.push(ajaxTwo);
+                            promiseArrayPut.push(ajaxUpdate);
+                            promiseArrayGet.push(ajaxAnswers);
 
                         });
 
                         return Promise.all([Promise.all(promiseArrayPut),
-                            Promise.all(promiseArrayGet)]);
+                            Promise.all(promiseArrayGet),
+                            Promise.all(promiseArrayQuestions)]);
 
                     })
                     .then(function(response) {
 
-                        // todo update data with right fields when API route updated
                         var data = {};
                         data.accountInfo = accountInfo;
                         data.taxReturns = formData;
-                        data.answers = response[1];
+                        data.taxReturns.answers = response[1];
+                        data.taxReturns.questions = response[2];
+
+                        var index = 0;
+                        _.each(data.taxReturns, function(taxReturn){
+                            taxReturn.answers = response[1][index];
+                            taxReturn.questions = response[2][0];
+                            index++;
+                        });
 
                         personalProfile.goToNextPage(data);
                     })
