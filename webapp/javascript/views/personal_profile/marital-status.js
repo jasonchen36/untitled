@@ -15,11 +15,9 @@
         if (!maritalStatusSubmit.hasClass(disabledClass)) {
             var formData = helpers.getTileFormData(maritalStatusForm);
             if(!helpers.hasSelectedTile(formData)){
-                //todo, real alert
-                alert('no selected option');
+                window.location.hash = 'modal-personal-profile-popup';
             }else if ( helpers.hasMultipleSelectedTiles(formData)){
-                //todo, real alert
-                alert('please select only one option');
+                window.location.hash = 'modal-personal-profile-popup-none-apply';
             } else {
                 maritalStatusSubmit.addClass(disabledClass);
                 ajax.ajax(

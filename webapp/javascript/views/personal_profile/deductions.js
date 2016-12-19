@@ -15,11 +15,9 @@
         if (!deductionsSubmit.hasClass(disabledClass)) {
             var formData = helpers.getTileFormData(deductionsForm);
             if (!helpers.hasSelectedTile(formData)) {
-                //todo, real alert
-                alert('no selected option');
+                window.location.hash = 'modal-personal-profile-popup';
             } else if(helpers.noneAppliedMultipleSelectedTiles(formData)){
-                //todo, real alert
-                alert('cannot select None Apply with other options');
+                window.location.hash = 'modal-personal-profile-popup-none-apply';
             } else {
                 deductionsSubmit.addClass(disabledClass);
                 ajax.ajax(

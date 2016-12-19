@@ -18,7 +18,7 @@
             helpers.resetForm(lastNameForm);
             if (!helpers.hasName(formData)){
                 //todo, proper error message
-                alert("Please enter your last name.");
+                window.location.hash = 'modal-personal-profile-popup';
                 lastNameForm.addClass(errorClass);
             } else {
             //if (!helpers.formHasErrors(lastNameForm)) {
