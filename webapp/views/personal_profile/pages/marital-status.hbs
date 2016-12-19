@@ -7,17 +7,24 @@
                 <button id="marital-status-back" class="grey header">Previous</button>
             </div>
             <form id="marital-status-form">
-                <h1 class="subtitle">{{users.0.firstName}}, what was your martial status on Dec 31, 2015:</h1>
-                {{>personal-profile-options questions=questions.maritalStatus activeTiles=users.0.activeTiles.maritalStatus tileContainerId=users.0.id}}
-                <div class="marital-status-changed-container">
-                    <div class="checkbox"></div>
-                    <p class="checkbox-label">MY MARITAL STATUS CHANGED IN 2016</p>
-                    <p>PLEASE INDICATE THE DATE OF CHANGE:</p>
-                    <div>
-                        <input class="small-2 small text-center" placeholder="DD" id="birth-day"/ hidden>
-                        <input class="small-2 small text-center" placeholder="MM"/ id="birth-month" hidden>
+
+
+               {{#each taxReturns}}
+                    <h1 class="subtitle">{{accountInfo.firstName}}, what was your martial status on Dec 31, 2015:</h1>
+                    {{>personal-profile-options questions=questions activeTiles=answers tileContainerId=taxReturnId}}
+                    <div class="marital-status-changed-container">
+                        <div class="checkbox"></div>
+                        <p class="checkbox-label">MY MARITAL STATUS CHANGED IN 2016</p>
+                        <p>PLEASE INDICATE THE DATE OF CHANGE:</p>
+                        <div>
+                            <input class="small-2 small text-center" placeholder="DD" id="birth-day"/ hidden>
+                            <input class="small-2 small text-center" placeholder="MM"/ id="birth-month" hidden>
+                        </div>
                     </div>
-                </div>
+                    <input type="hidden" id="tax-return-id-{{taxReturnId}}" name="taxReturnId" value="{{taxReturnId}}"/>
+               {{/each}}
+
+
             </form>
         </div>
     </div>

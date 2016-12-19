@@ -7,10 +7,6 @@
             </div>
             <form id="last-name-form">
                 <h1 class="subtitle">{{users.0.firstName}}, can you complete the full legal name for all filers?</h1>
-                <input type="hidden" id="account-id-{{users.0.accountId}}" name="accountId" value="{{users.0.accountId}}"/>
-                <input type="hidden" id="product-id-10" name="productId" value="10"/>
-                <input type="hidden" id="firstName" name="firstName" value="{{users.0.firstName}}" />
-                <input type="hidden" id="token" name="token" value="{{users.0.token}}" />
                 {{#each taxReturns}}
 
                     <div class="add-top-padding taxplan-form-container" data-id="{{firstName}}">

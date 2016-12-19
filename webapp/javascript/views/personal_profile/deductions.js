@@ -31,7 +31,7 @@
                         var promiseArrayQuestions = [];
 
                         //todo, product and question category in variable
-                        var uri = 'http://staging.taxplancanada.ca/api' + '/questions/product/' + 10 + '/category/' + 4;
+                        var uri = 'http://staging.taxplancanada.ca/api' + '/questions/product/' + 10 + '/category/' + 5;
 
                         var ajaxAnswers = ajax.ajax(
                             'GET',
@@ -95,7 +95,7 @@
 
 
                             //todo, update with new API route to get tax return with questions and answers in one object
-                            uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId + '/answers/category/' + 4;
+                            uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId + '/answers/category/' + 5;
 
                             var ajaxTwo = ajax.ajax(
                                 'GET',
