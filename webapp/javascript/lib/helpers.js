@@ -56,6 +56,10 @@
                     input = $(this);
                     data[containerId][input.attr('name')] = input.val();
                 });
+                container.find('select').each(function(){
+                    input = $(this);
+                    data[containerId][input.attr('name')] = input.val();
+                });
             });
         } else {
             //for regular forms like login, register, etc
@@ -68,6 +72,10 @@
             });
             formElement.find('textarea').each(function(){
                 data[$(this).attr('name')] = $(this).val();
+            });
+            formElement.find('select').each(function(){
+                input = $(this);
+                data[input.attr('name')] = input.val();
             });
         }
         return data;
@@ -202,21 +210,13 @@
             });
 
         });
-
-        if(selectedCount > 1){
-            return true;
-        }
-
-        return false;
+        return selectedCount > 1;
     };
 
     this.noneAppliedMultipleSelectedTiles = function(formData){
         //todo, is none apply always last tile?
-
         var lastFormVal = -1;
-
         _.forOwn(formData, function(value, key) {
-
             Object.values(formData[key]).forEach(function (entry, index) {
                 if(index === (Object.values(formData[key]).length - 1)){
                     if(entry === 1) {
@@ -226,12 +226,7 @@
 
             });
         });
-
-        if( (lastFormVal === 1) && (this.hasMultipleSelectedTiles(formData)) ) {
-            return true;
-        }
-
-        return false;
+        return lastFormVal === 1 && this.hasMultipleSelectedTiles(formData);
     };
 
     this.getBaseUrl = function(){
@@ -263,13 +258,7 @@
     };
 
     this.isEmpty = function(input){
-        if (!input){
-          return true;
-        } else if (input.length < 1){
-          return true;
-        } else {
-          return false;
-        }
+        return !input || input.length < 1;
     };
 
     this.getAverage = function(index, length) {
@@ -277,15 +266,18 @@
     };
 
     this.hasName = function(data){
-
         var hasName = true;
-
         _.forOwn(data, function(value, key) {
             if( ( typeof ( Object.values(data[key])[1]) == 'undefined' ) || ( (Object.values(data[key])[1]).length < 1) ){
                 hasName = false;
             }
         });
         return hasName;
+    };
+
+    this.isValidPostalCode = function (postalCode) {
+        var regex = new RegExp(/^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]( )?\d[ABCEGHJKLMNPRSTVWXYZ]\d$/i);
+        return regex.test(postalCode.value);
     };
 
 }).apply(app.helpers);
