@@ -5,7 +5,7 @@
     var $ = jQuery,
         that = app.views.personalProfile.lastName,
         helpers = app.helpers,
-        ajax = app.ajax,
+        apiservice = app.apiservice, 
         personalProfile = app.services.personalProfile,
         lastNameForm,
         lastNameSubmit,
@@ -39,51 +39,20 @@
                         var promiseArrayGet = [];
                         var promiseArrayQuestions = [];
                         
-                        //todo, question category in variable
-                        var uri = sessionData.apiUrl+'/questions/product/'+sessionData.productId+'/category/'+ 1;
-
-                        var ajaxAnswers = ajax.ajax(
-                            'GET',
-                            uri,
-                            {
-                            },
-                            'json',
-                            {
-                                  'Authorization': 'Bearer '+ accountInfo.token
-                            }
-                        );
+                        var ajaxAnswers = apiservice.getQuestions(sessionData,1);
 
                         promiseArrayQuestions.push(ajaxAnswers);
 
+
                         _.each(formData, function(entry) {
 
-                            var uri = sessionData.apiUrl + '/tax_return/' + entry.taxReturnId;
-                            var ajaxUpdate =ajax.ajax(
-                                'PUT',
-                                uri,
-                                {
-                                    accountId: accountInfo.accountId,
-                                    productId: accountInfo.productId,
-                                    lastName: entry.lastName
-                                },
-                                'json',
-                                {
-                                  'Authorization': 'Bearer '+ accountInfo.token
-                                }
-                            );
 
-                             uri = sessionData.apiUrl + '/tax_return/' + entry.taxReturnId + '/answers/category/' + 1;
+                             var ajaxUpdate = apiservice.putTaxReturnLastName(
+                                     sessionData, entry.taxReturnId, entry.lastName);
 
-                             var ajaxAnswers = ajax.ajax(
-                             'GET',
-                             uri,
-                             {
-                             },
-                             'json',
-                             {
-                               'Authorization': 'Bearer '+ accountInfo.token
-                             }
-                             );
+ 
+                             var ajaxAnswers = apiservice.getAnswers(sessionData,       
+                                                    entry.taxReturnId,1);
 
                             promiseArrayPut.push(ajaxUpdate);
                             promiseArrayGet.push(ajaxAnswers);

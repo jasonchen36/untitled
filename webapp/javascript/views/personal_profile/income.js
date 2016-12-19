@@ -3,7 +3,7 @@
     var $ = jQuery,
         that = app.views.personalProfile.income,
         helpers = app.helpers,
-        ajax = app.ajax,
+        apiservice = app.apiservice, 
         personalProfile = app.services.personalProfile,
         incomeForm,
         incomeSubmit,
@@ -34,7 +34,7 @@
                         var promiseArrayGet = [];
                         var promiseArrayQuestions = [];
 
-                        //todo, product and question category in variable
+     /*                   //todo, product and question category in variable
                         var uri = sessionData.apiUrl + '/questions/product/' + sessionData.productId + '/category/' + 2;
 
                         var ajaxAnswers = ajax.ajax(
@@ -46,71 +46,21 @@
                            {
                                   'Authorization': 'Bearer '+ accountInfo.token
                            }
-                        );
+                        ); */
 
+
+                        var ajaxAnswers = apiservice.getQuestions(sessionData,2);
                         promiseArrayQuestions.push(ajaxAnswers);
 
                         _.each(formData, function(entry) {
 
-                            var answerKeys = Object.keys(entry);
-                            var answers = [];
-                            var answerIndex = 0;
+                                                  
+                            var ajaxOne =  apiservice.postAnswers(sessionData,
+                                                 entry.taxReturnId, entry);
+                            promiseArrayPut.push(ajaxOne);
 
-                            _.each(entry, function(answer) {
-
-                                    var text= '';
-
-                                if(answer === 1){
-                                    text = 'Yes';
-                                } else if (answer === 0){
-                                    text = 'No';
-                                }
-
-                                if(text.length > 1) {
-                                  
-                                    answers.push(
-                                           {
-                                               questionId: answerKeys[answerIndex],
-                                               text: text
-                                           });
-                                }
-                                answerIndex++;
-
-
-                            });
-
-
-                            var uri = sessionData.apiUrl + '/tax_return/' + entry.taxReturnId + '/answers/';
-
-                                var ajaxOne = ajax.ajax(
-                                        'POST',
-                                        uri,
-                                        {
-                                            'answers': answers
-                                        },
-                                        'json-text',
-                                        {
-                                          'Authorization': 'Bearer '+ accountInfo.token
-                                          }
-
-                                    );
-                              promiseArrayPut.push(ajaxOne);
-
-
-
-                            //todo, update with new API route to get tax return with questions and answers in one object
-                            uri = sessionData.apiUrl + '/tax_return/' + entry.taxReturnId + '/answers/category/' + 2;
-
-                            var ajaxTwo = ajax.ajax(
-                                'GET',
-                                uri,
-                                {
-                                },
-                                'json',
-                                 {
-                                  'Authorization': 'Bearer '+ accountInfo.token
-                                 }
-                            );  
+                            var ajaxTwo = apiservice.getAnswers(sessionData,       
+                                                    entry.taxReturnId,2);
 
                             promiseArrayGet.push(ajaxTwo);  
                         });  
