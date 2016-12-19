@@ -65,14 +65,22 @@
                 });
             Promise.all(addressRequests)
                 .then(function(response){
-                    console.log(response);
-                    //todo, associate addresses and tax returns
+                    var addressAssociationRequests = _.map(response, function(value, key) {
+                        return ajax.ajax(
+                            'POST',
+                            sessionData.apiUrl+'/tax_return/'+taxReturnData.taxReturnId+'/address/'+value.addressId,
+                            body,
+                            '',
+                            {}
+                        );
+                    });
+                    return Promise.all(addressAssociationRequests);
                 })
                 .then(function(){
                     return Promise.all(taxReturnRequests)
-                        .then(function(response){
-                            console.log(response);
-                            personalProfile.goToNextPage(response.data);
+                        .then(function(){
+                            //todo, get updated profile data?
+                            personalProfile.goToNextPage();
                         });
                 })
                 .catch(function(jqXHR,textStatus,errorThrown){
