@@ -78,6 +78,17 @@
             dependantsEdit = $('#dependants-edit');
             dependantsDelete = $('#dependants-delete');
             tileOptions = $('.taxplan-tile');
+            dependantsContainer = $('#container-dependants-form');
+            add = $('.i--icon-add');
+            dependantsDelete = $('#dependants-delete');
+            dependantsContainerLine = $('#side-info-blurb3');
+            dependantsContainerLine2 = $('#side-info-blurb2');
+            save = $('#dependants-save');
+            firstName = $('#dependants-first-name');
+            lastName = $('#dependants-last-name');
+            day = $('#dependants-birthday-day');
+            month = $('#dependants-birthday-month');
+            year = $('#dependants-birthday-year');
 
             //overwrite standard tile selector active toggle
             $(document).off('click', '.'+helpers.tileClass);
@@ -117,6 +128,23 @@
                 event.preventDefault();
                 $(this).toggleClass(helpers.activeClass);
                 updateUserDependants($(this),$(this).parent());
+            });
+
+            add.on('click',function(event){
+                event.preventDefault();
+                dependantsContainer.toggle();
+            });
+
+            dependantsDelete.on('click',function(event){
+                event.preventDefault();
+                dependantsContainerLine.remove();
+                dependantsContainerLine2.remove();
+            });
+
+            save.on('click',function(event){
+                event.preventDefault();
+                $('#side-info-blurb3').append('<p>' + firstName.val() + " " + lastName.val() + '</p>');
+                $('#side-info-blurb2').append('<p>' + day.val() + '/' + month.val() + '/' + year.val().slice(-2) + '</p>');
             });
         }
     };
