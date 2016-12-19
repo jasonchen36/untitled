@@ -3,8 +3,9 @@
     var $ = jQuery,
         that = app.views.personalProfile.income,
         helpers = app.helpers,
-        apiservice = app.apiservice, 
+        apiservice = app.apiservice,
         personalProfile = app.services.personalProfile,
+        ajax = app.ajax,
         incomeForm,
         incomeSubmit,
         incomeBack,
@@ -41,20 +42,20 @@
                         promiseArrayQuestions.push(ajaxAnswers);
 
                         _.each(formData, function(entry) {
-                                                  
+
                             var ajaxOne =  apiservice.postAnswers(sessionData,
                                                  entry.taxReturnId, entry);
                             promiseArrayPut.push(ajaxOne);
 
-                            var ajaxTwo = apiservice.getAnswers(sessionData,       
+                            var ajaxTwo = apiservice.getAnswers(sessionData,
                                                     entry.taxReturnId,2);
 
-                            promiseArrayGet.push(ajaxTwo);  
-                        });  
+                            promiseArrayGet.push(ajaxTwo);
+                        });
 
                       return Promise.all([Promise.all(promiseArrayPut),
                             Promise.all(promiseArrayGet),
-                            Promise.all(promiseArrayQuestions)]); 
+                            Promise.all(promiseArrayQuestions)]);
 
                     })
                     .then(function(response) {
@@ -62,16 +63,28 @@
                         var data = {};
                         data.accountInfo = accountInfo;
                         data.taxReturns = formData;
-                        data.taxReturns.answers = response[1];
                         data.taxReturns.questions = response[2];
 
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){
                             taxReturn.firstName = nameData[index];
-                            taxReturn.answers = response[1][index];
-                            taxReturn.questions = response[2][0];
+                            taxReturn.questions = response[1][index];
+                            _.each(taxReturn.questions.answers, function(question){
+
+                              question.answer = 0;
+                              question.class = "";
+
+                              if ( !question.text) {
+                                question.answer = 0;
+                                question.class = "";
+                              } else if (question.text === "Yes"){
+                                    question.answer = 1;
+                                    question.class = "Active";
+                              }
+
+                            });
                             index++;
-                        });  
+                        });
 
                         personalProfile.goToNextPage(data);
                     })

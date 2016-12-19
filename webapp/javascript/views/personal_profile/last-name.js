@@ -72,7 +72,6 @@
                         var data = {};
                         data.accountInfo = accountInfo;
                         data.taxReturns = formData;
-                        //data.taxReturns.answers = response[1];
                         data.taxReturns.questions = response[2];
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){
