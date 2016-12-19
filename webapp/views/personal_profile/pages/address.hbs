@@ -21,23 +21,23 @@
                             <div>
                                 <div class="container-inline-input long">
                                     <label for="first-line-{{taxReturnId}}">STREET ADDRESS</label>
-                                    <input id="first-line-{{taxReturnId}}" type="text" value="" class="inline-input" name="street"/>
+                                    <input id="first-line-{{taxReturnId}}" type="text" value="{{address.street}}" class="inline-input" name="street"/>
                                 </div>
                                 <div class="container-inline-input short">
                                     <label for="city-{{taxReturnId}}">CITY</label>
-                                    <input id="city-{{taxReturnId}}" type="text" value="" class="inline-input" name="city"/>
+                                    <input id="city-{{taxReturnId}}" type="text" value="{{address.city}}" class="inline-input" name="city"/>
                                 </div>
                                 <div class="container-inline-input short">
                                     <label for="province-{{taxReturnId}}">PROVINCE</label>
                                     <div class="drop-down">
                                         <select class="drop-down-select" id="province-{{taxReturnId}}" name="province">
-                                            {{>province-options}}
+                                            {{>province-options selectedProvince=address.province}}
                                         </select>
                                     </div>
                                 </div>
                                 <div class="container-inline-input short">
                                     <label for="postal-code-{{taxReturnId}}">POSTAL CODE</label>
-                                    <input id="postal-code-{{taxReturnId}}" type="text" value="" class="inline-input" name="postalCode" maxlength="6"/>
+                                    <input id="postal-code-{{taxReturnId}}" type="text" value="{{address.postalCode}}" class="inline-input" name="postalCode" maxlength="6"/>
                                 </div>
                             </div>
                             <div class="container-residence">
@@ -45,7 +45,7 @@
                                     <label for="province-residence-{{taxReturnId}}" class="under">PROVINCE OF RESIDENCE (DEC 31, 2016)</label>
                                     <div class="drop-down">
                                         <select class="drop-down-select" id="province-residence-{{taxReturnId}}" name="provinceResidence">
-                                            {{>province-options}}
+                                            {{>province-options selectedProvince=province}}
                                         </select>
                                     </div>
                                 </div>
