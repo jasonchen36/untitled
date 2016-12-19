@@ -13,7 +13,7 @@
                 <input type="hidden" id="firstName" name="firstName" value="{{accountInfo.firstName}}" />
                 <input type="hidden" id="token" name="token" value="{{accountInfo.token}}" />
                 {{#each taxReturns}}
-                    {{>personal-profile-options questions=questions.credits activeTiles=users.0.activeTiles.credits  tileContainerId=users.0.id}}
+                    {{>personal-profile-options questions=questions activeTiles=users.0.activeTiles.answers  tileContainerId=taxReturnId}}
                     <input type="hidden" id="tax-return-id-{{taxReturnId}}" name="taxReturnId" value="{{taxReturnId}}"/>
                 {{/each}}
             </form>

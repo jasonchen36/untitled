@@ -17,11 +17,13 @@
     function submitLastName(){
         if (!lastNameSubmit.hasClass(disabledClass)) {
             var formData = helpers.getFormDataArray(lastNameForm);
-            var accountInfo = helpers.getAccountInformation(lastNameForm);
+
             helpers.resetForm(lastNameForm);
 
 
             var sessionData = personalProfile.getPersonalProfileSession();
+            var accountInfo = helpers.getAccountInformation(sessionData);
+
 
             // todo, error checking for lastname entered
             if (!helpers.hasName(formData)){
@@ -45,7 +47,10 @@
                             uri,
                             {
                             },
-                            'json'
+                            'json',
+                            {
+                                  'Authorization': 'Bearer '+ accountInfo.token
+                            }
                         );
 
                         promiseArrayQuestions.push(ajaxAnswers);
@@ -64,11 +69,11 @@
                                 },
                                 'json',
                                 {
-                                  'Authorization': 'Bearer '+ sessionData.token
+                                  'Authorization': 'Bearer '+ accountInfo.token
                                 }
                             );
 
-                             uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId + '/answers';
+                             uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId + '/answers/category/' + 1;
 
                              var ajaxAnswers = ajax.ajax(
                              'GET',
@@ -77,7 +82,7 @@
                              },
                              'json',
                              {
-                               'Authorization': 'Bearer '+ sessionData.token
+                               'Authorization': 'Bearer '+ accountInfo.token
                              }
                              );
 
@@ -98,6 +103,7 @@
                         data.taxReturns = formData;
                         data.taxReturns.answers = response[1];
                         data.taxReturns.questions = response[2];
+
 
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){

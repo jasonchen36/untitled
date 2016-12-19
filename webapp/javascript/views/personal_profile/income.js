@@ -15,7 +15,11 @@
     function submitIncome(){
         if (!incomeSubmit.hasClass(disabledClass)) {
             var formData = helpers.getTileFormDataArray(incomeForm);
-            var accountInfo = helpers.getAccountInformation(incomeForm);
+         
+            var sessionData = personalProfile.getPersonalProfileSession();
+            var accountInfo = helpers.getAccountInformation(sessionData);
+
+
             if(!helpers.hasSelectedTile(formData)){
                 //todo, real alert
                 alert('no selected option');
@@ -37,24 +41,23 @@
                             uri,
                             {
                             },
-                            'json'
+                            'json',
+                           {
+                                  'Authorization': 'Bearer '+ accountInfo.token
+                           }
                         );
 
                         promiseArrayQuestions.push(ajaxAnswers);
 
                         _.each(formData, function(entry) {
 
-
-                            var answerIndex = 0;
                             var answerKeys = Object.keys(entry);
+                            var answers = [];
+                            var answerIndex = 0;
 
                             _.each(entry, function(answer) {
 
-                                answerIndex++;
-                                // todo, insert staging api url
-                                var uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId + '/answers/';
-
-                                var text= '';
+                                    var text= '';
 
                                 if(answer === 1){
                                     text = 'Yes';
@@ -63,56 +66,76 @@
                                 }
 
                                 if(text.length > 1) {
-                                    var ajaxOne = ajax.ajax(
+                                  
+                                    answers.push(
+                                           {
+                                               questionId: answerKeys[answerIndex],
+                                               text: text
+                                           });
+                                }
+                                answerIndex++;
+
+
+                            });
+
+
+                            var uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId + '/answers/';
+
+                                var ajaxOne = ajax.ajax(
                                         'POST',
                                         uri,
                                         {
-                                            answers: [
-                                                {
-                                                    questionId: answerKeys[answerIndex],
-                                                    text: text
-                                                }
-                                            ]
-
+                                            'answers': answers
                                         },
-                                        'json'
+                                        'json-text',
+                                        {
+                                          'Authorization': 'Bearer '+ accountInfo.token
+                                          }
+
                                     );
-                                    promiseArrayPut.push(ajaxOne);
-                                }
-                            });
+                              promiseArrayPut.push(ajaxOne);
+
+
 
                             //todo, update with new API route to get tax return with questions and answers in one object
-                            uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId + '/answers';
+                            uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId + '/answers/category/' + 2;
 
                             var ajaxTwo = ajax.ajax(
                                 'GET',
                                 uri,
                                 {
                                 },
-                                'json'
-                            );
+                                'json',
+                                 {
+                                  'Authorization': 'Bearer '+ accountInfo.token
+                                 }
+                            );  
 
-                            promiseArrayGet.push(ajaxTwo);
-                        });
+                            promiseArrayGet.push(ajaxTwo);  
+                        });  
 
-                        return Promise.all([Promise.all(promiseArrayPut),
-                            Promise.all(promiseArrayGet)]);
+                      return Promise.all([Promise.all(promiseArrayPut),
+                            Promise.all(promiseArrayGet),
+                            Promise.all(promiseArrayQuestions)]); 
 
                     })
                     .then(function(response) {
 
+
+         
                         var data = {};
                         data.accountInfo = accountInfo;
                         data.taxReturns = formData;
                         data.taxReturns.answers = response[1];
-                        data.taxReturns.questions = response[2];
+                        data.taxReturns.questions = response[2];  
 
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){
+
                             taxReturn.answers = response[1][index];
-                            taxReturn.questions = response[2][0];
+                            taxReturn.questions = response[2][0]; 
                             index++;
-                        });
+                        });  
 
                         personalProfile.goToNextPage(data);
                     })

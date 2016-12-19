@@ -116,13 +116,14 @@
         return data;
     };
 
-    this.getAccountInformation= function(container){
+    this.getAccountInformation= function(sessionData){
         var data = {};
 
-        data.token = container.find('input[name="token"]').attr('value');
-        data.firstName = container.find('input[name="firstName"]').attr('value');
-        data.accountId = container.find('input[name="accountId"]').attr('value');
-        data.productId = container.find('input[name="productId"]').attr('value');
+        data.token = sessionData.token;
+        data.firstName = sessionData.users[0].firstName;
+        data.accountId = sessionData.users[0].accountId;
+        data.productId = 10;
+
         return data;
 
     };
