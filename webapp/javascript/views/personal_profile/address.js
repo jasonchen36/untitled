@@ -15,8 +15,8 @@
     function submitAddress(){
         var formData = helpers.getFormData(addressForm);
         helpers.resetForm(addressForm);
-        _.forOwn(formData, function(form){
-            validateAddressFormData(form);
+        $('.'+helpers.formContainerClass).each(function(){
+            validateAddressFormData($(this));
         });
         if (!helpers.formHasErrors(addressForm)) {
             addressSubmit.addClass(disabledClass);
@@ -28,7 +28,7 @@
                     data: formData
                 },
                 'json',
-                { }
+                {}
             )
                 .then(function(response){
                     personalProfile.goToNextPage(response.data);
@@ -90,7 +90,7 @@
         if (validateAddressFormData(addressForm.find('.'+helpers.formContainerClass).first()) && !checkbox.hasClass(helpers.activeClass)) {
             //checkbox
             checkbox.addClass(helpers.activeClass);
-            
+
             //populate form
             var formData = getTopFilerAddress(),
                 taxReturnId = parentContainer.attr('data-id');
@@ -107,7 +107,7 @@
         } else {
             //checkbox
             checkbox.removeClass(helpers.activeClass);
-            
+
             //reset form for manual entry
             parentContainer.find('input').val('').prop('disabled', false);
             parentContainer.find('select').val('').prop('disabled', false);
