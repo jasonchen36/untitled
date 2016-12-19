@@ -19,6 +19,7 @@
         $('.'+helpers.formContainerClass).each(function(){
             validateAddressFormData($(this));
         });
+        //todo, don't make requests if data isn't changing
         if (!helpers.formHasErrors(addressForm)) {
             addressSubmit.addClass(disabledClass);
             //todo, resolve if the address is new or needs to be updated (different api call)
@@ -38,12 +39,40 @@
                         'json',
                         {}
                     );
+                }),
+                taxReturnRequests = _.map(formData, function(formValue, formKey) {
+                    var taxReturnData = _.find(sessionData.taxReturns, function(entry){
+                        return parseInt(formKey) === entry.taxReturnId;
+                    });
+                    body = {
+                        accountId:  taxReturnData.accountId,
+                        productId:  taxReturnData.productId,
+                        firstName: taxReturnData.firstName,
+                        lastName: taxReturnData.lastName,
+                        provinceOfResidence: formValue.provinceResidence,
+                        dateOfBirth: taxReturnData.dateOfBirth,
+                        canadianCitizen: taxReturnData.canadianCitizen,
+                        authorizeCra: taxReturnData.authorizeCRA
+                    };
+                    return ajax.ajax(
+                        'PUT',
+                        sessionData.apiUrl+'/tax_return/'+formKey,
+                        body,
+                        'json',
+                        {}
+                    );
                 });
             Promise.all(addressRequests)
                 .then(function(response){
                     console.log(response);
                     //todo, associate addresses and tax returns
-                    personalProfile.goToNextPage(response.data);
+                })
+                .then(function(){
+                    return Promise.all(taxReturnRequests)
+                        .then(function(response){
+                            console.log(response);
+                            personalProfile.goToNextPage(response.data);
+                        });
                 })
                 .catch(function(jqXHR,textStatus,errorThrown){
                     ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
