@@ -9,28 +9,40 @@
         addressSubmit,
         addressBack,
         addressIsSameCheckbox,
-        errorClass = app.helpers.errorClass,
-        disabledClass = app.helpers.disabledClass;
+        errorClass = helpers.errorClass,
+        disabledClass = helpers.disabledClass;
 
     function submitAddress(){
-        var formData = helpers.getFormData(addressForm);
+        var sessionData = personalProfile.getPersonalProfileSession(),
+            formData = helpers.getFormData(addressForm);
         helpers.resetForm(addressForm);
         $('.'+helpers.formContainerClass).each(function(){
             validateAddressFormData($(this));
         });
         if (!helpers.formHasErrors(addressForm)) {
             addressSubmit.addClass(disabledClass);
-            ajax.ajax(
-                'POST',
-                '/personal-profile',
-                {
-                    action: 'api-pp-address',
-                    data: formData
-                },
-                'json',
-                {}
-            )
+            //todo, resolve if the address is new or needs to be updated (different api call)
+            var body,
+                addressRequests = _.map(formData, function(value, key) {
+                    body = {
+                        addressLine1:  value.street,
+                        addressLine2: '',
+                        city: value.city,
+                        province: value.province,
+                        postalCode: value.postalCode
+                    };
+                    return ajax.ajax(
+                        'POST',
+                        sessionData.apiUrl+'/tax_return/'+key+'/address',
+                        body,
+                        'json',
+                        {}
+                    );
+                });
+            Promise.all(addressRequests)
                 .then(function(response){
+                    console.log(response);
+                    //todo, associate addresses and tax returns
                     personalProfile.goToNextPage(response.data);
                 })
                 .catch(function(jqXHR,textStatus,errorThrown){
