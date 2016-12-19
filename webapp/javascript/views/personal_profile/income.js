@@ -79,7 +79,7 @@
                                 question.class = "";
                               } else if (question.text === "Yes"){
                                     question.answer = 1;
-                                    question.class = "Active";
+                                    question.class = "active";
                               }
 
                             });
