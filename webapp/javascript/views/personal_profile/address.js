@@ -22,8 +22,8 @@
         //todo, don't make requests if data isn't changing
         if (!helpers.formHasErrors(addressForm)) {
             addressSubmit.addClass(disabledClass);
-            //todo, resolve if the address is new or needs to be updated (different api call)
             var body,
+                taxReturnData,
                 addressRequests = _.map(formData, function(value, key) {
                     body = {
                         addressLine1:  value.street,
@@ -32,6 +32,7 @@
                         province: value.province,
                         postalCode: value.postalCode
                     };
+                    //todo, resolve if the address is new or needs to be updated (different api call)
                     return ajax.ajax(
                         'POST',
                         sessionData.apiUrl+'/tax_return/'+key+'/address',
@@ -41,7 +42,7 @@
                     );
                 }),
                 taxReturnRequests = _.map(formData, function(formValue, formKey) {
-                    var taxReturnData = _.find(sessionData.taxReturns, function(entry){
+                    taxReturnData = _.find(sessionData.taxReturns, function(entry){
                         return parseInt(formKey) === entry.taxReturnId;
                     });
                     body = {
