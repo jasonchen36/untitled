@@ -18,7 +18,6 @@
             if(!helpers.hasSelectedTile(formData)){
                 //todo, real alert
                 window.location.hash = 'modal-personal-profile-popup';
-                alert('no selected option');
             } else if(helpers.noneAppliedMultipleSelectedTiles(formData)){
                 //todo, real alert
                 alert('cannot select None Apply with other options');
