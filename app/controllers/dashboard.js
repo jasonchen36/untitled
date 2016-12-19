@@ -17,11 +17,12 @@ var dashboardForm;
 
 /************ dashboard ************/
 dashboardPages.getDashboardPage = function(req, res, next){
-  var $ = jQuery;
-  dashBoardForm = $('#dashboard-container');
-  var accountInfo = helpers.getAccountInformation(dashboardForm);
-  var accountId = accountInfo.accountId;
-  const accountRequest = {
+ 
+  
+   var userProfile = session.getUserProfileSession(req);
+   var accountId = userProfile.users[0].accountId ;
+
+   const accountRequest = {
         method: 'GET',
         uri: process.env.API_URL+'/account/' + accountId,
         headers: {
@@ -31,11 +32,10 @@ dashboardPages.getDashboardPage = function(req, res, next){
         json: true
     };
 
-requestPromise(accountRequest).then(function(accountData) {
-    var productId = accountInfo.productId;
-    var quoteObj = _.find(accountData.quotes, productId);
-    var quoteId = quoteObj.id;
+    requestPromise(accountRequest).then(function(accountData) {
 
+  
+    var quoteId = accountData.quotes[0].id;
 
     const messageRequest = {
             method: 'GET',
