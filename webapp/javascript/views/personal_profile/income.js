@@ -64,13 +64,12 @@
                         data.accountInfo = accountInfo;
                         data.taxReturns = formData;
                         data.taxReturns.questions = response[2];
-
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){
                             taxReturn.firstName = nameData[index];
                             taxReturn.questions = response[1][index];
                             _.each(taxReturn.questions.answers, function(question){
-
+                              console.log(JSON.stringify(question.text));
                               question.answer = 0;
                               question.class = "";
 
