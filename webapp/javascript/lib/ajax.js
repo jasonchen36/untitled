@@ -18,6 +18,10 @@
                 parameters.data = JSON.stringify(data);
                 parameters.contentType= 'application/json';
                 parameters.dataType = contentType;
+            } else if (contentType === 'json-text') {
+                parameters.data = JSON.stringify(data);
+                parameters.contentType= 'application/json';
+                parameters.dataType = 'text';
             } else {
                 parameters.data = data;
             }

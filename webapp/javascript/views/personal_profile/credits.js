@@ -13,7 +13,10 @@
 
     function submitCredits(){
         if (!creditsSubmit.hasClass(disabledClass)) {
-            var formData = helpers.getTileFormData(creditsForm);
+            var formData = helpers.getTileFormDataArray(creditsForm);
+            var sessionData = personalProfile.getPersonalProfileSession();
+            var accountInfo = helpers.getAccountInformation(sessionData);
+
             if(!helpers.hasSelectedTile(formData)){
                 //todo, real alert
                 alert('no selected option');
@@ -21,24 +24,122 @@
                 //todo, real alert
                 alert('cannot select None Apply with other options');
             } else {
-                creditsSubmit.addClass(disabledClass);
-                ajax.ajax(
-                    'POST',
-                    '/personal-profile',
-                    {
-                        action: 'api-pp-credits',
-                        data: formData
-                    },
-                    'json',
-                    { }
-                )
-                    .then(function(response){
-                        personalProfile.goToNextPage(response.data);
+              return Promise.resolve()
+                    .then(function() {
+                        var promiseArrayPut = [];
+                        var promiseArrayGet = [];
+                        var promiseArrayQuestions = [];
+
+                        //todo, product and question category in variable
+                        var uri = 'http://staging.taxplancanada.ca/api' + '/questions/product/' + 10 + '/category/' + 3;
+
+                        var ajaxAnswers = ajax.ajax(
+                            'GET',
+                            uri,
+                            {
+                            },
+                            'json',
+                           {
+                                  'Authorization': 'Bearer '+ accountInfo.token
+                           }
+                        );
+
+                        promiseArrayQuestions.push(ajaxAnswers);
+
+                        _.each(formData, function(entry) {
+
+                            var answerKeys = Object.keys(entry);
+                            var answers = [];
+                            var answerIndex = 0;
+
+                            _.each(entry, function(answer) {
+
+                                    var text= '';
+
+                                if(answer === 1){
+                                    text = 'Yes';
+                                } else if (answer === 0){
+                                    text = 'No';
+                                }
+
+                                if(text.length > 1) {
+                                  
+                                    answers.push(
+                                           {
+                                               questionId: answerKeys[answerIndex],
+                                               text: text
+                                           });
+                                }
+                                answerIndex++;
+
+
+                            });
+
+
+                            var uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId + '/answers/';
+
+                                var ajaxOne = ajax.ajax(
+                                        'POST',
+                                        uri,
+                                        {
+                                            'answers': answers
+                                        },
+                                        'json-text',
+                                        {
+                                          'Authorization': 'Bearer '+ accountInfo.token
+                                          }
+
+                                    );
+                              promiseArrayPut.push(ajaxOne);
+
+
+
+                            //todo, update with new API route to get tax return with questions and answers in one object
+                            uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId + '/answers/category/' + 3;
+
+                            var ajaxTwo = ajax.ajax(
+                                'GET',
+                                uri,
+                                {
+                                },
+                                'json',
+                                 {
+                                  'Authorization': 'Bearer '+ accountInfo.token
+                                 }
+                            );  
+
+                            promiseArrayGet.push(ajaxTwo);  
+                        });  
+
+                      return Promise.all([Promise.all(promiseArrayPut),
+                            Promise.all(promiseArrayGet),
+                            Promise.all(promiseArrayQuestions)]); 
+
+                    })
+                    .then(function(response) {
+         
+                        var data = {};
+                        data.accountInfo = accountInfo;
+                        data.taxReturns = formData;
+                        data.taxReturns.answers = response[1];
+                        data.taxReturns.questions = response[2];  
+
+                        var index = 0;
+                        _.each(data.taxReturns, function(taxReturn){
+
+                            taxReturn.answers = response[1][index];
+                            taxReturn.questions = response[2][0]; 
+                            index++;
+                        });  
+
+                        personalProfile.goToNextPage(data);
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
-                        creditsSubmit.removeClass(disabledClass);
+                        incomeSubmit.removeClass(disabledClass);
                     });
+
+
             }
         }
     }

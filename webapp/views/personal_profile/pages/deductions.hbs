@@ -7,8 +7,12 @@
                 <button id="deductions-back" class="grey header">Previous</button>
             </div>
             <form id="deductions-form">
-                <h1 class="subtitle">{{users.0.firstName}} please select all your 2016 deductions:</h1>
-                {{>personal-profile-options questions=questions.deductions activeTiles=users.0.activeTiles.deductions tileContainerId=users.0.id}}
+
+                 {{#each taxReturns}}
+                    <h1 class="subtitle">{{firstName}} please select all your 2016 deductions:</h1>
+                    {{>personal-profile-options questions=questions activeTiles=answers tileContainerId=taxReturnId}}
+                    <input type="hidden" id="tax-return-id-{{taxReturnId}}" name="taxReturnId" value="{{taxReturnId}}"/>
+                {{/each}}
             </form>
         </div>
     </div>

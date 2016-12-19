@@ -8,10 +8,6 @@
             </div>
             <form id="income-form">
 
-                <input type="hidden" id="account-id-{{accountInfo.accountId}}" name="accountId" value="{{accountInfo.accountId}}"/>
-                <input type="hidden" id="product-id-10" name="productId" value="{{accountInfo.productId}}"/>
-                <input type="hidden" id="firstName" name="firstName" value="{{accountInfo.firstName}}" />
-                <input type="hidden" id="token" name="token" value="{{accountInfo.token}}" />
                 {{#each taxReturns}}
                     <h1 class="subtitle">{{firstName}} please select all your sources of income in 2016:</h1>
                     {{>personal-profile-options questions=questions activeTiles=answers tileContainerId=taxReturnId}}
@@ -22,3 +18,5 @@
     </div>
     {{>personal-profile-sidebar sidebarTitle="Income"}}
 </section>
+<!--TODO: Add properties for title, blurb, and image-->
+{{>personal-profile-popup}}
