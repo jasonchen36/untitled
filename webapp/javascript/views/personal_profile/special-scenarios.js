@@ -65,7 +65,7 @@
                                 }
 
                                 if(text.length > 1) {
-                                  
+
                                     answers.push(
                                            {
                                                questionId: answerKeys[answerIndex],
@@ -108,31 +108,42 @@
                                  {
                                   'Authorization': 'Bearer '+ accountInfo.token
                                  }
-                            );  
+                            );
 
-                            promiseArrayGet.push(ajaxTwo);  
-                        });  
+                            promiseArrayGet.push(ajaxTwo);
+                        });
 
                       return Promise.all([Promise.all(promiseArrayPut),
                             Promise.all(promiseArrayGet),
-                            Promise.all(promiseArrayQuestions)]); 
+                            Promise.all(promiseArrayQuestions)]);
 
                     })
                     .then(function(response) {
-         
+
                         var data = {};
                         data.accountInfo = accountInfo;
                         data.taxReturns = formData;
-                        data.taxReturns.answers = response[1];
-                        data.taxReturns.questions = response[2];  
+                        data.taxReturns.questions = response[2];
 
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){
+                            taxReturn.questions = response[1][index];
+                            _.each(taxReturn.questions.answers, function(question){
+                              console.log(JSON.stringify(question.text));
+                              question.answer = 0;
+                              question.class = "";
 
-                            taxReturn.answers = response[1][index];
-                            taxReturn.questions = response[2][0]; 
+                              if ( !question.text) {
+                                question.answer = 0;
+                                question.class = "";
+                              } else if (question.text === "Yes"){
+                                    question.answer = 1;
+                                    question.class = "active";
+                              }
+
+                            });
                             index++;
-                        });  
+                        });
 
                         personalProfile.goToNextPage(data);
                     })
