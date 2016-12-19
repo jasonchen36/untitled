@@ -370,3 +370,35 @@ textarea {
     display: none;
   }
 }
+
+//modal
+//------------------------------
+#modal-tax-profile-quote-form{
+  .i--icon-taxplan-logo{
+    height: 70px;
+    margin-top: 50px;
+  }
+}
+.modal-close:after{
+  display: none;
+}
+
+.modal-content{
+  border:none;
+}
+
+.popup{
+  border-radius: 20px     !important;
+  height: 400px;
+  width: 400px            !important;
+  display: block;
+  position: absolute      !important;
+  margin: auto 0          !important;
+  top: calc(50% - 200px)  !important;
+  left: calc(50% - 200px) !important;
+}
+
+.label-popup-header{
+  color:$color-global-red;
+  font-size: 1.4rem;
+}
