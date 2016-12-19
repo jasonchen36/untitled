@@ -136,7 +136,7 @@
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
-                        incomeSubmit.removeClass(disabledClass);
+                        creditsSubmit.removeClass(disabledClass);
                     });
 
 
