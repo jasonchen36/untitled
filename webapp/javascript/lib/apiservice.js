@@ -131,11 +131,73 @@
 
 
 
+    this.getMessages = function(sessionData){
+  
+        var accountInfo = helpers.getAccountInformation(sessionData);
+  
+        uri = sessionData.apiUrl + '/messages';
+
+        var ajaxPromise = ajax.ajax(
+            'GET',
+            uri,
+            {
+            },
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        )
+        return ajaxPromise;
+
+    };
+
+
+
+    this.postMessages = function(sessionData, message){
+  
+        var accountInfo = helpers.getAccountInformation(sessionData);
+  
+        uri = sessionData.apiUrl + '/messages';
+
+        var ajaxPromise = ajax.ajax(
+            'POST',
+            uri,
+            {
+                from: sessionData.users[0].id,
+                body: message
+            },
+            'json-text',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        )
+        return ajaxPromise;
+
+    };
 
 
 
 
+    this.getAccount = function(sessionData){
+  
+        var accountInfo = helpers.getAccountInformation(sessionData);
+  
+        uri = sessionData.apiUrl + '/account/' + accountInfo.accountId
 
+        var ajaxPromise = ajax.ajax(
+            'GET',
+            uri,
+            {
+            },
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        )
+
+        return ajaxPromise;
+
+    };
 
 
 

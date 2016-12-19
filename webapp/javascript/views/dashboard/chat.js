@@ -3,6 +3,7 @@
     var $ = jQuery,
         that = app.views.dashboard.chat,
         helpers = app.helpers,
+        apiservice = app.apiservice, 
         chatForm,
         chatSubmit,
         chatMessageInput,
@@ -18,20 +19,12 @@
             }
             if (!helpers.formHasErrors(chatForm)) {
                 chatSubmit.addClass(disabledClass);
-                app.ajax.ajax(
-                    'PUT',
-                    '/dashboard/chat',
-                    {
-                        action: 'api-dashboard-chat',
-                        message: formData.message
-                    },
-                    'json',
-                    { }
-                )
+
+                apiservice.postMessages(userObject, formData.message)
                     .then(function(response){
-                        //todo, show success and refresh?
-                        //todo, refresh messages without refresh?
-                        window.location.reload();
+                      
+                      app.services.dashboard.refreshPage();
+
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         console.log(jqXHR,textStatus,errorThrown);

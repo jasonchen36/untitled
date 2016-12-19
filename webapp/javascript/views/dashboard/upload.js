@@ -3,6 +3,7 @@
     var $ = jQuery,
         that = app.views.dashboard.upload,
         helpers = app.helpers,
+        apiservice = app.apiservice, 
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass,
         dashboard = app.services.dashboard,
@@ -32,26 +33,8 @@
                     });
             },
             done: function (e, data) {
-                app.ajax.ajax(
-                    'PUT',
-                    '/dashboard/document',
-                    {
-                        action: 'api-dashboard-upload',
-                        fileName: data.files[0].name,
-                        checklistItemId: userSession.activeItem.checklistItemId
-                    },
-                    'json',
-                    {  }
-                )
-                    .then(function(response){
-                        $(fileUploadSubmitId).text('Upload finished').removeClass(disabledClass);
-                        //todo, clear form and or refresh template
-                        window.location.reload();
-                    })
-                    .catch(function(jqXHR,textStatus,errorThrown){
-                        console.log(jqXHR,textStatus,errorThrown);
-                        $(fileUploadSubmitId).removeClass(disabledClass);
-                    });
+
+                app.services.dashboard.refreshPage();
             },
             cancel: function (e, data) {
                 console.log(data);

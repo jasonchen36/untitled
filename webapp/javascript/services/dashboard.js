@@ -4,6 +4,7 @@
     /* *************** variables ***************/
     var $ = jQuery,
         that = app.services.dashboard,
+        apiservice = app.apiservice, 
         cookies = app.cookies,
         userSessionStore,
         landingPageContainer = $('#dashboard-container'),
@@ -56,26 +57,12 @@
 
     function changePageChat(){
 
-        var userSession = that.getUserSession(),
-            uri = userSession.apiUrl + '/messages';
-
-        app.ajax.ajax(
-            'GET',
-            uri,
-            {
-            },
-            'json',
-            {
-                'Authorization': 'Bearer '+ userSessionStore.token
-            }
-        )
+      
+        apiservice.getMessages(userObject)
             .then(function(response){
 
-
                 var dataObject = {};
-
                 dataObject.newMessageCount = 0;
-
                 dataObject.messages  = [];
 
                 var today = moment();
@@ -102,10 +89,7 @@
                 console.log(jqXHR,textStatus,errorThrown);
 
             });
-
-
     }
-
 
 
     function getChatMessageObject(data){
@@ -157,7 +141,13 @@
             newPage;
 
         newPage = that.dashboardOrder[currentPageIndex];
-        that.changePage(newPage);
+
+        if(newPage == 'chat')  {
+            changePageChat();
+        }  else  {
+            that.changePage(newPage);
+        }
+
     };
 
     this.getUserSession = function(){
@@ -187,7 +177,7 @@
                 });
 
             //functions
-            that.changePage(getCurrentPage(), true);
+            that.refreshPage();
         }
     };
 

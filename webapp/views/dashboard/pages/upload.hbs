@@ -32,10 +32,11 @@
         <h1 class="label-activeItem-name display-inline-block">{{activeItem.name}}</h1>
         <div class="label-activeItem-subtitle f--futura-book add-margin-left display-inline-block">Statement of Renumeration Paid</div>
         <div id="dashboard-upload-progress" class="progress-bar"></div>
-        <form id="dashboard-upload-form">
+        <form id="dashboard-upload-form" enctype="multipart/form-data">
             <p class="label-instruction-upload">Drop files here to upload</p>
             <p class="f--futura-book">or</p>
-            <input id="dashboard-upload-input" type="file" name="files[]" data-url="/dashboard/upload">
+            <input id="dashboard-upload-input" type="file" name="files[]" data-url="{{uploadUrl}}" >
+            <input id="dashboard-upload-chechlist-item" type="hidden" name="checklistItemId" value="{{activeItem.checklistItemId}}" >
             <button id="dashboard-upload-select" type="button" class="purple long">Select Files</button>
             <button id="dashboard-upload-submit" type="submit" class="disabled long purple">Upload</button>
             <button id="dashboard-upload-cancel" type="reset" class="disabled long purple">Cancel</button>
