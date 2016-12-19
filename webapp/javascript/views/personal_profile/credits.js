@@ -63,7 +63,6 @@
                         _.each(data.taxReturns, function(taxReturn){
                             taxReturn.questions = response[1][index];
                             _.each(taxReturn.questions.answers, function(question){
-                              console.log(JSON.stringify(question.text));
                               question.answer = 0;
                               question.class = "";
 
