@@ -33,6 +33,7 @@
                         var promiseArrayPut = [];
                         var promiseArrayGet = [];
                         var promiseArrayQuestions = [];
+                        var promiseArrayTaxReturns = [];
 
                         //todo, product and question category in variable
                         var uri = sessionData.apiUrl + '/questions/product/' + sessionData.productId + '/category/' + 2;
@@ -110,14 +111,28 @@
                                  {
                                   'Authorization': 'Bearer '+ accountInfo.token
                                  }
-                            );  
+                            );
 
+                            uri = sessionData.apiUrl + '/tax_return/' + entry.taxReturnId;
+                            var ajaxTaxReturns =ajax.ajax(
+                                'GET',
+                                uri,
+                                {
+                                },
+                                'json',
+                                {
+                                    'Authorization': 'Bearer '+ accountInfo.token
+                                }
+                            );
+
+                            promiseArrayTaxReturns.push(ajaxTaxReturns);
                             promiseArrayGet.push(ajaxTwo);  
                         });  
 
                       return Promise.all([Promise.all(promiseArrayPut),
                             Promise.all(promiseArrayGet),
-                            Promise.all(promiseArrayQuestions)]); 
+                            Promise.all(promiseArrayQuestions),
+                            Promise.all(promiseArrayTaxReturns)]);
 
                     })
                     .then(function(response) {
@@ -126,13 +141,12 @@
          
                         var data = {};
                         data.accountInfo = accountInfo;
-                        data.taxReturns = formData;
+                        data.taxReturns = response[3];
                         data.taxReturns.answers = response[1];
-                        data.taxReturns.questions = response[2];  
+                        data.taxReturns.questions = response[2];
 
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){
-
                             taxReturn.answers = response[1][index];
                             taxReturn.questions = response[2][0]; 
                             index++;
