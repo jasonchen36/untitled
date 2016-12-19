@@ -82,7 +82,7 @@
   
         var accountInfo = helpers.getAccountInformation(sessionData);
       
-        var answerKeys = Object.keys(entry)
+        var answerKeys = Object.keys(entry);
         var answers = [];
         var answerIndex = 0;
 
