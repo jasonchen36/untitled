@@ -109,14 +109,19 @@
         } else {
             //for regular forms like login, register, etc
             var userData = {};
+            var index = 0;
             formElement.find('input').each(function(){
+                input = $(this);
                 if ($(this).attr('type') === 'checkbox'){
                     userData[input.attr('name')] = $(this).prop('checked')?1:0;
-                } else {
-                    userData[input.attr('name')] = $(this).val();
+                } else if($(this).attr('type') === 'hidden') {
+                    userData[index] = $(this).val();
+                    index++;
                 }
             });
+
             formElement.find('textarea').each(function(){
+                input = $(this);
                 userData[input.attr('name')] = $(this).val();
             });
             data.push(userData);
@@ -161,7 +166,7 @@
         formElement.find('.'+that.tileContainerClass).each(function(){
             container = $(this);
             containerId = container.attr('data-id');
-            var userData = {taxReturnId:container.attr('data-id')};
+            var userData = {taxReturnId:container.attr('data-id'), firstName:container.attr('value')};
             //data[containerId] = {};
             container.find('.'+that.tileClass).each(function(){
                 tile = $(this);

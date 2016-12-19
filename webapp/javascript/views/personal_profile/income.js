@@ -15,10 +15,12 @@
     function submitIncome(){
         if (!incomeSubmit.hasClass(disabledClass)) {
             var formData = helpers.getTileFormDataArray(incomeForm);
-         
+
+            var nameData = helpers.getFormDataArray(incomeForm);
+            nameData = nameData[0];
+
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
-
 
             if(!helpers.hasSelectedTile(formData)){
                 //todo, real alert
@@ -34,26 +36,11 @@
                         var promiseArrayGet = [];
                         var promiseArrayQuestions = [];
 
-     /*                   //todo, product and question category in variable
-                        var uri = sessionData.apiUrl + '/questions/product/' + sessionData.productId + '/category/' + 2;
-
-                        var ajaxAnswers = ajax.ajax(
-                            'GET',
-                            uri,
-                            {
-                            },
-                            'json',
-                           {
-                                  'Authorization': 'Bearer '+ accountInfo.token
-                           }
-                        ); */
-
-
+                        //todo, product and question category in variable
                         var ajaxAnswers = apiservice.getQuestions(sessionData,2);
                         promiseArrayQuestions.push(ajaxAnswers);
 
                         _.each(formData, function(entry) {
-
                                                   
                             var ajaxOne =  apiservice.postAnswers(sessionData,
                                                  entry.taxReturnId, entry);
@@ -72,8 +59,6 @@
                     })
                     .then(function(response) {
 
-
-         
                         var data = {};
                         data.accountInfo = accountInfo;
                         data.taxReturns = formData;
@@ -82,9 +67,9 @@
 
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){
-
+                            taxReturn.firstName = nameData[index];
                             taxReturn.answers = response[1][index];
-                            taxReturn.questions = response[2][0]; 
+                            taxReturn.questions = response[2][0];
                             index++;
                         });  
 
