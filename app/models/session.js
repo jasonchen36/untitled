@@ -21,6 +21,8 @@ sessionModel.getTaxProfileUserObject = function(data){
 sessionModel.getTaxProfileObject = function(data){
     return {
         hasTaxProfileSession: true,
+        apiUrl: data.apiUrl,
+        productId: data.productId,
         expiry: moment().add(7, 'days'),
         currentPage: 'welcome',
         users: [
@@ -54,6 +56,8 @@ sessionModel.getUserProfileObject = function(data){
     return {
         hasUserProfileSession: true,
         token: data.token,
+        apiUrl: process.env.API_URL,
+        productId: process.env.API_PRODUCT_ID,
         expiry: moment().add(1, 'hour'),
         users: [
             sessionModel.getUserProfileUserObject(data)

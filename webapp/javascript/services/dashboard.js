@@ -56,54 +56,55 @@
 
     function changePageChat(){
 
-            var uri = 'http://staging.taxplancanada.ca/api' + '/messages';
+        var userSession = that.getUserSession(),
+            uri = userSession.apiUrl + '/messages';
 
-            app.ajax.ajax(
-                    'GET',
-                    uri,
-                    {
-                    },
-                    'json',
-                    {
-                      'Authorization': 'Bearer '+ userSessionStore.token
+        app.ajax.ajax(
+            'GET',
+            uri,
+            {
+            },
+            'json',
+            {
+                'Authorization': 'Bearer '+ userSessionStore.token
+            }
+        )
+            .then(function(response){
+
+
+                var dataObject = {};
+
+                dataObject.newMessageCount = 0;
+
+                dataObject.messages  = [];
+
+                var today = moment();
+                var foundToday = false;
+                response.messages.forEach(function(entry){
+
+                    dataObject.messages.push(getChatMessageObject(entry));
+
+                    //count unread messages
+                    if(entry.status.toLowerCase() === 'new'){
+                        dataObject.newMessageCount++;
                     }
-                )
-               .then(function(response){
-                
+                    if(moment(entry.rawDate).month() === moment(today).month() &&
+                        moment(today).date() === moment(entry.rawDate).date() &&
+                        foundToday === false){
+                        entry.isFirst = true;
+                        foundToday = true;
+                    }
+                });
 
-                    var dataObject = {};
-                
-                    dataObject.newMessageCount = 0;
+                that.changePage('chat', dataObject);
+            })
+            .catch(function(jqXHR,textStatus,errorThrown){
+                console.log(jqXHR,textStatus,errorThrown);
 
-                    dataObject.messages  = [];
-
-                    var today = moment();
-                    var foundToday = false;
-                    response.messages.forEach(function(entry){
-
-                        dataObject.messages.push(getChatMessageObject(entry));
-
-                        //count unread messages
-                        if(entry.status.toLowerCase() === 'new'){
-                            dataObject.newMessageCount++;
-                        }
-                        if(moment(entry.rawDate).month() === moment(today).month() && 
-                            moment(today).date() === moment(entry.rawDate).date() && 
-                            foundToday === false){
-                            entry.isFirst = true;
-                            foundToday = true;
-                         }
-                     });
-
-                   that.changePage('chat', dataObject);
-                })
-               .catch(function(jqXHR,textStatus,errorThrown){
-                     console.log(jqXHR,textStatus,errorThrown);
-                   
             });
 
-       
-    };
+
+    }
 
 
 
@@ -124,7 +125,7 @@
             isFromTaxPlan: data.from_role === 'TAXPlan', // todo is this the final role name?  
             isFirst: false
         };
-     }
+    }
 
 
 
@@ -154,7 +155,7 @@
         var currentPage = getCurrentPage(),
             currentPageIndex = that.dashboardOrder.indexOf(currentPage),
             newPage;
-   
+
         newPage = that.dashboardOrder[currentPageIndex];
         that.changePage(newPage);
     };

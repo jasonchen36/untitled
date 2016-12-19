@@ -38,9 +38,9 @@
                         var promiseArrayPut = [];
                         var promiseArrayGet = [];
                         var promiseArrayQuestions = [];
-
-                        //todo, product and question category in variable
-                        var uri = 'http://staging.taxplancanada.ca/api' + '/questions/product/' + 10 + '/category/' + 1;
+                        
+                        //todo, question category in variable
+                        var uri = sessionData.apiUrl+'/questions/product/'+sessionData.productId+'/category/'+ 1;
 
                         var ajaxAnswers = ajax.ajax(
                             'GET',
@@ -57,8 +57,7 @@
 
                         _.each(formData, function(entry) {
 
-                            // todo, insert staging api url
-                            var uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId;
+                            var uri = sessionData.apiUrl + '/tax_return/' + entry.taxReturnId;
                             var ajaxUpdate =ajax.ajax(
                                 'PUT',
                                 uri,
@@ -73,7 +72,7 @@
                                 }
                             );
 
-                             uri = 'http://staging.taxplancanada.ca/api' + '/tax_return/' + entry.taxReturnId + '/answers/category/' + 1;
+                             uri = sessionData.apiUrl + '/tax_return/' + entry.taxReturnId + '/answers/category/' + 1;
 
                              var ajaxAnswers = ajax.ajax(
                              'GET',
