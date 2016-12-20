@@ -158,8 +158,6 @@
             parentContainer.find('#postal-code-'+taxReturnId).val(formData.postalCode).prop('disabled', true);
             //province
             parentContainer.find('#province-'+taxReturnId).val(formData.province).prop('disabled', true);
-            //province residence
-            parentContainer.find('#province-residence-'+taxReturnId).val(formData.provinceResidence).prop('disabled', true);
         } else {
             //checkbox
             checkbox.removeClass(helpers.activeClass);
