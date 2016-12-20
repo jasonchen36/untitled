@@ -21,7 +21,7 @@
             helpers.resetForm(lastNameForm);
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
-            if (helpers.isEmpty(formData.lastName)){
+            if (helpers.isEmpty(formData)){
                 lastNameInput.addClass(errorClass);
                 lastNameErrorLabelLastName.addClass(errorClass);
             } else {
