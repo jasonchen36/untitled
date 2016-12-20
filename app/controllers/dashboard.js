@@ -65,6 +65,7 @@ dashboardPages.getDashboardPage = function(req, res, next){
                 dataObject.documentChecklist = sessionModel.getDocumentChecklistObject(response[1]);
                 dataObject.newMessageCount = 0;
                 dataObject.messages = [];
+                dataObject.quoteId = quoteId;
                 dataObject.uploadUrl = userProfile.apiUrl + '/quote/' + quoteId + '/document';
 
                 res.render('dashboard/dashboard', {

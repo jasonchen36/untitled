@@ -201,6 +201,27 @@
 
 
 
+    this.getChecklist = function(sessionData, quoteId){
+  
+        var accountInfo = helpers.getAccountInformation(sessionData);
+      
+        uri = sessionData.apiUrl + '/quote/' + quoteId + '/checklist';
+
+        var ajaxPromise = ajax.ajax(
+              'GET',
+               uri,
+              {
+              },
+              'json',
+              {
+                  'Authorization': 'Bearer '+ accountInfo.token
+              }
+         );
+
+        return ajaxPromise;
+
+    };
+
 
 
 
