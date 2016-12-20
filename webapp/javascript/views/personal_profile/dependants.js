@@ -5,6 +5,8 @@
         helpers = app.helpers,
         personalProfile = app.services.personalProfile,
         dependantsForm,
+        ajax = app.ajax,
+        apiservice = app.apiservice,
         dependantsSubmit,
         dependantsBack,
         dependantsSave,
@@ -16,16 +18,20 @@
 
     function submitDependants(){
         if (!dependantsSubmit.hasClass(disabledClass)) {
-            var formData = helpers.getTileFormData(dependantsForm);
-            if(!helpers.hasSelectedTile(formData)){
+            var formData = helpers.getTileFormDataArray(dependantsForm);
+            var sessionData = personalProfile.getPersonalProfileSession();
+            var accountInfo = helpers.getAccountInformation(sessionData);
+            var nameData = helpers.getFormDataArray(dependantsForm);
+            nameData = nameData[0];
+           /* if(!helpers.hasSelectedTile(formData)){
                 //todo, real alert
                 alert('no selected option');
             }else if ( helpers.hasMultipleSelectedTiles(formData)){
                 //todo, real alert
                 alert('please select only one option');
-            } else {
+            } else {*/
                 dependantsSubmit.addClass(disabledClass);
-                app.ajax.ajax(
+                /*app.ajax.ajax(
                     'POST',
                     '/personal-profile',
                     {
@@ -34,15 +40,58 @@
                     },
                     'json',
                     { }
-                )
-                    .then(function(response){
-                        personalProfile.goToNextPage(response.data);
+                )*/
+                return Promise.resolve()
+                    .then(function() {
+                        var promiseArrayPut = [];
+                        var promiseArrayGet = [];
+                        var promiseArrayQuestions = [];
+
+                        //todo, product and question category in variable
+                        var ajaxAnswers = apiservice.getQuestions(sessionData,2);
+                        promiseArrayQuestions.push(ajaxAnswers);
+
+                        _.each(formData, function(entry) {
+
+                            //todo,
+                            /*var ajaxOne =  apiservice.postAnswers(sessionData,
+                             entry.taxReturnId, entry);
+                             promiseArrayPut.push(ajaxOne);*/
+
+                            var ajaxTwo = apiservice.getAnswers(sessionData,
+                                entry.taxReturnId,2);
+
+                            promiseArrayGet.push(ajaxTwo);
+                        });
+
+                        return Promise.all([Promise.all(promiseArrayPut),
+                            Promise.all(promiseArrayGet),
+                            Promise.all(promiseArrayQuestions)]);
+
+                    })
+                    .then(function(response) {
+
+                        var data = {};
+                        data.accountInfo = accountInfo;
+                        data.taxReturns = formData;
+                        data.taxReturns.answers = response[1];
+                        data.taxReturns.questions = response[2];
+
+                        var index = 0;
+                        _.each(data.taxReturns, function(taxReturn){
+                            taxReturn.firstName = nameData[index];
+                            taxReturn.answers = response[1][index];
+                            taxReturn.questions = response[2][0];
+                            index++;
+                        });
+
+                        personalProfile.goToNextPage(data);
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
-                        console.log(jqXHR,textStatus,errorThrown);
+                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         dependantsSubmit.removeClass(disabledClass);
                     });
-            }
+            //}
         }
     }
 
@@ -128,7 +177,7 @@
             tileOptions.on('click',function(event){
                 event.preventDefault();
                 $(this).toggleClass(helpers.activeClass);
-                updateUserDependants($(this),$(this).parent());
+                //updateUserDependants($(this),$(this).parent());
             });
 
             add.on('click',function(event){
