@@ -17,7 +17,7 @@
         if (!incomeSubmit.hasClass(disabledClass)) {
             var formData = helpers.getTileFormDataArray(incomeForm);
 
-            var nameData = helpers.getFormDataArray(incomeForm);
+            nameData = helpers.getFormDataArray(incomeForm);
             nameData = nameData[0];
 
             var sessionData = personalProfile.getPersonalProfileSession();

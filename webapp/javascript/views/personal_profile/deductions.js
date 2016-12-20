@@ -60,6 +60,7 @@
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){
                             taxReturn.questions = response[1][index];
+                            taxReturn.firstName = nameData[index];
                             _.each(taxReturn.questions.answers, function(question){
                               question.answer = 0;
                               question.class = "";
@@ -130,6 +131,7 @@
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){
                             taxReturn.questions = response[1][index];
+                            taxReturn.firstName = nameData[index];
                             _.each(taxReturn.questions.answers, function(question){
                               question.answer = 0;
                               question.class = "";
