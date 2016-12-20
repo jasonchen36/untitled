@@ -34,6 +34,28 @@
                 submitQuote();
             });
 
+            quoteSubmit.on('hover',function(event){
+                event.preventDefault();
+                $('#tax-profile-instructions').innerHTML('
+                  <div class="display-inline-table full-width">\
+                      <p class="display-inline-block float-left">Self Employed</p>\
+                      <p class="display-inline-block float-right">$19.00</p>\
+                  </div>\
+                  <div class="display-inline-table full-width">\
+                      <p class="display-inline-block float-left">Capital Gains</p>\
+                      <p class="display-inline-block float-right">$19.00</p>\
+                  </div>\
+                  <div class="display-inline-table full-width">\
+                      <p class="display-inline-block float-left">Employee Related Expenses</p>\
+                      <p class="display-inline-block float-right">$19.00</p>\
+                  </div>\
+                  <div class="display-inline-table full-width">\
+                      <p class="display-inline-block float-left">Total</p>\
+                      <p class="display-inline-block float-right">$19.00</p>\
+                  </div>\
+                ');
+            });
+
             quoteBack.on('click',function(event){
                 event.preventDefault();
                 taxProfile.goToPreviousPage();

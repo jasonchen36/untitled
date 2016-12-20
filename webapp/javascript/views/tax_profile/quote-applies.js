@@ -59,6 +59,7 @@
             quoteAppliesSubmit.on('click',function(event){
                 event.preventDefault();
                 submitQuoteApplies();
+                hover = 1;
             });
 
             quoteAppliesBack.on('click',function(event){
