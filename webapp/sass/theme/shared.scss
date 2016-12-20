@@ -101,6 +101,19 @@ button {
   }
 }
 
+.green-button{
+  border-radius: 30px;
+  color: white;
+  cursor: pointer;
+  padding: 10px 40px;
+  text-decoration: none !important;
+  text-transform: none;
+  border: 0 none;
+  font-size: 12px;
+  outline:none;
+  background: $color-global-green;
+}
+
 button:active{
   background:grey;
 }
