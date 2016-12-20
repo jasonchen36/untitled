@@ -146,7 +146,7 @@
             {
                 'Authorization': 'Bearer '+ accountInfo.token
             }
-        )
+        );
         return ajaxPromise;
 
     };
@@ -170,7 +170,7 @@
             {
                 'Authorization': 'Bearer '+ accountInfo.token
             }
-        )
+        );
         return ajaxPromise;
 
     };
@@ -182,7 +182,7 @@
   
         var accountInfo = helpers.getAccountInformation(sessionData);
   
-        uri = sessionData.apiUrl + '/account/' + accountInfo.accountId
+        uri = sessionData.apiUrl + '/account/' + accountInfo.accountId;
 
         var ajaxPromise = ajax.ajax(
             'GET',
@@ -193,7 +193,7 @@
             {
                 'Authorization': 'Bearer '+ accountInfo.token
             }
-        )
+        );
 
         return ajaxPromise;
 
