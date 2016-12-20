@@ -9,7 +9,7 @@
             <form id="special-scenarios-form">
                 {{#each taxReturns}}
                     <h1 class="subtitle">{{firstName}} please select all scenarios that applied to you in 2016:</h1>
-                    {{>personal-profile-options questions=questions activeTiles=answers tileContainerId=taxReturnId}}
+                    {{>personal-profile-options questions=questions.answers activeTiles=questions.answers.answer tileContainerId=taxReturnId}}
                     <input type="hidden" id="tax-return-id-{{taxReturnId}}" name="taxReturnId" value="{{taxReturnId}}"/>
                 {{/each}}
             </form>

@@ -5,7 +5,8 @@
     var $ = jQuery,
         that = app.views.personalProfile.lastName,
         helpers = app.helpers,
-        apiservice = app.apiservice, 
+        apiservice = app.apiservice,
+        ajax = app.ajax,
         personalProfile = app.services.personalProfile,
         lastNameForm,
         lastNameSubmit,
@@ -37,7 +38,7 @@
                         var promiseArrayPut = [];
                         var promiseArrayGet = [];
                         var promiseArrayQuestions = [];
-                        
+
                         var ajaxAnswers = apiservice.getQuestions(sessionData,1);
 
                         promiseArrayQuestions.push(ajaxAnswers);
@@ -49,9 +50,11 @@
                              var ajaxUpdate = apiservice.putTaxReturnLastName(
                                      sessionData, entry.taxReturnId, entry.lastName);
 
- 
-                             var ajaxAnswers = apiservice.getAnswers(sessionData,       
+
+                             var ajaxAnswers = apiservice.getAnswers(sessionData,
                                                     entry.taxReturnId,1);
+
+
 
                             promiseArrayPut.push(ajaxUpdate);
                             promiseArrayGet.push(ajaxAnswers);
@@ -68,16 +71,28 @@
                         var data = {};
                         data.accountInfo = accountInfo;
                         data.taxReturns = formData;
-                        data.taxReturns.answers = response[1];
                         data.taxReturns.questions = response[2];
-
-
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){
-                            taxReturn.answers = response[1][index];
-                            taxReturn.questions = response[2][0];
+                            taxReturn.questions = response[1][index];
+                            _.each(taxReturn.questions.answers, function(question){
+
+                              question.answer = 0;
+                              question.class = "";
+
+                              if ( !question.text) {
+                                question.answer = 0;
+                                question.class = "";
+                              } else if (question.text === "Yes"){
+                                    question.answer = 1;
+                                    question.class = "active";
+                              }
+
+                            });
                             index++;
                         });
+
+
 
                         personalProfile.goToNextPage(data);
                     })
