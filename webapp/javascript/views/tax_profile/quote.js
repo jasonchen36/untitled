@@ -23,37 +23,38 @@
             quoteSubmit = $('#quote-submit');
             quoteBack = $('#quote-back');
 
+            quoteDetails = $('#quote-details');
             //listeners
             quoteForm.on('submit',function(event){
                 event.preventDefault();
                 submitQuote();
             });
 
-            quoteSubmit.on('click',function(event){
+            quoteDetails.on('click',function(event){
                 event.preventDefault();
                 submitQuote();
             });
 
-            quoteSubmit.on('hover',function(event){
+            quoteDetails.on('mouseover',function(event){
                 event.preventDefault();
-                $('#tax-profile-instructions').innerHTML('
-                  <div class="display-inline-table full-width">\
-                      <p class="display-inline-block float-left">Self Employed</p>\
-                      <p class="display-inline-block float-right">$19.00</p>\
-                  </div>\
-                  <div class="display-inline-table full-width">\
-                      <p class="display-inline-block float-left">Capital Gains</p>\
-                      <p class="display-inline-block float-right">$19.00</p>\
-                  </div>\
-                  <div class="display-inline-table full-width">\
-                      <p class="display-inline-block float-left">Employee Related Expenses</p>\
-                      <p class="display-inline-block float-right">$19.00</p>\
-                  </div>\
-                  <div class="display-inline-table full-width">\
-                      <p class="display-inline-block float-left">Total</p>\
-                      <p class="display-inline-block float-right">$19.00</p>\
-                  </div>\
-                ');
+                console.log('it is moused over');
+                // TODO: Avoid hard-coding prices
+                  $('#tax-profile-instructions').html('<div class="display-inline-table full-width">'+
+                      '<p class="display-inline-block float-left">Self Employed</p>'+
+                      '<p class="display-inline-block float-right">$19.00</p>'+
+                  '</div>'+
+                   '<div class="display-inline-table full-width">'+
+                      '<p class="display-inline-block float-left">Capital Gains</p>'+
+                      '<p class="display-inline-block float-right">$19.00</p>'+
+                  '</div>'+
+                  '<div class="display-inline-table full-width">'+
+                      '<p class="display-inline-block float-left">Employee Related Expenses</p>'+
+                      '<p class="display-inline-block float-right">$19.00</p>'+
+                  '</div>'+
+                  '<div class="display-inline-table full-width">'+
+                      '<p class="display-inline-block float-left">Total</p>'+
+                      '<p class="display-inline-block float-right">$19.00</p>'+
+                  '</div>');
             });
 
             quoteBack.on('click',function(event){
