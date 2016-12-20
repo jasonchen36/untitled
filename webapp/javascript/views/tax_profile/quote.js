@@ -37,24 +37,31 @@
 
             quoteDetails.on('mouseover',function(event){
                 event.preventDefault();
-                console.log('it is moused over');
                 // TODO: Avoid hard-coding prices
                   $('#tax-profile-instructions').html('<div class="display-inline-table full-width">'+
-                      '<p class="display-inline-block float-left">Self Employed</p>'+
+                      '<p class="display-inline-block float-left">Lorem Ipsum</p>'+
                       '<p class="display-inline-block float-right">$19.00</p>'+
                   '</div>'+
                    '<div class="display-inline-table full-width">'+
-                      '<p class="display-inline-block float-left">Capital Gains</p>'+
+                      '<p class="display-inline-block float-left">Lorem Ipsum</p>'+
                       '<p class="display-inline-block float-right">$19.00</p>'+
                   '</div>'+
                   '<div class="display-inline-table full-width">'+
-                      '<p class="display-inline-block float-left">Employee Related Expenses</p>'+
+                      '<p class="display-inline-block float-left">Lorem Ipsum</p>'+
                       '<p class="display-inline-block float-right">$19.00</p>'+
                   '</div>'+
                   '<div class="display-inline-table full-width">'+
                       '<p class="display-inline-block float-left">Total</p>'+
                       '<p class="display-inline-block float-right">$19.00</p>'+
                   '</div>');
+            });
+
+            quoteDetails.on('mouseout',function(event){
+                event.preventDefault();
+                // TODO: Avoid hard-coding prices
+                  $('#tax-profile-instructions').html('<p id="tax-profile-instructions" class="side-info-blurb">'+
+                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris aliquam velit ut faucibus consequat. In hac habitasse platea dictumst. Proin at volutpat velit. Quisque congue varius nulla non aliquam. Integer condimentum dapibus ipsum, sit amet pharetra ligula aliquam sit amet. Praesent dui tortor, molestie et sodales non, vulputate in ligula. Curabitur nec justo tellus. Sed ac arcu porttitor, blandit sapien convallis, ultrices nisi. Duis aliquam iaculis nunc sed sodales. Phasellus cursus convallis scelerisque. Nulla consectetur, nunc at maximus tincidunt, mauris sapien vehicula libero, at bibendum metus dui ac magna. Donec tempus justo eu vestibulum dictum.'+
+                  '</p>');
             });
 
             quoteBack.on('click',function(event){
