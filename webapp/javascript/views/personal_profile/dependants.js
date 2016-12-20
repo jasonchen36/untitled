@@ -23,13 +23,6 @@
             var accountInfo = helpers.getAccountInformation(sessionData);
             var nameData = helpers.getFormDataArray(dependantsForm);
             nameData = nameData[0];
-           /* if(!helpers.hasSelectedTile(formData)){
-                //todo, real alert
-                alert('no selected option');
-            }else if ( helpers.hasMultipleSelectedTiles(formData)){
-                //todo, real alert
-                alert('please select only one option');
-            } else {*/
             if(!helpers.hasSelectedTile(formData)){
                 window.location.hash = 'modal-personal-profile-popup';
             }else if ( helpers.hasMultipleSelectedTiles(formData)){
@@ -69,14 +62,25 @@
                         var data = {};
                         data.accountInfo = accountInfo;
                         data.taxReturns = formData;
-                        data.taxReturns.answers = response[1];
                         data.taxReturns.questions = response[2];
 
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){
                             taxReturn.firstName = nameData[index];
-                            taxReturn.answers = response[1][index];
-                            taxReturn.questions = response[2][0];
+                            taxReturn.questions = response[1][index];
+                            _.each(taxReturn.questions.answers, function(question){
+                              question.answer = 0;
+                              question.class = "";
+
+                              if ( !question.text) {
+                                question.answer = 0;
+                                question.class = "";
+                              } else if (question.text === "Yes"){
+                                    question.answer = 1;
+                                    question.class = "active";
+                              }
+
+                            });
                             index++;
                         });
 
@@ -88,6 +92,88 @@
                     });
             }
         }
+    }
+
+    function updateDependants(){
+        if (!dependantsSubmit.hasClass(disabledClass)) {
+            var formData = helpers.getTileFormDataArray(dependantsForm);
+            var sessionData = personalProfile.getPersonalProfileSession();
+            var accountInfo = helpers.getAccountInformation(sessionData);
+            var nameData = helpers.getFormDataArray(dependantsForm);
+            nameData = nameData[0];
+                dependantsSubmit.addClass(disabledClass);
+                /*app.ajax.ajax(
+                    'POST',
+                    '/personal-profile',
+                    {
+                        action: 'api-pp-dependants',
+                        data: formData
+                    },
+                    'json',
+                    { }
+                )*/
+                return Promise.resolve()
+                    .then(function() {
+                        var promiseArrayPut = [];
+                        var promiseArrayGet = [];
+                        var promiseArrayQuestions = [];
+
+                        //todo, product and question category in variable
+                        var ajaxAnswers = apiservice.getQuestions(sessionData,2);
+                        promiseArrayQuestions.push(ajaxAnswers);
+
+                        _.each(formData, function(entry) {
+
+                            //todo,
+                            /*var ajaxOne =  apiservice.postAnswers(sessionData,
+                             entry.taxReturnId, entry);
+                             promiseArrayPut.push(ajaxOne);*/
+
+                            var ajaxTwo = apiservice.getAnswers(sessionData,
+                                entry.taxReturnId,2);
+
+                            promiseArrayGet.push(ajaxTwo);
+                        });
+
+                        return Promise.all([Promise.all(promiseArrayPut),
+                            Promise.all(promiseArrayGet),
+                            Promise.all(promiseArrayQuestions)]);
+
+                    })
+                    .then(function(response) {
+
+                        var data = {};
+                        data.accountInfo = accountInfo;
+                        data.taxReturns = formData;
+                        data.taxReturns.questions = response[2];
+
+                        var index = 0;
+                        _.each(data.taxReturns, function(taxReturn){
+                            taxReturn.firstName = nameData[index];
+                            taxReturn.questions = response[1][index];
+                            _.each(taxReturn.questions.answers, function(question){
+                              question.answer = 0;
+                              question.class = "";
+
+                              if ( !question.text) {
+                                question.answer = 0;
+                                question.class = "";
+                              } else if (question.text === "Yes"){
+                                    question.answer = 1;
+                                    question.class = "active";
+                              }
+
+                            });
+                            index++;
+                        });
+
+                        personalProfile.goToPreviousPage(data);
+                    })
+                    .catch(function(jqXHR,textStatus,errorThrown){
+                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
+                        dependantsSubmit.removeClass(disabledClass);
+                    });
+            }
     }
 
     function updateUserDependants(selectedTile,parentContainer){
@@ -166,7 +252,7 @@
 
             dependantsBack.on('click',function(event){
                 event.preventDefault();
-                personalProfile.goToPreviousPage();
+                updateDependants();
             });
 
             tileOptions.on('click',function(event){
