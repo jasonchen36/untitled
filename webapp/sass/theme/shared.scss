@@ -343,6 +343,22 @@ textarea {
   margin-right: 10px;
 }
 
+.float-left{
+  float:left;
+}
+
+.float-right{
+  float:right;
+}
+
+.full-width{
+  width:100%;
+}
+
+.display-inline-table{
+  display:inline-table;
+}
+
 //TODO: Nich, clean up your inline-blocks with helper, please
 .display-inline-block{
   display:inline-block;
