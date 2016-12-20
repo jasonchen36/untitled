@@ -174,7 +174,7 @@
                         var promiseArrayQuestions = [];
 
                         //todo, question category in variable
-                        var uri = sessionData.apiUrl+ '/questions/product/' + sessionData.productId + '/category/' + 8;
+                        var uri = sessionData.apiUrl+ '/questions/product/' + sessionData.productId + '/category/' + 3;
 
                         var ajaxAnswers = ajax.ajax(
                             'GET',
@@ -238,7 +238,7 @@
 
 
                             //todo, update with new API route to get tax return with questions and answers in one object
-                            uri = sessionData.apiUrl + '/tax_return/' + entry.taxReturnId + '/answers/category/' + 8;
+                            uri = sessionData.apiUrl + '/tax_return/' + entry.taxReturnId + '/answers/category/' + 3;
 
                             var ajaxTwo = ajax.ajax(
                                 'GET',

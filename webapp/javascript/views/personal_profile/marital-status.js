@@ -143,7 +143,7 @@
                         var promiseArrayQuestions = [];
 
                         //todo, product and question category in variable
-                        var ajaxAnswers = apiservice.getQuestions(sessionData,9);
+                        var ajaxAnswers = apiservice.getQuestions(sessionData,5);
                         promiseArrayQuestions.push(ajaxAnswers);
 
 
@@ -156,7 +156,7 @@
                             promiseArrayPut.push(ajaxOne);*/
 
                             var ajaxTwo = apiservice.getAnswers(sessionData,
-                                entry.taxReturnId,9);
+                                entry.taxReturnId,5);
 
                             promiseArrayGet.push(ajaxTwo);
                         });
@@ -210,9 +210,22 @@
             maritalStatusForm = $('#marital-status-form');
             maritalStatusSubmit = $('#marital-status-submit');
             maritalStatusBack = $('#marital-status-back');
-            checkbox = $('.checkbox');
-            day = $('#birth-day');
-            month = $('#birth-month');
+
+            var formData = helpers.getTileFormDataArray(maritalStatusForm);
+
+            _.each(formData, function(taxReturn){
+                var checkbox = $('#marital-status-changed-' + taxReturn.taxReturnId);
+                var day = $('#birth-day-' + taxReturn.taxReturnId);
+                var month = $('#birth-month-' + taxReturn.taxReturnId);
+
+                checkbox.on('click',function(event){
+                    event.preventDefault();
+                    $(this).toggleClass(helpers.activeClass);
+                    day.toggle();
+                    month.toggle();
+                });
+
+            });
 
             //listeners
             maritalStatusForm.on('submit',function(event){
@@ -230,12 +243,7 @@
                 updateMaritalStatus();
             });
 
-            checkbox.on('click',function(event){
-                event.preventDefault();
-                $(this).toggleClass(helpers.activeClass);
-                day.toggle();
-                month.toggle();
-            });
+
         }
     };
 
