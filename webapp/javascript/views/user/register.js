@@ -40,7 +40,6 @@
                 registerErrorLabelPassword.addClass(errorClass);
             }
             if (!helpers.isMatchingFields(formData.password, formData.confirmpassword)) {
-                console.log('oisdjfdsfsdf');
                 registerPasswordConfirmInput.addClass(errorClass);
                 registerErrorLabelConfirmPassword.addClass(errorClass);
             }
