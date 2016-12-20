@@ -152,7 +152,7 @@ taxProfile.saveActiveTiles = function(req){
                 //special actions
                 if (group === 'filingFor') {
                     _.forOwn(req.body.data[taxProfileSession.users[0].id], function (value, key) {
-                        if (parseInt(key) === 9002) {//todo, find better way of linking these questions
+                        if (parseInt(key) === 127) {//todo, find better way of linking these questions
                             //spouse
                             if (parseInt(value) === 1) {
                                 //don't write over existing objects
@@ -163,7 +163,7 @@ taxProfile.saveActiveTiles = function(req){
                             } else {
                                 taxProfileSession.users[1] = {};
                             }
-                        } else if (parseInt(key) === 9003) {//todo, find better way of linking these questions
+                        } else if (parseInt(key) === 128) {//todo, find better way of linking these questions
                             //other
                             if (parseInt(value) === 1) {
                                 //don't write over existing objects
