@@ -35,7 +35,7 @@
         <form id="dashboard-upload-form" enctype="multipart/form-data">
             <p class="label-instruction-upload">Drop files here to upload</p>
             <p class="f--futura-book">or</p>
-            <input id="dashboard-upload-input" type="file" name="files[]" data-url="{{uploadUrl}}" >
+            <input id="dashboard-upload-input" type="file" name="uploadFileName" data-url="{{uploadUrl}}" >
             <input id="dashboard-upload-chechlist-item" type="hidden" name="checklistItemId" value="{{activeItem.checklistItemId}}" >
             <button id="dashboard-upload-select" type="button" class="purple long">Select Files</button>
             <button id="dashboard-upload-submit" type="submit" class="disabled long purple">Upload</button>

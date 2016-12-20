@@ -21,6 +21,9 @@
         fileUpload.fileupload({
             acceptFileTypes: /(\.|\/)(gif|jpe?g|png|pdf|txt|doc|docx|csv|xls|xlsx|ppt|pptx|odt|ott)$/i,
             dataType: 'json',
+            headers: {
+                'Authorization': 'Bearer '+ userSession.token
+            },
             add: function (e, data) {
                 // console.log(data.originalFiles[0].name);
                 $(fileUploadSubmitId).removeClass(disabledClass);
