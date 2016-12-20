@@ -21,8 +21,6 @@
             var formData = helpers.getTileFormDataArray(dependantsForm);
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
-            var nameData = helpers.getFormDataArray(dependantsForm);
-            nameData = nameData[0];
             if(!helpers.hasSelectedTile(formData)){
                 window.location.hash = 'modal-personal-profile-popup';
             }else if ( helpers.hasMultipleSelectedTiles(formData)){
