@@ -18,6 +18,7 @@
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
 
+            console.log("SS",formData);
 
             if(!helpers.hasSelectedTile(formData)){
                 window.location.hash = 'modal-personal-profile-popup';
@@ -121,12 +122,14 @@
                         data.taxReturns = formData;
                         data.taxReturns.questions = response[2];
 
-                        var married = {question_id:"married-single", class:"", instructions:"", question_text:"Married"};
-                        var divorced = {question_id:"married-divorced", class:"", instructions:"", question_text:"Divorced"};
-                        var separated = {question_id:"married-separated", class:"", instructions:"", question_text:"Separated"};
-                        var widowed = {question_id:"married-widowed", class:"", instructions:"", question_text:"Widowed"};
-                        var commonLaw = {question_id:"married-common-law", class:"", instructions:"", question_text:"Common Law"};
-                        var single = {question_id:"married-single", class:"", instructions:"", question_text:"Single"};
+                        console.log("Q", data.taxReturns.questions);
+
+                        var married = {id:"married-single", question_id:"129", class:"", instructions:"", question_text:"Married"};
+                        var divorced = {id:"married-divorced", question_id:"129", class:"", instructions:"", question_text:"Divorced"};
+                        var separated = {id:"married-separated", question_id:"129",  class:"", instructions:"", question_text:"Separated"};
+                        var widowed = {id:"married-widowed", question_id:"129",  class:"", instructions:"", question_text:"Widowed"};
+                        var commonLaw = {id:"married-common-law", question_id:"129",  class:"", instructions:"", question_text:"Common Law"};
+                        var single = {id:"married-single", question_id:"129",  class:"", instructions:"", question_text:"Single"};
                         var marriageTiles = [married, divorced, separated, widowed, commonLaw, single];
 
                         var index = 0;
