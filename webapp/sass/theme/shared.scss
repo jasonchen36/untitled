@@ -153,6 +153,14 @@ textarea {
     padding: 5px 10px;
 }
 
+.label-error{
+  margin:0;
+  font-size:0.7rem;
+  color: transparent;
+  &.error{
+    color:$color-global-red;
+  }
+}
 //Dropdown styling
 //-----------------------------
 .drop-down {
