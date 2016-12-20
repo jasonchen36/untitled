@@ -8,6 +8,7 @@
         welcomeForm,
         welcomeSubmit,
         welcomeNameInput,
+        welcomeErrorName,
         errorClass = helpers.errorClass,
         disabledClass = helpers.disabledClass;
 
@@ -17,6 +18,7 @@
             helpers.resetForm(welcomeForm);
             if (helpers.isEmpty(formData.firstName)){
                 welcomeNameInput.addClass(errorClass);
+                welcomeErrorName.addClass(errorClass);
             }
             if (!helpers.formHasErrors(welcomeForm)) {
                 welcomeSubmit.addClass(disabledClass);
@@ -48,6 +50,7 @@
             welcomeForm = $('#welcome-form');
             welcomeSubmit = $('#welcome-submit');
             welcomeNameInput = $('#welcome-name');
+            welcomeErrorName = $('#welcome-label-error-name');
 
             //listeners
             welcomeSubmit.on('click',function(event){
