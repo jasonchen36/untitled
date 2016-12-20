@@ -210,9 +210,25 @@
             maritalStatusForm = $('#marital-status-form');
             maritalStatusSubmit = $('#marital-status-submit');
             maritalStatusBack = $('#marital-status-back');
-            checkbox = $('.checkbox');
-            day = $('#birth-day');
-            month = $('#birth-month');
+
+            var formData = helpers.getTileFormDataArray(maritalStatusForm);
+
+            console.log("FD", formData);
+
+            _.each(formData, function(taxReturn){
+                console.log("id",taxReturn.taxReturnId);
+                var checkbox = $('#marital-status-changed-' + taxReturn.taxReturnId);
+                var day = $('#birth-day-' + taxReturn.taxReturnId);
+                var month = $('#birth-month-' + taxReturn.taxReturnId);
+
+                checkbox.on('click',function(event){
+                    event.preventDefault();
+                    $(this).toggleClass(helpers.activeClass);
+                    day.toggle();
+                    month.toggle();
+                });
+
+            });
 
             //listeners
             maritalStatusForm.on('submit',function(event){
@@ -230,12 +246,7 @@
                 updateMaritalStatus();
             });
 
-            checkbox.on('click',function(event){
-                event.preventDefault();
-                $(this).toggleClass(helpers.activeClass);
-                day.toggle();
-                month.toggle();
-            });
+
         }
     };
 
