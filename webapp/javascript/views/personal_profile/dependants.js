@@ -29,16 +29,6 @@
                 window.location.hash = 'modal-personal-profile-popup-none-apply';
             } else {
                 dependantsSubmit.addClass(disabledClass);
-                /*app.ajax.ajax(
-                    'POST',
-                    '/personal-profile',
-                    {
-                        action: 'api-pp-dependants',
-                        data: formData
-                    },
-                    'json',
-                    { }
-                )*/
                 return Promise.resolve()
                     .then(function() {
                         var promiseArrayPut = [];
@@ -100,6 +90,7 @@
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         dependantsSubmit.removeClass(disabledClass);
                     });
+            }
         }
     }
 
