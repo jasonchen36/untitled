@@ -7,6 +7,8 @@
         apiservice = app.apiservice, 
         cookies = app.cookies,
         userSessionStore,
+        helpers = app.helpers,
+        activeClass = helpers.activeClass,
         landingPageContainer = $('#dashboard-container'),
         dashboardStateCookie = 'store-dashboard-state';
 
@@ -163,17 +165,26 @@
 
             //shared bindings
             $(document)
+
                 .on('click', '#dashboard-upload-activate', function (event) {
                     event.preventDefault();
                     changePageHelper('upload');
+                    $(this).addClass(activeClass);
+                    document.getElementById('dashboard-chat-activate').classList.remove('active');
+                    document.getElementById('dashboard-my-return-activate').classList.remove('active');
                 })
                 .on('click', '#dashboard-chat-activate', function (event) {
                     event.preventDefault();
                     changePageChat();
+                    $(this).addClass(activeClass);
+                    document.getElementById('dashboard-upload-activate').classList.remove('active');
+                    document.getElementById('dashboard-my-return-activate').classList.remove('active');
                 })
                 .on('click', '#dashboard-my-return-activate', function (event) {
                     event.preventDefault();
                     changePageHelper('my-return');
+                    document.getElementById('dashboard-chat-activate').classList.remove('active');
+                    document.getElementById('dashboard-upload-activate').classList.remove('active');
                 });
 
             //functions
