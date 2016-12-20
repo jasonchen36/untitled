@@ -119,7 +119,7 @@
                         data.taxReturns = formData;
                         data.taxReturns.questions = response[2];
 
-                        var married = {id:"married-single", question_id:"129", class:"", instructions:"", question_text:"Married"};
+                        var married = {id:"married-married", question_id:"129", class:"", instructions:"", question_text:"Married"};
                         var divorced = {id:"married-divorced", question_id:"129", class:"", instructions:"", question_text:"Divorced"};
                         var separated = {id:"married-separated", question_id:"129",  class:"", instructions:"", question_text:"Separated"};
                         var widowed = {id:"married-widowed", question_id:"129",  class:"", instructions:"", question_text:"Widowed"};
