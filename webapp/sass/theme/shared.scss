@@ -168,7 +168,7 @@ textarea {
 
 .label-error{
   margin:0;
-  font-size:0.7rem;
+  font-size:0.7vw;
   color: transparent;
   &.error{
     color:$color-global-red;
@@ -430,13 +430,13 @@ textarea {
 
 .popup{
   border-radius: 20px     !important;
-  height: 400px;
-  width: 400px            !important;
+  height: 300px;
+  width: 300px            !important;
   display: block;
   position: absolute      !important;
   margin: auto 0          !important;
-  top: calc(50% - 200px)  !important;
-  left: calc(50% - 200px) !important;
+  top: calc(50% - 150px)  !important;
+  left: calc(50% - 150px) !important;
 }
 
 .label-popup-header{

@@ -8,19 +8,44 @@
         registerSubmit = $('#register-submit'),
         registerEmailInput = $('#register-email'),
         registerPasswordInput = $('#register-password'),
+        registerEmailConfirmInput = $('#register-confirm-email'),
+        registerPasswordConfirmInput = $('#register-confirm-password'),
+        registerErrorLabelEmail = $('#register-label-error-email'),
+        registerErrorLabelConfirmEmail = $('#register-label-error-confirm-email'),
+        registerErrorLabelPassword = $('#register-label-error-password'),
+        registerErrorLabelConfirmPassword = $('#register-label-error-confirm-password'),
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
     function submitRegister(){
+        registerEmailInput.removeClass(errorClass);
+        registerErrorLabelEmail.removeClass(errorClass);
+        registerPasswordInput.removeClass(errorClass);
+        registerErrorLabelPassword.removeClass(errorClass);
+        registerPasswordConfirmInput.removeClass(errorClass);
+        registerErrorLabelConfirmPassword.removeClass(errorClass);
+        registerEmailConfirmInput.removeClass(errorClass);
+        registerErrorLabelConfirmEmail.removeClass(errorClass);
+
         if (!registerSubmit.hasClass(disabledClass)) {
             var formData = helpers.getFormData(registerForm);
             helpers.resetForm(registerForm);
+
             if (!helpers.isValidEmail(formData.email)) {
                 registerEmailInput.addClass(errorClass);
+                registerErrorLabelEmail.addClass(errorClass);
             }
             if (!helpers.isValidPassword(formData.password)) {
                 registerPasswordInput.addClass(errorClass);
-                alert('Please enter a password with at least 8 characters.');
+                registerErrorLabelPassword.addClass(errorClass);
+            }
+            if (!helpers.isMatchingFields(formData.password, formData.confirmpassword)) {
+                registerPasswordConfirmInput.addClass(errorClass);
+                registerErrorLabelConfirmPassword.addClass(errorClass);
+            }
+            if (!helpers.isMatchingFields(formData.email, formData.confirmemail)) {
+                registerEmailConfirmInput.addClass(errorClass);
+                registerErrorLabelConfirmEmail.addClass(errorClass);
             }
             if (!helpers.formHasErrors(registerForm)) {
                 registerSubmit.addClass(disabledClass);

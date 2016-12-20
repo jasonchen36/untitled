@@ -20,7 +20,6 @@
             if(!helpers.hasSelectedTile(formData)){
                 window.location.hash = 'modal-personal-profile-popup';
             }else if ( helpers.hasMultipleSelectedTiles(formData)){
-                window.location.hash = 'modal-personal-profile-popup-none-apply';
             } else {
                 maritalStatusSubmit.addClass(disabledClass);
                /* ajax.ajax(

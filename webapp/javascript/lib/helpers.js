@@ -260,6 +260,10 @@
         return regex.test(email);
     };
 
+    this.isMatchingFields = function(firstField, secondField){
+        return firstField == secondField;
+    };
+
     this.isValidPassword = function(password){
         //http://stackoverflow.com/questions/14850553/javascript-regex-for-password-containing-at-least-8-characters-1-number-1-uppe
         // var regex = (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/);

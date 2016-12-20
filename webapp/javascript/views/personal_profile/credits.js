@@ -21,7 +21,6 @@
             if(!helpers.hasSelectedTile(formData)){
                 window.location.hash = 'modal-personal-profile-popup';
             }else if(helpers.noneAppliedMultipleSelectedTiles(formData)) {
-                window.location.hash = 'modal-personal-profile-popup-none-apply';
             } else {
               return Promise.resolve()
                     .then(function() {
