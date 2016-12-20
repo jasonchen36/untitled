@@ -101,7 +101,7 @@
                         var promiseArrayGet = [];
                         var promiseArrayQuestions = [];
 
-                        var ajaxAnswers = apiservice.getQuestions(sessionData,3);
+                        var ajaxAnswers = apiservice.getQuestions(sessionData,1);
                         promiseArrayQuestions.push(ajaxAnswers);
 
                         _.each(formData, function(entry) {
@@ -112,7 +112,7 @@
                             promiseArrayPut.push(ajaxOne);
 
                             var ajaxTwo = apiservice.getAnswers(sessionData,
-                                                    entry.taxReturnId,3);
+                                                    entry.taxReturnId,1);
 
                             promiseArrayGet.push(ajaxTwo);
                         });
