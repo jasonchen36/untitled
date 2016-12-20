@@ -18,8 +18,6 @@
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
 
-            console.log("SS",formData);
-
             if(!helpers.hasSelectedTile(formData)){
                 window.location.hash = 'modal-personal-profile-popup';
             } else if(helpers.noneAppliedMultipleSelectedTiles(formData)){
@@ -120,8 +118,6 @@
                         data.accountInfo = accountInfo;
                         data.taxReturns = formData;
                         data.taxReturns.questions = response[2];
-
-                        console.log("Q", data.taxReturns.questions);
 
                         var married = {id:"married-single", question_id:"129", class:"", instructions:"", question_text:"Married"};
                         var divorced = {id:"married-divorced", question_id:"129", class:"", instructions:"", question_text:"Divorced"};
