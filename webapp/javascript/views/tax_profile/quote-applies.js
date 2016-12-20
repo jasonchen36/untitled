@@ -18,7 +18,6 @@
             if(!helpers.hasSelectedTile(formData)){
                 window.location.hash = 'modal-personal-profile-popup';
             } else if ( helpers.hasMultipleSelectedTiles(formData)){
-                window.location.hash = 'modal-personal-profile-popup-none-apply';
             } else {
                 quoteAppliesSubmit.addClass(disabledClass);
                 ajax.ajax(

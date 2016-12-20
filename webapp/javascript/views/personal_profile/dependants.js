@@ -26,7 +26,6 @@
             if(!helpers.hasSelectedTile(formData)){
                 window.location.hash = 'modal-personal-profile-popup';
             }else if ( helpers.hasMultipleSelectedTiles(formData)){
-                window.location.hash = 'modal-personal-profile-popup-none-apply';
             } else {
                 dependantsSubmit.addClass(disabledClass);
                 return Promise.resolve()
