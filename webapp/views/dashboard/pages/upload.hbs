@@ -19,7 +19,7 @@
         <div class="label-document-count">{{count documents}}</div>
     </div>
 </section>
-<section id="dashboard-upload" class="small-6 medium-7">
+<section id="dashboard-upload" class="add-right-padding">
     <div class="border-bottom-dark-grey">
         <!--TODO: Show after done uploading-->
         {{#if false}}
@@ -38,8 +38,8 @@
             <input id="dashboard-upload-input" type="file" name="uploadFileName" data-url="{{uploadUrl}}" >
             <input id="dashboard-upload-chechlist-item" type="hidden" name="checklistItemId" value="{{activeItem.checklistItemId}}" >
             <button id="dashboard-upload-select" type="button" class="purple long">Select Files</button>
-            <button id="dashboard-upload-submit" type="submit" class="disabled long purple">Upload</button>
-            <button id="dashboard-upload-cancel" type="reset" class="disabled long purple">Cancel</button>
+            <!--<button id="dashboard-upload-submit" type="submit" class="disabled long purple">Upload</button>-->
+            <!--<button id="dashboard-upload-cancel" type="reset" class="disabled long purple">Cancel</button>-->
         </form>
          {{#each activeItem.documents}}
              {{>dashboard-document-tile documentID=documentId thumbnailURL=thumbnailUrl  name=name  uploadedTime=""  }}
