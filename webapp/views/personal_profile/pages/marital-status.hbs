@@ -7,12 +7,9 @@
                 <button id="marital-status-back" class="grey header">Previous</button>
             </div>
             <form id="marital-status-form">
-
-
-               {{#each taxReturns}}
-
+                {{#each taxReturns}}
                     <h1 class="subtitle display-inline-table">{{accountInfo.firstName}}, what was your martial status on Dec 31, 2015:</h1>
-                    {{>personal-profile-options questions=questions.answers activeTiles=questions.answers.answer tileContainerId=taxReturnId}}
+                    {{>personal-profile-options questions=questions.answers.0.tiles activeTiles=questions.answers.answer tileContainerId=taxReturnId}}
                     <div class="marital-status-changed-container">
                         <div class="checkbox"></div>
                         <p class="checkbox-label">MY MARITAL STATUS CHANGED IN 2016</p>
@@ -21,10 +18,12 @@
                             <input class="small-2 small text-center" placeholder="DD" id="birth-day" hidden/>
                             <input class="small-2 small text-center" placeholder="MM" id="birth-month" hidden/>
                         </div>
+                        <div class="display-inline-table full-width add-top-margin">
+                            <div class="checkbox"></div>
+                            <p class="checkbox-label">SAME MARITAL STATUS AS ABOVE</p>
+                        </div>
                     </div>
                {{/each}}
-
-
             </form>
         </div>
     </div>

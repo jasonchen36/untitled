@@ -9,7 +9,7 @@
             <form id="dependants-form">
                 {{#each taxReturns}}
                     <h1 class="subtitle">{{firstName}}, do you have any children or elderly parents as dependants?</h1>
-                    {{>personal-profile-options questions=questions activeTiles=answers tileContainerId=taxReturnId}}
+                    {{>personal-profile-options questions=questions.answers activeTiles=questions.answers.answer tileContainerId=taxReturnId}}
                     {{!--{{#compare hasDependants 1 operator="=="}}
                         {{>personal-profile-dependants-form}}
                         {{>personal-profile-dependants-line}}
