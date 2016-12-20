@@ -65,11 +65,26 @@ sessionModel.getUserProfileObject = function(data){
     };
 };
 
-sessionModel.getDocumentChecklistItemObject = function(data){
+
+sessionModel.getDocumentChecklistFilerName = function(data){
+    
+    var name = data.first_name;
+    if(data.last_name !== null)  {
+        name =  name + " " + data.last_name;
+    } 
+
+    return {
+        name: name
+    };
+};
+
+
+sessionModel.getDocumentChecklistItemObject = function(data){  
     return {
         checklistItemId: data.checklist_item_id,
         name: data.name,
-        documents: data.documents
+        documents: data.documents,
+        filers: _.map(data.filers, sessionModel.getDocumentChecklistFilerName)
     };
 };
 

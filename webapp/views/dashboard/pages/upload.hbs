@@ -9,7 +9,11 @@
             <div class="i--icon-question"></div>
             <div class="label-document-name">{{name}}</div>
             <div class="f--futura-book">Statement of Renumeration Paid</div> <!--TODO: Bind to subtitle-->
-            <div class="label-document-filers f--futura-book">Doug Doctor<br>Carmela Doctor</div> <!--TODO: Bind to list of filers, new line after each name-->
+            <div class="label-document-filers f--futura-book">
+            {{#each filers}}
+                  {{name}}<br>
+             {{/each}}
+            </div>
             <div class="label-document-count">{{count documents}}</div>
         </div>
     {{/each}}
