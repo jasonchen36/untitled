@@ -27,43 +27,33 @@
         helpers.resetForm(addressForm);
         if (helpers.isEmpty(addressLine1Input.val().trim())){
             addressLine1Input.addClass(errorClass);
-            window.location.hash = 'modal-personal-profile-popup';
         }
         if (helpers.isEmpty(cityInput.val().trim())){
             cityInput.addClass(errorClass);
-            window.location.hash = 'modal-personal-profile-popup';
         }
         if (helpers.isEmpty(postalCodeInput.val().trim()) || checkPostal(postalCodeInput.val())){
             postalCodeInput.addClass(errorClass);
-            window.location.hash = 'modal-personal-profile-popup';
         }
         if(helpers.isEmpty(provinceInput[0].value.trim())) {
           postalCodeInput.addClass(errorClass);
-            window.location.hash = 'modal-personal-profile-popup';
         }
         if(helpers.isEmpty(residenceInput[0].value.trim())) {
           postalCodeInput.addClass(errorClass);
-            window.location.hash = 'modal-personal-profile-popup';
         }
         if (helpers.isEmpty(addressLine1SpouseInput.val().trim())){
             addressLine1SpouseInput.addClass(errorClass);
-            window.location.hash = 'modal-personal-profile-popup';
         }
         if (helpers.isEmpty(citySpouseInput.val().trim())){
             citySpouseInput.addClass(errorClass);
-            window.location.hash = 'modal-personal-profile-popup';
         }
         if (helpers.isEmpty(postalCodeSpouseInput.val().trim())|| checkPostal(postalCodeSpouseInput.val())){
             postalCodeSpouseInput.addClass(errorClass);
-            window.location.hash = 'modal-personal-profile-popup';
         }
         if(helpers.isEmpty(provinceSpouseInput[0].value.trim())) {
           postalCodeInput.addClass(errorClass);
-            window.location.hash = 'modal-personal-profile-popup';
         }
         if(helpers.isEmpty(residenceSpouseInput[0].value.trim())) {
           postalCodeInput.addClass(errorClass);
-            window.location.hash = 'modal-personal-profile-popup';
         }
         if (!helpers.formHasErrors(addressForm)) {
             addressSubmit.addClass(disabledClass);

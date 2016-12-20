@@ -17,9 +17,7 @@
             var formData = helpers.getFormData(lastNameForm);
             helpers.resetForm(lastNameForm);
             if (!helpers.hasName(formData)){
-                //todo, proper error message
-                window.location.hash = 'modal-personal-profile-popup';
-                lastNameForm.addClass(errorClass);
+                lastNameInput.addClass(errorClass);
             } else {
             //if (!helpers.formHasErrors(lastNameForm)) {
                 lastNameSubmit.addClass(disabledClass);
