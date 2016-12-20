@@ -30,6 +30,11 @@
                 //todo, real alert
                 alert('please select only one option');
             } else {*/
+            if(!helpers.hasSelectedTile(formData)){
+                window.location.hash = 'modal-personal-profile-popup';
+            }else if ( helpers.hasMultipleSelectedTiles(formData)){
+                window.location.hash = 'modal-personal-profile-popup-none-apply';
+            } else {
                 dependantsSubmit.addClass(disabledClass);
                 /*app.ajax.ajax(
                     'POST',

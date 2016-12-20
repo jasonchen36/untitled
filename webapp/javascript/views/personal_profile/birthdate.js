@@ -16,15 +16,15 @@
       helpers.resetForm(birthdateForm);
       if (helpers.isEmpty(dayInput.val().trim())){
            dayInput.addClass(errorClass);
-           alert("Pleae enter the day correctly");
+            window.location.hash = 'modal-personal-profile-popup';
       }
       if (helpers.isEmpty(monthInput.val().trim())){
            monthInput.addClass(errorClass);
-           alert("Pleae enter the month correctly");
+          window.location.hash = 'modal-personal-profile-popup';
        }
       if (helpers.isEmpty(yearInput.val().trim())){
            yearInput.addClass(errorClass);
-           alert("Pleae enter the year correctly");
+          window.location.hash = 'modal-personal-profile-popup';
       }
       if (!helpers.formHasErrors(birthdateForm)) {
            birthdateSubmit.addClass(disabledClass);

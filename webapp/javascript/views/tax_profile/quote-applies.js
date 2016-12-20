@@ -16,11 +16,9 @@
         if (!quoteAppliesSubmit.hasClass(disabledClass)) {
             var formData = helpers.getTileFormData(quoteAppliesForm);
             if(!helpers.hasSelectedTile(formData)){
-                //todo, real alert
-                alert('no selected option');
-            } else if(helpers.noneAppliedMultipleSelectedTiles(formData)) {
-                //todo, real alert
-                alert('cannot select None Apply with other options');
+                window.location.hash = 'modal-personal-profile-popup';
+            } else if ( helpers.hasMultipleSelectedTiles(formData)){
+                window.location.hash = 'modal-personal-profile-popup-none-apply';
             } else {
                 quoteAppliesSubmit.addClass(disabledClass);
                 ajax.ajax(

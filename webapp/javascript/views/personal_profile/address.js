@@ -20,6 +20,36 @@
             validateAddressFormData($(this));
         });
         //todo, don't make requests if data isn't changing
+        if (helpers.isEmpty(addressLine1Input.val().trim())){
+            addressLine1Input.addClass(errorClass);
+        }
+        if (helpers.isEmpty(cityInput.val().trim())){
+            cityInput.addClass(errorClass);
+        }
+        if (helpers.isEmpty(postalCodeInput.val().trim()) || checkPostal(postalCodeInput.val())){
+            postalCodeInput.addClass(errorClass);
+        }
+        if(helpers.isEmpty(provinceInput[0].value.trim())) {
+          postalCodeInput.addClass(errorClass);
+        }
+        if(helpers.isEmpty(residenceInput[0].value.trim())) {
+          postalCodeInput.addClass(errorClass);
+        }
+        if (helpers.isEmpty(addressLine1SpouseInput.val().trim())){
+            addressLine1SpouseInput.addClass(errorClass);
+        }
+        if (helpers.isEmpty(citySpouseInput.val().trim())){
+            citySpouseInput.addClass(errorClass);
+        }
+        if (helpers.isEmpty(postalCodeSpouseInput.val().trim())|| checkPostal(postalCodeSpouseInput.val())){
+            postalCodeSpouseInput.addClass(errorClass);
+        }
+        if(helpers.isEmpty(provinceSpouseInput[0].value.trim())) {
+          postalCodeInput.addClass(errorClass);
+        }
+        if(helpers.isEmpty(residenceSpouseInput[0].value.trim())) {
+          postalCodeInput.addClass(errorClass);
+        }
         if (!helpers.formHasErrors(addressForm)) {
             addressSubmit.addClass(disabledClass);
             var body,

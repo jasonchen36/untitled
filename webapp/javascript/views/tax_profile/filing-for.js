@@ -15,8 +15,7 @@
         if (!filingForSubmit.hasClass(disabledClass)) {
             var formData = helpers.getTileFormData(filingForForm);
             if(!helpers.hasSelectedTile(formData)){
-                //todo, real alert
-                alert('no selected option');
+                window.location.hash = 'modal-personal-profile-popup';
             }else {
                 filingForSubmit.addClass(disabledClass);
                 ajax.ajax(
