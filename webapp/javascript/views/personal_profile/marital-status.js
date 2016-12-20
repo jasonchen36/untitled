@@ -143,7 +143,7 @@
                         var promiseArrayQuestions = [];
 
                         //todo, product and question category in variable
-                        var ajaxAnswers = apiservice.getQuestions(sessionData,9);
+                        var ajaxAnswers = apiservice.getQuestions(sessionData,5);
                         promiseArrayQuestions.push(ajaxAnswers);
 
 
@@ -156,7 +156,7 @@
                             promiseArrayPut.push(ajaxOne);*/
 
                             var ajaxTwo = apiservice.getAnswers(sessionData,
-                                entry.taxReturnId,9);
+                                entry.taxReturnId,5);
 
                             promiseArrayGet.push(ajaxTwo);
                         });
