@@ -10,6 +10,7 @@
         maritalStatusSubmit,
         maritalStatusBack,
         errorClass = app.helpers.errorClass,
+        activeClass = app.helpers.activeClass,
         disabledClass = app.helpers.disabledClass;
 
     function submitMaritalStatus(){
@@ -217,6 +218,62 @@
                 var day = $('#birth-day-' + taxReturn.taxReturnId);
                 var month = $('#birth-month-' + taxReturn.taxReturnId);
 
+                var marriedChoice = $('#married-married');
+                var divorcedChoice = $('#married-divorced');
+                var separatedChoice = $('#married-separated');
+                var widowedChoice = $('#married-widowed');
+                var commonlawChoice = $('#married-common-law');
+                var singleChoice = $('#married-single');
+
+                marriedChoice.on('click', function(event){
+                    event.preventDefault();
+                    divorcedChoice.removeClass(activeClass);
+                    separatedChoice.removeClass(activeClass);
+                    commonlawChoice.removeClass(activeClass);
+                    widowedChoice.removeClass(activeClass);
+                    singleChoice.removeClass(activeClass);
+                });
+                divorcedChoice.on('click', function(event){
+                    event.preventDefault();
+                    marriedChoice.removeClass(activeClass);
+                    separatedChoice.removeClass(activeClass);
+                    commonlawChoice.removeClass(activeClass);
+                    widowedChoice.removeClass(activeClass);
+                    singleChoice.removeClass(activeClass);
+                });
+                separatedChoice.on('click', function(event){
+                    event.preventDefault();
+                    divorcedChoice.removeClass(activeClass);
+                    marriedChoice.removeClass(activeClass);
+                    commonlawChoice.removeClass(activeClass);
+                    widowedChoice.removeClass(activeClass);
+                    singleChoice.removeClass(activeClass);
+                });
+                widowedChoice.on('click', function(event){
+                    event.preventDefault();
+                    divorcedChoice.removeClass(activeClass);
+                    separatedChoice.removeClass(activeClass);
+                    commonlawChoice.removeClass(activeClass);
+                    marriedChoice.removeClass(activeClass);
+                    singleChoice.removeClass(activeClass);
+                });
+                commonlawChoice.on('click', function(event){
+                    event.preventDefault();
+                    divorcedChoice.removeClass(activeClass);
+                    separatedChoice.removeClass(activeClass);
+                    marriedChoice.removeClass(activeClass);
+                    widowedChoice.removeClass(activeClass);
+                    singleChoice.removeClass(activeClass);
+                });
+                singleChoice.on('click', function(event){
+                    event.preventDefault();
+                    divorcedChoice.removeClass(activeClass);
+                    separatedChoice.removeClass(activeClass);
+                    commonlawChoice.removeClass(activeClass);
+                    widowedChoice.removeClass(activeClass);
+                    marriedChoice.removeClass(activeClass);
+                });
+
                 checkbox.on('click',function(event){
                     event.preventDefault();
                     $(this).toggleClass(helpers.activeClass);
@@ -225,6 +282,7 @@
                 });
 
             });
+
 
             //listeners
             maritalStatusForm.on('submit',function(event){
