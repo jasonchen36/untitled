@@ -173,7 +173,7 @@
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         dependantsSubmit.removeClass(disabledClass);
                     });
-
+            }
     }
 
     function updateUserDependants(selectedTile,parentContainer){
