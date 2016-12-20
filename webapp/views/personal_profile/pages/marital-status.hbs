@@ -7,6 +7,7 @@
                 <button id="marital-status-back" class="grey header">Previous</button>
             </div>
             <form id="marital-status-form">
+                {{#debug}}{{/debug}}
                 {{#each taxReturns}}
                     <h1 class="subtitle display-inline-table full-width">{{firstName}}, what was your martial status on Dec 31, 2015:</h1>
                     {{>personal-profile-options questions=questions.answers.0.tiles activeTiles=questions.answers.answer tileContainerId=taxReturnId}}
@@ -37,4 +38,4 @@
     </div>
     {{>personal-profile-sidebar sidebarImage="i--icon-marital-status" sidebarTitle="marital status"}}
 </section>
-{{>personal-profile-popup popupTitle="Income" popupBlurb="Please select a tile lorem ipsum" popupImage="i--icon-taxplan-logo"}}
+{{>personal-profile-popup popupTitle="Marital Status" popupBlurb="You must select a tile that applies" popupImage="i--icon-taxplan-logo"}}
