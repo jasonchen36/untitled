@@ -6,14 +6,16 @@
         <div class="small-8 medium-8 wrapper-container">
         <h1>Welcome Back to TAXplan</h1>
             <form id="user-login-form">
-                <p>
+                <p class="no-margin">
                     <label for="login-email">EMAIL</label>
                     <input type="email" id="login-email" name="email" class="login"/>
+                    <p id="label-error-email" class="label-error">Please provide information</p>
                 </p>
                  <div class="container-password-form">
                 <label for="login-password">PASSWORD</label>
                         <input type="password" id="login-password" name="password" class="login"/>
                         <a href="/password-reset" class="link-forgot-password">Forgot Password</a>
+                     <p id="label-error-password" class="label-error">Please provide information</p>
                  </div>
                 <div class="container-button-login text-center">
                     <button type="submit" id="login-submit" class="green">Sign In</button>
