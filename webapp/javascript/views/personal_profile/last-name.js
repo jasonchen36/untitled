@@ -21,7 +21,8 @@
             helpers.resetForm(lastNameForm);
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
-            if (helpers.isEmpty(formData.lastName)){
+            //TODO: Add validation for other filers
+            if (helpers.isEmpty(formData[0].lastName)){
                 lastNameInput.addClass(errorClass);
                 lastNameErrorLabelLastName.addClass(errorClass);
             } else {
