@@ -19,37 +19,6 @@
         $('.'+helpers.formContainerClass).each(function(){
             validateAddressFormData($(this));
         });
-        //todo, don't make requests if data isn't changing
-        if (helpers.isEmpty(addressLine1Input.val().trim())){
-            addressLine1Input.addClass(errorClass);
-        }
-        if (helpers.isEmpty(cityInput.val().trim())){
-            cityInput.addClass(errorClass);
-        }
-        if (helpers.isEmpty(postalCodeInput.val().trim()) || checkPostal(postalCodeInput.val())){
-            postalCodeInput.addClass(errorClass);
-        }
-        if(helpers.isEmpty(provinceInput[0].value.trim())) {
-          postalCodeInput.addClass(errorClass);
-        }
-        if(helpers.isEmpty(residenceInput[0].value.trim())) {
-          postalCodeInput.addClass(errorClass);
-        }
-        if (helpers.isEmpty(addressLine1SpouseInput.val().trim())){
-            addressLine1SpouseInput.addClass(errorClass);
-        }
-        if (helpers.isEmpty(citySpouseInput.val().trim())){
-            citySpouseInput.addClass(errorClass);
-        }
-        if (helpers.isEmpty(postalCodeSpouseInput.val().trim())|| checkPostal(postalCodeSpouseInput.val())){
-            postalCodeSpouseInput.addClass(errorClass);
-        }
-        if(helpers.isEmpty(provinceSpouseInput[0].value.trim())) {
-          postalCodeInput.addClass(errorClass);
-        }
-        if(helpers.isEmpty(residenceSpouseInput[0].value.trim())) {
-          postalCodeInput.addClass(errorClass);
-        }
         if (!helpers.formHasErrors(addressForm)) {
             addressSubmit.addClass(disabledClass);
             var body,
@@ -135,6 +104,13 @@
             postalCode = addressForm.find('#postal-code-'+taxReturnId),
             province = addressForm.find('#province-'+taxReturnId),
             provinceResidence = addressForm.find('#province-residence-'+taxReturnId);
+
+        streetAddress.removeClass(helpers.errorClass);
+        city.removeClass(helpers.errorClass);
+        postalCode.removeClass(helpers.errorClass);
+        province.removeClass(helpers.errorClass);
+        provinceResidence.removeClass(helpers.errorClass);
+
         //street address
         if (helpers.isEmpty(streetAddress.val())){
             streetAddress.addClass(helpers.errorClass);
@@ -182,8 +158,6 @@
             parentContainer.find('#postal-code-'+taxReturnId).val(formData.postalCode).prop('disabled', true);
             //province
             parentContainer.find('#province-'+taxReturnId).val(formData.province).prop('disabled', true);
-            //province residence
-            parentContainer.find('#province-residence-'+taxReturnId).val(formData.provinceResidence).prop('disabled', true);
         } else {
             //checkbox
             checkbox.removeClass(helpers.activeClass);

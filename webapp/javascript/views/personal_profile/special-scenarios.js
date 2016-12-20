@@ -126,11 +126,20 @@
                         var widowed = {id:"married-widowed", class:"", instructions:"", question_text:"Widowed"};
                         var commonLaw = {id:"married-common-law", class:"", instructions:"", question_text:"Common Law"};
                         var single = {id:"married-single", class:"", instructions:"", question_text:"Single"};
+=======
+                        var married = {id:"married-married", question_id:"129", class:"", instructions:"", question_text:"Married"};
+                        var divorced = {id:"married-divorced", question_id:"129", class:"", instructions:"", question_text:"Divorced"};
+                        var separated = {id:"married-separated", question_id:"129",  class:"", instructions:"", question_text:"Separated"};
+                        var widowed = {id:"married-widowed", question_id:"129",  class:"", instructions:"", question_text:"Widowed"};
+                        var commonLaw = {id:"married-common-law", question_id:"129",  class:"", instructions:"", question_text:"Common Law"};
+                        var single = {id:"married-single", question_id:"129",  class:"", instructions:"", question_text:"Single"};
+>>>>>>> 40c19ccf724560c58b9dc54b42ffd1a33b63e615
                         var marriageTiles = [married, divorced, separated, widowed, commonLaw, single];
 
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){
                             taxReturn.questions = response[1][index];
+                            taxReturn.firstName = nameData[index];
                             _.each(taxReturn.questions.answers, function(question){
                                 question.tiles = marriageTiles;
                                 question.answer = 0;
@@ -268,6 +277,7 @@
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){
                             taxReturn.questions = response[1][index];
+                            taxReturn.firstName = nameData[index];
                             _.each(taxReturn.questions.answers, function(question){
                               question.answer = 0;
                               question.class = "";
