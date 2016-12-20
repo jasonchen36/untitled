@@ -18,17 +18,12 @@
     function submitLastName(){
         if (!lastNameSubmit.hasClass(disabledClass)) {
             var formData = helpers.getFormDataArray(lastNameForm);
-
             helpers.resetForm(lastNameForm);
-
-
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
-
-
-            // todo, error checking for lastname entered
-            if (!helpers.hasName(formData)){
+            if (helpers.isEmpty(formData.lastName)){
                 lastNameInput.addClass(errorClass);
+                lastNameErrorLabelLastName.addClass(errorClass);
             } else {
             //if (!helpers.formHasErrors(lastNameForm)) {
                 lastNameSubmit.addClass(disabledClass);
@@ -111,6 +106,7 @@
             lastNameSubmit = $('#last-name-submit');
             lastNameBack = $('#last-name-back');
             lastNameInput = $('#last-name-input');
+            lastNameErrorLabelLastName = $('#last-name-label-error-last-name');
 
             //listeners
             lastNameForm.on('submit',function(event){

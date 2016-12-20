@@ -12,7 +12,7 @@
 
     function submitQuote(){
         //todo
-        window.location.hash = 'modal-tax-profile-quote';
+        window.location.href = '/register';
     }
 
     this.init = function(){

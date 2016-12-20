@@ -7,7 +7,6 @@
                 <button id="income-back" class="grey header">Previous</button>
             </div>
             <form id="income-form">
-              {{#debug}}{{/debug}}
                 {{#each taxReturns}}
                     <h1 class="subtitle">{{firstName}} please select all your sources of income in 2016:</h1>
                     {{>personal-profile-options questions=questions.answers activeTiles=questions.answers.answer tileContainerId=taxReturnId}}

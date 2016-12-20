@@ -8,6 +8,8 @@
         loginSubmit = $('#login-submit'),
         loginEmailInput = $('#login-email'),
         loginPasswordInput = $('#login-password'),
+        loginErrorLabelEmail = $('#label-error-email'),
+        loginErrorLabelPassword = $('#label-error-password'),
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
@@ -17,9 +19,11 @@
             helpers.resetForm(loginForm);
             if (!helpers.isValidEmail(formData.email)) {
                 loginEmailInput.addClass(errorClass);
+                loginErrorLabelEmail.addClass(errorClass);
             }
             if (!helpers.isValidPassword(formData.password)) {
                 loginPasswordInput.addClass(errorClass);
+                loginErrorLabelPassword.addClass(errorClass);
             }
             if (!helpers.formHasErrors(loginForm)) {
                 loginSubmit.addClass(disabledClass);
