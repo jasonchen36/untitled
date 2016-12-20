@@ -213,10 +213,7 @@
 
             var formData = helpers.getTileFormDataArray(maritalStatusForm);
 
-            console.log("FD", formData);
-
             _.each(formData, function(taxReturn){
-                console.log("id",taxReturn.taxReturnId);
                 var checkbox = $('#marital-status-changed-' + taxReturn.taxReturnId);
                 var day = $('#birth-day-' + taxReturn.taxReturnId);
                 var month = $('#birth-month-' + taxReturn.taxReturnId);
