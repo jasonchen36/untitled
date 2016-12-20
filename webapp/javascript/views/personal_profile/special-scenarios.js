@@ -71,8 +71,6 @@
                                            });
                                 }
                                 answerIndex++;
-
-
                             });
 
 
@@ -123,23 +121,33 @@
                         data.taxReturns = formData;
                         data.taxReturns.questions = response[2];
 
+                        var married = {question_id:"married-single", class:"", instructions:"", question_text:"Married"};
+                        var divorced = {question_id:"married-divorced", class:"", instructions:"", question_text:"Divorced"};
+                        var separated = {question_id:"married-separated", class:"", instructions:"", question_text:"Separated"};
+                        var widowed = {question_id:"married-widowed", class:"", instructions:"", question_text:"Widowed"};
+                        var commonLaw = {question_id:"married-common-law", class:"", instructions:"", question_text:"Common Law"};
+                        var single = {question_id:"married-single", class:"", instructions:"", question_text:"Single"};
+                        var marriageTiles = [married, divorced, separated, widowed, commonLaw, single];
+
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){
                             taxReturn.questions = response[1][index];
                             _.each(taxReturn.questions.answers, function(question){
-                              question.answer = 0;
-                              question.class = "";
-
-                              if ( !question.text) {
+                                question.tiles = marriageTiles;
                                 question.answer = 0;
                                 question.class = "";
-                              } else if (question.text === "Yes"){
+
+                                if ( !question.text) {
+                                    question.answer = 0;
+                                    question.class = "";
+                                } else if (question.text === "Yes"){
                                     question.answer = 1;
                                     question.class = "active";
-                              }
+                                }
 
                             });
                             index++;
+
                         });
 
                         personalProfile.goToNextPage(data);
