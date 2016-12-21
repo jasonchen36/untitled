@@ -1,6 +1,8 @@
 const //packages
     moment = require('moment'),
-    _ = require('lodash');
+    _ = require('lodash'),
+//services
+    logger = require('../services/logger');
 
 var sessionModel = {};
 
@@ -67,11 +69,11 @@ sessionModel.getUserProfileObject = function(data){
 
 
 sessionModel.getDocumentChecklistFilerName = function(data){
-    
+
     var name = data.first_name;
     if(data.last_name !== null)  {
         name =  name + " " + data.last_name;
-    } 
+    }
 
     return {
         name: name
@@ -79,7 +81,7 @@ sessionModel.getDocumentChecklistFilerName = function(data){
 };
 
 
-sessionModel.getDocumentChecklistItemObject = function(data){  
+sessionModel.getDocumentChecklistItemObject = function(data){
     return {
         checklistItemId: data.checklist_item_id,
         name: data.name,
@@ -88,10 +90,30 @@ sessionModel.getDocumentChecklistItemObject = function(data){
     };
 };
 
+sessionModel.getAdditionalDocumentObject = function(data){
+    try {
+        //todo, urls deleting session
+        console.log(data.thumbnailUrl, data.url);
+        return {
+            documentId: data.documentId,
+            quoteId: data.quoteId,
+            taxReturnId: data.taxReturnId,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            checklistItemId: data.checkListItemId,
+            name: data.name,
+            // url: data.url,
+            // thumbnailUrl: data.thumbnailUrl
+        };
+    } catch (error) {
+        logger.error(error);
+    }
+};
+
 sessionModel.getDocumentChecklistObject = function(data){
     return {
         checklistItems: _.map(data.checklistitems, sessionModel.getDocumentChecklistItemObject),
-        additionalDocuments: data.additionalDocuments
+        additionalDocuments: _.map(data.additionalDocuments, sessionModel.getAdditionalDocumentObject)
     };
 };
 
