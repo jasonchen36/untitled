@@ -21,22 +21,18 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
         json: true
     };
     //todo, remove once quote tile questions are resolved
-    var incomeRequest = _.clone(requestObject, true),
-        filingForRequest = _.clone(requestObject, true),
+    var filingForRequest = _.clone(requestObject, true),
         quoteRequest = _.clone(requestObject, true);
-    incomeRequest.uri = incomeRequest.uri+util.questionCategories.income;
     filingForRequest.uri += util.questionCategories.filingFor;
     quoteRequest.uri += util.questionCategories.quote;
     promise.all([
-        requestPromise(incomeRequest),
         requestPromise(filingForRequest),
         requestPromise(quoteRequest)
     ])
         .then(function (response) {
             const taxProfileQuestions = {
-                    filingFor: response[1],
-                    income: response[0],
-                    quoteApplies: response[2]
+                    filingFor: response[0],
+                    quoteApplies: response[1]
                 },
                 dataObject = session.getTaxProfileSession(req);
             try {

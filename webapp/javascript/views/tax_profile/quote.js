@@ -23,14 +23,14 @@
             quoteSubmit = $('#quote-submit');
             quoteBack = $('#quote-back');
 
-            quoteDetails = $('#quote-details');
+            quoteDetails = $('.button-details');
             //listeners
             quoteForm.on('submit',function(event){
                 event.preventDefault();
                 submitQuote();
             });
 
-            quoteDetails.on('click',function(event){
+            quoteSubmit.on('click',function(event){
                 event.preventDefault();
                 submitQuote();
             });

@@ -17,7 +17,6 @@
             var formData = helpers.getTileFormData(quoteAppliesForm);
             if(!helpers.hasSelectedTile(formData)){
                 window.location.hash = 'modal-personal-profile-popup';
-            } else if ( helpers.hasMultipleSelectedTiles(formData)){
             } else {
                 quoteAppliesSubmit.addClass(disabledClass);
                 ajax.ajax(
