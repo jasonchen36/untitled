@@ -184,6 +184,56 @@
             }
     }
 
+    function validateDependantsFormData(dependantsForm){
+        var errors = 0,
+            taxReturnId = dependantsForm.attr('data-id'),
+            firstName = dependantsForm.find('#dependants-first-name-'+taxReturnId),
+            lastName = dependantsForm.find('#dependants-last-name-'+taxReturnId),
+            day = dependantsForm.find('#dependants-birthday-day-'+taxReturnId),
+            month = dependantsForm.find('#dependants-birthday-month-'+taxReturnId),
+            year = dependantsForm.find('#dependants-birthday-year-'+taxReturnId),
+            relationship = dependantsForm.find('dependants-relationship-'+taxReturnId);
+
+        firstName.removeClass(helpers.errorClass);
+        lastName.removeClass(helpers.errorClass);
+        day.removeClass(helpers.errorClass);
+        month.removeClass(helpers.errorClass);
+        year.removeClass(helpers.errorClass);
+        relationship.removeClass(helpers.errorClass);
+
+        //firstName
+        if (helpers.isEmpty(firstName.val())){
+            firstName.addClass(helpers.errorClass);
+            errors++;
+        }
+        //lastName
+        if (helpers.isEmpty(lastName.val())){
+            lastName.addClass(helpers.errorClass);
+            errors++;
+        }
+        //day
+        if (helpers.isEmpty(day.val())){
+            day.addClass(helpers.errorClass);
+            errors++;
+        }
+        //month
+        if (helpers.isEmpty(month.val())){
+            month.addClass(helpers.errorClass);
+            errors++;
+        }
+        //year
+        if (helpers.isEmpty(year.val())){
+            year.addClass(helpers.errorClass);
+            errors++;
+        }
+        //relationship
+        if (helpers.isEmpty(relationship.val())){
+            relationship.addClass(helpers.errorClass);
+            errors++;
+        }
+        return errors < 1;
+    }
+
     function updateUserDependants(selectedTile,parentContainer){
         var accountSession = personalProfile.getPersonalProfileSession(),
             formData = helpers.getTileFormData(dependantsForm);
