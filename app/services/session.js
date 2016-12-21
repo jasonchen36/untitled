@@ -146,6 +146,7 @@ session.actionStartUserProfileSession = function(req, token){
                 };
             return requestPromise(getTaxReturnsRequest)
                 .then(function (response) {
+                  console.log(response);
                     try {
                         userProfileSession.taxReturns = _.map(response.taxReturns, sessionModel.getUserTaxReturns);
                         return promise.resolve(session.setUserProfileSession(req, userProfileSession));
