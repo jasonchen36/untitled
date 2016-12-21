@@ -68,9 +68,10 @@
 
                         var index = 0;
 
-                        var questionIndex = 0;
+
 
                         _.each(data.taxReturns, function(taxReturn){
+                            var questionIndex = 0;
                             taxReturn.firstName = nameData[index];
                             taxReturn.questions = response[1][index];
                             _.each(taxReturn.questions.answers, function(question){
