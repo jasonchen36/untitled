@@ -5,10 +5,7 @@ const //packages
 //services
     util = require('../services/util'),
     session = require('../services/session'),
-    errors = require('../services/errors'),
-    userProfile = require('../services/user_profile'),
-//models
-    questionsModel = require('../models/questions');
+    errors = require('../services/errors');
 
 var personalProfilePages = {};
 
@@ -76,53 +73,5 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
             next(new errors.InternalServerError(error));
         });
 };
-
-
-personalProfilePages.actionSavePersonalProfile = function(req, res, next) {
-    session.hasUserProfileSession(req)
-        .then(function(hasSession){
-            //check if session is initiated
-            if (!hasSession){
-                return session.actionStartUserProfileSession(req);
-            }
-        })
-        .then(function(){
-            //save account and qoute to session
-            switch(req.body.action){
-                case 'api-pp-last-name':
-                    return userProfile.saveLastName(req);
-                    break;
-                case 'api-pp-special-scenarios':
-                case 'api-pp-marital-status':
-                case 'api-pp-date-of-birth':
-                case 'api-pp-dependants':
-                case 'api-pp-income':
-                case 'api-pp-credits':
-                case 'api-pp-address':
-                case 'api-pp-deductions':
-                    return userProfile.saveActiveTiles(req);
-                    break;
-
-                default:
-                    return promise.reject('tax profile - invalid action');
-                    break;
-            }
-        })
-        .then(function(){
-            //success
-            res.status(util.http.status.accepted).json({
-                action: req.body.action,
-                status: 'success',
-                data: session.getUserProfileSession(req)
-            });
-        })
-        .catch(function(error){
-            if(!error){
-                error = 'Could not save account';
-            }
-            next(new errors.BadRequestError(error,true));
-        });
-};
-
 
 module.exports = personalProfilePages;
