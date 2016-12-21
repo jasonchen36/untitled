@@ -178,6 +178,40 @@
         return data;
     };
 
+
+  this.getMaritalStatusFormDataArray = function(formElement){
+        var data = [],
+            container,
+            containerId,
+            tile;
+        formElement.find('.'+that.tileContainerClass).each(function(){
+            container = $(this);
+            containerId = container.attr('data-id');
+            var userData = {taxReturnId:container.attr('data-id'), 
+                            firstName:container.attr('value')};
+
+
+             tile = $("#marital-status-changed-" + containerId);
+
+
+             // TODO find a better way to do this
+             userData[149] = tile.hasClass(that.activeClass)? 1:0;
+
+             tile = $("#birth-day-" + containerId);
+             tile = $("#birth-month-" + containerId);
+
+
+            container.find('.'+that.activeClass).each(function(){
+                tile = $(this);
+                //data[containerId][parseInt(tile.attr('data-id'))] = tile.hasClass(that.activeClass)?1:0;
+                userData[parseInt(tile.attr('data-id'))] = tile.attr('data-value');
+            });
+            data.push(userData);
+        });
+        return data;
+    };
+
+
     this.formHasErrors = function(formElement){
         var errorCount = 0;
         formElement.find('input').each(function(){

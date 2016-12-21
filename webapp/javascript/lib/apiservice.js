@@ -88,23 +88,32 @@
 
        _.each(entry, function(answer) {
 
-             var text= '';
+             var questionId = answerKeys[answerIndex];
+             if(!isNaN(questionId))
+             {
 
-             if(answer === 1){
-                 text = 'Yes';
-             } else if (answer === 0){
-                 text = 'No';
-             }
+            // TODO the server is not taking other answers when it should
+            //  Change when API server is ready
+           //      var text= answer;
+                 var text= '';
 
-             if(text.length > 1) {
-                                  
-                 answers.push(
-                     {
-                         questionId: answerKeys[answerIndex],
-                         text: text
-                     });
+                 if(answer === 1){
+                     text = 'Yes';
+                 } else if (answer === 0){
+                     text = 'No';
                  }
-                 answerIndex++;
+
+                 if(typeof text != 'undefined'  && text.length > 1) {
+                                  
+                     answers.push(
+                         {
+                            questionId: questionId,
+                            text: text
+                         });
+                 }
+             } 
+
+             answerIndex++;
 
 
          });

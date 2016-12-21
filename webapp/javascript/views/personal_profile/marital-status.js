@@ -15,7 +15,7 @@
 
     function submitMaritalStatus(){
         if (!maritalStatusSubmit.hasClass(disabledClass)) {
-            var formData = helpers.getTileFormDataArray(maritalStatusForm);
+            var formData = helpers.getMaritalStatusFormDataArray(maritalStatusForm);
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
             if(!helpers.hasSelectedTile(formData)){
@@ -23,23 +23,7 @@
             }else if ( helpers.hasMultipleSelectedTiles(formData)){
             } else {
                 maritalStatusSubmit.addClass(disabledClass);
-               /* ajax.ajax(
-                    'POST',
-                    '/personal-profile',
-                    {
-                        action: 'api-pp-marital-status',
-                        data: formData
-                    },
-                    'json',
-                    { }
-                )
-                    .then(function(response){
-                        personalProfile.goToNextPage(response.data);
-                    })
-                    .catch(function(jqXHR,textStatus,errorThrown){
-                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
-                        maritalStatusSubmit.removeClass(disabledClass);
-                    });*/
+  
 
                 return Promise.resolve()
                     .then(function() {
@@ -51,14 +35,11 @@
                         var ajaxAnswers = apiservice.getQuestions(sessionData,9);
                         promiseArrayQuestions.push(ajaxAnswers);
 
-
-
                         _.each(formData, function(entry) {
 
-                            //todo,
-                            /*var ajaxOne =  apiservice.postAnswers(sessionData,
+                            var ajaxOne =  apiservice.postAnswers(sessionData,
                                 entry.taxReturnId, entry);
-                            promiseArrayPut.push(ajaxOne);*/
+                            promiseArrayPut.push(ajaxOne);
 
                             var ajaxTwo = apiservice.getAnswers(sessionData,
                                 entry.taxReturnId,9);
@@ -110,29 +91,12 @@
 
     function updateMaritalStatus(){
         if (!maritalStatusSubmit.hasClass(disabledClass)) {
-            var formData = helpers.getTileFormDataArray(maritalStatusForm);
+            var formData = helpers.getMaritalStatusFormDataArray(maritalStatusForm);
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
             var nameData = helpers.getFormDataArray(maritalStatusForm);
             nameData = nameData[0];
                 maritalStatusSubmit.addClass(disabledClass);
-               /* ajax.ajax(
-                    'POST',
-                    '/personal-profile',
-                    {
-                        action: 'api-pp-marital-status',
-                        data: formData
-                    },
-                    'json',
-                    { }
-                )
-                    .then(function(response){
-                        personalProfile.goToNextPage(response.data);
-                    })
-                    .catch(function(jqXHR,textStatus,errorThrown){
-                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
-                        maritalStatusSubmit.removeClass(disabledClass);
-                    });*/
 
                 return Promise.resolve()
                     .then(function() {
@@ -144,14 +108,11 @@
                         var ajaxAnswers = apiservice.getQuestions(sessionData,5);
                         promiseArrayQuestions.push(ajaxAnswers);
 
-
-
                         _.each(formData, function(entry) {
-
-                            //todo,
-                            /*var ajaxOne =  apiservice.postAnswers(sessionData,
+                 
+                            var ajaxOne =  apiservice.postAnswers(sessionData,
                                 entry.taxReturnId, entry);
-                            promiseArrayPut.push(ajaxOne);*/
+                            promiseArrayPut.push(ajaxOne);
 
                             var ajaxTwo = apiservice.getAnswers(sessionData,
                                 entry.taxReturnId,5);
