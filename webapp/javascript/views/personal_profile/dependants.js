@@ -294,19 +294,9 @@
                 submitDependants();
             });
 
-            dependantsSave.on('click',function(event){
-                event.preventDefault();
-                //TODO: Save dependant function
-            });
-
             dependantsEdit.on('click',function(event){
                 event.preventDefault();
                 //TODO: Edit dependant function
-            });
-
-            dependantsDelete.on('click',function(event){
-                event.preventDefault();
-                //TODO: Delete dependant function
             });
 
             dependantsBack.on('click',function(event){
