@@ -193,7 +193,7 @@
             day = dependantsForm.find('#dependants-birthday-day-'+taxReturnId),
             month = dependantsForm.find('#dependants-birthday-month-'+taxReturnId),
             year = dependantsForm.find('#dependants-birthday-year-'+taxReturnId),
-            relationship = dependantsForm.find('dependants-relationship-'+taxReturnId);
+            relationship = dependantsForm.find('#dependants-relationship-'+taxReturnId);
 
         firstName.removeClass(helpers.errorClass);
         lastName.removeClass(helpers.errorClass);
@@ -203,32 +203,32 @@
         relationship.removeClass(helpers.errorClass);
 
         //firstName
-        if (helpers.isEmpty(firstName.val())){
+        if (helpers.isEmpty(firstName.val().trim())){
             firstName.addClass(helpers.errorClass);
             errors++;
         }
         //lastName
-        if (helpers.isEmpty(lastName.val())){
+        if (helpers.isEmpty(lastName.val().trim())){
             lastName.addClass(helpers.errorClass);
             errors++;
         }
         //day
-        if (helpers.isEmpty(day.val())){
+        if (helpers.isEmpty(day.val().trim())){
             day.addClass(helpers.errorClass);
             errors++;
         }
         //month
-        if (helpers.isEmpty(month.val())){
+        if (helpers.isEmpty(month.val().trim())){
             month.addClass(helpers.errorClass);
             errors++;
         }
         //year
-        if (helpers.isEmpty(year.val())){
+        if (helpers.isEmpty(year.val().trim())){
             year.addClass(helpers.errorClass);
             errors++;
         }
         //relationship
-        if (helpers.isEmpty(relationship.val())){
+        if (helpers.isEmpty(relationship.value)){
             relationship.addClass(helpers.errorClass);
             errors++;
         }
@@ -363,8 +363,8 @@
                 noDependants.on('click', function(event){
                     event.preventDefault();
                     hasDependants.removeClass(activeClass);
-                    dependantsForm.hide();
-                    dependantsLine.hide();
+                    dependantsForm.remove();
+                    dependantsLine.remove();
                 });
             });
 
