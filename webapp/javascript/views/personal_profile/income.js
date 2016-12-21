@@ -139,6 +139,8 @@
                         _.each(data.taxReturns, function(taxReturn){
                             taxReturn.questions = response[1][index];
                             taxReturn.firstName = accountInfo.firstName;
+                            taxReturn.lastName = data.taxReturns.questions[0].last_name;
+                            console.log(taxReturn.lastName);
                             _.each(taxReturn.questions.answers, function(question){
                               question.answer = 0;
                               question.class = "";
