@@ -14,6 +14,7 @@
         fileUploadCancelId = '#dashboard-upload-cancel',
         fileUploadSelectId = '#dashboard-upload-select',
         documentTile = '#container-document-tile',
+        buttonClosePreview = '#button-close-preview',
         progressBar,
         initialized = false;
 
@@ -81,6 +82,12 @@
         dashboard.refreshPage(userSession);
     }
 
+    function closePreview(){
+        var userSession = dashboard.getUserSession();
+        userSession.isPreview = "";
+        dashboard.refreshPage(userSession);
+    }
+
     this.init = function(){
         if ($('#dashboard-upload').length > 0) {
             //set initial active item
@@ -122,6 +129,11 @@
                 .on('click', documentTile, function (event) {
                     event.preventDefault();
                     previewDocument(parseInt($(this).attr('data-id')), parseInt($(this).attr('active-item-id')));
+                })
+                .off('click', buttonClosePreview)
+                .on('click', buttonClosePreview, function (event) {
+                    event.preventDefault();
+                    closePreview();
                 })
             ;
 
