@@ -26,9 +26,8 @@
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
 
-            if(!helpers.hasSelectedTile(formData)){
+            if(!helpers.hasSelectedTileFromMultiSelect(formData, 129)){
                 window.location.hash = 'modal-personal-profile-popup';
-            }else if ( helpers.hasMultipleSelectedTiles(formData)){
             } else {
                 maritalStatusSubmit.addClass(disabledClass);
   
@@ -108,8 +107,12 @@
     }
 
     function validateMonthDayForm(maritalStatusForm){
-        var taxReturnId = maritalStatusForm.attr('data-id'),
-            birthDayErrorLabel = maritalStatusForm.find('#birth-day-error-label-' + taxReturnId),
+        var taxReturnId = maritalStatusForm.attr('data-id'),      
+            statusChanged = maritalStatusForm.find('#marital-status-changed-' + taxReturnId);
+
+        if(statusChanged.hasClass('active')) {
+
+            var birthDayErrorLabel = maritalStatusForm.find('#birth-day-error-label-' + taxReturnId),
             birthMonthErrorLabel = maritalStatusForm.find('#birth-month-error-label-' + taxReturnId),
             birthDay = maritalStatusForm.find('#birth-day-' + taxReturnId),
             birthMonth = maritalStatusForm.find('#birth-month-' + taxReturnId);
@@ -119,13 +122,14 @@
             birthMonth.removeClass(helpers.errorClass);
             birthMonthErrorLabel.removeClass(helpers.errorClass);
 
-        if (helpers.isEmpty(birthDay.val())){
-            birthDay.addClass(helpers.errorClass);
-            birthDayErrorLabel.addClass(helpers.errorClass);
-        }
-        if (helpers.isEmpty(birthMonth.val())){
-            birthMonth.addClass(helpers.errorClass);
-            birthMonthErrorLabel.addClass(helpers.errorClass);
+            if (helpers.isEmpty(birthDay.val())){
+                birthDay.addClass(helpers.errorClass);
+                birthDayErrorLabel.addClass(helpers.errorClass);
+            }
+            if (helpers.isEmpty(birthMonth.val())){
+                birthMonth.addClass(helpers.errorClass);
+                birthMonthErrorLabel.addClass(helpers.errorClass);
+            }
         }
     }
 

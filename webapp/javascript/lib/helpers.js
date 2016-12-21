@@ -203,7 +203,6 @@
 
             container.find('.'+that.activeClass).each(function(){
                 tile = $(this);
-                //data[containerId][parseInt(tile.attr('data-id'))] = tile.hasClass(that.activeClass)?1:0;
                 userData[parseInt(tile.attr('data-id'))] = tile.attr('data-value');
             });
             data.push(userData);
@@ -256,6 +255,22 @@
         });
         return selectedCount > 1;
     };
+
+
+    this.hasSelectedTileFromMultiSelect = function(formData, dataId){
+    
+         var hasSelectedTile = false;
+          _.forOwn(formData, function(value, key) {
+             Object.keys(formData[key]).forEach(function (entry) {
+                if(entry == dataId){
+                   hasSelectedTile = true;
+                 }
+              });
+        });
+       
+        return hasSelectedTile;
+    };
+
 
     this.noneAppliedMultipleSelectedTiles = function(formData){
         //todo, is none apply always last tile?
