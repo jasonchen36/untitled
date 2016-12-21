@@ -289,15 +289,21 @@
                 hasDependants.on('click', function(event){
                     event.preventDefault();
                     noDependants.removeClass(activeClass);
-                    dependantsForm.toggle();
-                    dependantsLine.toggle();
+
+                    if(hasDependants.hasClass(activeClass)) {
+                        dependantsForm.show();
+                        dependantsLine.show();
+                    }else{
+                        dependantsForm.hide();
+                        dependantsLine.hide();
+                    }
                 });
 
                 noDependants.on('click', function(event){
                     event.preventDefault();
                     hasDependants.removeClass(activeClass);
-                    dependantsForm.toggle();
-                    dependantsLine.toggle();
+                    dependantsForm.hide();
+                    dependantsLine.hide();
                 });
             });
 
