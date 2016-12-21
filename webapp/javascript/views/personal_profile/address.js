@@ -8,6 +8,11 @@
         addressForm,
         addressSubmit,
         addressBack,
+        addressFirstLineErrorLabel,
+        addressCityErrorLabel,
+        addressPostalCodeErrorLabel,
+        addressProvinceErrorLabel,
+        addressResidenceErrorLabel,
         addressIsSameCheckbox,
         errorClass = helpers.errorClass,
         disabledClass = helpers.disabledClass;
@@ -103,7 +108,13 @@
             city = addressForm.find('#city-'+taxReturnId),
             postalCode = addressForm.find('#postal-code-'+taxReturnId),
             province = addressForm.find('#province-'+taxReturnId),
-            provinceResidence = addressForm.find('#province-residence-'+taxReturnId);
+            provinceResidence = addressForm.find('#province-residence-'+taxReturnId),
+
+            addressFirstLineErrorLabel = addressForm.find('#address-first-line-label-error-' + taxReturnId),
+            addressCityErrorLabel = addressForm.find('#address-city-label-error-' + taxReturnId),
+            addressPostalCodeErrorLabel = addressForm.find('#address-postal-code-label-error-' + taxReturnId),
+            addressProvinceErrorLabel = addressForm.find('#address-province-label-error-' + taxReturnId),
+            addressResidenceErrorLabel = addressForm.find('#address-residence-label-error-' + taxReturnId);
 
         streetAddress.removeClass(helpers.errorClass);
         city.removeClass(helpers.errorClass);
@@ -111,29 +122,40 @@
         province.removeClass(helpers.errorClass);
         provinceResidence.removeClass(helpers.errorClass);
 
+        addressFirstLineErrorLabel.removeClass(helpers.errorClass);
+        addressCityErrorLabel.removeClass(helpers.errorClass);
+        addressPostalCodeErrorLabel.removeClass(helpers.errorClass);
+        addressProvinceErrorLabel.removeClass(helpers.errorClass);
+        addressResidenceErrorLabel.removeClass(helpers.errorClass);
+
         //street address
         if (helpers.isEmpty(streetAddress.val())){
             streetAddress.addClass(helpers.errorClass);
+            addressFirstLineErrorLabel.addClass(helpers.errorClass);
             errors++;
         }
         //city
         if (helpers.isEmpty(city.val())){
             city.addClass(helpers.errorClass);
+            addressCityErrorLabel.addClass(helpers.errorClass);
             errors++;
         }
         //province
         if (helpers.isEmpty(province.val())){
             province.addClass(helpers.errorClass);
+            addressProvinceErrorLabel.addClass(helpers.errorClass);
             errors++;
         }
         //postal code
         if (helpers.isEmpty(postalCode.val()) || !helpers.isValidPostalCode(postalCode.val())){
             postalCode.addClass(helpers.errorClass);
+            addressPostalCodeErrorLabel.addClass(helpers.errorClass);
             errors++;
         }
         //province residence
         if (helpers.isEmpty(provinceResidence.val())){
             provinceResidence.addClass(helpers.errorClass);
+            addressResidenceErrorLabel.addClass(helpers.errorClass);
             errors++;
         }
         return errors < 1;

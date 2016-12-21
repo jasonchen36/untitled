@@ -8,6 +8,9 @@
         ajax = app.ajax,
         birthdateSubmit,
         birthdateBack,
+        birthdateDayLabelError,
+        birthdateMonthLabelError,
+        birthdateYearLabelError,
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
@@ -16,15 +19,15 @@
       helpers.resetForm(birthdateForm);
       if (helpers.isEmpty(dayInput.val().trim())){
            dayInput.addClass(errorClass);
-            window.location.hash = 'modal-personal-profile-popup';
+           birthdateDayLabelError.addClass(errorClass);
       }
       if (helpers.isEmpty(monthInput.val().trim())){
            monthInput.addClass(errorClass);
-          window.location.hash = 'modal-personal-profile-popup';
+          birthdateMonthLabelError.addClass(errorClass);
        }
       if (helpers.isEmpty(yearInput.val().trim())){
            yearInput.addClass(errorClass);
-          window.location.hash = 'modal-personal-profile-popup';
+          birthdateYearLabelError.addClass(errorClass);
       }
       if (!helpers.formHasErrors(birthdateForm)) {
            birthdateSubmit.addClass(disabledClass);
@@ -59,6 +62,10 @@
             monthInput = $('#dependants-birthday-month');
             yearInput = $('#dependants-birthday-year');
             checkbox = $('.checkbox');
+
+            birthdateDayLabelError = $('#birthdate-day-label-error');
+            birthdateMonthLabelError = $('#birthdate-month-label-error');
+            birthdateYearLabelError = $('#birthdate-year-label-error');
 
             //listeners
             birthdateForm.on('submit',function(event){
