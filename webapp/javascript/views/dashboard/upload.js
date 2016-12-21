@@ -3,9 +3,8 @@
     var $ = jQuery,
         that = app.views.dashboard.upload,
         helpers = app.helpers,
-        apiservice = app.apiservice, 
-        errorClass = app.helpers.errorClass,
-        disabledClass = app.helpers.disabledClass,
+        apiservice = app.apiservice,
+        disabledClass = helpers.disabledClass,
         dashboard = app.services.dashboard,
         animations = app.animations,
         fileUpload,
@@ -14,6 +13,8 @@
         fileUploadCancelId = '#dashboard-upload-cancel',
         fileUploadSelectId = '#dashboard-upload-select',
         progressBar,
+        errorClass = helpers.errorClass,
+        hiddenClass = helpers.hiddenClass,
         initialized = false;
 
     function initializeFileUpload(){
@@ -25,22 +26,26 @@
                 'Authorization': 'Bearer '+ userSession.token
             },
             add: function (e, data) {
-                // console.log(data.originalFiles[0].name);
-                $(fileUploadSubmitId).removeClass(disabledClass);
+                $(fileUploadSelectId).addClass(hiddenClass);
+                $(fileUploadSubmitId).removeClass(hiddenClass);
                 data.context = $(fileUploadSubmitId)
                     .click(function () {
                         data.context = $(fileUploadSubmitId).text('Uploading...');
-                        $(fileUploadCancelId).removeClass(disabledClass);
-                        $(fileUploadSubmitId).addClass(disabledClass);
+                        $(fileUploadCancelId).removeClass(hiddenClass);
+                        $(fileUploadSubmitId).addClass(hiddenClass);
                         data.submit();
                     });
             },
+            error: function (e, data) {
+                resetUploadForm();
+                //todo, make pretty error
+                alert('error');
+            },
             done: function (e, data) {
-
-                app.services.dashboard.refreshPage();
+                resetUploadForm();
             },
             cancel: function (e, data) {
-                console.log(data);
+                resetUploadForm();
             },
             progressall: function (e, data) {
                 var percentageComplete = parseInt(data.loaded / data.total * 100, 10);
@@ -51,6 +56,12 @@
                 });
             }
         });
+    }
+    
+    function resetUploadForm(){
+        $(fileUploadCancelId).addClass(hiddenClass);
+        $(fileUploadSelectId).removeClass(hiddenClass);
+        progressBar.css({width:0});
     }
 
     function setActiveItem(dataId){

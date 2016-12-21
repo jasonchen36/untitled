@@ -6,6 +6,7 @@
     this.activeClass = 'active';
     this.errorClass = 'error';
     this.disabledClass = 'disabled';
+    this.hiddenClass = 'hidden';
     this.tileClass = 'taxplan-tile';
     this.tileContainerClass = 'taxplan-tile-container';
     this.formContainerClass = 'taxplan-form-container';
