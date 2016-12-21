@@ -26,7 +26,7 @@
             $('.'+helpers.formContainerClass).each(function(){
                 validateDependantsFormData($(this));
             });
-            if(!helpers.formHasErrors(addressForm)){
+            if(!helpers.formHasErrors(dependantsForm)){
                 dependantsSubmit.addClass(disabledClass);
                 return Promise.resolve()
                     .then(function() {
@@ -89,7 +89,7 @@
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         dependantsSubmit.removeClass(disabledClass);
                     });
-              }      
+              }
         }
     }
 
