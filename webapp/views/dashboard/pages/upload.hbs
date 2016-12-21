@@ -23,6 +23,17 @@
         <div class="label-document-count">{{count documents}}</div>
     </div>
 </section>
+{{#if isPreview}}
+    <section id="dashboard-document-preview" class="small-6 medium-9">
+        <div class="border-bottom-dark-grey">
+            <p class="display-inline-block label-document-name-header">{{documentItem.name}}</p>
+            <p id="label-upload-instructions" class="display-inline-block side-info-blurb label-instruction-header">Uploaded at {{documentItem.createdAt}}</p>
+            <div class="i--icon-red-x"></div>
+        </div>
+        <image class="image-document-preview add-top-margin" src="{{documentItem.url}}"></image>
+    </section>
+{{else}}
+    {{#debug}}{{/debug}}
 <section id="dashboard-upload" class="add-right-padding">
     <div class="border-bottom-dark-grey">
         <!--TODO: Show after done uploading-->
@@ -45,8 +56,9 @@
             <!--<button id="dashboard-upload-submit" type="submit" class="disabled long purple">Upload</button>-->
             <!--<button id="dashboard-upload-cancel" type="reset" class="disabled long purple">Cancel</button>-->
         </form>
+    {{#debug}}{{/debug}}
          {{#each activeItem.documents}}
-             {{>dashboard-document-tile documentID=documentId thumbnailURL=thumbnailUrl  name=name  uploadedTime=""  }}
+             {{>dashboard-document-tile documentID=documentId thumbnailURL=thumbnailUrl  name=name  uploadedTime="" activeItemId=checkListItemId }}
          {{/each}}
     {{else}}
         <div id="container-upload-explained">
@@ -54,5 +66,5 @@
             <p class="side-info-blurb">Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis mollis, est non commodo luctus, nisi erat porttitor ligula non commodo luctus.</p>
         </div>
     {{/if}}
-  
 </section>
+{{/if}}
