@@ -22,10 +22,11 @@
             var formData = helpers.getTileFormDataArray(dependantsForm);
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
-            if(!helpers.hasSelectedTile(formData)){
-                window.location.hash = 'modal-personal-profile-popup';
-            }else if ( helpers.hasMultipleSelectedTiles(formData)){
-            } else {
+            helpers.resetForm(dependantsForm);
+            $('.'+helpers.formContainerClass).each(function(){
+                validateDependantsFormData($(this));
+            });
+            if(!helpers.formHasErrors(addressForm)){
                 dependantsSubmit.addClass(disabledClass);
                 return Promise.resolve()
                     .then(function() {
@@ -88,7 +89,7 @@
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         dependantsSubmit.removeClass(disabledClass);
                     });
-            }
+              }      
         }
     }
 
