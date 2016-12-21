@@ -79,12 +79,22 @@
                         data.taxReturns.questions = response[2];
 
                         var index = 0;
+
+                        var questionIndex = 0;
+
                         _.each(data.taxReturns, function(taxReturn){
                             taxReturn.firstName = nameData[index];
                             taxReturn.questions = response[1][index];
                             _.each(taxReturn.questions.answers, function(question){
                               question.answer = 0;
                               question.class = "";
+
+                                if(questionIndex===0){
+                                    question.id="has-dependants-"+taxReturn.taxReturnId;
+                                }else{
+                                    question.id="no-dependants-"+taxReturn.taxReturnId;
+                                }
+                                questionIndex++;
 
                               if ( !question.text) {
                                 question.answer = 0;
@@ -144,8 +154,6 @@
                         var ajaxAnswers = apiservice.getQuestions(sessionData,5);
                         promiseArrayQuestions.push(ajaxAnswers);
 
-
-
                         _.each(formData, function(entry) {
 
                             //todo,
@@ -175,6 +183,7 @@
                         _.each(data.taxReturns, function(taxReturn){
                             taxReturn.firstName = nameData[index];
                             taxReturn.questions = response[1][index];
+
                             _.each(taxReturn.questions.answers, function(question){
                               question.answer = 0;
                               question.class = "";

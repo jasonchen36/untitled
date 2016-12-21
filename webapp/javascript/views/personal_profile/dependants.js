@@ -14,6 +14,7 @@
         dependantsDelete,
         tileOptions,
         errorClass = app.helpers.errorClass,
+        activeClass = app.helpers.activeClass,
         disabledClass = app.helpers.disabledClass;
 
     function submitDependants(){
@@ -274,6 +275,32 @@
                 $('#side-info-blurb3').append('<p>' + firstName.val() + " " + lastName.val() + '</p>');
                 $('#side-info-blurb2').append('<p>' + day.val() + '/' + month.val() + '/' + year.val().slice(-2) + '</p>');
             });
+
+            var formData = helpers.getTileFormDataArray(dependantsForm);
+
+            _.each(formData, function(taxReturn){
+
+                var hasDependants = $('#has-dependants-' + taxReturn.taxReturnId);
+                var noDependants = $('#no-dependants-' + taxReturn.taxReturnId);
+
+                var dependantsForm = $('container-dependants-form-' + taxReturn.taxReturnId);
+                var dependantsLine = $('container-dependants-line-' + taxReturn.taxReturnId);
+
+                hasDependants.on('click', function(event){
+                    event.preventDefault();
+                    noDependants.removeClass(activeClass);
+                    dependantsForm.toggle();
+                    dependantsLine.toggle();
+                });
+
+                noDependants.on('click', function(event){
+                    event.preventDefault();
+                    hasDependants.removeClass(activeClass);
+                    dependantsForm.toggle();
+                    dependantsLine.toggle();
+                });
+            });
+
         }
     };
 
