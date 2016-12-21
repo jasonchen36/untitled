@@ -9,28 +9,39 @@
         maritalStatusForm,
         maritalStatusSubmit,
         maritalStatusBack,
-        birthDayErrorLabel,
-        birthMonthErrorLabel,
-        birthDay,
-        birthMonth,
         errorClass = app.helpers.errorClass,
         activeClass = app.helpers.activeClass,
         disabledClass = app.helpers.disabledClass;
 
     function submitMaritalStatus(){
-        $('.'+helpers.formContainerClass).each(function(){
-            validateMonthDayForm($(this));
-        });
         if (!maritalStatusSubmit.hasClass(disabledClass)) {
             var formData = helpers.getMaritalStatusFormDataArray(maritalStatusForm);
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
 
-            if(!helpers.hasSelectedTileFromMultiSelect(formData, 129)){
+            var tiles = helpers.getTileFormDataArray(maritalStatusForm);
+
+            console.log("TILES", tiles);
+
+            validateMaritalStatusFormData(maritalStatusForm);
+
+            var selectedTileInAll = true;
+            $('.'+helpers.tileContainerClass).each(function(){
+                var selectedTile = false;
+                console.log("ALL", $(this));
+                _.each($(this)[0].children, function(){
+                    console.log("T", $(this));
+                    if($(this).hasClass(activeClass)){
+                        selectedTile = true;
+                    }
+                });
+                selectedTileInAll = selectedTileInAll && selectedTile;
+            });
+
+            if(!selectedTileInAll){
                 window.location.hash = 'modal-personal-profile-popup';
-            } else {
+            } else if (!helpers.formHasErrors(maritalStatusForm)) {
                 maritalStatusSubmit.addClass(disabledClass);
-  
 
                 return Promise.resolve()
                     .then(function() {
@@ -208,6 +219,40 @@
         }
     }
 
+    function validateMaritalStatusFormData(maritalStatusForm){
+        var formData = helpers.getMaritalStatusFormDataArray(maritalStatusForm);
+        var errors = 0;
+        _.each(formData, function(taxReturn){
+        var
+            statusChanged = maritalStatusForm.find('#marital-status-changed-'+taxReturn.taxReturnId),
+            day = maritalStatusForm.find('#marital-status-day-'+taxReturn.taxReturnId),
+            month = maritalStatusForm.find('#marital-status-month-'+taxReturn.taxReturnId);
+
+
+        statusChanged.removeClass(helpers.errorClass);
+        day.removeClass(helpers.errorClass);
+        month.removeClass(helpers.errorClass);
+
+        // Is status Changed?
+        if (statusChanged.hasClass(activeClass)){
+
+            // day
+            if(helpers.isEmpty(day.val()) || !helpers.isValidNumber(day.val())){
+                day.addClass(helpers.errorClass);
+                errors++;
+            }
+
+            // month
+            if(helpers.isEmpty(month.val()) || !helpers.isValidNumber(month.val())){
+                month.addClass(helpers.errorClass);
+                errors++;
+            }
+        }
+            });
+    return errors < 1;
+
+    }
+
     this.init = function(){
         if ($('#personal-profile-marital-status').length > 0) {
 
@@ -218,10 +263,13 @@
 
             var formData = helpers.getTileFormDataArray(maritalStatusForm);
 
-            _.each(formData, function(taxReturn){
+            var index = 0;
+            _.each(formData, function(taxReturn) {
                 var checkbox = $('#marital-status-changed-' + taxReturn.taxReturnId);
-                var day = $('#birth-day-' + taxReturn.taxReturnId);
-                var month = $('#birth-month-' + taxReturn.taxReturnId);
+                var day = $('#marital-status-day-' + taxReturn.taxReturnId);
+                var month = $('#marital-status-month-' + taxReturn.taxReturnId);
+                var sameStatus = $('#marital-status-same-' + taxReturn.taxReturnId);
+
 
                 var marriedChoice = $('#married-married');
                 var divorcedChoice = $('#married-divorced');
@@ -284,6 +332,7 @@
                     $(this).toggleClass(helpers.activeClass);
                     day.toggle();
                     month.toggle();
+                    sameStatus.toggle();
                 });
 
             });

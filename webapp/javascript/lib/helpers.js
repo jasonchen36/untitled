@@ -352,4 +352,13 @@
         return true;
     };
 
+    this.isValidNumber = function(num){
+        // If 2 chars check that 2nd char is also a num as parseInt will parse '1a' as 1 instead of error
+        if(num.length > 1) {
+            return ( !isNaN(parseInt(num)) && !isNaN(parseInt(num.charAt(1))) );
+        }else{
+            return ( !isNaN(parseInt(num)) );
+        }
+    };
+
 }).apply(app.helpers);
