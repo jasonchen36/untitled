@@ -283,11 +283,12 @@
                 var hasDependants = $('#has-dependants-' + taxReturn.taxReturnId);
                 var noDependants = $('#no-dependants-' + taxReturn.taxReturnId);
 
-                var dependantsForm = $('container-dependants-form-' + taxReturn.taxReturnId);
-                var dependantsLine = $('container-dependants-line-' + taxReturn.taxReturnId);
+                var dependantsForm = $('#container-dependants-form-' + taxReturn.taxReturnId);
+                var dependantsLine = $('#container-dependants-line-' + taxReturn.taxReturnId);
 
                 hasDependants.on('click', function(event){
                     event.preventDefault();
+                    console.log("clicked yes");
                     noDependants.removeClass(activeClass);
                     dependantsForm.toggle();
                     dependantsLine.toggle();
@@ -295,6 +296,7 @@
 
                 noDependants.on('click', function(event){
                     event.preventDefault();
+                    console.log("clicked no");
                     hasDependants.removeClass(activeClass);
                     dependantsForm.toggle();
                     dependantsLine.toggle();
