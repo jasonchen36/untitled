@@ -203,32 +203,32 @@
         relationship.removeClass(helpers.errorClass);
 
         //firstName
-        if (helpers.isEmpty(firstName.val().trim())){
+        if (helpers.isEmpty(firstName.val())){
             firstName.addClass(helpers.errorClass);
             errors++;
         }
         //lastName
-        if (helpers.isEmpty(lastName.val().trim())){
+        if (helpers.isEmpty(lastName.val())){
             lastName.addClass(helpers.errorClass);
             errors++;
         }
         //day
-        if (helpers.isEmpty(day.val().trim())){
+        if (helpers.isEmpty(day.val())){
             day.addClass(helpers.errorClass);
             errors++;
         }
         //month
-        if (helpers.isEmpty(month.val().trim())){
+        if (helpers.isEmpty(month.val())){
             month.addClass(helpers.errorClass);
             errors++;
         }
         //year
-        if (helpers.isEmpty(year.val().trim())){
+        if (helpers.isEmpty(year.val())){
             year.addClass(helpers.errorClass);
             errors++;
         }
         //relationship
-        if (helpers.isEmpty(relationship.value)){
+        if (helpers.isEmpty(relationship.val())){
             relationship.addClass(helpers.errorClass);
             errors++;
         }

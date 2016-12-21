@@ -129,31 +129,31 @@
         addressResidenceErrorLabel.removeClass(helpers.errorClass);
 
         //street address
-        if (helpers.isEmpty(streetAddress.val().trim())){
+        if (helpers.isEmpty(streetAddress.val())){
             streetAddress.addClass(helpers.errorClass);
             addressFirstLineErrorLabel.addClass(helpers.errorClass);
             errors++;
         }
         //city
-        if (helpers.isEmpty(city.val().trim())){
+        if (helpers.isEmpty(city.val())){
             city.addClass(helpers.errorClass);
             addressCityErrorLabel.addClass(helpers.errorClass);
             errors++;
         }
         //province
-        if (helpers.isEmpty(province.value)){
+        if (helpers.isEmpty(province.val())){
             province.addClass(helpers.errorClass);
             addressProvinceErrorLabel.addClass(helpers.errorClass);
             errors++;
         }
         //postal code
-        if (helpers.isEmpty(postalCode.val().trim()) || !helpers.isValidPostalCode(postalCode.val())){
+        if (helpers.isEmpty(postalCode.val()) || !helpers.isValidPostalCode(postalCode.val())){
             postalCode.addClass(helpers.errorClass);
             addressPostalCodeErrorLabel.addClass(helpers.errorClass);
             errors++;
         }
         //province residence
-        if (helpers.isEmpty(provinceResidence.value)){
+        if (helpers.isEmpty(provinceResidence.val())){
             provinceResidence.addClass(helpers.errorClass);
             addressResidenceErrorLabel.addClass(helpers.errorClass);
             errors++;
