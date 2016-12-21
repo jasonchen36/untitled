@@ -117,7 +117,7 @@
                         var promiseArrayQuestions = [];
 
                         //todo, product and question category in variable
-                        var ajaxAnswers = apiservice.getQuestions(sessionData,2);
+                        var ajaxAnswers = apiservice.getQuestions(sessionData,8);
                         promiseArrayQuestions.push(ajaxAnswers);
 
                         _.each(formData, function(entry) {
@@ -128,7 +128,7 @@
                              promiseArrayPut.push(ajaxOne);*/
 
                             var ajaxTwo = apiservice.getAnswers(sessionData,
-                                entry.taxReturnId,2);
+                                entry.taxReturnId,8);
 
                             promiseArrayGet.push(ajaxTwo);
                         });
@@ -145,24 +145,34 @@
                         data.taxReturns = formData;
                         data.taxReturns.questions = response[2];
 
+                        var married = {id:"married-married", question_id:"129", class:"", instructions:"", question_text:"Married"};
+                        var divorced = {id:"married-divorced", question_id:"129", class:"", instructions:"", question_text:"Divorced"};
+                        var separated = {id:"married-separated", question_id:"129",  class:"", instructions:"", question_text:"Separated"};
+                        var widowed = {id:"married-widowed", question_id:"129",  class:"", instructions:"", question_text:"Widowed"};
+                        var commonLaw = {id:"married-common-law", question_id:"129",  class:"", instructions:"", question_text:"Common Law"};
+                        var single = {id:"married-single", question_id:"129",  class:"", instructions:"", question_text:"Single"};
+                        var marriageTiles = [married, divorced, separated, widowed, commonLaw, single];
+
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){
-                            taxReturn.firstName = nameData[index];
                             taxReturn.questions = response[1][index];
+                            taxReturn.firstName = nameData[index];
                             _.each(taxReturn.questions.answers, function(question){
-                              question.answer = 0;
-                              question.class = "";
-
-                              if ( !question.text) {
+                                question.tiles = marriageTiles;
                                 question.answer = 0;
                                 question.class = "";
-                              } else if (question.text === "Yes"){
+
+                                if ( !question.text) {
+                                    question.answer = 0;
+                                    question.class = "";
+                                } else if (question.text === "Yes"){
                                     question.answer = 1;
                                     question.class = "active";
-                              }
+                                }
 
                             });
                             index++;
+
                         });
 
                         personalProfile.goToPreviousPage(data);
