@@ -21,7 +21,6 @@
         var userSession = dashboard.getUserSession();
         fileUpload.fileupload({
             acceptFileTypes: /(\.|\/)(gif|jpe?g|png|pdf|txt|doc|docx|csv|xls|xlsx|ppt|pptx|odt|ott)$/i,
-            dataType: 'json',
             headers: {
                 'Authorization': 'Bearer '+ userSession.token
             },
@@ -36,13 +35,13 @@
                         data.submit();
                     });
             },
-            error: function (e, data) {
+            done: function (e, data) {
+                resetUploadForm();
+            },
+            fail: function (e, data) {
                 resetUploadForm();
                 //todo, make pretty error
                 alert('error');
-            },
-            done: function (e, data) {
-                resetUploadForm();
             },
             cancel: function (e, data) {
                 resetUploadForm();
