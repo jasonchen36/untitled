@@ -7,7 +7,9 @@
                 <button id="birthdate-back" class="grey header">Previous</button>
             </div>
         <form id="birthdate-form">
-            {{>personal-profile-birthdate-form}}
+            {{#each taxReturns}}
+                {{>personal-profile-birthdate-form}}
+             {{/each}}
         </form>
         </div>
     </div>
