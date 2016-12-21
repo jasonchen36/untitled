@@ -262,17 +262,18 @@
 
             //variables
             dependantsForm = $('#dependants-form');
+            taxReturnId = dependantsForm.attr('data-id');
             dependantsSubmit = $('#dependants-submit');
             dependantsBack = $('#dependants-back');
-            dependantsSave = $('#dependants-save');
+            dependantsSave = $('#dependants-save-'+taxReturnId);
             dependantsEdit = $('#dependants-edit');
             dependantsDelete = $('#dependants-delete');
             tileOptions = $('.taxplan-tile');
             dependantsContainer = $('#container-dependants-form');
             add = $('.i--icon-add');
             dependantsDelete = $('#dependants-delete');
-            dependantsContainerLine = $('#side-info-blurb3');
-            dependantsContainerLine2 = $('#side-info-blurb2');
+            dependantsContainerLine = $('#side-info-blurb3-'+taxReturnId);
+            dependantsContainerLine2 = $('#side-info-blurb2-'+taxReturnId);
             save = $('#dependants-save');
             firstName = $('#dependants-first-name');
             lastName = $('#dependants-last-name');
@@ -323,8 +324,14 @@
 
             save.on('click',function(event){
                 event.preventDefault();
+                helpers.resetForm(dependantsForm);
+                $('.'+helpers.formContainerClass).each(function(){
+                    validateDependantsFormData($(this));
+                });
+                if(!helpers.formHasErrors(dependantsForm)){
                 $('#side-info-blurb3').append('<p>' + firstName.val() + " " + lastName.val() + '</p>');
                 $('#side-info-blurb2').append('<p>' + day.val() + '/' + month.val() + '/' + year.val().slice(-2) + '</p>');
+              }
             });
 
             var formData = helpers.getTileFormDataArray(dependantsForm);
