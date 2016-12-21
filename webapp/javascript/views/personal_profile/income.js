@@ -93,10 +93,10 @@
     function updateIncome(){
         if (!incomeSubmit.hasClass(disabledClass)) {
             var formData = helpers.getTileFormDataArray(incomeForm);
-
+            nameData = helpers.getFormDataArray(incomeForm);
+            nameData = nameData[0];
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
-            console.log(accountInfo);
             if(!helpers.hasSelectedTile(formData)){
                 window.location.hash = 'modal-personal-profile-popup';
             } else if(helpers.noneAppliedMultipleSelectedTiles(formData)){
@@ -108,9 +108,12 @@
                         var promiseArrayQuestions = [];
 
                         //todo, product and question category in variable
-                        var ajaxAnswers = apiservice.getTaxReturnLastName(sessionData,104);
-                        console.log(ajaxAnswers);
+                        var formData = helpers.getTileFormDataArray(incomeForm);
+
+                        _.each(formData, function(taxReturn){
+                        var ajaxAnswers = apiservice.getTaxReturnLastName(sessionData,taxReturn.taxReturnId);
                         promiseArrayQuestions.push(ajaxAnswers);
+                        });
 
                         _.each(formData, function(entry) {
 
@@ -130,7 +133,6 @@
 
                     })
                     .then(function(response) {
-                        console.log(response);
                         var data = {};
                         data.accountInfo = accountInfo;
                         data.taxReturns = formData;
@@ -138,9 +140,8 @@
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){
                             taxReturn.questions = response[1][index];
-                            taxReturn.firstName = accountInfo.firstName;
-                            taxReturn.lastName = data.taxReturns.questions[0].last_name;
-                            console.log(taxReturn.lastName);
+                            taxReturn.firstName = nameData[index];
+                            taxReturn.lastName = data.taxReturns.questions[index].last_name;
                             _.each(taxReturn.questions.answers, function(question){
                               question.answer = 0;
                               question.class = "";

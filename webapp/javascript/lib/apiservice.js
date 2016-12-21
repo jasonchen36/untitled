@@ -64,7 +64,7 @@
                uri,
                {
                    accountId: accountInfo.accountId,
-                   productId: accountInfo.productId
+                   productId: accountInfo.productId,
                },
                'json',
                {
