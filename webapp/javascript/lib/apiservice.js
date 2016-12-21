@@ -64,7 +64,7 @@
                uri,
                {
                    accountId: accountInfo.accountId,
-                   productId: accountInfo.productId,
+                   productId: accountInfo.productId
                },
                'json',
                {
@@ -127,14 +127,14 @@
                  }
 
                  if(typeof text != 'undefined'  && text.length > 1) {
-                                  
+
                      answers.push(
                          {
                             questionId: questionId,
                             text: text
                          });
                  }
-             } 
+             }
 
              answerIndex++;
 
