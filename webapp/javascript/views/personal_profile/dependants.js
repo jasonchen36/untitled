@@ -334,12 +334,8 @@
                     dependantsContainer.toggle();
                     dependantsContainerLine.append('<p id="side-info-blurb3-'+taxReturn.taxReturnId+'">' + firstName.val() + " " + lastName.val() + '</p>');
                     dependantsContainerLine2.append('<p id=side-info-blurb3-'+taxReturn.taxReturnId+'>' + day.val() + '/' + month.val() + '/' + year.val().slice(-2) + '</p>');
-                    // dependantsContainerLine3.append('<div class="container-inline-input">'+
-                    //     '<button id="dependants-delete-'+taxReturn.taxReturnId+'" class="green-outline">Delete</button>'+
-                    // '</div>'+
-                    // '<div class="container-inline-input">'+
-                    //     '<button id="dependants-edit-'+taxReturn.taxReturnId+'" class="green-outline">Edit</button>'+
-                    // '</div>');
+                    dependantsContainerLine3.append('</br><button id="dependants-delete-'+taxReturn.taxReturnId+'" class="green-outline">Delete</button>');
+                    dependantsContainerLine4.append('</br><button id="dependants-edit-'+taxReturn.taxReturnId+'" class="green-outline">Edit</button>');
                   }
                 });
 
