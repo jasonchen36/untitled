@@ -20,6 +20,7 @@
             var formData = helpers.getTileFormDataArray(dependantsForm);
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
+            var hasDependants = $('#has-dependants-' + taxReturn.taxReturnId);
             if (hasDependants.hasClass(activeClass)) {
             helpers.resetForm(dependantsForm);
             $('.'+helpers.formContainerClass).each(function(){
@@ -254,13 +255,14 @@
             var formData = helpers.getTileFormDataArray(dependantsForm);
 
             _.each(formData, function(taxReturn){
-                hasDependants = $('#has-dependants-' + taxReturn.taxReturnId);
+                var hasDependants = $('#has-dependants-' + taxReturn.taxReturnId);
                 var noDependants = $('#no-dependants-' + taxReturn.taxReturnId);
                 var dependantsSave = $('#dependants-save-'+taxReturn.taxReturnId);
                 var dependantsLine = $('#container-dependants-line-' + taxReturn.taxReturnId);
                 var dependantsContainerLine = $('#dependant-name-list-'+taxReturn.taxReturnId);
                 var dependantsContainerLine2 = $('#dependant-date-list-'+taxReturn.taxReturnId);
-                // var dependantsContainerLine3 = $('#dependant-delete-edit-list-'+taxReturn.taxReturnId);
+                var dependantsContainerLine3 = $('#dependant-delete-list-'+taxReturn.taxReturnId);
+                var dependantsContainerLine4 = $('#dependant-edit-list-'+taxReturn.taxReturnId);
                 var firstName = $('#dependants-first-name-'+taxReturn.taxReturnId);
                 var lastName = $('#dependants-last-name-'+taxReturn.taxReturnId);
                 var add = $('.i--icon-add');
