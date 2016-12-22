@@ -1,6 +1,7 @@
 (function(){
 
     var $ = jQuery,
+        activeClass = app.helpers.activeClass,
         that = app.helpers;
 
     this.activeClass = 'active';
@@ -263,7 +264,7 @@
          var hasSelectedTile = false;
           _.forOwn(formData, function(value, key) {
              Object.keys(formData[key]).forEach(function (entry) {
-                if(entry == dataId){
+                if(entry.hasClass(activeClass)){
                    hasSelectedTile = true;
                  }
               });
@@ -353,12 +354,10 @@
     };
 
     this.isValidNumber = function(num){
-        // If 2 chars check that 2nd char is also a num as parseInt will parse '1a' as 1 instead of error
-        if(num.length > 1) {
-            return ( !isNaN(parseInt(num)) && !isNaN(parseInt(num.charAt(1))) );
-        }else{
-            return ( !isNaN(parseInt(num)) );
+        if(/^([0-9]+)$/.test(num)) {
+            return true;
         }
+        return false;
     };
 
 }).apply(app.helpers);

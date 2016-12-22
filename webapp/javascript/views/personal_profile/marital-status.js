@@ -19,26 +19,9 @@
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
 
-            var tiles = helpers.getTileFormDataArray(maritalStatusForm);
-
-            console.log("TILES", tiles);
-
             validateMaritalStatusFormData(maritalStatusForm);
 
-            var selectedTileInAll = true;
-            $('.'+helpers.tileContainerClass).each(function(){
-                var selectedTile = false;
-                console.log("ALL", $(this));
-                _.each($(this)[0].children, function(){
-                    console.log("T", $(this));
-                    if($(this).hasClass(activeClass)){
-                        selectedTile = true;
-                    }
-                });
-                selectedTileInAll = selectedTileInAll && selectedTile;
-            });
-
-            if(!selectedTileInAll){
+            if(!validateMaritalStatusTiles(maritalStatusForm)){
                 window.location.hash = 'modal-personal-profile-popup';
             } else if (!helpers.formHasErrors(maritalStatusForm)) {
                 maritalStatusSubmit.addClass(disabledClass);
@@ -114,33 +97,6 @@
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         maritalStatusSubmit.removeClass(disabledClass);
                     });
-            }
-        }
-    }
-
-    function validateMonthDayForm(maritalStatusForm){
-        var taxReturnId = maritalStatusForm.attr('data-id'),      
-            statusChanged = maritalStatusForm.find('#marital-status-changed-' + taxReturnId);
-
-        if(statusChanged.hasClass('active')) {
-
-            var birthDayErrorLabel = maritalStatusForm.find('#birth-day-error-label-' + taxReturnId),
-            birthMonthErrorLabel = maritalStatusForm.find('#birth-month-error-label-' + taxReturnId),
-            birthDay = maritalStatusForm.find('#birth-day-' + taxReturnId),
-            birthMonth = maritalStatusForm.find('#birth-month-' + taxReturnId);
-
-            birthDay.removeClass(helpers.errorClass);
-            birthDayErrorLabel.removeClass(helpers.errorClass);
-            birthMonth.removeClass(helpers.errorClass);
-            birthMonthErrorLabel.removeClass(helpers.errorClass);
-
-            if (helpers.isEmpty(birthDay.val())){
-                birthDay.addClass(helpers.errorClass);
-                birthDayErrorLabel.addClass(helpers.errorClass);
-            }
-            if (helpers.isEmpty(birthMonth.val())){
-                birthMonth.addClass(helpers.errorClass);
-                birthMonthErrorLabel.addClass(helpers.errorClass);
             }
         }
     }
@@ -251,6 +207,40 @@
             });
     return errors < 1;
 
+    }
+
+    function validateMaritalStatusTiles(maritalStatusForm){
+        var formData = helpers.getMaritalStatusFormDataArray(maritalStatusForm);
+        var isValid = true;
+        var numActive = 0;
+        _.each(formData, function(taxReturn) {
+            var
+                married = maritalStatusForm.find('#married-married-' + taxReturn.taxReturnId),
+                divorced = maritalStatusForm.find('#married-divorced-' + taxReturn.taxReturnId),
+                separated = maritalStatusForm.find('#married-separated-' + taxReturn.taxReturnId),
+                widowed = maritalStatusForm.find('#married-widowed-' + taxReturn.taxReturnId),
+                commonLaw = maritalStatusForm.find('#married-common-law-' + taxReturn.taxReturnId),
+                single = maritalStatusForm.find('#married-single-' + taxReturn.taxReturnId);
+
+            if(married.hasClass(activeClass)){
+                numActive++;
+            } else if(divorced.hasClass(activeClass)){
+                numActive++;
+            } else if(separated.hasClass(activeClass)){
+                numActive++;
+            } else if(widowed.hasClass(activeClass)){
+                numActive++;
+            } else if(commonLaw.hasClass(activeClass)){
+                numActive++;
+            } else if(single.hasClass(activeClass)){
+                numActive++;
+            }else{
+                isValid = false;
+            }
+
+        });
+
+        return isValid;
     }
 
     this.init = function(){
