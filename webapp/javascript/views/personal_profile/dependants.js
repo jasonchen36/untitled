@@ -325,10 +325,10 @@
                     noDependants.removeClass(activeClass);
 
                     if(hasDependants.hasClass(activeClass)) {
-                        dependantsForm.show();
+                        dependantsContainer.show();
                         dependantsLine.show();
                     }else{
-                        dependantsForm.hide();
+                        dependantsContainer.hide();
                         dependantsLine.hide();
                     }
                 });
