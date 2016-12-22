@@ -257,101 +257,90 @@
     }
 
     this.init = function(){
+      var dependantsForm = $('#dependants-form');
+
         if ($('#personal-profile-dependants').length > 0) {
-
-            //variables
-            dependantsForm = $('#dependants-form');
-            dependantsSubmit = $('#dependants-submit');
-            dependantsBack = $('#dependants-back');
-            dependantsEdit = $('#dependants-edit');
-            tileOptions = $('.taxplan-tile');
-
-            add = $('.i--icon-add');
-            dependantsDelete = $('#dependants-delete');
-
-
-
-            //overwrite standard tile selector active toggle
-            $(document).off('click', '.'+helpers.tileClass);
-
-            //listeners
-            dependantsForm.on('submit',function(event){
-                event.preventDefault();
-                submitDependants();
-            });
-
-            dependantsSubmit.on('click',function(event){
-                event.preventDefault();
-                submitDependants();
-            });
-
-            dependantsEdit.on('click',function(event){
-                event.preventDefault();
-                //TODO: Edit dependant function
-            });
-
-            dependantsBack.on('click',function(event){
-                event.preventDefault();
-                updateDependants();
-            });
-
-            tileOptions.on('click',function(event){
-                event.preventDefault();
-                $(this).toggleClass(helpers.activeClass);
-                //updateUserDependants($(this),$(this).parent());
-            });
-
-
-
-            dependantsDelete.on('click',function(event){
-                event.preventDefault();
-                dependantsContainerLine.remove();
-                dependantsContainerLine2.remove();
-            });
-
-
-
             var formData = helpers.getTileFormDataArray(dependantsForm);
 
             _.each(formData, function(taxReturn){
-                console.log(taxReturn.taxReturnId);
                 var hasDependants = $('#has-dependants-' + taxReturn.taxReturnId);
                 var noDependants = $('#no-dependants-' + taxReturn.taxReturnId);
                 var dependantsSave = $('#dependants-save-'+taxReturn.taxReturnId);
-                var dependantsForm = $('#container-dependants-form-' + taxReturn.taxReturnId);
                 var dependantsLine = $('#container-dependants-line-' + taxReturn.taxReturnId);
-                var dependantsContainerLine = $('#side-info-blurb3-'+taxReturn.taxReturnId);
-                var dependantsContainerLine2 = $('#side-info-blurb2-'+taxReturn.taxReturnId);
+                var dependantsContainerLine = $('#dependant-name-list-'+taxReturn.taxReturnId);
+                var dependantsContainerLine2 = $('#dependant-date-list-'+taxReturn.taxReturnId);
                 var firstName = $('#dependants-first-name-'+taxReturn.taxReturnId);
                 var lastName = $('#dependants-last-name-'+taxReturn.taxReturnId);
+                var add = $('.i--icon-add');
                 var day = $('#dependants-birthday-day-'+taxReturn.taxReturnId);
                 var month = $('#dependants-birthday-month-'+taxReturn.taxReturnId);
                 var year = $('#dependants-birthday-year-'+taxReturn.taxReturnId);
-                var dependantsContainer = $('#container-dependants-form-'+taxReturn.taxReturnId);
+                var dependantsContainer = $('#container-dependants-line-'+taxReturn.taxReturnId);
+                var dependantsSubmit = $('#dependants-submit');
+                var dependantsBack = $('#dependants-back');
+                var dependantsEdit = $('#dependants-edit-'+taxReturn.taxReturnId);
+                var tileOptions = $('.taxplan-tile');
+                var dependantsDelete = $('#dependants-delete-'+taxReturn.taxReturnId);
+
+                //overwrite standard tile selector active toggle
+                $(document).off('click', '.'+helpers.tileClass);
+
+                //listeners
+                dependantsForm.on('submit',function(event){
+                    event.preventDefault();
+                    submitDependants();
+                });
+
+                dependantsSubmit.on('click',function(event){
+                    event.preventDefault();
+                    submitDependants();
+                });
+
+                dependantsEdit.on('click',function(event){
+                    event.preventDefault();
+                    //TODO: Edit dependant function
+                });
+
+                dependantsBack.on('click',function(event){
+                    event.preventDefault();
+                    updateDependants();
+                });
+
+                tileOptions.on('click',function(event){
+                    event.preventDefault();
+                    $(this).toggleClass(helpers.activeClass);
+                    //updateUserDependants($(this),$(this).parent());
+                });
+
+
+
+                dependantsDelete.on('click',function(event){
+                    event.preventDefault();
+                    dependantsContainerLine.remove();
+                    dependantsContainerLine2.remove();
+                });
 
                 hasDependants.on('click', function(event){
                     event.preventDefault();
                     noDependants.removeClass(activeClass);
 
                     if(hasDependants.hasClass(activeClass)) {
-                        dependantsForm.show();
+                        dependantsContainer.show();
                         dependantsLine.show();
                     }else{
-                        dependantsForm.hide();
+                        dependantsContainer.hide();
                         dependantsLine.hide();
                     }
                 });
 
                 add.on('click',function(event){
                     event.preventDefault();
-                    dependantsContainer.toggle();
+                    dependantsForm.toggle();
                 });
 
                 dependantsSave.on('click',function(event){
                     event.preventDefault();
-                    console.log('it is getting clicked');
                     helpers.resetForm(dependantsForm);
-                    console.log("DS", event);
                     $('.'+helpers.formContainerClass).each(function(){
                         validateDependantsFormData($(this));
                     });
