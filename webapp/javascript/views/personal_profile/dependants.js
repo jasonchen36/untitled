@@ -21,10 +21,12 @@
             var formData = helpers.getTileFormDataArray(dependantsForm);
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
+            if (hasDependants.hasClass(activeClass)) {
             helpers.resetForm(dependantsForm);
             $('.'+helpers.formContainerClass).each(function(){
                 validateDependantsFormData($(this));
             });
+            }
             if(!helpers.formHasErrors(dependantsForm)){
                 dependantsSubmit.addClass(disabledClass);
                 return Promise.resolve()
@@ -253,7 +255,7 @@
             var formData = helpers.getTileFormDataArray(dependantsForm);
 
             _.each(formData, function(taxReturn){
-                var hasDependants = $('#has-dependants-' + taxReturn.taxReturnId);
+                hasDependants = $('#has-dependants-' + taxReturn.taxReturnId);
                 var noDependants = $('#no-dependants-' + taxReturn.taxReturnId);
                 var dependantsSave = $('#dependants-save-'+taxReturn.taxReturnId);
                 var dependantsLine = $('#container-dependants-line-' + taxReturn.taxReturnId);
