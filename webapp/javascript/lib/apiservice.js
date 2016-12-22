@@ -117,8 +117,8 @@
 
             // TODO the server is not taking other answers when it should
             //  Change when API server is ready
-           //      var text= answer;
-                 var text= '';
+                 var text= answer;
+            //     var text= '';
 
                  if(answer === 1){
                      text = 'Yes';
@@ -161,6 +161,69 @@
 
     };
 
+    this.postMaritalAnswers = function(sessionData, taxReturnId,  entry){
+
+        var accountInfo = helpers.getAccountInformation(sessionData);
+
+        var answerKeys = Object.keys(entry);
+        var answers = [];
+        var answerIndex = 0;
+
+        var postObj = {};
+        postObj.answers = [];
+
+
+        _.each(entry, function(answer) {
+
+            var questionId = answerKeys[answerIndex];
+            console.log("Q", questionId);
+            if(!isNaN(questionId))
+            {
+
+                // TODO the server is not taking other answers when it should
+                //  Change when API server is ready
+                var text= answer;
+                //     var text= '';
+
+                if(answer === 1){
+                    text = 'Yes';
+                } else if (answer === 0){
+                    text = 'No';
+                }
+
+                if(typeof text != 'undefined'  && text.length > 1) {
+
+                    postObj.answers.push({
+                        questionId: 129,
+                        text: text
+                    });
+                }
+            }
+
+            answerIndex++;
+
+
+        });
+
+
+        var uri = sessionData.apiUrl + '/tax_return/' +  taxReturnId + '/answers/';
+
+        var ajaxPromise = ajax.ajax(
+            'POST',
+            uri,
+            {
+                'answers': postObj.answers
+            },
+            'json-text',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+
+        );
+
+        return ajaxPromise;
+
+    };
 
 
     this.getMessages = function(sessionData){

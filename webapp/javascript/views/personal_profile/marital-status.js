@@ -38,7 +38,7 @@
 
                         _.each(formData, function(entry) {
 
-                            var ajaxOne =  apiservice.postAnswers(sessionData,
+                            var ajaxOne =  apiservice.postMaritalAnswers(sessionData,
                                 entry.taxReturnId, entry);
                             promiseArrayPut.push(ajaxOne);
 
