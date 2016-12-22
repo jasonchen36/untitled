@@ -345,6 +345,7 @@
                         validateDependantsFormData($(this));
                     });
                     if(!helpers.formHasErrors(dependantsContainer)){
+                    dependantsContainer.toggle();
                     dependantsContainerLine.append('<p>' + firstName.val() + " " + lastName.val() + '</p>');
                     dependantsContainerLine2.append('<p>' + day.val() + '/' + month.val() + '/' + year.val().slice(-2) + '</p>');
                   }
