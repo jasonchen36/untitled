@@ -260,7 +260,7 @@
                 var dependantsLine = $('#container-dependants-line-' + taxReturn.taxReturnId);
                 var dependantsContainerLine = $('#dependant-name-list-'+taxReturn.taxReturnId);
                 var dependantsContainerLine2 = $('#dependant-date-list-'+taxReturn.taxReturnId);
-                var dependantsContainerLine3 = $('#dependant-delete-edit-list-'+taxReturn.taxReturnId);
+                // var dependantsContainerLine3 = $('#dependant-delete-edit-list-'+taxReturn.taxReturnId);
                 var firstName = $('#dependants-first-name-'+taxReturn.taxReturnId);
                 var lastName = $('#dependants-last-name-'+taxReturn.taxReturnId);
                 var add = $('.i--icon-add');
@@ -332,12 +332,12 @@
                     dependantsContainer.toggle();
                     dependantsContainerLine.append('<p id="side-info-blurb3-'+taxReturn.taxReturnId+'">' + firstName.val() + " " + lastName.val() + '</p>');
                     dependantsContainerLine2.append('<p id=side-info-blurb3-'+taxReturn.taxReturnId+'>' + day.val() + '/' + month.val() + '/' + year.val().slice(-2) + '</p>');
-                    dependantsContainerLine3.append('<div class="container-inline-input">'+
-                        '<button id="dependants-delete-'+taxReturn.taxReturnId+'" class="green-outline">Delete</button>'+
-                    '</div>'+
-                    '<div class="container-inline-input">'+
-                        '<button id="dependants-edit-'+taxReturn.taxReturnId+'" class="green-outline">Edit</button>'+
-                    '</div>');
+                    // dependantsContainerLine3.append('<div class="container-inline-input">'+
+                    //     '<button id="dependants-delete-'+taxReturn.taxReturnId+'" class="green-outline">Delete</button>'+
+                    // '</div>'+
+                    // '<div class="container-inline-input">'+
+                    //     '<button id="dependants-edit-'+taxReturn.taxReturnId+'" class="green-outline">Edit</button>'+
+                    // '</div>');
                   }
                 });
 
