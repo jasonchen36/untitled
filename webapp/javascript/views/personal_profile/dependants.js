@@ -9,7 +9,6 @@
         apiservice = app.apiservice,
         dependantsSubmit,
         dependantsBack,
-        dependantsSave,
         dependantsEdit,
         dependantsDelete,
         tileOptions,
@@ -262,24 +261,15 @@
 
             //variables
             dependantsForm = $('#dependants-form');
-            taxReturnId = dependantsForm.attr('data-id');
             dependantsSubmit = $('#dependants-submit');
             dependantsBack = $('#dependants-back');
-            dependantsSave = $('#dependants-save-'+taxReturnId);
             dependantsEdit = $('#dependants-edit');
-            dependantsDelete = $('#dependants-delete');
             tileOptions = $('.taxplan-tile');
-            dependantsContainer = $('#container-dependants-form');
+
             add = $('.i--icon-add');
             dependantsDelete = $('#dependants-delete');
-            dependantsContainerLine = $('#side-info-blurb3-'+taxReturnId);
-            dependantsContainerLine2 = $('#side-info-blurb2-'+taxReturnId);
-            save = $('#dependants-save');
-            firstName = $('#dependants-first-name');
-            lastName = $('#dependants-last-name');
-            day = $('#dependants-birthday-day');
-            month = $('#dependants-birthday-month');
-            year = $('#dependants-birthday-year');
+
+
 
             //overwrite standard tile selector active toggle
             $(document).off('click', '.'+helpers.tileClass);
@@ -311,10 +301,7 @@
                 //updateUserDependants($(this),$(this).parent());
             });
 
-            add.on('click',function(event){
-                event.preventDefault();
-                dependantsContainer.toggle();
-            });
+
 
             dependantsDelete.on('click',function(event){
                 event.preventDefault();
@@ -322,27 +309,25 @@
                 dependantsContainerLine2.remove();
             });
 
-            save.on('click',function(event){
-                event.preventDefault();
-                helpers.resetForm(dependantsForm);
-                $('.'+helpers.formContainerClass).each(function(){
-                    validateDependantsFormData($(this));
-                });
-                if(!helpers.formHasErrors(dependantsForm)){
-                $('#side-info-blurb3').append('<p>' + firstName.val() + " " + lastName.val() + '</p>');
-                $('#side-info-blurb2').append('<p>' + day.val() + '/' + month.val() + '/' + year.val().slice(-2) + '</p>');
-              }
-            });
+
 
             var formData = helpers.getTileFormDataArray(dependantsForm);
 
             _.each(formData, function(taxReturn){
-
+                console.log(taxReturn.taxReturnId);
                 var hasDependants = $('#has-dependants-' + taxReturn.taxReturnId);
                 var noDependants = $('#no-dependants-' + taxReturn.taxReturnId);
-
+                var dependantsSave = $('#dependants-save-'+taxReturn.taxReturnId);
                 var dependantsForm = $('#container-dependants-form-' + taxReturn.taxReturnId);
                 var dependantsLine = $('#container-dependants-line-' + taxReturn.taxReturnId);
+                var dependantsContainerLine = $('#side-info-blurb3-'+taxReturn.taxReturnId);
+                var dependantsContainerLine2 = $('#side-info-blurb2-'+taxReturn.taxReturnId);
+                var firstName = $('#dependants-first-name-'+taxReturn.taxReturnId);
+                var lastName = $('#dependants-last-name-'+taxReturn.taxReturnId);
+                var day = $('#dependants-birthday-day-'+taxReturn.taxReturnId);
+                var month = $('#dependants-birthday-month-'+taxReturn.taxReturnId);
+                var year = $('#dependants-birthday-year-'+taxReturn.taxReturnId);
+                var dependantsContainer = $('#container-dependants-form-'+taxReturn.taxReturnId);
 
                 hasDependants.on('click', function(event){
                     event.preventDefault();
@@ -355,6 +340,25 @@
                         dependantsForm.hide();
                         dependantsLine.hide();
                     }
+                });
+
+                add.on('click',function(event){
+                    event.preventDefault();
+                    dependantsContainer.toggle();
+                });
+
+                dependantsSave.on('click',function(event){
+                    event.preventDefault();
+                    console.log('it is getting clicked');
+                    helpers.resetForm(dependantsForm);
+                    console.log("DS", event);
+                    $('.'+helpers.formContainerClass).each(function(){
+                        validateDependantsFormData($(this));
+                    });
+                    if(!helpers.formHasErrors(dependantsForm)){
+                    dependantsContainerLine.append('<p>' + firstName.val() + " " + lastName.val() + '</p>');
+                    dependantsContainerLine2.append('<p>' + day.val() + '/' + month.val() + '/' + year.val().slice(-2) + '</p>');
+                  }
                 });
 
                 noDependants.on('click', function(event){
