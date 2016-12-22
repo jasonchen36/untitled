@@ -275,7 +275,7 @@
                 var day = $('#dependants-birthday-day-'+taxReturn.taxReturnId);
                 var month = $('#dependants-birthday-month-'+taxReturn.taxReturnId);
                 var year = $('#dependants-birthday-year-'+taxReturn.taxReturnId);
-                var dependantsContainer = $('#container-dependants-line-'+taxReturn.taxReturnId);
+                var dependantsContainer = $('#container-dependants-form-'+taxReturn.taxReturnId);
                 var dependantsSubmit = $('#dependants-submit');
                 var dependantsBack = $('#dependants-back');
                 var dependantsEdit = $('#dependants-edit-'+taxReturn.taxReturnId);
@@ -325,17 +325,17 @@
                     noDependants.removeClass(activeClass);
 
                     if(hasDependants.hasClass(activeClass)) {
-                        dependantsContainer.show();
+                        dependantsForm.show();
                         dependantsLine.show();
                     }else{
-                        dependantsContainer.hide();
+                        dependantsForm.hide();
                         dependantsLine.hide();
                     }
                 });
 
                 add.on('click',function(event){
                     event.preventDefault();
-                    dependantsForm.toggle();
+                    dependantsContainer.toggle();
                 });
 
                 dependantsSave.on('click',function(event){
