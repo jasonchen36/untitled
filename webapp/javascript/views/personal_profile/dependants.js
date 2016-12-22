@@ -9,7 +9,6 @@
         apiservice = app.apiservice,
         dependantsSubmit,
         dependantsBack,
-        dependantsSave,
         dependantsEdit,
         dependantsDelete,
         tileOptions,
@@ -22,10 +21,11 @@
             var formData = helpers.getTileFormDataArray(dependantsForm);
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
-            if(!helpers.hasSelectedTile(formData)){
-                window.location.hash = 'modal-personal-profile-popup';
-            }else if ( helpers.hasMultipleSelectedTiles(formData)){
-            } else {
+            helpers.resetForm(dependantsForm);
+            $('.'+helpers.formContainerClass).each(function(){
+                validateDependantsFormData($(this));
+            });
+            if(!helpers.formHasErrors(dependantsForm)){
                 dependantsSubmit.addClass(disabledClass);
                 return Promise.resolve()
                     .then(function() {
@@ -88,7 +88,7 @@
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         dependantsSubmit.removeClass(disabledClass);
                     });
-            }
+              }
         }
     }
 
@@ -192,7 +192,7 @@
             day = dependantsForm.find('#dependants-birthday-day-'+taxReturnId),
             month = dependantsForm.find('#dependants-birthday-month-'+taxReturnId),
             year = dependantsForm.find('#dependants-birthday-year-'+taxReturnId),
-            relationship = dependantsForm.find('dependants-relationship-'+taxReturnId);
+            relationship = dependantsForm.find('#dependants-relationship-'+taxReturnId);
 
         firstName.removeClass(helpers.errorClass);
         lastName.removeClass(helpers.errorClass);
@@ -257,113 +257,104 @@
     }
 
     this.init = function(){
+      var dependantsForm = $('#dependants-form');
+
         if ($('#personal-profile-dependants').length > 0) {
-
-            //variables
-            dependantsForm = $('#dependants-form');
-            dependantsSubmit = $('#dependants-submit');
-            dependantsBack = $('#dependants-back');
-            dependantsSave = $('#dependants-save');
-            dependantsEdit = $('#dependants-edit');
-            dependantsDelete = $('#dependants-delete');
-            tileOptions = $('.taxplan-tile');
-            dependantsContainer = $('#container-dependants-form');
-            add = $('.i--icon-add');
-            dependantsDelete = $('#dependants-delete');
-            dependantsContainerLine = $('#side-info-blurb3');
-            dependantsContainerLine2 = $('#side-info-blurb2');
-            save = $('#dependants-save');
-            firstName = $('#dependants-first-name');
-            lastName = $('#dependants-last-name');
-            day = $('#dependants-birthday-day');
-            month = $('#dependants-birthday-month');
-            year = $('#dependants-birthday-year');
-
-            //overwrite standard tile selector active toggle
-            $(document).off('click', '.'+helpers.tileClass);
-
-            //listeners
-            dependantsForm.on('submit',function(event){
-                event.preventDefault();
-                submitDependants();
-            });
-
-            dependantsSubmit.on('click',function(event){
-                event.preventDefault();
-                submitDependants();
-            });
-
-            dependantsSave.on('click',function(event){
-                event.preventDefault();
-                //TODO: Save dependant function
-            });
-
-            dependantsEdit.on('click',function(event){
-                event.preventDefault();
-                //TODO: Edit dependant function
-            });
-
-            dependantsDelete.on('click',function(event){
-                event.preventDefault();
-                //TODO: Delete dependant function
-            });
-
-            dependantsBack.on('click',function(event){
-                event.preventDefault();
-                updateDependants();
-            });
-
-            tileOptions.on('click',function(event){
-                event.preventDefault();
-                $(this).toggleClass(helpers.activeClass);
-                //updateUserDependants($(this),$(this).parent());
-            });
-
-            add.on('click',function(event){
-                event.preventDefault();
-                dependantsContainer.toggle();
-            });
-
-            dependantsDelete.on('click',function(event){
-                event.preventDefault();
-                dependantsContainerLine.remove();
-                dependantsContainerLine2.remove();
-            });
-
-            save.on('click',function(event){
-                event.preventDefault();
-                $('#side-info-blurb3').append('<p>' + firstName.val() + " " + lastName.val() + '</p>');
-                $('#side-info-blurb2').append('<p>' + day.val() + '/' + month.val() + '/' + year.val().slice(-2) + '</p>');
-            });
-
             var formData = helpers.getTileFormDataArray(dependantsForm);
 
             _.each(formData, function(taxReturn){
-
                 var hasDependants = $('#has-dependants-' + taxReturn.taxReturnId);
                 var noDependants = $('#no-dependants-' + taxReturn.taxReturnId);
-
-                var dependantsForm = $('#container-dependants-form-' + taxReturn.taxReturnId);
+                var dependantsSave = $('#dependants-save-'+taxReturn.taxReturnId);
                 var dependantsLine = $('#container-dependants-line-' + taxReturn.taxReturnId);
+                var dependantsContainerLine = $('#dependant-name-list-'+taxReturn.taxReturnId);
+                var dependantsContainerLine2 = $('#dependant-date-list-'+taxReturn.taxReturnId);
+                var firstName = $('#dependants-first-name-'+taxReturn.taxReturnId);
+                var lastName = $('#dependants-last-name-'+taxReturn.taxReturnId);
+                var add = $('.i--icon-add');
+                var day = $('#dependants-birthday-day-'+taxReturn.taxReturnId);
+                var month = $('#dependants-birthday-month-'+taxReturn.taxReturnId);
+                var year = $('#dependants-birthday-year-'+taxReturn.taxReturnId);
+                var dependantsContainer = $('#container-dependants-line-'+taxReturn.taxReturnId);
+                var dependantsSubmit = $('#dependants-submit');
+                var dependantsBack = $('#dependants-back');
+                var dependantsEdit = $('#dependants-edit-'+taxReturn.taxReturnId);
+                var tileOptions = $('.taxplan-tile');
+                var dependantsDelete = $('#dependants-delete-'+taxReturn.taxReturnId);
+
+                //overwrite standard tile selector active toggle
+                $(document).off('click', '.'+helpers.tileClass);
+
+                //listeners
+                dependantsForm.on('submit',function(event){
+                    event.preventDefault();
+                    submitDependants();
+                });
+
+                dependantsSubmit.on('click',function(event){
+                    event.preventDefault();
+                    submitDependants();
+                });
+
+                dependantsEdit.on('click',function(event){
+                    event.preventDefault();
+                    //TODO: Edit dependant function
+                });
+
+                dependantsBack.on('click',function(event){
+                    event.preventDefault();
+                    updateDependants();
+                });
+
+                tileOptions.on('click',function(event){
+                    event.preventDefault();
+                    $(this).toggleClass(helpers.activeClass);
+                    //updateUserDependants($(this),$(this).parent());
+                });
+
+
+
+                dependantsDelete.on('click',function(event){
+                    event.preventDefault();
+                    dependantsContainerLine.remove();
+                    dependantsContainerLine2.remove();
+                });
 
                 hasDependants.on('click', function(event){
                     event.preventDefault();
                     noDependants.removeClass(activeClass);
 
                     if(hasDependants.hasClass(activeClass)) {
-                        dependantsForm.show();
+                        dependantsContainer.show();
                         dependantsLine.show();
                     }else{
-                        dependantsForm.hide();
+                        dependantsContainer.hide();
                         dependantsLine.hide();
                     }
+                });
+
+                add.on('click',function(event){
+                    event.preventDefault();
+                    dependantsForm.toggle();
+                });
+
+                dependantsSave.on('click',function(event){
+                    event.preventDefault();
+                    helpers.resetForm(dependantsForm);
+                    $('.'+helpers.formContainerClass).each(function(){
+                        validateDependantsFormData($(this));
+                    });
+                    if(!helpers.formHasErrors(dependantsForm)){
+                    dependantsContainerLine.append('<p>' + firstName.val() + " " + lastName.val() + '</p>');
+                    dependantsContainerLine2.append('<p>' + day.val() + '/' + month.val() + '/' + year.val().slice(-2) + '</p>');
+                  }
                 });
 
                 noDependants.on('click', function(event){
                     event.preventDefault();
                     hasDependants.removeClass(activeClass);
-                    dependantsForm.hide();
-                    dependantsLine.hide();
+                    dependantsForm.remove();
+                    dependantsLine.remove();
                 });
             });
 
