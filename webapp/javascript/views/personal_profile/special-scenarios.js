@@ -123,6 +123,8 @@
                         _.each(data.taxReturns, function(taxReturn){
                             taxReturn.questions = response[1][index];
                             taxReturn.firstName = nameData[index];
+                            taxReturn.accountInfo = accountInfo;
+                            taxReturn.accountInfo.firstName = accountInfo.firstName.toUpperCase();
 
                             var married = {id:"married-married-"+taxReturn.taxReturnId, question_id:"129", class:"", instructions:"", question_text:"Married"};
                             var divorced = {id:"married-divorced-"+taxReturn.taxReturnId, question_id:"129", class:"", instructions:"", question_text:"Divorced"};
