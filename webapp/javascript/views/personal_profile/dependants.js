@@ -340,11 +340,11 @@
 
                 dependantsSave.on('click',function(event){
                     event.preventDefault();
-                    helpers.resetForm(dependantsForm);
+                    helpers.resetForm(dependantsContainer);
                     $('.'+helpers.formContainerClass).each(function(){
                         validateDependantsFormData($(this));
                     });
-                    if(!helpers.formHasErrors(dependantsForm)){
+                    if(!helpers.formHasErrors(dependantsContainer)){
                     dependantsContainerLine.append('<p>' + firstName.val() + " " + lastName.val() + '</p>');
                     dependantsContainerLine2.append('<p>' + day.val() + '/' + month.val() + '/' + year.val().slice(-2) + '</p>');
                   }
@@ -353,8 +353,8 @@
                 noDependants.on('click', function(event){
                     event.preventDefault();
                     hasDependants.removeClass(activeClass);
-                    dependantsForm.remove();
-                    dependantsLine.remove();
+                    dependantsContainer.hide();
+                    dependantsLine.hide();
                 });
             });
 
