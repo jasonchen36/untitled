@@ -100,16 +100,6 @@
             var nameData = helpers.getFormDataArray(dependantsForm);
             nameData = nameData[0];
                 dependantsSubmit.addClass(disabledClass);
-                /*app.ajax.ajax(
-                    'POST',
-                    '/personal-profile',
-                    {
-                        action: 'api-pp-dependants',
-                        data: formData
-                    },
-                    'json',
-                    { }
-                )*/
                 return Promise.resolve()
                     .then(function() {
                         var promiseArrayPut = [];
@@ -257,7 +247,7 @@
     }
 
     this.init = function(){
-      var dependantsForm = $('#dependants-form');
+      dependantsForm = $('#dependants-form');
 
         if ($('#personal-profile-dependants').length > 0) {
             var formData = helpers.getTileFormDataArray(dependantsForm);
@@ -276,10 +266,9 @@
                 var month = $('#dependants-birthday-month-'+taxReturn.taxReturnId);
                 var year = $('#dependants-birthday-year-'+taxReturn.taxReturnId);
                 var dependantsContainer = $('#container-dependants-form-'+taxReturn.taxReturnId);
-                var dependantsSubmit = $('#dependants-submit');
+                dependantsSubmit = $('#dependants-submit');
                 var dependantsBack = $('#dependants-back');
                 var dependantsEdit = $('#dependants-edit-'+taxReturn.taxReturnId);
-                var tileOptions = $('.taxplan-tile');
                 var dependantsDelete = $('#dependants-delete-'+taxReturn.taxReturnId);
 
                 //overwrite standard tile selector active toggle
@@ -306,14 +295,6 @@
                     updateDependants();
                 });
 
-                tileOptions.on('click',function(event){
-                    event.preventDefault();
-                    $(this).toggleClass(helpers.activeClass);
-                    //updateUserDependants($(this),$(this).parent());
-                });
-
-
-
                 dependantsDelete.on('click',function(event){
                     event.preventDefault();
                     dependantsContainerLine.remove();
@@ -322,6 +303,7 @@
 
                 hasDependants.on('click', function(event){
                     event.preventDefault();
+                    $(this).toggleClass(helpers.activeClass);
                     noDependants.removeClass(activeClass);
 
                     if(hasDependants.hasClass(activeClass)) {
@@ -352,6 +334,7 @@
 
                 noDependants.on('click', function(event){
                     event.preventDefault();
+                    $(this).toggleClass(helpers.activeClass);
                     hasDependants.removeClass(activeClass);
                     dependantsContainer.hide();
                     dependantsLine.hide();
