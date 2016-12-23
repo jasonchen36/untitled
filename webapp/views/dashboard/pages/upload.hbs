@@ -40,7 +40,7 @@
             <div class="i--icon-green-check"></div>
         {{/if}}
         <p id="label-upload-instructions" class="display-inline-block side-info-blurb label-instruction-header">After you have finished uploading all your documents you can submit your uploads to TaxPlan by clicking “Start My Return”</p>
-        <button class="green header long">Start My Return</button>
+        <button id="tax-return-submit" class="green header long">Start My Return</button>
     </div>
     {{#if activeItem}}
         <h1 class="label-activeItem-name display-inline-block">{{activeItem.name}}</h1>
@@ -67,3 +67,4 @@
     {{/if}}
 </section>
 {{/if}}
+{{>dashboard-submit-return-modal}}

@@ -193,7 +193,7 @@ session.setUserProfileSession = function(req, data){
 };
 
 session.actionDestroyUserProfileSession = function(req){
-    return session.actionDestroyTaxProfileSession(req)
+    return promise.resolve()
         .then(function() {
             session.setUserProfileSession(req, {});
         });

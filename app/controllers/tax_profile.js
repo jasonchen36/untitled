@@ -6,9 +6,7 @@ const //packages
     util = require('../services/util'),
     session = require('../services/session'),
     taxProfile = require('../services/tax_profile'),
-    errors = require('../services/errors'),
-//models
-    questionsModel = require('../models/questions');
+    errors = require('../services/errors');
 
 var taxReturnPages = {};
 
@@ -20,7 +18,6 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
         body: {},
         json: true
     };
-    //todo, remove once quote tile questions are resolved
     var filingForRequest = _.clone(requestObject, true),
         quoteRequest = _.clone(requestObject, true);
     filingForRequest.uri += util.questionCategories.filingFor;

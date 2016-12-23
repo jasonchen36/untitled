@@ -14,6 +14,8 @@
         fileUploadSelectId = '#dashboard-upload-select',
         documentTile = '#container-document-tile',
         buttonClosePreview = '#button-close-preview',
+        taxReturnSubmit,
+        taxReturnForm,
         progressBar,
         errorClass = helpers.errorClass,
         hiddenClass = helpers.hiddenClass,
@@ -97,6 +99,16 @@
         dashboard.refreshPage(userSession);
     }
 
+    function confirmReturnSubmission(){
+        window.location.hash = 'modal-tax-return-submit';
+    }
+
+    function submitReturn(){
+        //todo, api call
+        window.location.hash = '#!';
+        $('#dashboard-my-return-activate').click();
+    }
+
     this.init = function(){
         if ($('#dashboard-upload').length > 0) {
             //set initial active item
@@ -110,8 +122,20 @@
             //variables
             fileUpload = $('#dashboard-upload-input');
             progressBar = $('#dashboard-upload-progress');
+            taxReturnSubmit = $('#tax-return-submit');
+            taxReturnForm = $('#modal-tax-return-submit-form');
 
             //listeners
+            taxReturnSubmit.on('click',function(event){
+               event.preventDefault();
+                confirmReturnSubmission();
+            });
+
+            taxReturnForm.on('submit',function(event){
+                event.preventDefault();
+                submitReturn();
+            });
+            
             $(document)
                 .off('click', uploadChecklistItemsClass)
                 .on('click', uploadChecklistItemsClass, function (event) {
@@ -137,7 +161,7 @@
                 .off('click', documentTile)
                 .on('click', documentTile, function (event) {
                     event.preventDefault();
-                    previewDocument(parseInt($(this).attr('data-id')), parseInt($(this).attr('active-item-id')));
+                    previewDocument(parseInt($(this).attr('data-id')), parseInt($(this).attr('data-active-item-id')));
                 })
                 .off('click', buttonClosePreview)
                 .on('click', buttonClosePreview, function (event) {

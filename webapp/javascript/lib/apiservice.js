@@ -30,7 +30,7 @@
     };
 
 
-    this.putTaxReturnLastName = function(sessionData, taxReturnId,  lastName){
+    this.putTaxReturnLegalName = function(sessionData, taxReturnId, firstName, lastName){
 
         var accountInfo = helpers.getAccountInformation(sessionData);
 
@@ -41,6 +41,7 @@
                {
                    accountId: accountInfo.accountId,
                    productId: accountInfo.productId,
+                   firstName: firstName,
                    lastName: lastName
                },
                'json',

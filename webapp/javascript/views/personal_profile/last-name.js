@@ -12,6 +12,7 @@
         lastNameSubmit,
         lastNameBack,
         lastNameInput,
+        lastNameErrorLabelLastName,
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
@@ -43,8 +44,8 @@
                         _.each(formData, function(entry) {
 
 
-                             var ajaxUpdate = apiservice.putTaxReturnLastName(
-                                     sessionData, entry.taxReturnId, entry.lastName);
+                             var ajaxUpdate = apiservice.putTaxReturnLegalName(
+                                     sessionData, entry.taxReturnId, entry.firstName, entry.lastName);
 
 
                              var ajaxAnswers = apiservice.getAnswers(sessionData,
