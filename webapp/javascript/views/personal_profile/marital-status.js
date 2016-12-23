@@ -9,28 +9,22 @@
         maritalStatusForm,
         maritalStatusSubmit,
         maritalStatusBack,
-        birthDayErrorLabel,
-        birthMonthErrorLabel,
-        birthDay,
-        birthMonth,
         errorClass = app.helpers.errorClass,
         activeClass = app.helpers.activeClass,
         disabledClass = app.helpers.disabledClass;
 
     function submitMaritalStatus(){
-        $('.'+helpers.formContainerClass).each(function(){
-            validateMonthDayForm($(this));
-        });
         if (!maritalStatusSubmit.hasClass(disabledClass)) {
             var formData = helpers.getMaritalStatusFormDataArray(maritalStatusForm);
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
 
-            if(!helpers.hasSelectedTileFromMultiSelect(formData, 129)){
+            validateMaritalStatusFormData(maritalStatusForm);
+
+            if(!validateMaritalStatusTiles(maritalStatusForm)){
                 window.location.hash = 'modal-personal-profile-popup';
-            } else {
+            } else if (!helpers.formHasErrors(maritalStatusForm)) {
                 maritalStatusSubmit.addClass(disabledClass);
-  
 
                 return Promise.resolve()
                     .then(function() {
@@ -44,9 +38,20 @@
 
                         _.each(formData, function(entry) {
 
-                            var ajaxOne =  apiservice.postAnswers(sessionData,
+                            var ajaxOne =  apiservice.postMaritalAnswers(sessionData,
                                 entry.taxReturnId, entry);
                             promiseArrayPut.push(ajaxOne);
+
+                            // if status changed update date
+                            if(entry[149] === 1) {
+                                entry.questionId = 150;
+                                var day = maritalStatusForm.find('#marital-status-day-'+entry.taxReturnId);
+                                var month = maritalStatusForm.find('#marital-status-month-'+entry.taxReturnId);
+                                entry.answer = day + '/' + month;
+                                ajaxOne =  apiservice.postMaritalDate(sessionData,
+                                    entry.taxReturnId, entry);
+                                promiseArrayPut.push(ajaxOne);
+                            }
 
                             var ajaxTwo = apiservice.getAnswers(sessionData,
                                 entry.taxReturnId,9);
@@ -103,33 +108,6 @@
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         maritalStatusSubmit.removeClass(disabledClass);
                     });
-            }
-        }
-    }
-
-    function validateMonthDayForm(maritalStatusForm){
-        var taxReturnId = maritalStatusForm.attr('data-id'),      
-            statusChanged = maritalStatusForm.find('#marital-status-changed-' + taxReturnId);
-
-        if(statusChanged.hasClass('active')) {
-
-            var birthDayErrorLabel = maritalStatusForm.find('#birth-day-error-label-' + taxReturnId),
-            birthMonthErrorLabel = maritalStatusForm.find('#birth-month-error-label-' + taxReturnId),
-            birthDay = maritalStatusForm.find('#birth-day-' + taxReturnId),
-            birthMonth = maritalStatusForm.find('#birth-month-' + taxReturnId);
-
-            birthDay.removeClass(helpers.errorClass);
-            birthDayErrorLabel.removeClass(helpers.errorClass);
-            birthMonth.removeClass(helpers.errorClass);
-            birthMonthErrorLabel.removeClass(helpers.errorClass);
-
-            if (helpers.isEmpty(birthDay.val())){
-                birthDay.addClass(helpers.errorClass);
-                birthDayErrorLabel.addClass(helpers.errorClass);
-            }
-            if (helpers.isEmpty(birthMonth.val())){
-                birthMonth.addClass(helpers.errorClass);
-                birthMonthErrorLabel.addClass(helpers.errorClass);
             }
         }
     }
@@ -208,6 +186,74 @@
         }
     }
 
+    function validateMaritalStatusFormData(maritalStatusForm){
+        var formData = helpers.getMaritalStatusFormDataArray(maritalStatusForm);
+        var errors = 0;
+        _.each(formData, function(taxReturn){
+        var
+            statusChanged = maritalStatusForm.find('#marital-status-changed-'+taxReturn.taxReturnId),
+            day = maritalStatusForm.find('#marital-status-day-'+taxReturn.taxReturnId),
+            month = maritalStatusForm.find('#marital-status-month-'+taxReturn.taxReturnId);
+
+
+        statusChanged.removeClass(helpers.errorClass);
+        day.removeClass(helpers.errorClass);
+        month.removeClass(helpers.errorClass);
+
+        // Is status Changed?
+        if (statusChanged.hasClass(activeClass)){
+
+            // day
+            if(helpers.isEmpty(day.val()) || !helpers.isValidNumber(day.val())){
+                day.addClass(helpers.errorClass);
+                errors++;
+            }
+
+            // month
+            if(helpers.isEmpty(month.val()) || !helpers.isValidNumber(month.val())){
+                month.addClass(helpers.errorClass);
+                errors++;
+            }
+        }
+            });
+    return errors < 1;
+
+    }
+
+    function validateMaritalStatusTiles(maritalStatusForm){
+        var formData = helpers.getMaritalStatusFormDataArray(maritalStatusForm);
+        var isValid = true;
+        var numActive = 0;
+        _.each(formData, function(taxReturn) {
+            var
+                married = maritalStatusForm.find('#married-married-' + taxReturn.taxReturnId),
+                divorced = maritalStatusForm.find('#married-divorced-' + taxReturn.taxReturnId),
+                separated = maritalStatusForm.find('#married-separated-' + taxReturn.taxReturnId),
+                widowed = maritalStatusForm.find('#married-widowed-' + taxReturn.taxReturnId),
+                commonLaw = maritalStatusForm.find('#married-common-law-' + taxReturn.taxReturnId),
+                single = maritalStatusForm.find('#married-single-' + taxReturn.taxReturnId);
+
+            if(married.hasClass(activeClass)){
+                numActive++;
+            } else if(divorced.hasClass(activeClass)){
+                numActive++;
+            } else if(separated.hasClass(activeClass)){
+                numActive++;
+            } else if(widowed.hasClass(activeClass)){
+                numActive++;
+            } else if(commonLaw.hasClass(activeClass)){
+                numActive++;
+            } else if(single.hasClass(activeClass)){
+                numActive++;
+            }else{
+                isValid = false;
+            }
+
+        });
+
+        return isValid;
+    }
+
     this.init = function(){
         if ($('#personal-profile-marital-status').length > 0) {
 
@@ -218,17 +264,25 @@
 
             var formData = helpers.getTileFormDataArray(maritalStatusForm);
 
-            _.each(formData, function(taxReturn){
-                var checkbox = $('#marital-status-changed-' + taxReturn.taxReturnId);
-                var day = $('#birth-day-' + taxReturn.taxReturnId);
-                var month = $('#birth-month-' + taxReturn.taxReturnId);
+            var index = 0;
+            var firstReturnId = -1;
+            _.each(formData, function(taxReturn) {
+                if(firstReturnId === -1) {
+                    firstReturnId = taxReturn.taxReturnId;
+                }
 
-                var marriedChoice = $('#married-married');
-                var divorcedChoice = $('#married-divorced');
-                var separatedChoice = $('#married-separated');
-                var widowedChoice = $('#married-widowed');
-                var commonlawChoice = $('#married-common-law');
-                var singleChoice = $('#married-single');
+                var checkbox = $('#marital-status-changed-' + taxReturn.taxReturnId);
+                var day = $('#marital-status-day-' + taxReturn.taxReturnId);
+                var month = $('#marital-status-month-' + taxReturn.taxReturnId);
+                var sameStatus = $('#marital-status-same-' + taxReturn.taxReturnId);
+
+
+                var marriedChoice = $('#married-married-' + taxReturn.taxReturnId);
+                var divorcedChoice = $('#married-divorced-' + taxReturn.taxReturnId);
+                var separatedChoice = $('#married-separated-' + taxReturn.taxReturnId);
+                var widowedChoice = $('#married-widowed-' + taxReturn.taxReturnId);
+                var commonlawChoice = $('#married-common-law-' + taxReturn.taxReturnId);
+                var singleChoice = $('#married-single-' + taxReturn.taxReturnId);
 
                 marriedChoice.on('click', function(event){
                     event.preventDefault();
@@ -286,8 +340,69 @@
                     month.toggle();
                 });
 
-            });
+                sameStatus.on('click', function (event) {
+                    event.preventDefault();
+                    $(this).toggleClass(helpers.activeClass);
+                    if(sameStatus.hasClass(activeClass)) {
+                        if ($('#marital-status-changed-' + firstReturnId).hasClass(activeClass)) {
+                            checkbox.addClass(activeClass);
+                            day.show();
+                            day.val($('#marital-status-day-' + firstReturnId).val());
+                            month.show();
+                            month.val($('#marital-status-month-' + firstReturnId).val());
+                        }
 
+                        if($('#married-married-' + firstReturnId).hasClass(activeClass)){
+                            marriedChoice.addClass(activeClass);
+                        }else{
+                            marriedChoice.removeClass(activeClass);
+                        }
+
+                        if($('#married-divorced-' + firstReturnId).hasClass(activeClass)){
+                            divorcedChoice.addClass(activeClass);
+                        }else{
+                            divorcedChoice.removeClass(activeClass);
+                        }
+
+                        if($('#married-separated-' + firstReturnId).hasClass(activeClass)){
+                            separatedChoice.addClass(activeClass);
+                        }else{
+                            separatedChoice.removeClass(activeClass);
+                        }
+
+                        if($('#married-widowed-' + firstReturnId).hasClass(activeClass)){
+                            widowedChoice.addClass(activeClass);
+                        }else{
+                            widowedChoice.removeClass(activeClass);
+                        }
+
+                        if($('#married-common-law-' + firstReturnId).hasClass(activeClass)){
+                            commonlawChoice.addClass(activeClass);
+                        }else{
+                            commonlawChoice.removeClass(activeClass);
+                        }
+
+                        if($('#married-single-' + firstReturnId).hasClass(activeClass)){
+                            singleChoice.addClass(activeClass);
+                        }else{
+                            singleChoice.removeClass(activeClass);
+                        }
+
+                    } else {
+                        checkbox.removeClass(activeClass);
+                        day.hide();
+                        month.hide();
+                        marriedChoice.removeClass(activeClass);
+                        divorcedChoice.removeClass(activeClass);
+                        separatedChoice.removeClass(activeClass);
+                        widowedChoice.removeClass(activeClass);
+                        commonlawChoice.removeClass(activeClass);
+                        singleChoice.removeClass(activeClass);
+                    }
+
+                });
+
+            });
 
             //listeners
             maritalStatusForm.on('submit',function(event){

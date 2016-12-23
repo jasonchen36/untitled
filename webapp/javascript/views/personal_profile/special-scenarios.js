@@ -119,18 +119,21 @@
                         data.taxReturns = formData;
                         data.taxReturns.questions = response[2];
 
-                        var married = {id:"married-married", question_id:"129", class:"", instructions:"", question_text:"Married"};
-                        var divorced = {id:"married-divorced", question_id:"129", class:"", instructions:"", question_text:"Divorced"};
-                        var separated = {id:"married-separated", question_id:"129",  class:"", instructions:"", question_text:"Separated"};
-                        var widowed = {id:"married-widowed", question_id:"129",  class:"", instructions:"", question_text:"Widowed"};
-                        var commonLaw = {id:"married-common-law", question_id:"129",  class:"", instructions:"", question_text:"Common Law"};
-                        var single = {id:"married-single", question_id:"129",  class:"", instructions:"", question_text:"Single"};
-                        var marriageTiles = [married, divorced, separated, widowed, commonLaw, single];
-
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){
                             taxReturn.questions = response[1][index];
                             taxReturn.firstName = nameData[index];
+                            taxReturn.accountInfo = accountInfo;
+                            taxReturn.accountInfo.firstName = accountInfo.firstName.toUpperCase();
+
+                            var married = {id:"married-married-"+taxReturn.taxReturnId, question_id:"129", class:"", instructions:"", question_text:"Married"};
+                            var divorced = {id:"married-divorced-"+taxReturn.taxReturnId, question_id:"129", class:"", instructions:"", question_text:"Divorced"};
+                            var separated = {id:"married-separated-"+taxReturn.taxReturnId, question_id:"129",  class:"", instructions:"", question_text:"Separated"};
+                            var widowed = {id:"married-widowed-"+taxReturn.taxReturnId, question_id:"129",  class:"", instructions:"", question_text:"Widowed"};
+                            var commonLaw = {id:"married-common-law-"+taxReturn.taxReturnId, question_id:"129",  class:"", instructions:"", question_text:"Common Law"};
+                            var single = {id:"married-single-"+taxReturn.taxReturnId, question_id:"129",  class:"", instructions:"", question_text:"Single"};
+                            var marriageTiles = [married, divorced, separated, widowed, commonLaw, single];
+                            
                             _.each(taxReturn.questions.answers, function(question){
                                 question.tiles = marriageTiles;
                                 question.answer = 0;

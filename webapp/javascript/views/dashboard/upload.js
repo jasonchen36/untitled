@@ -80,7 +80,6 @@
             } else {
                 userSession.activeItem = _.find(userSession.documentChecklist.checklistItems, ['checklistItemId', dataId]);
             }
-            console.log("Usersession",userSession);
             dashboard.refreshPage(userSession);
 
         }
