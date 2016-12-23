@@ -162,7 +162,7 @@
                 .off('click', documentTile)
                 .on('click', documentTile, function (event) {
                     event.preventDefault();
-                    previewDocument(parseInt($(this).attr('data-id')), parseInt($(this).attr('active-item-id')));
+                    previewDocument(parseInt($(this).attr('data-id')), parseInt($(this).attr('data-active-item-id')));
                 })
                 .off('click', buttonClosePreview)
                 .on('click', buttonClosePreview, function (event) {
