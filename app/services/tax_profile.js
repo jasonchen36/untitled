@@ -73,16 +73,15 @@ taxProfile.saveFilersNames = function(req){
                     }
                 });
 
+                //filter out duplicates ids due to int vs string comparison
+                taxProfileSession.users = _.uniqBy(taxProfileSession.users, function (entry) {
+                    return String(entry.id);
+                });
+
                 taxProfileSession.currentPage = getCurrentPage(req.body.action);
                 taxProfileSession.expiry = moment().add(7, 'days');//refresh after update
                 return promise.resolve(session.setTaxProfileSession(req, taxProfileSession));
             }
-        })
-        .then(function(taxProfileSession) {
-            //create accounts for additional users if needed
-      
-            return promise.resolve();
-         
         })
         .catch(function (error) {
             if (!error){
@@ -169,7 +168,7 @@ taxProfile.getTaxReturnQuote = function(req){
                     json: true
                 };
 
-           var accountId = taxProfileSession.users[0].id;
+            var accountId = taxProfileSession.users[0].id;
 
             var taxReturnRequestObject,
                 taxReturnRequests = taxProfileSession.users.map(function(entry) {
@@ -193,7 +192,7 @@ taxProfile.getTaxReturnQuote = function(req){
                         }
                         i++;
                     });
-                    session.setTaxProfileSession(req, taxProfileSession); 
+                    session.setTaxProfileSession(req, taxProfileSession);
                     return promise.resolve(session.setTaxProfileSession(req, taxProfileSession));
                 })
                 .catch(function (response) {
@@ -224,13 +223,13 @@ taxProfile.getTaxReturnQuote = function(req){
                         answers: []
                     };
                     _.forOwn(entry.activeTiles, function(groupValue, groupKey) {
-                       
-                         _.forOwn(groupValue, function(value, key) {
-                             quoteBodyObject.answers.push({
-                                 questionId: parseInt(key),
-                                 text: parseInt(value) === 1 ? 'Yes' : 'No'
-                             });
-                         });
+
+                        _.forOwn(groupValue, function(value, key) {
+                            quoteBodyObject.answers.push({
+                                questionId: parseInt(key),
+                                text: parseInt(value) === 1 ? 'Yes' : 'No'
+                            });
+                        });
                     });
 
                     requestObject.body.taxReturns.push(quoteBodyObject);
