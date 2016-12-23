@@ -1,9 +1,42 @@
 {{>dashboard-left-sidebar isChat="true"}}
-<section id="dashboard-my-return" class="small-7 medium-6">
-    <div id="container-upload-explained">
-        <h1>Your Taxes Are In Progress</h1>
-        <p class="side-info-blurb">TAXplan taxes are prepared in 1 business day! We will send you an email when we are all wrapped up here.</p>
+    <section id="dashboard-my-return" class="small-7 medium-6 full-height overflow-y-auto">
+        <div id="container-upload-explained">
+            <h1>Your Taxes Are In Progress</h1>
+            <p class="side-info-blurb">TAXplan taxes are prepared in 1 business day! We will send you an email when we are all wrapped up here.</p>
+        </div>
+{{#if true}}
+        <div class="i--icon-return-machine"></div>
+{{else}}
+    <div id="container-return-line-items">
+        <div class="return-line-item border-bottom-light-gray border-top-light-gray">
+            <p class="return-line-item-name display-inline-block">Carmela Doctor</p>
+            <p class="return-line-item-description display-inline-block text-upper {{#if isOwing}}font-red{{else}}font-green{{/if}}">Refund</p>
+            <p class="return-line-item-description display-inline-block text-right {{#if isOwing}}font-red{{else}}font-green{{/if}}">$1234.50</p>
+            <button id="quote-details" type="submit" class="green-outline button-details">Details</button>
+        </div>
+        <div class="return-line-item border-bottom-light-gray">
+            <p class="return-line-item-name display-inline-block">Doug Doctor</p>
+            <p class="return-line-item-description display-inline-block text-upper {{#if isOwing}}font-red{{else}}font-green{{/if}}">Taxes Owing</p>
+            <p class="return-line-item-description display-inline-block text-right {{#if isOwing}}font-red{{else}}font-green{{/if}}">$1234.50</p>
+            <button id="quote-details" type="submit" class="green-outline button-details">Details</button>
+        </div>
+        <div class="return-line-item border-bottom-light-gray">
+            <p class="return-line-item-name display-inline-block">Skippy Doctor</p>
+            <p class="return-line-item-description display-inline-block text-upper {{#if isOwing}}font-red{{else}}font-green{{/if}}">Refund</p>
+            <p class="return-line-item-description display-inline-block text-right {{#if isOwing}}font-red{{else}}font-green{{/if}}">$1234.50</p>
+            <button id="quote-details" type="submit" class="green-outline button-details">Details</button>
+        </div>
+        <div class="return-line-item border-bottom-light-gray">
+            <p class="return-line-item-name display-inline-block">Other Doctor</p>
+            <p class="return-line-item-description display-inline-block text-upper {{#if isOwing}}font-red{{else}}font-green{{/if}}">Refund Doctor</p>
+            <p class="return-line-item-description display-inline-block text-right {{#if isOwing}}font-red{{else}}font-green{{/if}}">$1234.50</p>
+            <button id="quote-details" type="submit" class="green-outline button-details">Details</button>
+        </div>
     </div>
-    <div class="i--icon-return-machine"></div>
+    <div class="text-center add-bottom-margin">
+        <h1>Your Tax Preparation Cost is: $191.00</h1>
+        <button class="green long">Pay TAXplan & E-file</button>
+    </div>
+{{/if}}
 </section>
 {{>dashboard-right-sidebar}}

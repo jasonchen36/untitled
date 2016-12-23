@@ -190,7 +190,7 @@
   @extend .i--icon-grad-money;
 }
 
-.taxplan-tile[data-id="122"], [data-id="103"]{
+.taxplan-tile[data-id="122"], taxplan-tile[data-id="103"]{
   @extend .i--icon-piggybank;
 }
 

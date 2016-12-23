@@ -137,7 +137,7 @@
 
             //shared bindings
             $(document)
-                .on('click', '.'+helpers.tileClass, function (event) {
+                .on('touchend click', '.'+helpers.tileClass, function (event) {
                     event.preventDefault();
                     $(this).toggleClass(helpers.activeClass);
                 })

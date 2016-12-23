@@ -189,6 +189,7 @@
                 .on('click', '#dashboard-my-return-activate', function (event) {
                     event.preventDefault();
                     changePageHelper('my-return');
+                    $(this).addClass(activeClass);
                     document.getElementById('dashboard-chat-activate').classList.remove('active');
                     document.getElementById('dashboard-upload-activate').classList.remove('active');
                 });
