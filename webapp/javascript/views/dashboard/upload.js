@@ -12,6 +12,8 @@
         fileUploadSubmitId = '#dashboard-upload-submit',
         fileUploadCancelId = '#dashboard-upload-cancel',
         fileUploadSelectId = '#dashboard-upload-select',
+        documentTile = '#container-document-tile',
+        buttonClosePreview = '#button-close-preview',
         progressBar,
         errorClass = helpers.errorClass,
         hiddenClass = helpers.hiddenClass,
@@ -65,6 +67,7 @@
 
     function setActiveItem(dataId){
         var userSession = dashboard.getUserSession();
+        userSession.isPreview = "";
         if(userSession.hasOwnProperty('activeItem') || userSession.activeItem !== dataId) {
             if (dataId === 0) {
                 //additional documents
@@ -76,7 +79,22 @@
                 userSession.activeItem = _.find(userSession.documentChecklist.checklistItems, ['checklistItemId', dataId]);
             }
             dashboard.refreshPage(userSession);
+
         }
+    }
+
+    function previewDocument(documentId, checklistId){
+        var userSession = dashboard.getUserSession();
+        var activeItem = _.find(userSession.documentChecklist.checklistItems, ['checklistItemId', checklistId]);
+        userSession.documentItem = _.find(activeItem.documents, ['documentId', documentId]);
+        userSession.isPreview = "true";
+        dashboard.refreshPage(userSession);
+    }
+
+    function closePreview(){
+        var userSession = dashboard.getUserSession();
+        userSession.isPreview = "";
+        dashboard.refreshPage(userSession);
     }
 
     this.init = function(){
@@ -115,6 +133,16 @@
                 .off('click', fileUploadSubmitId)
                 .on('click', fileUploadSubmitId, function (event) {
                     event.preventDefault();
+                })
+                .off('click', documentTile)
+                .on('click', documentTile, function (event) {
+                    event.preventDefault();
+                    previewDocument(parseInt($(this).attr('data-id')), parseInt($(this).attr('active-item-id')));
+                })
+                .off('click', buttonClosePreview)
+                .on('click', buttonClosePreview, function (event) {
+                    event.preventDefault();
+                    closePreview();
                 })
             ;
 
