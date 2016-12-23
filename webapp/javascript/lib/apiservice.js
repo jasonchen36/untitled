@@ -176,7 +176,6 @@
         _.each(entry, function(answer) {
 
             var questionId = answerKeys[answerIndex];
-            console.log("Q", questionId);
             if(!isNaN(questionId))
             {
 
@@ -186,9 +185,17 @@
                 //     var text= '';
 
                 if(answer === 1){
-                    text = 'Yes';
+                    postObj.answers.push({
+                        questionId: 149,
+                        text: 'Yes'
+                    });
+                    text = '';
                 } else if (answer === 0){
-                    text = 'No';
+                    postObj.answers.push({
+                        questionId: 149,
+                        text: 'No'
+                    });
+                    text = '';
                 }
 
                 if(typeof text != 'undefined'  && text.length > 1) {
