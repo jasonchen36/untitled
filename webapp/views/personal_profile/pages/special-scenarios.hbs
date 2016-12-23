@@ -7,10 +7,14 @@
                 <button id="special-scenarios-back" class="grey header">Previous</button>
             </div>
             <form id="special-scenarios-form">
-                <h1 class="subtitle">{{users.0.firstName}} please select all scenarios that applied to you in 2016:</h1>
-                {{>personal-profile-options questions=questions.specialScenarios activeTiles=users.0.activeTiles.specialScenarios tileContainerId=users.0.id}}
+                {{#each taxReturns}}
+                    <h1 class="subtitle">{{firstName}} please select all scenarios that applied to you in 2016:</h1>
+                    {{>personal-profile-options questions=questions.answers activeTiles=questions.answers.answer tileContainerId=taxReturnId}}
+                    <input type="hidden" id="tax-return-id-{{taxReturnId}}" name="taxReturnId" value="{{taxReturnId}}"/>
+                {{/each}}
             </form>
         </div>
     </div>
     {{>personal-profile-sidebar sidebarImage="i--icon-special-star" sidebarTitle="What is a Special Scenario?"}}
 </section>
+{{>personal-profile-popup popupTitle="Special Scenarios" popupBlurb="You must select at least one tile that applies" popupImage="i--icon-taxplan-logo"}}

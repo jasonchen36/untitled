@@ -80,46 +80,9 @@ taxProfile.saveFilersNames = function(req){
         })
         .then(function(taxProfileSession) {
             //create accounts for additional users if needed
-            const requestObject = {
-                method: 'POST',
-                uri: process.env.API_URL+'/account',
-                json: true
-            };
-            var accountRequestObject,
-                filteredAccounts = _.filter(taxProfileSession.users, function(entry){
-                    //check for if temporary id is assigned, then call api for real one
-                    return (entry.hasOwnProperty('id') && typeof entry.id === 'string' && entry.id.indexOf('-') !== -1);
-                }),
-                accountRequests = _.map(filteredAccounts, function(entry) {
-                    accountRequestObject = _.clone(requestObject, true);
-                    accountRequestObject.body = {
-                        productId: process.env.API_PRODUCT_ID,
-                        name: entry.firstName
-                    };
-                    return requestPromise(accountRequestObject);
-                });
-            if (accountRequests.length > 0) {
-                return promise.all(accountRequests)
-                    .then(function (response) {
-                        taxProfileSession.users.forEach(function (entry) {
-                            if (entry.hasOwnProperty('id') && typeof entry.id === 'string' && entry.id.indexOf('-') !== -1) {
-                                //replace temporary id with real id
-                                entry.id = _.find(response, ['name', entry.firstName]).accountId;
-                            }
-                        });
-                        session.setTaxProfileSession(req, taxProfileSession);
-                        return promise.resolve();
-                    })
-                    .catch(function (response) {
-                        var error = response;
-                        if (response && response.hasOwnProperty('error')) {
-                            error = response.error;
-                        }
-                        return promise.reject(new errors.InternalServerError(error));
-                    });
-            } else {
-                return promise.resolve();
-            }
+      
+            return promise.resolve();
+         
         })
         .catch(function (error) {
             if (!error){
@@ -152,7 +115,7 @@ taxProfile.saveActiveTiles = function(req){
                 //special actions
                 if (group === 'filingFor') {
                     _.forOwn(req.body.data[taxProfileSession.users[0].id], function (value, key) {
-                        if (parseInt(key) === 9002) {//todo, find better way of linking these questions
+                        if (parseInt(key) === 127) {//todo, find better way of linking these questions
                             //spouse
                             if (parseInt(value) === 1) {
                                 //don't write over existing objects
@@ -163,7 +126,7 @@ taxProfile.saveActiveTiles = function(req){
                             } else {
                                 taxProfileSession.users[1] = {};
                             }
-                        } else if (parseInt(key) === 9003) {//todo, find better way of linking these questions
+                        } else if (parseInt(key) === 128) {//todo, find better way of linking these questions
                             //other
                             if (parseInt(value) === 1) {
                                 //don't write over existing objects
@@ -205,28 +168,32 @@ taxProfile.getTaxReturnQuote = function(req){
                     uri: process.env.API_URL+'/tax_return',
                     json: true
                 };
+
+           var accountId = taxProfileSession.users[0].id;
+
             var taxReturnRequestObject,
                 taxReturnRequests = taxProfileSession.users.map(function(entry) {
-                    if (entry.hasOwnProperty('id') && parseInt(entry.id) > 0) {
+                    if (entry.taxReturnId == "") {
                         taxReturnRequestObject = _.clone(requestObject, true);
                         taxReturnRequestObject.body = {
-                            accountId: entry.id,
+                            accountId: accountId,
                             productId: process.env.API_PRODUCT_ID,
                             firstName: entry.firstName
                         };
                         return requestPromise(taxReturnRequestObject);
                     }
                 });
+
             return promise.all(taxReturnRequests)
                 .then(function (response) {
                     var i = 0;
                     taxProfileSession.users.forEach(function(entry){
-                        if (entry.hasOwnProperty('id') && parseInt(entry.id) > 0) {
+                        if (response[i] != null && entry.hasOwnProperty('id') && parseInt(entry.id) > 0) {
                             entry.taxReturnId = response[i].taxReturnId;
                         }
                         i++;
                     });
-                    session.setTaxProfileSession(req, taxProfileSession);
+                    session.setTaxProfileSession(req, taxProfileSession); 
                     return promise.resolve(session.setTaxProfileSession(req, taxProfileSession));
                 })
                 .catch(function (response) {
@@ -244,7 +211,7 @@ taxProfile.getTaxReturnQuote = function(req){
                 uri: process.env.API_URL+'/quote',
                 body: {
                     accountId: taxProfileSession.users[0].id,
-                    productId: process.env.API_PRODUCT_ID,
+                    productId: parseInt(process.env.API_PRODUCT_ID),
                     taxReturns: []
                 },
                 json: true
@@ -257,14 +224,15 @@ taxProfile.getTaxReturnQuote = function(req){
                         answers: []
                     };
                     _.forOwn(entry.activeTiles, function(groupValue, groupKey) {
-                        //todo, uncomment when real tile ids are on quote applies all screen
-                        // _.forOwn(groupValue, function(value, key) {
-                        //     quoteBodyObject.answers.push({
-                        //         questionId: key,
-                        //         text: parseInt(value) === 1 ? 'Yes' : 'No'
-                        //     });
-                        // });
+                       
+                         _.forOwn(groupValue, function(value, key) {
+                             quoteBodyObject.answers.push({
+                                 questionId: parseInt(key),
+                                 text: parseInt(value) === 1 ? 'Yes' : 'No'
+                             });
+                         });
                     });
+
                     requestObject.body.taxReturns.push(quoteBodyObject);
                 }
             });

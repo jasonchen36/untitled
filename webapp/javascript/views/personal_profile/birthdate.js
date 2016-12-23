@@ -8,23 +8,26 @@
         ajax = app.ajax,
         birthdateSubmit,
         birthdateBack,
+        birthdateDayLabelError,
+        birthdateMonthLabelError,
+        birthdateYearLabelError,
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
     function submitBirthdate(){
       var formData = helpers.getFormData(birthdateForm);
       helpers.resetForm(birthdateForm);
-      if (isEmpty(dayInput.val().trim())){
+      if (helpers.isEmpty(dayInput.val().trim())){
            dayInput.addClass(errorClass);
-           alert("Pleae enter the day correctly");
+           birthdateDayLabelError.addClass(errorClass);
       }
-      if (isEmpty(monthInput.val().trim())){
+      if (helpers.isEmpty(monthInput.val().trim())){
            monthInput.addClass(errorClass);
-           alert("Pleae enter the month correctly");
+          birthdateMonthLabelError.addClass(errorClass);
        }
-      if (isEmpty(yearInput.val().trim())){
+      if (helpers.isEmpty(yearInput.val().trim())){
            yearInput.addClass(errorClass);
-           alert("Pleae enter the year correctly");
+          birthdateYearLabelError.addClass(errorClass);
       }
       if (!helpers.formHasErrors(birthdateForm)) {
            birthdateSubmit.addClass(disabledClass);
@@ -35,7 +38,8 @@
                  action: 'api-pp-date-of-birth',
                  data: formData
                },
-               'json'
+               'json',
+               { }
            )
                .then(function(response){
                    window.location.href = '/dashboard';
@@ -58,6 +62,10 @@
             monthInput = $('#dependants-birthday-month');
             yearInput = $('#dependants-birthday-year');
             checkbox = $('.checkbox');
+
+            birthdateDayLabelError = $('#birthdate-day-label-error');
+            birthdateMonthLabelError = $('#birthdate-month-label-error');
+            birthdateYearLabelError = $('#birthdate-year-label-error');
 
             //listeners
             birthdateForm.on('submit',function(event){

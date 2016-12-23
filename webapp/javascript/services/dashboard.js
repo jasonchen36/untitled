@@ -1,10 +1,14 @@
+
 (function(){
 
     /* *************** variables ***************/
     var $ = jQuery,
         that = app.services.dashboard,
+        apiservice = app.apiservice, 
         cookies = app.cookies,
         userSessionStore,
+        helpers = app.helpers,
+        activeClass = helpers.activeClass,
         landingPageContainer = $('#dashboard-container'),
         dashboardStateCookie = 'store-dashboard-state';
 
@@ -16,15 +20,7 @@
 
 
     /* *************** private methods ***************/
-    function updateUserSession(data, newPage){
-        if(!data || typeof data !== 'object'){
-            data = that.getUserSession();
-        }
-        if(newPage && newPage.length > 0){
-            data.currentPage = newPage;
-        }
-        userSessionStore = data;
-    }
+
 
     function triggerInitScripts(){
         var dashboardViews = app.views.dashboard;
@@ -61,6 +57,65 @@
         }
     }
 
+    function changePageChat(){
+
+      
+        apiservice.getMessages(userObject)
+            .then(function(response){
+
+                var dataObject = {};
+                dataObject.newMessageCount = 0;
+                dataObject.messages  = [];
+
+                var today = moment();
+                var foundToday = false;
+                response.messages.forEach(function(entry){
+
+                    dataObject.messages.push(getChatMessageObject(entry));
+
+                    //count unread messages
+                    if(entry.status.toLowerCase() === 'new'){
+                        dataObject.newMessageCount++;
+                    }
+                    if(moment(entry.rawDate).month() === moment(today).month() &&
+                        moment(today).date() === moment(entry.rawDate).date() &&
+                        foundToday === false){
+                        entry.isFirst = true;
+                        foundToday = true;
+                    }
+                });
+
+                that.changePage('chat', dataObject);
+            })
+            .catch(function(jqXHR,textStatus,errorThrown){
+                console.log(jqXHR,textStatus,errorThrown);
+
+            });
+    }
+
+
+    function getChatMessageObject(data){
+
+
+        return {
+            status: data.status,
+            body: data.body,
+            subject: data.subject,
+            clientId: data.client_id,
+            fromName: data.fromname,
+            fromId: data.from_id,
+            rawDate: moment(data.date),
+            date: moment(data.date).format('MMM D [-] h:mm A').toString(),
+            isFromUser: data.client_id === data.from_id,
+            isFromTaxPro: data.from_role === 'Tax Pro', //todo is this the final role name?
+            isFromTaxPlan: data.from_role === 'TAXPlan', // todo is this the final role name?  
+            isFirst: false
+        };
+    }
+
+
+
+
 
     /* *************** public methods ***************/
     this.changePage = function(newPage, data){
@@ -68,8 +123,6 @@
             if(typeof data !== 'object'){
                 data = that.getUserSession();
             }
-            //update session with new page
-            updateUserSession(data, newPage);
             cookies.setCookie(dashboardStateCookie, {
                 currentPage: newPage
             });
@@ -88,36 +141,60 @@
         var currentPage = getCurrentPage(),
             currentPageIndex = that.dashboardOrder.indexOf(currentPage),
             newPage;
-        //update session with new data
-        updateUserSession(data);
+
         newPage = that.dashboardOrder[currentPageIndex];
-        that.changePage(newPage);
+
+        if(newPage == 'chat')  {
+            changePageChat();
+        }  else  {
+            that.changePage(newPage);
+        }
+
     };
 
     this.getUserSession = function(){
         return userSessionStore;
     };
 
+
+
+
+
     this.init = function(){
         if (landingPageContainer.length > 0) {
 
             //shared bindings
             $(document)
+
                 .on('click', '#dashboard-upload-activate', function (event) {
                     event.preventDefault();
                     changePageHelper('upload');
+                    $(this).addClass(activeClass);
+                    document.getElementById('dashboard-chat-activate').classList.remove('active');
+                    var startMyReturn = document.getElementById('dashboard-my-return-activate');
+                    if(startMyReturn) {
+                        startMyReturn.classList.remove('active');
+                    }
                 })
                 .on('click', '#dashboard-chat-activate', function (event) {
                     event.preventDefault();
-                    changePageHelper('chat');
+                    changePageChat();
+                    $(this).addClass(activeClass);
+                    document.getElementById('dashboard-upload-activate').classList.remove('active');
+                    var startMyReturn = document.getElementById('dashboard-my-return-activate');
+                    if(startMyReturn) {
+                        startMyReturn.classList.remove('active');
+                    }
                 })
                 .on('click', '#dashboard-my-return-activate', function (event) {
                     event.preventDefault();
                     changePageHelper('my-return');
+                    document.getElementById('dashboard-chat-activate').classList.remove('active');
+                    document.getElementById('dashboard-upload-activate').classList.remove('active');
                 });
 
             //functions
-            that.changePage(getCurrentPage(), true);
+            that.refreshPage();
         }
     };
 

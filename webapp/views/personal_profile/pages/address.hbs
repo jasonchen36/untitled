@@ -6,11 +6,61 @@
                 <button id="address-submit" class="green header">Next</button>
                 <button id="address-back" class="grey header">Previous</button>
             </div>
-        <form id="address-form">
-            <h1 class="subtitle">Almost done! We need to know the mailing address for all your filers:</h1>
-            {{>personal-profile-address-form}}
-        </form>
+            <form id="address-form">
+                <h1 class="subtitle">Almost done! We need to know the mailing address for all your filers:</h1>
+                <div id="container-address-form">
+                    {{#each taxReturns}}
+                        <div class="border-bottom-light-grey add-bottom-padding taxplan-form-container" data-id="{{taxReturnId}}">
+                            <h1 class="filer-name">{{firstName}}:</h1>
+                            {{#compare @index 0 operator="!="}}
+                                <div class="add-bottom-padding checkbox-container">
+                                    <div class="checkbox"></div>
+                                    <p class="checkbox-label">SAME ADDRESS AS ABOVE</p>
+                                </div>
+                            {{/compare}}
+                            <div>
+                                <div class="container-inline-input long">
+                                    <label for="first-line-{{taxReturnId}}">STREET ADDRESS</label>
+                                    <input id="first-line-{{taxReturnId}}" type="text" value="{{address.street}}" class="inline-input" name="street"/>
+                                    <p id="address-first-line-label-error-{{taxReturnId}}" class="label-error">Address line needed</p>
+                                </div>
+                                <div class="container-inline-input short">
+                                    <label for="city-{{taxReturnId}}">CITY</label>
+                                    <input id="city-{{taxReturnId}}" type="text" value="{{address.city}}" class="inline-input" name="city"/>
+                                    <p id="address-city-label-error-{{taxReturnId}}" class="label-error">City needed</p>
+                                </div>
+                                <div class="container-inline-input short">
+                                    <label for="province-{{taxReturnId}}">PROVINCE</label>
+                                    <div class="drop-down">
+                                        <select class="drop-down-select" id="province-{{taxReturnId}}" name="province">
+                                            {{>province-options selectedProvince=address.province}}
+                                        </select>
+                                    </div>
+                                    <p id="address-province-label-error-{{taxReturnId}}" class="label-error">Province needed</p>
+                                </div>
+                                <div class="container-inline-input short">
+                                    <label for="postal-code-{{taxReturnId}}">POSTAL CODE</label>
+                                    <input id="postal-code-{{taxReturnId}}" type="text" value="{{address.postalCode}}" class="inline-input" name="postalCode" maxlength="6"/>
+                                    <p id="address-postal-code-label-error-{{taxReturnId}}" class="label-error">Postal Code needed</p>
+                                </div>
+                            </div>
+                            <div class="container-residence">
+                                <div class="container-inline-input long">
+                                    <label for="province-residence-{{taxReturnId}}" class="under">PROVINCE OF RESIDENCE (DEC 31, 2016)</label>
+                                    <div class="drop-down">
+                                        <select class="drop-down-select" id="province-residence-{{taxReturnId}}" name="provinceResidence">
+                                            {{>province-options selectedProvince=province}}
+                                        </select>
+                                    </div>
+                                    <p id="address-residence-label-error-{{taxReturnId}}" class="label-error">Province needed</p>
+                                </div>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            </form>
         </div>
     </div>
     {{>personal-profile-sidebar sidebarImage="i--icon-address" sidebarTitle="Why do you need my address?"}}
 </section>
+{{>personal-profile-popup popupTitle="Income" popupBlurb="Please select a tile lorem ipsum" popupImage="i--icon-taxplan-logo"}}

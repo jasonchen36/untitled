@@ -16,8 +16,7 @@
         if (!quoteAppliesSubmit.hasClass(disabledClass)) {
             var formData = helpers.getTileFormData(quoteAppliesForm);
             if(!helpers.hasSelectedTile(formData)){
-                //todo, real alert
-                alert('no selected option');
+                window.location.hash = 'modal-personal-profile-popup';
             } else {
                 quoteAppliesSubmit.addClass(disabledClass);
                 ajax.ajax(
@@ -27,7 +26,8 @@
                         action: 'api-tp-quote-applies',
                         data: formData
                     },
-                    'json'
+                    'json',
+                     { }
                 )
                     .then(function(response){
                         taxProfile.goToNextPage(response.data);
@@ -57,6 +57,7 @@
             quoteAppliesSubmit.on('click',function(event){
                 event.preventDefault();
                 submitQuoteApplies();
+                hover = 1;
             });
 
             quoteAppliesBack.on('click',function(event){

@@ -12,6 +12,7 @@ var app = {
     cookies: {},
     handlebars: {},
     helpers: {},
+    apiservice: {},
     state: {},
     mediaQueries: {},
     services: {

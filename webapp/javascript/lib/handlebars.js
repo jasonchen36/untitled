@@ -72,6 +72,14 @@
             }
             return arrayLength;
         });
+
+        Handlebars.registerHelper('isOptionSelected',function(lvalue, rvalue){
+            if(lvalue && rvalue && lvalue.toLowerCase() === rvalue.toLowerCase()) {
+                return 'selected=\"selected\"';
+            } else {
+                return '';
+            }
+        });
         
     };
     

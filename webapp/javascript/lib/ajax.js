@@ -3,20 +3,25 @@
         helpers = app.helpers,
         $ = jQuery;
 
-    this.ajax = function(method,url,data,contentType) {
+    this.ajax = function(method,url,data,contentType, headers) {
         var parameters =  {
             method: method,
             url: url,
             data: data,
             xhrFields: {
                 withCredentials: true
-            }
+            },
+            headers: headers
         };
         if(data && helpers.sizeOfObject(data) > 0) {
             if (contentType === 'json') {
                 parameters.data = JSON.stringify(data);
                 parameters.contentType= 'application/json';
                 parameters.dataType = contentType;
+            } else if (contentType === 'json-text') {
+                parameters.data = JSON.stringify(data);
+                parameters.contentType= 'application/json';
+                parameters.dataType = 'text';
             } else {
                 parameters.data = data;
             }
@@ -46,5 +51,7 @@
             window.location.href = '/login';
         }
     };
+     
+
 
 }).apply(app.ajax);

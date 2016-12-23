@@ -1,7 +1,7 @@
 <header class="full-screen-grid-container">
     <div class="i--icon-logo"></div>
-    {{#if data.hasTaxProfileSession}}
-        <p class="text-header dark-grey">CARMELA DOCTOR</p>
+    {{#if data.hasUserProfileSession}}
+        <p class="text-header dark-grey">{{ data.users.0.firstName }}</p>
         <div class="i--icon-default-user"></div>
         <p class="text-header dark-grey">SETTINGS</p>
     {{/if}}

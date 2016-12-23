@@ -7,10 +7,15 @@
                 <button id="deductions-back" class="grey header">Previous</button>
             </div>
             <form id="deductions-form">
-                <h1 class="subtitle">{{users.0.firstName}} please select all your 2016 deductions:</h1>
-                {{>personal-profile-options questions=questions.deductions activeTiles=users.0.activeTiles.deductions tileContainerId=users.0.id}}
+
+                 {{#each taxReturns}}
+                    <h1 class="subtitle">{{firstName}} please select all your 2016 deductions:</h1>
+                    {{>personal-profile-options questions=questions.answers activeTiles=questions.answers.answer tileContainerId=taxReturnId}}
+                    <input type="hidden" id="tax-return-id-{{taxReturnId}}" name="taxReturnId" value="{{taxReturnId}}"/>
+                {{/each}}
             </form>
         </div>
     </div>
     {{>personal-profile-sidebar sidebarTitle="Deductions"}}
 </section>
+{{>personal-profile-popup popupTitle="Deductions" popupBlurb="You must select at least one tile that applies" popupImage="i--icon-taxplan-logo"}}

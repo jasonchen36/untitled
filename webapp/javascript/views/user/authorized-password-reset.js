@@ -27,7 +27,8 @@
                         password: formData.password,
                         token: authToken
                     },
-                    'json'
+                    'json',
+                    { }
                 )
                     .then(function(response){
                         //todo, show success and then redirect

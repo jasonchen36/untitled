@@ -23,11 +23,19 @@
 
 
     /* *************** private methods ***************/
-    function changePage(newPage){
+    function changePage(newPage, data){
         return new Promise(function(resolve,reject) {
-            var data = that.getPersonalProfileSession();
-            //update session with new page
-            updatePersonalProfileSession(data, newPage);
+
+           var sessionData = that.getPersonalProfileSession();
+
+           if(newPage && newPage.length > 0){
+               sessionData.currentPage = newPage;
+           }
+
+            if(typeof data !== 'object'){
+                data = sessionData;
+            }
+
             animateProgressBar();
             var template = Handlebars.templates[newPage],
                 html = template(data);
@@ -81,35 +89,22 @@
         });
     }
 
-    function updatePersonalProfileSession(data,newPage){
-        if(!data || typeof data !== 'object'){
-            data = that.getPersonalProfileSession();
-        }
-        if(newPage && newPage.length > 0){
-            data.currentPage = newPage;
-        }
-        data.questions = questionsObject;
-        personalProfileSessionStore = data;
-    }
 
     /* *************** public methods ***************/
     this.goToNextPage = function(data){
         var currentPage = getCurrentPage(),
             currentPageIndex = that.personalProfileFlow.indexOf(currentPage);
-        //update session from ajax response
-        updatePersonalProfileSession(data);
         if (currentPageIndex !== that.personalProfileFlow.length-1){
-            changePage(that.personalProfileFlow[currentPageIndex+1]);
+            changePage(that.personalProfileFlow[currentPageIndex+1], data);
         }
     };
 
     this.goToPreviousPage = function(data){
         var currentPage = getCurrentPage(),
             currentPageIndex = that.personalProfileFlow.indexOf(currentPage);
-        //update session from ajax response
-        updatePersonalProfileSession(data);
+    
         if (currentPageIndex !== 0){
-            changePage(that.personalProfileFlow[currentPageIndex-1]);
+            changePage(that.personalProfileFlow[currentPageIndex-1], data);
         }
     };
 
@@ -117,8 +112,6 @@
         var currentPage = getCurrentPage(),
             currentPageIndex = that.personalProfileFlow.indexOf(currentPage),
             newPage;
-        //update session with new data
-        updatePersonalProfileSession(data);
         newPage = that.personalProfileFlow[currentPageIndex];
         changePage(newPage);
     };
@@ -126,6 +119,8 @@
     this.getPersonalProfileSession = function(){
         return personalProfileSessionStore;
     };
+
+
 
     this.init = function(){
         if (personalProfilePageContainer.length > 0) {

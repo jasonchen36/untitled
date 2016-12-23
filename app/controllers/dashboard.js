@@ -13,9 +13,30 @@ const //packages
     sessionModel = require('../models/session');
 
 var dashboardPages = {};
+var dashboardForm;
 
 /************ dashboard ************/
 dashboardPages.getDashboardPage = function(req, res, next){
+ 
+  
+   var userProfile = session.getUserProfileSession(req);
+   var accountId = userProfile.users[0].accountId ;
+
+   const accountRequest = {
+        method: 'GET',
+        uri: process.env.API_URL+'/account/' + accountId,
+        headers: {
+            'Authorization': 'Bearer '+session.getUserProfileValue(req,'token')
+        },
+        body: {},
+        json: true
+    };
+
+    requestPromise(accountRequest).then(function(accountData) {
+
+  
+    var quoteId = accountData.quotes[0].id;
+
     const messageRequest = {
             method: 'GET',
             uri: process.env.API_URL+'/messages',
@@ -27,7 +48,7 @@ dashboardPages.getDashboardPage = function(req, res, next){
         },
         documentChecklistRequest = {
             method: 'GET',
-            uri: process.env.API_URL+'/quote/4/checklist',//todo, dynamic quote id
+            uri: process.env.API_URL+'/quote/' + quoteId + '/checklist',
             headers: {
                 'Authorization': 'Bearer '+session.getUserProfileValue(req,'token')
             },
@@ -43,19 +64,10 @@ dashboardPages.getDashboardPage = function(req, res, next){
             try {
                 dataObject.documentChecklist = sessionModel.getDocumentChecklistObject(response[1]);
                 dataObject.newMessageCount = 0;
-                dataObject.messages = _.map(response[0].messages, sessionModel.getChatMessageObject);//todo, fix bug where session data is lost due to this line
-                var today = moment();
-                var foundToday = false;
-                dataObject.messages.forEach(function(entry){
-                    //count unread messages
-                    if(entry.status.toLowerCase() === 'new'){
-                        dataObject.newMessageCount++;
-                    }
-                    if(moment(entry.rawDate).month() === moment(today).month() && moment(today).date() === moment(entry.rawDate).date() && foundToday === false){
-                        entry.isFirst = true;
-                        foundToday = true;
-                     }
-                });
+                dataObject.messages = [];
+                dataObject.quoteId = quoteId;
+                dataObject.uploadUrl = userProfile.apiUrl + '/quote/' + quoteId + '/document';
+
                 res.render('dashboard/dashboard', {
                     meta: {
                         pageTitle: util.globals.metaTitlePrefix + 'Dashboard'
@@ -68,7 +80,8 @@ dashboardPages.getDashboardPage = function(req, res, next){
             } catch(error){
                 next(new errors.InternalServerError(error));
             }
-        })
+        });
+      })
         .catch(function (response) {
             var error = response;
             if (response && response.hasOwnProperty('error')){
@@ -79,85 +92,5 @@ dashboardPages.getDashboardPage = function(req, res, next){
 };
 
 
-/************ chat ************/
-dashboardPages.actionAddNewMessage = function(req, res, next){
-    req.checkBody('message').notEmpty();
-
-    if (req.validationErrors() || req.body.action !== 'api-dashboard-chat'){
-        next(new errors.BadRequestError('dashboard chat - new message - validation errors',true));
-    } else {
-        const options = {
-            method: 'POST',
-            uri: process.env.API_URL+'/messages/',
-            headers: {
-                'Authorization': 'Bearer '+session.getUserProfileValue(req,'token')
-            },
-            body: {
-                from: session.getUserProfileValue(req,'id'),
-                body: req.body.message
-            },
-            json: true
-        };
-        requestPromise(options)
-            .then(function (response) {
-                res.status(util.http.status.accepted).json({
-                    action: 'dashboard chat message added',
-                    status: 'success'
-                });
-            })
-            .catch(function (response) {
-                var error = response;
-                if (response && response.hasOwnProperty('error')){
-                    error = response.error;
-                }
-                next(new errors.BadRequestError(error,true));
-            });
-    }
-};
-
-dashboardPages.actionAddNewDocument = function(req, res, next) {
-    req.checkBody('fileName').notEmpty();
-    req.checkBody('checklistItemId').notEmpty();
-
-    if (req.validationErrors() || req.body.action !== 'api-dashboard-upload'){
-        next(new errors.BadRequestError('dashboard upload - new document - validation errors',true));
-    } else {
-        const fileName = req.body.fileName,
-            checklistItemId = parseInt(req.body.checklistItemId);
-        var options = {
-            method: 'POST',
-            uri: process.env.API_URL+'/quote/4/document',//todo dynamic quote id
-            headers: {
-                'Authorization': 'Bearer '+session.getUserProfileValue(req,'token')
-            },
-            formData: {
-                taxReturnId: 1,//todo, dynamic tax return
-                uploadFileName: fs.createReadStream(util.globals.uploadsFolderDirectory+fileName)
-            },
-            json: true
-        };
-        if (checklistItemId !== 0){
-            //additional document id = 0
-            options.formData.checklistItemId = checklistItemId;
-        }
-        requestPromise(options)
-            .then(function (response) {
-                uploads.deleteFile(fileName)
-                    .then(function(){
-                        res.status(util.http.status.accepted).json({
-                            action: 'dashboard upload document added',
-                            status: 'success'
-                        });
-                    });
-            })
-            .catch(function (response) {
-                var error = response;
-                if (response && response.hasOwnProperty('error')){
-                    error = response.error;
-                }
-                next(new errors.BadRequestError(error,true));
-            });
-    }
-};
 
 module.exports = dashboardPages;

@@ -3,8 +3,8 @@
     var $ = jQuery,
         that = app.views.dashboard.upload,
         helpers = app.helpers,
-        errorClass = app.helpers.errorClass,
-        disabledClass = app.helpers.disabledClass,
+        apiservice = app.apiservice,
+        disabledClass = helpers.disabledClass,
         dashboard = app.services.dashboard,
         animations = app.animations,
         fileUpload,
@@ -13,47 +13,38 @@
         fileUploadCancelId = '#dashboard-upload-cancel',
         fileUploadSelectId = '#dashboard-upload-select',
         progressBar,
+        errorClass = helpers.errorClass,
+        hiddenClass = helpers.hiddenClass,
         initialized = false;
 
     function initializeFileUpload(){
         var userSession = dashboard.getUserSession();
         fileUpload.fileupload({
             acceptFileTypes: /(\.|\/)(gif|jpe?g|png|pdf|txt|doc|docx|csv|xls|xlsx|ppt|pptx|odt|ott)$/i,
-            dataType: 'json',
+            headers: {
+                'Authorization': 'Bearer '+ userSession.token
+            },
             add: function (e, data) {
-                // console.log(data.originalFiles[0].name);
-                $(fileUploadSubmitId).removeClass(disabledClass);
+                $(fileUploadSelectId).addClass(hiddenClass);
+                $(fileUploadSubmitId).removeClass(hiddenClass);
                 data.context = $(fileUploadSubmitId)
                     .click(function () {
                         data.context = $(fileUploadSubmitId).text('Uploading...');
-                        $(fileUploadCancelId).removeClass(disabledClass);
-                        $(fileUploadSubmitId).addClass(disabledClass);
+                        $(fileUploadCancelId).removeClass(hiddenClass);
+                        $(fileUploadSubmitId).addClass(hiddenClass);
                         data.submit();
                     });
             },
             done: function (e, data) {
-                app.ajax.ajax(
-                    'PUT',
-                    '/dashboard/document',
-                    {
-                        action: 'api-dashboard-upload',
-                        fileName: data.files[0].name,
-                        checklistItemId: userSession.activeItem.checklistItemId
-                    },
-                    'json'
-                )
-                    .then(function(response){
-                        $(fileUploadSubmitId).text('Upload finished').removeClass(disabledClass);
-                        //todo, clear form and or refresh template
-                        window.location.reload();
-                    })
-                    .catch(function(jqXHR,textStatus,errorThrown){
-                        console.log(jqXHR,textStatus,errorThrown);
-                        $(fileUploadSubmitId).removeClass(disabledClass);
-                    });
+                resetUploadForm();
+            },
+            fail: function (e, data) {
+                resetUploadForm();
+                //todo, make pretty error
+                alert('error');
             },
             cancel: function (e, data) {
-                console.log(data);
+                resetUploadForm();
             },
             progressall: function (e, data) {
                 var percentageComplete = parseInt(data.loaded / data.total * 100, 10);
@@ -64,6 +55,12 @@
                 });
             }
         });
+    }
+    
+    function resetUploadForm(){
+        $(fileUploadCancelId).addClass(hiddenClass);
+        $(fileUploadSelectId).removeClass(hiddenClass);
+        progressBar.css({width:0});
     }
 
     function setActiveItem(dataId){

@@ -7,21 +7,25 @@
             </div>
             <form id="user-register-form">
                 <h1 class="subtitle">Let’s get started…</h1>
-                <p>
+                <p class="no-margin">
                     <label for="register-email">PREFERRED EMAIL</label>
                     <input type="email" id="register-email" name="email"/>
+                    <p id="register-label-error-email" class="label-error">Email must be xxx@xxx.xxx format</p>
                 </p>
-                <p>
+                <p class="no-margin">
                     <label for="register-confirm-email">CONFIRM EMAIL</label>
                     <input type="email" id="register-confirm-email" name="confirmemail"/>
+                    <p id="register-label-error-confirm-email" class="label-error">Email addresses must match</p>
                 </p>
                 <p class="container-password-form-register">
                     <label for="register-password">PASSWORD</label>
                     <input type="password" id="register-password" name="password"/>
+                    <p id="register-label-error-password" class="label-error">Password must be minimum of 8 characters</p>
                 </p>
-                <p>
+                <p class="no-margin">
                     <label for="register-confirm-password">CONFIRM PASSWORD</label>
                     <input type="password" id="register-confirm-password" name="confirmpassword"/>
+                    <p id="register-label-error-confirm-password" class="label-error">Passwords must match</p>
                 </p>
 
             </form>

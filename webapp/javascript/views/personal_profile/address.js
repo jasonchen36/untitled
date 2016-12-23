@@ -8,81 +8,185 @@
         addressForm,
         addressSubmit,
         addressBack,
-        addressLine1Input,
-        cityInput,
-        postalCodeInput,
-        errorClass = app.helpers.errorClass,
-        disabledClass = app.helpers.disabledClass;
-
-    function checkPostal(postal) {
-    var regex = new RegExp(/^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]( )?\d[ABCEGHJKLMNPRSTVWXYZ]\d$/i);
-    if (regex.test(postal.value))
-        return true;
-    else
-        return false;
-    }
+        addressFirstLineErrorLabel,
+        addressCityErrorLabel,
+        addressPostalCodeErrorLabel,
+        addressProvinceErrorLabel,
+        addressResidenceErrorLabel,
+        addressIsSameCheckbox,
+        errorClass = helpers.errorClass,
+        disabledClass = helpers.disabledClass;
 
     function submitAddress(){
-        var formData = helpers.getFormData(addressForm);
+        var sessionData = personalProfile.getPersonalProfileSession(),
+            formData = helpers.getFormData(addressForm);
         helpers.resetForm(addressForm);
-        if (helpers.isEmpty(addressLine1Input.val().trim())){
-            addressLine1Input.addClass(errorClass);
-            alert("Pleae enter the street address correctly");
-        }
-        if (helpers.isEmpty(cityInput.val().trim())){
-            cityInput.addClass(errorClass);
-            alert("Pleae enter the city correctly");
-        }
-        if (helpers.isEmpty(postalCodeInput.val().trim()) || checkPostal(postalCodeInput.val())){
-            postalCodeInput.addClass(errorClass);
-            alert("Pleae enter the postal code correctly");
-        }
-        if(helpers.isEmpty(provinceInput[0].value.trim())) {
-          postalCodeInput.addClass(errorClass);
-          alert("Pleae enter the province correctly");
-        }
-        if(helpers.isEmpty(residenceInput[0].value.trim())) {
-          postalCodeInput.addClass(errorClass);
-          alert("Pleae enter the province of residence correctly");
-        }
-        if (helpers.isEmpty(addressLine1SpouseInput.val().trim())){
-            addressLine1SpouseInput.addClass(errorClass);
-            alert("Pleae enter the spousal street address correctly");
-        }
-        if (helpers.isEmpty(citySpouseInput.val().trim())){
-            citySpouseInput.addClass(errorClass);
-            alert("Pleae enter the spousal city correctly");
-        }
-        if (helpers.isEmpty(postalCodeSpouseInput.val().trim())|| checkPostal(postalCodeSpouseInput.val())){
-            postalCodeSpouseInput.addClass(errorClass);
-            alert("Pleae enter the spousal postal code correctly");
-        }
-        if(helpers.isEmpty(provinceSpouseInput[0].value.trim())) {
-          postalCodeInput.addClass(errorClass);
-          alert("Pleae enter the spousal province correctly");
-        }
-        if(helpers.isEmpty(residenceSpouseInput[0].value.trim())) {
-          postalCodeInput.addClass(errorClass);
-          alert("Pleae enter the spousal province of residence correctly");
-        }
+        $('.'+helpers.formContainerClass).each(function(){
+            validateAddressFormData($(this));
+        });
         if (!helpers.formHasErrors(addressForm)) {
             addressSubmit.addClass(disabledClass);
-            ajax.ajax(
-                'POST',
-                '/personal-profile',
-                {
-                  action: 'api-pp-address',
-                  data: formData
-                },
-                'json'
-            )
+            var body,
+                taxReturnData,
+                addressRequests = _.map(formData, function(value, key) {
+                    body = {
+                        addressLine1:  value.street,
+                        addressLine2: '',
+                        city: value.city,
+                        province: value.province,
+                        postalCode: value.postalCode
+                    };
+                    //todo, resolve if the address is new or needs to be updated (different api call)
+                    return ajax.ajax(
+                        'POST',
+                        sessionData.apiUrl+'/tax_return/'+key+'/address',
+                        body,
+                        'json',
+                        {}
+                    );
+                }),
+                taxReturnRequests = _.map(formData, function(formValue, formKey) {
+                    taxReturnData = _.find(sessionData.taxReturns, function(entry){
+                        return parseInt(formKey) === entry.taxReturnId;
+                    });
+                    body = {
+                        accountId:  taxReturnData.accountId,
+                        productId:  taxReturnData.productId,
+                        firstName: taxReturnData.firstName,
+                        lastName: taxReturnData.lastName,
+                        provinceOfResidence: formValue.provinceResidence,
+                        dateOfBirth: taxReturnData.dateOfBirth,
+                        canadianCitizen: taxReturnData.canadianCitizen,
+                        authorizeCra: taxReturnData.authorizeCRA
+                    };
+                    return ajax.ajax(
+                        'PUT',
+                        sessionData.apiUrl+'/tax_return/'+formKey,
+                        body,
+                        'json',
+                        {}
+                    );
+                });
+            Promise.all(addressRequests)
                 .then(function(response){
-                    personalProfile.goToNextPage(response.data);
+                    var addressAssociationRequests = _.map(response, function(value, key) {
+                        return ajax.ajax(
+                            'POST',
+                            sessionData.apiUrl+'/tax_return/'+taxReturnData.taxReturnId+'/address/'+value.addressId,
+                            body,
+                            '',
+                            {}
+                        );
+                    });
+                    return Promise.all(addressAssociationRequests);
+                })
+                .then(function(){
+                    return Promise.all(taxReturnRequests)
+                        .then(function(){
+                            //todo, get updated profile data?
+                            personalProfile.goToNextPage();
+                        });
                 })
                 .catch(function(jqXHR,textStatus,errorThrown){
                     ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                     addressSubmit.removeClass(disabledClass);
                 });
+        }
+    }
+
+    function getTopFilerAddress(){
+        var sessionData = personalProfile.getPersonalProfileSession();
+        return _.find(helpers.getFormData(addressForm), function(value, key){
+            return parseInt(key) === sessionData.taxReturns[0].taxReturnId;
+        });
+    }
+
+    function validateAddressFormData(addressForm){
+        var errors = 0,
+            taxReturnId = addressForm.attr('data-id'),
+            streetAddress = addressForm.find('#first-line-'+taxReturnId),
+            city = addressForm.find('#city-'+taxReturnId),
+            postalCode = addressForm.find('#postal-code-'+taxReturnId),
+            province = addressForm.find('#province-'+taxReturnId),
+            provinceResidence = addressForm.find('#province-residence-'+taxReturnId),
+
+            addressFirstLineErrorLabel = addressForm.find('#address-first-line-label-error-' + taxReturnId),
+            addressCityErrorLabel = addressForm.find('#address-city-label-error-' + taxReturnId),
+            addressPostalCodeErrorLabel = addressForm.find('#address-postal-code-label-error-' + taxReturnId),
+            addressProvinceErrorLabel = addressForm.find('#address-province-label-error-' + taxReturnId),
+            addressResidenceErrorLabel = addressForm.find('#address-residence-label-error-' + taxReturnId);
+
+        streetAddress.removeClass(helpers.errorClass);
+        city.removeClass(helpers.errorClass);
+        postalCode.removeClass(helpers.errorClass);
+        province.removeClass(helpers.errorClass);
+        provinceResidence.removeClass(helpers.errorClass);
+
+        addressFirstLineErrorLabel.removeClass(helpers.errorClass);
+        addressCityErrorLabel.removeClass(helpers.errorClass);
+        addressPostalCodeErrorLabel.removeClass(helpers.errorClass);
+        addressProvinceErrorLabel.removeClass(helpers.errorClass);
+        addressResidenceErrorLabel.removeClass(helpers.errorClass);
+
+        //street address
+        if (helpers.isEmpty(streetAddress.val())){
+            streetAddress.addClass(helpers.errorClass);
+            addressFirstLineErrorLabel.addClass(helpers.errorClass);
+            errors++;
+        }
+        //city
+        if (helpers.isEmpty(city.val())){
+            city.addClass(helpers.errorClass);
+            addressCityErrorLabel.addClass(helpers.errorClass);
+            errors++;
+        }
+        //province
+        if (helpers.isEmpty(province.val())){
+            province.addClass(helpers.errorClass);
+            addressProvinceErrorLabel.addClass(helpers.errorClass);
+            errors++;
+        }
+        //postal code
+        if (helpers.isEmpty(postalCode.val()) || !helpers.isValidPostalCode(postalCode.val())){
+            postalCode.addClass(helpers.errorClass);
+            addressPostalCodeErrorLabel.addClass(helpers.errorClass);
+            errors++;
+        }
+        //province residence
+        if (helpers.isEmpty(provinceResidence.val())){
+            provinceResidence.addClass(helpers.errorClass);
+            addressResidenceErrorLabel.addClass(helpers.errorClass);
+            errors++;
+        }
+        return errors < 1;
+    }
+
+    function addressIsSameAsTopFiler(element){
+        //checkbox toggle
+        var checkbox = element.find('.checkbox').first(),
+            parentContainer = element.parent();
+        if (validateAddressFormData(addressForm.find('.'+helpers.formContainerClass).first()) && !checkbox.hasClass(helpers.activeClass)) {
+            //checkbox
+            checkbox.addClass(helpers.activeClass);
+
+            //populate form
+            var formData = getTopFilerAddress(),
+                taxReturnId = parentContainer.attr('data-id');
+            //street address
+            parentContainer.find('#first-line-'+taxReturnId).val(formData.street).prop('disabled', true);
+            //city
+            parentContainer.find('#city-'+taxReturnId).val(formData.city).prop('disabled', true);
+            //postalCode
+            parentContainer.find('#postal-code-'+taxReturnId).val(formData.postalCode).prop('disabled', true);
+            //province
+            parentContainer.find('#province-'+taxReturnId).val(formData.province).prop('disabled', true);
+        } else {
+            //checkbox
+            checkbox.removeClass(helpers.activeClass);
+
+            //reset form for manual entry
+            parentContainer.find('input').val('').prop('disabled', false);
+            parentContainer.find('select').val('').prop('disabled', false);
         }
     }
 
@@ -93,17 +197,7 @@
             addressForm = $('#address-form');
             addressSubmit = $('#address-submit');
             addressBack = $('#address-back');
-            addressLine1Input = $('#address-first-line');
-            cityInput = $('#address-city');
-            provinceInput = $('#mailing-province');
-            residenceInput = $('#residential-province');
-            postalCodeInput = $('#address-postal-code');
-            addressLine1SpouseInput = $('#address-first-line-spouse');
-            citySpouseInput = $('#address-city-spouse');
-            provinceSpouseInput = $('#spousal-mailing-province');
-            residenceSpouseInput = $('#spousal-residential-province');
-            postalCodeSpouseInput = $('#address-postal-code-spouse');
-            checkbox = $('.checkbox');
+            addressIsSameCheckbox = $('.checkbox-container');
 
             //listeners
             addressForm.on('submit',function(event){
@@ -121,13 +215,9 @@
                 personalProfile.goToPreviousPage();
             });
 
-            checkbox.on('click',function(event){
+            addressIsSameCheckbox.on('click',function(event){
                 event.preventDefault();
-                $(this).toggleClass(helpers.activeClass);
-                addressLine1SpouseInput.val(addressLine1Input.val());
-                citySpouseInput.val(cityInput.val());
-                postalCodeSpouseInput.val(postalCodeInput.val());
-                provinceSpouseInput[0].value = provinceInput[0].value;
+                addressIsSameAsTopFiler($(this));
             });
         }
     };

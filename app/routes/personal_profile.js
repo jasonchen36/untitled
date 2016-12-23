@@ -7,7 +7,6 @@ const //services
     personalProfileController = require('../controllers/personal_profile');
 
 router.route('/')
-    .get(personalProfileController.getPersonalProfilePage)
-    .post(personalProfileController.actionSavePersonalProfile);
+    .get(personalProfileController.getPersonalProfilePage);
 
 module.exports = router;

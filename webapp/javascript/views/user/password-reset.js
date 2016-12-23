@@ -26,7 +26,8 @@
                         action: 'api-password-reset',
                         email: formData.email
                     },
-                    'json'
+                    'json',
+                    { }
                 )
                     .then(function(response){
                         //todo, show success and then redirect

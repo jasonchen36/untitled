@@ -9,7 +9,11 @@
             <div class="i--icon-question"></div>
             <div class="label-document-name">{{name}}</div>
             <div class="f--futura-book">Statement of Renumeration Paid</div> <!--TODO: Bind to subtitle-->
-            <div class="label-document-filers f--futura-book">Doug Doctor<br>Carmela Doctor</div> <!--TODO: Bind to list of filers, new line after each name-->
+            <div class="label-document-filers f--futura-book">
+            {{#each filers}}
+                  {{name}}<br>
+             {{/each}}
+            </div>
             <div class="label-document-count">{{count documents}}</div>
         </div>
     {{/each}}
@@ -19,7 +23,7 @@
         <div class="label-document-count">{{count documents}}</div>
     </div>
 </section>
-<section id="dashboard-upload" class="small-6 medium-7">
+<section id="dashboard-upload" class="add-right-padding">
     <div class="border-bottom-dark-grey">
         <!--TODO: Show after done uploading-->
         {{#if false}}
@@ -32,19 +36,23 @@
         <h1 class="label-activeItem-name display-inline-block">{{activeItem.name}}</h1>
         <div class="label-activeItem-subtitle f--futura-book add-margin-left display-inline-block">Statement of Renumeration Paid</div>
         <div id="dashboard-upload-progress" class="progress-bar"></div>
-        <form id="dashboard-upload-form">
+        <form id="dashboard-upload-form" enctype="multipart/form-data">
             <p class="label-instruction-upload">Drop files here to upload</p>
             <p class="f--futura-book">or</p>
-            <input id="dashboard-upload-input" type="file" name="files[]" data-url="/dashboard/upload">
+            <input id="dashboard-upload-input" type="file" name="uploadFileName" data-url="{{uploadUrl}}" >
+            <input id="dashboard-upload-checklist-item" type="hidden" name="checklistItemId" value="{{activeItem.checklistItemId}}" >
             <button id="dashboard-upload-select" type="button" class="purple long">Select Files</button>
-            <button id="dashboard-upload-submit" type="submit" class="disabled long purple">Upload</button>
-            <button id="dashboard-upload-cancel" type="reset" class="disabled long purple">Cancel</button>
+            <button id="dashboard-upload-submit" type="submit" class="hidden long purple">Upload</button>
+            <button id="dashboard-upload-cancel" type="reset" class="hidden long purple">Cancel</button>
         </form>
+         {{#each activeItem.documents}}
+             {{>dashboard-document-tile documentID=documentId thumbnailURL=thumbnailUrl  name=name  uploadedTime=""  }}
+         {{/each}}
     {{else}}
         <div id="container-upload-explained">
             <h1>Upload Explained</h1>
             <p class="side-info-blurb">Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis mollis, est non commodo luctus, nisi erat porttitor ligula non commodo luctus.</p>
         </div>
     {{/if}}
-    {{>dashboard-document-tile}}
+  
 </section>

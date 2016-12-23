@@ -8,6 +8,7 @@
         welcomeForm,
         welcomeSubmit,
         welcomeNameInput,
+        welcomeErrorName,
         errorClass = helpers.errorClass,
         disabledClass = helpers.disabledClass;
 
@@ -17,6 +18,7 @@
             helpers.resetForm(welcomeForm);
             if (helpers.isEmpty(formData.firstName)){
                 welcomeNameInput.addClass(errorClass);
+                welcomeErrorName.addClass(errorClass);
             }
             if (!helpers.formHasErrors(welcomeForm)) {
                 welcomeSubmit.addClass(disabledClass);
@@ -27,7 +29,8 @@
                         action: 'api-tp-welcome',
                         firstName: formData.firstName
                     },
-                    'json'
+                    'json',
+                     { } 
                 )
                     .then(function(response){
                         taxProfile.goToNextPage(response.data);
@@ -47,6 +50,7 @@
             welcomeForm = $('#welcome-form');
             welcomeSubmit = $('#welcome-submit');
             welcomeNameInput = $('#welcome-name');
+            welcomeErrorName = $('#welcome-label-error-name');
 
             //listeners
             welcomeSubmit.on('click',function(event){
