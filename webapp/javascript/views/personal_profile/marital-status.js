@@ -42,6 +42,17 @@
                                 entry.taxReturnId, entry);
                             promiseArrayPut.push(ajaxOne);
 
+                            // if status changed update date
+                            if(entry[149] === 1) {
+                                entry.questionId = 150;
+                                var day = maritalStatusForm.find('#marital-status-day-'+entry.taxReturnId);
+                                var month = maritalStatusForm.find('#marital-status-month-'+entry.taxReturnId);
+                                entry.answer = day + '/' + month;
+                                ajaxOne =  apiservice.postMaritalDate(sessionData,
+                                    entry.taxReturnId, entry);
+                                promiseArrayPut.push(ajaxOne);
+                            }
+
                             var ajaxTwo = apiservice.getAnswers(sessionData,
                                 entry.taxReturnId,9);
 

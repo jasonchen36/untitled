@@ -232,6 +232,53 @@
 
     };
 
+    this.postMaritalDate = function(sessionData, taxReturnId, entry) {
+        var accountInfo = helpers.getAccountInformation(sessionData);
+
+        var answers = [];
+
+        var questionId = entry.questionId;
+
+        _.each(entry, function(answer) {
+
+            if(!isNaN(questionId)) {
+
+                // TODO the server is not taking other answers when it should
+                //  Change when API server is ready
+                var text = answer;
+                //     var text= '';
+
+
+                if (typeof text != 'undefined' && text.length > 1) {
+
+                    answers.push(
+                        {
+                            questionId: questionId,
+                            text: text
+                        });
+                }
+            }
+
+        });
+
+        var uri = sessionData.apiUrl + '/tax_return/' +  taxReturnId + '/answers/';
+
+        var ajaxPromise = ajax.ajax(
+            'POST',
+            uri,
+            {
+                'answers': answers
+            },
+            'json-text',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+
+        );
+
+        return ajaxPromise;
+
+    };
 
     this.getMessages = function(sessionData){
 
