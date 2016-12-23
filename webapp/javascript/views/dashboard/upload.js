@@ -80,9 +80,11 @@
             } else {
                 userSession.activeItem = _.find(userSession.documentChecklist.checklistItems, ['checklistItemId', dataId]);
             }
-            dashboard.refreshPage(userSession);
 
+            dashboard.refreshPage(userSession);
         }
+
+        $("#upload-checklist-item-"+dataId).addClass(helpers.activeClass);
     }
 
     function previewDocument(documentId, checklistId){

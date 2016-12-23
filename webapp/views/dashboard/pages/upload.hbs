@@ -5,22 +5,14 @@
         <div class="i--icon-printer"></div>
     </div>
     {{#each documentChecklist.checklistItems}}
-        <div class="upload-checklist-item" data-id="{{checklistItemId}}">
-            <div class="i--icon-question"></div>
-            <div class="label-document-name">{{name}}</div>
-            <div class="f--futura-book">Statement of Renumeration Paid</div> <!--TODO: Bind to subtitle-->
-            <div class="label-document-filers f--futura-book">
-            {{#each filers}}
-                  {{name}}<br>
-             {{/each}}
-            </div>
-            <div class="label-document-count">{{count documents}}</div>
+        <div id="upload-checklist-item-{{checklistItemId}}" class="upload-checklist-item" data-id="{{checklistItemId}}">
+            <div class="label-document-name float-left display-inline-block">{{name}}</div>
+            <div class="i--icon-right-arrow float-right display-inline-block"></div>
         </div>
     {{/each}}
-    <div class="upload-checklist-item" data-id="0">
-        <div class="i--icon-question"></div>
-        <div class="label-document-name">Additional Documents</div>
-        <div class="label-document-count">{{count documents}}</div>
+    <div id="upload-checklist-item-0" class="upload-checklist-item" data-id="0">
+        <div class="label-document-name float-left display-inline-block">Additional Documents</div>
+        <div class="i--icon-right-arrow float-right display-inline-block"></div>
     </div>
 </section>
 {{#if isPreview}}
