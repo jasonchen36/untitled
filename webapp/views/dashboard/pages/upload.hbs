@@ -40,7 +40,7 @@
             <div class="i--icon-green-check"></div>
         {{/if}}
         <p id="label-upload-instructions" class="display-inline-block side-info-blurb label-instruction-header">After you have finished uploading all your documents you can submit your uploads to TaxPlan by clicking “Start My Return”</p>
-        <button class="green header long">Start My Return</button>
+        <button id="tax-return-submit" class="green header long">Start My Return</button>
     </div>
     {{#if activeItem}}
         <h1 class="label-activeItem-name display-inline-block">{{activeItem.name}}</h1>
@@ -50,10 +50,10 @@
             <p class="label-instruction-upload">Drop files here to upload</p>
             <p class="f--futura-book">or</p>
             <input id="dashboard-upload-input" type="file" name="uploadFileName" data-url="{{uploadUrl}}" >
-            <input id="dashboard-upload-chechlist-item" type="hidden" name="checklistItemId" value="{{activeItem.checklistItemId}}" >
+            <input id="dashboard-upload-checklist-item" type="hidden" name="checklistItemId" value="{{activeItem.checklistItemId}}" >
             <button id="dashboard-upload-select" type="button" class="purple long">Select Files</button>
-            <!--<button id="dashboard-upload-submit" type="submit" class="disabled long purple">Upload</button>-->
-            <!--<button id="dashboard-upload-cancel" type="reset" class="disabled long purple">Cancel</button>-->
+            <button id="dashboard-upload-submit" type="submit" class="hidden long purple">Upload</button>
+            <button id="dashboard-upload-cancel" type="reset" class="hidden long purple">Cancel</button>
         </form>
     {{#debug}}{{/debug}}
          {{#each activeItem.documents}}
@@ -67,3 +67,4 @@
     {{/if}}
 </section>
 {{/if}}
+{{>dashboard-submit-return-modal}}

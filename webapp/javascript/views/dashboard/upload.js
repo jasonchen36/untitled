@@ -3,9 +3,8 @@
     var $ = jQuery,
         that = app.views.dashboard.upload,
         helpers = app.helpers,
-        apiservice = app.apiservice, 
-        errorClass = app.helpers.errorClass,
-        disabledClass = app.helpers.disabledClass,
+        apiservice = app.apiservice,
+        disabledClass = helpers.disabledClass,
         dashboard = app.services.dashboard,
         animations = app.animations,
         fileUpload,
@@ -15,34 +14,41 @@
         fileUploadSelectId = '#dashboard-upload-select',
         documentTile = '#container-document-tile',
         buttonClosePreview = '#button-close-preview',
+        taxReturnSubmit,
+        taxReturnForm,
         progressBar,
+        errorClass = helpers.errorClass,
+        hiddenClass = helpers.hiddenClass,
         initialized = false;
 
     function initializeFileUpload(){
         var userSession = dashboard.getUserSession();
         fileUpload.fileupload({
             acceptFileTypes: /(\.|\/)(gif|jpe?g|png|pdf|txt|doc|docx|csv|xls|xlsx|ppt|pptx|odt|ott)$/i,
-            dataType: 'json',
             headers: {
                 'Authorization': 'Bearer '+ userSession.token
             },
             add: function (e, data) {
-                // console.log(data.originalFiles[0].name);
-                $(fileUploadSubmitId).removeClass(disabledClass);
+                $(fileUploadSelectId).addClass(hiddenClass);
+                $(fileUploadSubmitId).removeClass(hiddenClass);
                 data.context = $(fileUploadSubmitId)
                     .click(function () {
                         data.context = $(fileUploadSubmitId).text('Uploading...');
-                        $(fileUploadCancelId).removeClass(disabledClass);
-                        $(fileUploadSubmitId).addClass(disabledClass);
+                        $(fileUploadCancelId).removeClass(hiddenClass);
+                        $(fileUploadSubmitId).addClass(hiddenClass);
                         data.submit();
                     });
             },
             done: function (e, data) {
-
-                app.services.dashboard.refreshPage();
+                resetUploadForm();
+            },
+            fail: function (e, data) {
+                resetUploadForm();
+                //todo, make pretty error
+                alert('error');
             },
             cancel: function (e, data) {
-                //console.log(data);
+                resetUploadForm();
             },
             progressall: function (e, data) {
                 var percentageComplete = parseInt(data.loaded / data.total * 100, 10);
@@ -53,6 +59,12 @@
                 });
             }
         });
+    }
+    
+    function resetUploadForm(){
+        $(fileUploadCancelId).addClass(hiddenClass);
+        $(fileUploadSelectId).removeClass(hiddenClass);
+        progressBar.css({width:0});
     }
 
     function setActiveItem(dataId){
@@ -88,6 +100,16 @@
         dashboard.refreshPage(userSession);
     }
 
+    function confirmReturnSubmission(){
+        window.location.hash = 'modal-tax-return-submit';
+    }
+
+    function submitReturn(){
+        //todo, api call
+        window.location.hash = '#!';
+        $('#dashboard-my-return-activate').click();
+    }
+
     this.init = function(){
         if ($('#dashboard-upload').length > 0) {
             //set initial active item
@@ -101,8 +123,20 @@
             //variables
             fileUpload = $('#dashboard-upload-input');
             progressBar = $('#dashboard-upload-progress');
+            taxReturnSubmit = $('#tax-return-submit');
+            taxReturnForm = $('#modal-tax-return-submit-form');
 
             //listeners
+            taxReturnSubmit.on('click',function(event){
+               event.preventDefault();
+                confirmReturnSubmission();
+            });
+
+            taxReturnForm.on('submit',function(event){
+                event.preventDefault();
+                submitReturn();
+            });
+            
             $(document)
                 .off('click', uploadChecklistItemsClass)
                 .on('click', uploadChecklistItemsClass, function (event) {

@@ -91,7 +91,7 @@ sessionModel.getDocumentChecklistItemObject = function(data){
 sessionModel.getDocumentChecklistObject = function(data){
     return {
         checklistItems: _.map(data.checklistitems, sessionModel.getDocumentChecklistItemObject),
-        additionalDocuments: data.additionalDocuments
+        // additionalDocuments: data.additionalDocuments
     };
 };
 

@@ -22,32 +22,15 @@
             validateMonthDayForm($(this));
         });
         if (!maritalStatusSubmit.hasClass(disabledClass)) {
-            var formData = helpers.getTileFormDataArray(maritalStatusForm);
+            var formData = helpers.getMaritalStatusFormDataArray(maritalStatusForm);
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
 
-            if(!helpers.hasSelectedTile(formData)){
+            if(!helpers.hasSelectedTileFromMultiSelect(formData, 129)){
                 window.location.hash = 'modal-personal-profile-popup';
-            }else if ( helpers.hasMultipleSelectedTiles(formData)){
             } else {
                 maritalStatusSubmit.addClass(disabledClass);
-               /* ajax.ajax(
-                    'POST',
-                    '/personal-profile',
-                    {
-                        action: 'api-pp-marital-status',
-                        data: formData
-                    },
-                    'json',
-                    { }
-                )
-                    .then(function(response){
-                        personalProfile.goToNextPage(response.data);
-                    })
-                    .catch(function(jqXHR,textStatus,errorThrown){
-                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
-                        maritalStatusSubmit.removeClass(disabledClass);
-                    });*/
+  
 
                 return Promise.resolve()
                     .then(function() {
@@ -59,14 +42,11 @@
                         var ajaxAnswers = apiservice.getQuestions(sessionData,9);
                         promiseArrayQuestions.push(ajaxAnswers);
 
-
-
                         _.each(formData, function(entry) {
 
-                            //todo,
-                            /*var ajaxOne =  apiservice.postAnswers(sessionData,
+                            var ajaxOne =  apiservice.postAnswers(sessionData,
                                 entry.taxReturnId, entry);
-                            promiseArrayPut.push(ajaxOne);*/
+                            promiseArrayPut.push(ajaxOne);
 
                             var ajaxTwo = apiservice.getAnswers(sessionData,
                                 entry.taxReturnId,9);
@@ -87,12 +67,23 @@
                         data.taxReturns.questions = response[2];
 
                         var index = 0;
+
+
+
                         _.each(data.taxReturns, function(taxReturn){
+                            var questionIndex = 0;
                             taxReturn.firstName = nameData[index];
                             taxReturn.questions = response[1][index];
                             _.each(taxReturn.questions.answers, function(question){
                               question.answer = 0;
                               question.class = "";
+
+                                if(questionIndex===0){
+                                    question.id="has-dependants-"+taxReturn.taxReturnId;
+                                }else{
+                                    question.id="no-dependants-"+taxReturn.taxReturnId;
+                                }
+                                questionIndex++;
 
                               if ( !question.text) {
                                 question.answer = 0;
@@ -117,8 +108,12 @@
     }
 
     function validateMonthDayForm(maritalStatusForm){
-        var taxReturnId = maritalStatusForm.attr('data-id'),
-            birthDayErrorLabel = maritalStatusForm.find('#birth-day-error-label-' + taxReturnId),
+        var taxReturnId = maritalStatusForm.attr('data-id'),      
+            statusChanged = maritalStatusForm.find('#marital-status-changed-' + taxReturnId);
+
+        if(statusChanged.hasClass('active')) {
+
+            var birthDayErrorLabel = maritalStatusForm.find('#birth-day-error-label-' + taxReturnId),
             birthMonthErrorLabel = maritalStatusForm.find('#birth-month-error-label-' + taxReturnId),
             birthDay = maritalStatusForm.find('#birth-day-' + taxReturnId),
             birthMonth = maritalStatusForm.find('#birth-month-' + taxReturnId);
@@ -128,41 +123,25 @@
             birthMonth.removeClass(helpers.errorClass);
             birthMonthErrorLabel.removeClass(helpers.errorClass);
 
-        if (helpers.isEmpty(birthDay.val())){
-            birthDay.addClass(helpers.errorClass);
-            birthDayErrorLabel.addClass(helpers.errorClass);
-        }
-        if (helpers.isEmpty(birthMonth.val())){
-            birthMonth.addClass(helpers.errorClass);
-            birthMonthErrorLabel.addClass(helpers.errorClass);
+            if (helpers.isEmpty(birthDay.val())){
+                birthDay.addClass(helpers.errorClass);
+                birthDayErrorLabel.addClass(helpers.errorClass);
+            }
+            if (helpers.isEmpty(birthMonth.val())){
+                birthMonth.addClass(helpers.errorClass);
+                birthMonthErrorLabel.addClass(helpers.errorClass);
+            }
         }
     }
 
     function updateMaritalStatus(){
         if (!maritalStatusSubmit.hasClass(disabledClass)) {
-            var formData = helpers.getTileFormDataArray(maritalStatusForm);
+            var formData = helpers.getMaritalStatusFormDataArray(maritalStatusForm);
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
             var nameData = helpers.getFormDataArray(maritalStatusForm);
             nameData = nameData[0];
                 maritalStatusSubmit.addClass(disabledClass);
-               /* ajax.ajax(
-                    'POST',
-                    '/personal-profile',
-                    {
-                        action: 'api-pp-marital-status',
-                        data: formData
-                    },
-                    'json',
-                    { }
-                )
-                    .then(function(response){
-                        personalProfile.goToNextPage(response.data);
-                    })
-                    .catch(function(jqXHR,textStatus,errorThrown){
-                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
-                        maritalStatusSubmit.removeClass(disabledClass);
-                    });*/
 
                 return Promise.resolve()
                     .then(function() {
@@ -174,14 +153,11 @@
                         var ajaxAnswers = apiservice.getQuestions(sessionData,5);
                         promiseArrayQuestions.push(ajaxAnswers);
 
-
-
                         _.each(formData, function(entry) {
-
-                            //todo,
-                            /*var ajaxOne =  apiservice.postAnswers(sessionData,
+                 
+                            var ajaxOne =  apiservice.postAnswers(sessionData,
                                 entry.taxReturnId, entry);
-                            promiseArrayPut.push(ajaxOne);*/
+                            promiseArrayPut.push(ajaxOne);
 
                             var ajaxTwo = apiservice.getAnswers(sessionData,
                                 entry.taxReturnId,5);
@@ -205,6 +181,7 @@
                         _.each(data.taxReturns, function(taxReturn){
                             taxReturn.firstName = nameData[index];
                             taxReturn.questions = response[1][index];
+
                             _.each(taxReturn.questions.answers, function(question){
                               question.answer = 0;
                               question.class = "";

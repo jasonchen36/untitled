@@ -171,14 +171,20 @@
                     changePageHelper('upload');
                     $(this).addClass(activeClass);
                     document.getElementById('dashboard-chat-activate').classList.remove('active');
-                    document.getElementById('dashboard-my-return-activate').classList.remove('active');
+                    var startMyReturn = document.getElementById('dashboard-my-return-activate');
+                    if(startMyReturn) {
+                        startMyReturn.classList.remove('active');
+                    }
                 })
                 .on('click', '#dashboard-chat-activate', function (event) {
                     event.preventDefault();
                     changePageChat();
                     $(this).addClass(activeClass);
                     document.getElementById('dashboard-upload-activate').classList.remove('active');
-                    document.getElementById('dashboard-my-return-activate').classList.remove('active');
+                    var startMyReturn = document.getElementById('dashboard-my-return-activate');
+                    if(startMyReturn) {
+                        startMyReturn.classList.remove('active');
+                    }
                 })
                 .on('click', '#dashboard-my-return-activate', function (event) {
                     event.preventDefault();

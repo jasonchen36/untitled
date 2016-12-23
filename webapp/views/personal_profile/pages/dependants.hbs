@@ -10,14 +10,8 @@
                 {{#each taxReturns}}
                     <h1 class="subtitle">{{firstName}}, do you have any children or elderly parents as dependants?</h1>
                     {{>personal-profile-options questions=questions.answers activeTiles=questions.answers.answer tileContainerId=taxReturnId}}
-                    {{!--{{#compare hasDependants 1 operator="=="}}
-                        {{>personal-profile-dependants-form}}
-                        {{>personal-profile-dependants-line}}
-                        <div class="border-bottom-light-gray add-bottom-padding add-top-padding">
-                            <div class="i--icon-add"></div>
-                            <label class="label-add">ADD A DEPENDANT FOR {{firstName}}</label>
-                        </div>
-                    {{/compare}}--}}
+                    {{>personal-profile-dependants-form}}
+                    {{>personal-profile-dependants-line}}
                 {{/each}}
             </form>
         </div>

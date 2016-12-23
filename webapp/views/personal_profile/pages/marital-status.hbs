@@ -9,7 +9,7 @@
             <form id="marital-status-form">
                 {{#each taxReturns}}
                     <h1 class="subtitle display-inline-table full-width">{{firstName}}, what was your martial status on Dec 31, 2015:</h1>
-                    {{>personal-profile-options questions=questions.answers.0.tiles activeTiles=questions.answers.answer tileContainerId=taxReturnId}}
+                    {{>personal-profile-single-options questions=questions.answers.0.tiles activeTiles=questions.answers.answer tileContainerId=taxReturnId}}
                     <div class="marital-status-changed-container">
                         <div class="checkbox" id="marital-status-changed-{{taxReturnId}}"></div>
                         <p class="checkbox-label">MY MARITAL STATUS CHANGED IN 2016</p>
