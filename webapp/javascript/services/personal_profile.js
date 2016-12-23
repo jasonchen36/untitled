@@ -93,7 +93,7 @@
 
     function setSmallOptionTiles(){
         var sessionData = that.getPersonalProfileSession();
-        if(sessionData.currentPage == "marital-status"){
+        if(sessionData.currentPage == "marital-status" || sessionData.currentPage == "dependants"){
             $('.'+helpers.tileClass).addClass("small-button");
         }
     }
