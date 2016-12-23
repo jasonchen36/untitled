@@ -22,6 +22,9 @@ $header-height: 85px;
   &.font-green{
     color: $color-global-green;
   }
+  &.font-red{
+    color: $color-global-red;
+  }
   &.font-sidebar-dark-grey{
     color: $color-sidebar-text-dark-grey;
   }
@@ -382,6 +385,14 @@ textarea {
 
 .full-width{
   width:100%;
+}
+
+.full-height{
+  height:100%;
+}
+
+.overflow-y-auto{
+  overflow-y: auto;
 }
 
 .display-inline-table{
