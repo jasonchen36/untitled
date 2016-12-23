@@ -1,5 +1,9 @@
 #container-return-line-items{
-  margin: 50px 80px 90px 80px;
+  margin: 50px 50px 80px 50px;
+}
+
+#container-pay-line-items{
+  margin: 50px 0px 80px 50px;
 }
 
 .return-line-item{
@@ -9,7 +13,18 @@
 .return-line-item-name{
   font-size: 1.2vw;
   margin: 0;
+  max-width: 50%;
   width: 35%;
+}
+
+.pay-line-item-name{
+  font-size: 1.4vw;
+  max-width: 50%;
+  margin: 15px 0px 0px 0px;
+}
+
+.label-total{
+  font-size: 3.5vw;
 }
 
 .return-line-item-description{

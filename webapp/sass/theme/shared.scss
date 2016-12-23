@@ -408,6 +408,12 @@ textarea {
   display:inline-block;
 }
 
+.line{
+  width: calc(100% - 76px);
+  height: 1px;
+  background: $color-global-border-grey;
+}
+
 //visibility
 //-----------------------------
 .hide-for-small {
