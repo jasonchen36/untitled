@@ -1,11 +1,11 @@
 <section id="personal-profile-income" class="full-screen-grid-container main-container">
     <div class="small-12 medium-7">
+        <div class="container-header fixed-page-header">
+            <h1 class="header">Income</h1>
+            <button id="income-submit" type="submit" class="green header">Next</button>
+            <button id="income-back" class="grey header">Previous</button>
+        </div>
         <div class="content-form">
-            <div class="container-header">
-                <h1 class="header">Income</h1>
-                <button id="income-submit" type="submit" class="green header">Next</button>
-                <button id="income-back" class="grey header">Previous</button>
-            </div>
             <form id="income-form">
                 {{#each taxReturns}}
                     <h1 class="subtitle">{{firstName}} please select all your sources of income in 2016:</h1>
