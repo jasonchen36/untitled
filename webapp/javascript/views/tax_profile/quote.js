@@ -11,7 +11,8 @@
         disabledClass = app.helpers.disabledClass;
 
     function submitQuote(){
-        window.location.hash = 'modal-tax-profile-quote';
+        //window.location.hash = 'modal-tax-profile-quote';
+        window.location.href = '/register';
     }
 
     this.init = function(){
