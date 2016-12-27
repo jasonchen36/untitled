@@ -8,6 +8,9 @@
   margin: 5px;
   float: left;
   cursor: pointer;
+  &.small-button{
+    height:46px;
+  }
   @include unselectable;
   &.active, &:hover {
     background-color: $color-global-yellow;

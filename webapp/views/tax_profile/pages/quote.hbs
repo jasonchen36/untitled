@@ -1,11 +1,11 @@
 <section id="tax-profile-quote" class="full-screen-grid-container main-container">
     <div class="small-12 medium-7">
+        <div class="container-header fixed-page-header">
+            <h1 class="header">Quote</h1>
+            <button id="quote-submit" type="submit" class="green header">Get Started!</button>
+            <button id="quote-back" class="grey header">Previous</button>
+        </div>
         <div class="content-form">
-            <div class="container-header">
-                <h1 class="header">Quote</h1>
-                <button id="quote-submit" type="submit" class="green header">Get Started!</button>
-                <button id="quote-back" class="grey header">Previous</button>
-            </div>
             <form id="quote-form" class="container-credits-form horizontal-center">
                 <p class="label-blurb">The fee for TAXplan Canada to
                     prepare your 2015
@@ -39,7 +39,4 @@
         </div>
     </div>
     {{>tax-profile-sidebar sidebarImage="i--icon-quote" sidebarTitle="Quote"}}
-</section>
-<section class="modal--fade" id="modal-tax-profile-quote" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true" data-stackable="false">
-    <!--populated dynamically-->
 </section>

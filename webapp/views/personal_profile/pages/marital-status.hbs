@@ -1,35 +1,36 @@
 <section id="personal-profile-marital-status" class="full-screen-grid-container main-container">
     <div class="small-12 medium-7">
+        <div class="container-header fixed-page-header">
+            <h1 class="header">Marital Status</h1>
+            <button id="marital-status-submit" type="submit" class="green header">Next</button>
+            <button id="marital-status-back" class="grey header">Previous</button>
+        </div>
         <div class="content-form">
-            <div class="container-header">
-                <h1 class="header">Marital Status</h1>
-                <button id="marital-status-submit" type="submit" class="green header">Next</button>
-                <button id="marital-status-back" class="grey header">Previous</button>
-            </div>
             <form id="marital-status-form">
                 {{#each taxReturns}}
                     <h1 class="subtitle display-inline-table full-width">{{firstName}}, what was your martial status on Dec 31, 2015:</h1>
+                    {{#if @index}}
+                        <div class="display-inline-table full-width add-top-margin">
+                            <div class="checkbox" id="marital-status-same-{{taxReturnId}}"></div>
+                            <p class="checkbox-label" >SAME MARITAL STATUS AS {{accountInfo.firstName}}</p>
+                        </div>
+                    {{/if}}
                     {{>personal-profile-single-options questions=questions.answers.0.tiles activeTiles=questions.answers.answer tileContainerId=taxReturnId}}
                     <div class="marital-status-changed-container">
                         <div class="checkbox" id="marital-status-changed-{{taxReturnId}}"></div>
                         <p class="checkbox-label">MY MARITAL STATUS CHANGED IN 2016</p>
-                        <p hidden>PLEASE INDICATE THE DATE OF CHANGE:</p>
+                        <p id ="indicate-date-{{taxReturnId}}" hidden>PLEASE INDICATE THE DATE OF CHANGE:</p>
                         <div class="taxplan-form-container" data-id="{{taxReturnId}}" >
                             <div>
-                                <input class="small-2 small text-center" placeholder="DD" id="birth-day-{{taxReturnId}}" hidden/>
-                                <input class="small-2 small text-center" placeholder="MM" id="birth-month-{{taxReturnId}}" hidden/>
+                                <input class="small-2 small text-center" placeholder="DD" id="marital-status-day-{{taxReturnId}}" hidden/>
+                                <input class="small-2 small text-center" placeholder="MM" id="marital-status-month-{{taxReturnId}}" hidden/>
                             </div>
                             <div class="display-inline-table full-width">
                                 <p id="birth-day-error-label-{{taxReturnId}}" class="label-error display-inline-block add-margin-right small-2">Day needed</p>
                                 <p id="birth-month-error-label-{{taxReturnId}}" class="label-error display-inline-block add-margin-right small-2">Month needed</p>
                             </div>
                         </div>
-                        {{#if @index}}
-                            <div class="display-inline-table full-width add-top-margin">
-                                <div class="checkbox"></div>
-                                <p class="checkbox-label" id="marital-status-same-{{taxReturnId}}">SAME MARITAL STATUS AS ABOVE</p>
-                            </div>
-                        {{/if}}
+
                     </div>
                {{/each}}
             </form>

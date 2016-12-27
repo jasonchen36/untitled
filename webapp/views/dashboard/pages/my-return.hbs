@@ -1,42 +1,105 @@
 {{>dashboard-left-sidebar isChat="true"}}
+{{#if false}}
     <section id="dashboard-my-return" class="small-7 medium-6 full-height overflow-y-auto">
-        <div id="container-upload-explained">
-            <h1>Your Taxes Are {{taxReturns.0.status.displayText}}</h1>
-            <p class="side-info-blurb">TAXplan taxes are prepared in 1 business day! We will send you an email when we are all wrapped up here.</p>
+            <div id="container-upload-explained">
+                <h1>Your Taxes Are In Progress</h1>
+                <p class="side-info-blurb">TAXplan taxes are prepared in 1 business day! We will send you an email when we are all wrapped up here.</p>
+            </div>
+    {{else}}
+    <section id="dashboard-my-return" class="small-7 medium-8 full-height overflow-y-auto">
+        <div class="border-bottom-dark-grey">
+            <div class="i--icon-green-check"></div>
+            <h1 class="display-inline-block font-header-size">Payment Successful</h1>
+            <p id="label-upload-instructions" class="display-inline-block side-info-blurb label-instruction-header add-margin-left">A receipt has been emailed to your email address.</p>
+            <button id="tax-return-submit" class="purple header long">Print Receipt</button>
         </div>
-{{#if true}}
-        <div class="i--icon-return-machine"></div>
-{{else}}
-    <div id="container-return-line-items">
-        <div class="return-line-item border-bottom-light-gray border-top-light-gray">
-            <p class="return-line-item-name display-inline-block">Carmela Doctor</p>
-            <p class="return-line-item-description display-inline-block text-upper {{#if isOwing}}font-red{{else}}font-green{{/if}}">Refund</p>
-            <p class="return-line-item-description display-inline-block text-right {{#if isOwing}}font-red{{else}}font-green{{/if}}">$1234.50</p>
-            <button id="quote-details" type="submit" class="green-outline button-details">Details</button>
+    {{/if}}
+
+        <!--IN PROGRESS PAGE-->
+    {{#if false}}
+            <div class="i--icon-return-machine"></div>
+        <!--RESULTS PAGE-->
+    {{else if false}}
+        <div id="container-return-line-items">
+            <div class="return-line-item border-bottom-light-gray border-top-light-gray">
+                <p class="return-line-item-name display-inline-block">Carmela Doctor</p>
+                <p class="return-line-item-description display-inline-block text-upper {{#if isOwing}}font-red{{else}}font-green{{/if}}">Refund</p>
+                <p class="return-line-item-description display-inline-block text-right {{#if isOwing}}font-red{{else}}font-green{{/if}}">$1234.50</p>
+                <button id="quote-details" type="submit" class="green-outline button-details">Details</button>
+            </div>
+            <div class="return-line-item border-bottom-light-gray">
+                <p class="return-line-item-name display-inline-block">Doug Doctor</p>
+                <p class="return-line-item-description display-inline-block text-upper {{#if isOwing}}font-red{{else}}font-green{{/if}}">Taxes Owing</p>
+                <p class="return-line-item-description display-inline-block text-right {{#if isOwing}}font-red{{else}}font-green{{/if}}">$1234.50</p>
+                <button id="quote-details" type="submit" class="green-outline button-details">Details</button>
+            </div>
+            <div class="return-line-item border-bottom-light-gray">
+                <p class="return-line-item-name display-inline-block">Skippy Doctor</p>
+                <p class="return-line-item-description display-inline-block text-upper {{#if isOwing}}font-red{{else}}font-green{{/if}}">Refund</p>
+                <p class="return-line-item-description display-inline-block text-right {{#if isOwing}}font-red{{else}}font-green{{/if}}">$1234.50</p>
+                <button id="quote-details" type="submit" class="green-outline button-details">Details</button>
+            </div>
+            <div class="return-line-item border-bottom-light-gray">
+                <p class="return-line-item-name display-inline-block">Other Doctor</p>
+                <p class="return-line-item-description display-inline-block text-upper {{#if isOwing}}font-red{{else}}font-green{{/if}}">Refund Doctor</p>
+                <p class="return-line-item-description display-inline-block text-right {{#if isOwing}}font-red{{else}}font-green{{/if}}">$1234.50</p>
+                <button id="quote-details" type="submit" class="green-outline button-details">Details</button>
+            </div>
         </div>
-        <div class="return-line-item border-bottom-light-gray">
-            <p class="return-line-item-name display-inline-block">Doug Doctor</p>
-            <p class="return-line-item-description display-inline-block text-upper {{#if isOwing}}font-red{{else}}font-green{{/if}}">Taxes Owing</p>
-            <p class="return-line-item-description display-inline-block text-right {{#if isOwing}}font-red{{else}}font-green{{/if}}">$1234.50</p>
-            <button id="quote-details" type="submit" class="green-outline button-details">Details</button>
+        <div class="text-center add-bottom-margin">
+            <h1>Your Tax Preparation Cost is: $191.00</h1>
+            <button class="green long">Pay TAXplan & E-file</button>
         </div>
-        <div class="return-line-item border-bottom-light-gray">
-            <p class="return-line-item-name display-inline-block">Skippy Doctor</p>
-            <p class="return-line-item-description display-inline-block text-upper {{#if isOwing}}font-red{{else}}font-green{{/if}}">Refund</p>
-            <p class="return-line-item-description display-inline-block text-right {{#if isOwing}}font-red{{else}}font-green{{/if}}">$1234.50</p>
-            <button id="quote-details" type="submit" class="green-outline button-details">Details</button>
+        <!--PAY TAXPLAN PAGE-->
+    {{else if false}}
+        <div id="container-pay-line-items">
+            <div class="line"></div>
+            <div class="return-line-item">
+                <p class="pay-line-item-name display-inline-block float-left">Tax Preparation - Carmela Doctor</p>
+                <div class="i--icon-green-check float-right"></div>
+                <p class="pay-line-item-name display-inline-block float-right text-right">$89.00</p>
+            </div>
+            <div class="line"></div>
+            <div class="return-line-item">
+                <p class="pay-line-item-name display-inline-block float-left">Tax Preparation - Doug Doctor</p>
+                <div class="i--icon-green-check float-right"></div>
+                <p class="pay-line-item-name display-inline-block float-right text-right">$89.00</p>
+            </div>
+            <div class="line"></div>
+            <div class="return-line-item">
+                <p class="pay-line-item-name display-inline-block float-left">Direct Deposit</p>
+                <div class="i--icon-green-check float-right"></div>
+                <p class="pay-line-item-name display-inline-block float-right text-right">$5.00</p>
+            </div>
+            <div class="line"></div>
+            <div class="return-line-item">
+                <p class="pay-line-item-name display-inline-block float-left">Tax</p>
+                <div class="i--icon-green-check float-right"></div>
+                <p class="pay-line-item-name display-inline-block float-right text-right">$8.00</p>
+            </div>
+            <div class="line"></div>
         </div>
-        <div class="return-line-item border-bottom-light-gray">
-            <p class="return-line-item-name display-inline-block">Other Doctor</p>
-            <p class="return-line-item-description display-inline-block text-upper {{#if isOwing}}font-red{{else}}font-green{{/if}}">Refund Doctor</p>
-            <p class="return-line-item-description display-inline-block text-right {{#if isOwing}}font-red{{else}}font-green{{/if}}">$1234.50</p>
-            <button id="quote-details" type="submit" class="green-outline button-details">Details</button>
+        <div class="text-center add-bottom-margin">
+            <h1 class="label-total">$191.00</h1>
+            <button class="green long">Pay TAXplan & E-file</button>
         </div>
-    </div>
-    <div class="text-center add-bottom-margin">
-        <h1>Your Tax Preparation Cost is: $191.00</h1>
-        <button class="green long">Pay TAXplan & E-file</button>
-    </div>
-{{/if}}
+        <!--SIGNATURES PAGE-->
+    {{else if true}}
+            <div>
+                <h1 class="text-left add-top-margin add-top-padding">One Last Step! Now we E-File.</h1>
+                <p class="side-info-blurb">Your 2015 Return has been emailed to your email address. Sign below to authorize TAXplan to E-File your taxes with the CRA.</p>
+            </div>
+        <div>
+            {{>dashboard-signature-tile}}
+            {{>dashboard-signature-tile}}
+            {{>dashboard-signature-tile}}
+            {{>dashboard-signature-tile}}
+        </div>
+    {{/if}}
 </section>
-{{>dashboard-right-sidebar}}
+
+{{#if false}}
+    {{>dashboard-right-sidebar hasDescription="true"}}
+{{else}}
+    {{>dashboard-right-sidebar}}
+{{/if}}

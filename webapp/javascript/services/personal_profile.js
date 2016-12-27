@@ -58,6 +58,8 @@
         personalProfileViews.income.init();
         personalProfileViews.deductions.init();
         personalProfileViews.credits.init();
+
+        setSmallOptionTiles();
     }
 
     function startPersonalProfileSession(){
@@ -87,6 +89,13 @@
                 width: percentageComplete+'%'
             }
         });
+    }
+
+    function setSmallOptionTiles(){
+        var sessionData = that.getPersonalProfileSession();
+        if(sessionData.currentPage == "marital-status" || sessionData.currentPage == "dependants"){
+            $('.'+helpers.tileClass).addClass("small-button");
+        }
     }
 
 

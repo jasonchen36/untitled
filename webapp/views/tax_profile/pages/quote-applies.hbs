@@ -1,11 +1,11 @@
 <section id="tax-profile-quote-applies" class="full-screen-grid-container main-container">
     <div class="small-12 medium-7">
+        <div class="container-header fixed-page-header">
+            <h1 class="header">Quote</h1>
+            <button id="quote-applies-submit" type="submit" class="green header">Next</button>
+            <button id="quote-applies-back" class="grey header">Previous</button>
+        </div>
         <div class="content-form">
-            <div class="container-header">
-                <h1 class="header">Quote</h1>
-                <button id="quote-applies-submit" type="submit" class="green header">Next</button>
-                <button id="quote-applies-back" class="grey header">Previous</button>
-            </div>
             <form id="quote-applies-form">
                 <h1 class="subtitle">{{users.0.firstName}} please select all that applied to you in 2016:</h1>
                 {{>tax-profile-options questions=questions.quoteApplies activeTiles=users.0.activeTiles.quoteApplies tileContainerId=users.0.id isPrimaryFiler=true}}
