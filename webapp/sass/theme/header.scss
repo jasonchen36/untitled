@@ -32,3 +32,63 @@ header {
   background: $color-header-progress-blue;
   width: 0;
 }
+
+/* header dropdown styling classes
+-----------------------------------*/
+.dropdown {
+  float:right;
+  display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+  display: none;
+  margin-top: 75px;
+  position: absolute;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  background: $color-global-mid-grey;
+}
+
+/* Links inside the dropdown */
+.dropdown-content a {
+  color: $color-global-white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+/* Change color of dropdown links on hover */
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+  color: $color-global-mid-grey;
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* triangle for dropdown */
+.dropdown-content :after, .dropdown-content :before {
+  bottom: 100%;
+  left: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.dropdown-content :after {
+  border-color: rgba(92, 92, 92, 0);
+  border-bottom-color: $color-global-mid-grey;
+  border-width: 10px;
+  margin-left: -10px;
+}
+.dropdown-content arrow_box:before {
+  border-color: rgba(92, 92, 92, 0);
+  border-bottom-color: $color-global-mid-grey;
+  border-width: 16px;
+  margin-left: -16px;
+}
