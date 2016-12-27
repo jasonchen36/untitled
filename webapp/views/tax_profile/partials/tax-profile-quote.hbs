@@ -1,11 +1,12 @@
-<section class="modal--fade" id="modal-tax-profile-quote" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true" data-stackable="false">
-    <div class="modal-inner popup text-center">
-        <form id="modal-tax-profile-quote-form">
-            <div class="{{popupImage}}"></div>
-            <p class="label-popup-header">{{popupTitle}}</p>
-            <p class="label-popup-blurb side-info-blurb add-bottom-margin add-bottom-padding">{{popupBlurb}}</p>
-            <a href="#!" class="green-button" title="Close this modal" data-close="Close" data-dismiss="modal" data>Got it!</a>
-        </form>
-    </div>
-    <a href="#!" class="modal-close" title="Close this modal" data-close="Close" data-dismiss="modal" data>?</a>
-</section>
+<div class="modal-inner popup text-center">
+    <form id="modal-tax-profile-quote-form">
+        <p id="quote-modal-name">{{firstName}}</p>
+        {{#each lineItems}}
+            <div class="border-bottom-light-gray border-top-light-gray">
+                <p class="line-item">${{price}}</p>
+            </div>
+        {{/each}}
+        <a href="#!" class="green-button" title="Close this modal" data-close="Close" data-dismiss="modal" data>Got it!</a>
+    </form>
+</div>
+<a href="#!" class="modal-close" title="Close this modal" data-close="Close" data-dismiss="modal" data>?</a>

@@ -61,7 +61,7 @@ input {
   }
 }
 
-button {
+button, .button {
   @include transition-with-defaults(opacity);
   &.disabled {
     opacity: 0.6;
