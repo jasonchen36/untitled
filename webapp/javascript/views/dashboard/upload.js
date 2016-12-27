@@ -81,7 +81,6 @@
             } else {
                 userSession.activeItem = _.find(userSession.documentChecklist.checklistItems, ['checklistItemId', dataId]);
             }
-            console.log("Usersession",userSession);
             dashboard.refreshPage(userSession);
 
         }
@@ -115,9 +114,14 @@
                 statusId: 4//data entry complete
             }
         )
-            .then(function(response){
+            .then(function(){
+                //update tax return objects in session
+                return apiservice.getTaxReturns(userSession);
+            })
+            .then(function(data){
+                userSession.taxReturns = data;
                 window.location.hash = '#!';
-                $('#dashboard-my-return-activate').removeClass(helpers.hiddenClass).click();
+                dashboard.changePage('my-return',userSession);
             })
             .catch(function(jqXHR,textStatus,errorThrown){
                 //todo, error message

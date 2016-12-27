@@ -20,7 +20,15 @@
 
 
     /* *************** private methods ***************/
-
+    function updateUserSession(data, newPage){
+        if(!data || typeof data !== 'object'){
+            data = that.getUserSession();
+        }
+        if(newPage && newPage.length > 0){
+            data.currentPage = newPage;
+        }
+        userSessionStore = data;
+    }
 
     function triggerInitScripts(){
         var dashboardViews = app.views.dashboard;
@@ -123,6 +131,8 @@
             if(typeof data !== 'object'){
                 data = that.getUserSession();
             }
+            //update session with new page
+            updateUserSession(data, newPage);
             cookies.setCookie(dashboardStateCookie, {
                 currentPage: newPage
             });
