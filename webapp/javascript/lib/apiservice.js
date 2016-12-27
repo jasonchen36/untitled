@@ -272,7 +272,11 @@
                     taxReturnId: entry.id,
                     productId: entry.product_id,
                     accountId: entry.account_id,
-                    status: entry.status,
+                    status: {
+                        id: entry.status.id,
+                        name: entry.status.name,
+                        displayText: entry.status.display_text
+                    },
                     firstName: entry.first_name,
                     lastName: entry.last_name,
                     province: entry.province_of_residence,

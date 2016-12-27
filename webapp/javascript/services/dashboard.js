@@ -4,7 +4,7 @@
     /* *************** variables ***************/
     var $ = jQuery,
         that = app.services.dashboard,
-        apiservice = app.apiservice, 
+        apiservice = app.apiservice,
         cookies = app.cookies,
         userSessionStore,
         helpers = app.helpers,
@@ -67,7 +67,7 @@
 
     function changePageChat(){
 
-      
+
         apiservice.getMessages(userObject)
             .then(function(response){
 
@@ -151,6 +151,11 @@
         var currentPage = getCurrentPage(),
             currentPageIndex = that.dashboardOrder.indexOf(currentPage),
             newPage;
+        if(typeof data !== 'object'){
+            data = that.getUserSession();
+        }
+        //update session with new data
+        updateUserSession(data);
 
         newPage = that.dashboardOrder[currentPageIndex];
 
@@ -165,9 +170,6 @@
     this.getUserSession = function(){
         return userSessionStore;
     };
-
-
-
 
 
     this.init = function(){
@@ -204,8 +206,13 @@
                     document.getElementById('dashboard-upload-activate').classList.remove('active');
                 });
 
-            //functions
-            that.refreshPage();
+            var userSession = startUserSession();
+            apiservice.getTaxReturns(userSession)
+                .then(function(data) {
+                    userSession.taxReturns = data;
+                    // functions
+                    that.refreshPage(userSession);
+                });
         }
     };
 
