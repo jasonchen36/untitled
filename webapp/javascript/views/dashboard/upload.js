@@ -7,6 +7,7 @@
         disabledClass = helpers.disabledClass,
         dashboard = app.services.dashboard,
         animations = app.animations,
+        ajax = app.ajax,
         fileUpload,
         uploadChecklistItemsClass = '.upload-checklist-item',
         fileUploadSubmitId = '#dashboard-upload-submit',
@@ -60,7 +61,7 @@
             }
         });
     }
-    
+
     function resetUploadForm(){
         $(fileUploadCancelId).addClass(hiddenClass);
         $(fileUploadSelectId).removeClass(hiddenClass);
@@ -105,9 +106,24 @@
     }
 
     function submitReturn(){
-        //todo, api call
-        window.location.hash = '#!';
-        $('#dashboard-my-return-activate').click();
+        var userSession = dashboard.getUserSession(),
+            taxReturnId = userSession.taxReturns[0].taxReturnId;
+        ajax.ajax(
+            'PUT',
+            userSession.apiUrl+'/tax_return/'+taxReturnId+'/status',
+            {
+                statusId: 4//data entry complete
+            }
+        )
+            .then(function(response){
+                window.location.hash = '#!';
+                $('#dashboard-my-return-activate').removeClass(helpers.hiddenClass).click();
+            })
+            .catch(function(jqXHR,textStatus,errorThrown){
+                //todo, error message
+                console.log(jqXHR,textStatus,errorThrown);
+                window.location.hash = '#!';
+            });
     }
 
     this.init = function(){
@@ -128,7 +144,7 @@
 
             //listeners
             taxReturnSubmit.on('click',function(event){
-               event.preventDefault();
+                event.preventDefault();
                 confirmReturnSubmission();
             });
 
@@ -136,7 +152,7 @@
                 event.preventDefault();
                 submitReturn();
             });
-            
+
             $(document)
                 .off('click', uploadChecklistItemsClass)
                 .on('click', uploadChecklistItemsClass, function (event) {
