@@ -28,19 +28,18 @@
         <div class="border-bottom-dark-grey">
             <p class="display-inline-block label-document-name-header">{{documentItem.name}}</p>
             <p id="label-upload-instructions" class="display-inline-block side-info-blurb label-instruction-header">Uploaded at {{documentItem.createdAt}}</p>
+            <!--todo, where is delete button actually located?-->
+            <button id="dashboard-upload-delete" class="{{#compare taxReturns.0.status.id 4 operator=">="}} hidden {{/compare}}" data-id="{{documentItem.id}}">delete file</button>
             <div id="button-close-preview" class="i--icon-red-x"></div>
         </div>
-        <image class="image-document-preview add-top-margin" src="{{documentItem.url}}"></image>
+        <img class="image-document-preview add-top-margin" src="{{documentItem.url}}"/>
     </section>
 {{else}}
     <section id="dashboard-upload" class="add-right-padding">
         <div class="border-bottom-dark-grey">
-            <!--TODO: Show after done uploading-->
-            {{#if false}}
-                <div class="i--icon-green-check"></div>
-            {{/if}}
+            <div id="dashboard-upload-success" class="i--icon-green-check hidden"></div>
             <p id="label-upload-instructions" class="display-inline-block side-info-blurb label-instruction-header">After you have finished uploading all your documents you can submit your uploads to TaxPlan by clicking “Start My Return”</p>
-                <button id="tax-return-submit" class="green header long {{#compare taxReturns.0.status.id 4 operator=">="}} hidden{{/compare}}">Start My Return</button>
+            <button id="tax-return-submit" class="green header long {{#compare taxReturns.0.status.id 4 operator=">="}} hidden{{/compare}}">Start My Return</button>
         </div>
         {{#if activeItem}}
             <h1 class="label-activeItem-name display-inline-block">{{activeItem.name}}</h1>

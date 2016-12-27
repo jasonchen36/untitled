@@ -15,9 +15,12 @@
         fileUploadSelectId = '#dashboard-upload-select',
         documentTile = '#container-document-tile',
         buttonClosePreview = '#button-close-preview',
+        buttonDeleteFileId = '#dashboard-upload-delete',
         taxReturnSubmit,
         taxReturnForm,
         progressBar,
+        fileUploadDelete,
+        fileUploadSuccess,
         errorClass = helpers.errorClass,
         hiddenClass = helpers.hiddenClass,
         initialized = false;
@@ -41,6 +44,7 @@
                     });
             },
             done: function (e, data) {
+                fileUploadSuccess.removeClass(helpers.hiddenClass);
                 resetUploadForm();
             },
             fail: function (e, data) {
@@ -52,6 +56,7 @@
                 resetUploadForm();
             },
             progressall: function (e, data) {
+                fileUploadSuccess.addClass(helpers.hiddenClass);
                 var percentageComplete = parseInt(data.loaded / data.total * 100, 10);
                 animations.animateElement(progressBar,{
                     properties: {
@@ -145,6 +150,7 @@
             progressBar = $('#dashboard-upload-progress');
             taxReturnSubmit = $('#tax-return-submit');
             taxReturnForm = $('#modal-tax-return-submit-form');
+            fileUploadSuccess = $('#dashboard-upload-success');
 
             //listeners
             taxReturnSubmit.on('click',function(event){
@@ -189,7 +195,12 @@
                     event.preventDefault();
                     closePreview();
                 })
-            ;
+                .off('click', buttonDeleteFileId)
+                .on('click', buttonDeleteFileId, function (event) {
+                    event.preventDefault();
+                    //todo
+                    console.log('delete this file');
+                });
 
             //functions
             initializeFileUpload();
