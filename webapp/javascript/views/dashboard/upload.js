@@ -15,12 +15,13 @@
         fileUploadSelectId = '#dashboard-upload-select',
         documentTile = '#container-document-tile',
         buttonClosePreview = '#button-close-preview',
-        buttonDeleteFileId = '#dashboard-upload-delete',
+        buttonDeleteFile = '.dashboard-upload-delete',
         taxReturnSubmit,
         taxReturnForm,
         progressBar,
-        fileUploadDelete,
         fileUploadSuccess,
+        deleteFileForm,
+        currentDeleteFileElement,
         errorClass = helpers.errorClass,
         hiddenClass = helpers.hiddenClass,
         initialized = false;
@@ -125,13 +126,43 @@
             })
             .then(function(data){
                 userSession.taxReturns = data;
-                window.location.hash = '#!';
+                window.location.hash = '!';
                 dashboard.changePage('my-return',userSession);
             })
             .catch(function(jqXHR,textStatus,errorThrown){
                 //todo, error message
                 console.log(jqXHR,textStatus,errorThrown);
-                window.location.hash = '#!';
+                window.location.hash = '!';
+            });
+    }
+
+    function confirmDeleteFile(element){
+        currentDeleteFileElement = element;
+        window.location.hash = 'modal-delete-file-submit';
+    }
+
+    function deleteFileById(){
+        var userSession = dashboard.getUserSession(),
+            documentId = currentDeleteFileElement.attr('data-id'),
+            quoteId = currentDeleteFileElement.attr('data-quote-id');
+        ajax.ajax(
+            'DELETE',
+            userSession.apiUrl+'/quote/'+quoteId+'/document/'+documentId,
+            {
+            },
+            'json',
+            {
+                'Authorization': 'Bearer '+ userSession.token
+            }
+        )
+            .then(function() {
+                window.location.hash = '!';
+                window.location.reload();
+            })
+            .catch(function(jqXHR,textStatus,errorThrown){
+                //todo, error message
+                console.log(jqXHR,textStatus,errorThrown);
+                window.location.hash = '!';
             });
     }
 
@@ -151,6 +182,7 @@
             taxReturnSubmit = $('#tax-return-submit');
             taxReturnForm = $('#modal-tax-return-submit-form');
             fileUploadSuccess = $('#dashboard-upload-success');
+            deleteFileForm = $('#modal-delete-file-submit-form');
 
             //listeners
             taxReturnSubmit.on('click',function(event){
@@ -161,6 +193,11 @@
             taxReturnForm.on('submit',function(event){
                 event.preventDefault();
                 submitReturn();
+            });
+
+            deleteFileForm.on('submit',function(event){
+                event.preventDefault();
+                deleteFileById();
             });
 
             $(document)
@@ -195,11 +232,11 @@
                     event.preventDefault();
                     closePreview();
                 })
-                .off('click', buttonDeleteFileId)
-                .on('click', buttonDeleteFileId, function (event) {
+                .off('click', buttonDeleteFile)
+                .on('click', buttonDeleteFile, function (event) {
                     event.preventDefault();
-                    //todo
-                    console.log('delete this file');
+                    event.stopPropagation();
+                    confirmDeleteFile($(this));
                 });
 
             //functions

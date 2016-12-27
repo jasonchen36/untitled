@@ -28,8 +28,6 @@
         <div class="border-bottom-dark-grey">
             <p class="display-inline-block label-document-name-header">{{documentItem.name}}</p>
             <p id="label-upload-instructions" class="display-inline-block side-info-blurb label-instruction-header">Uploaded at {{documentItem.createdAt}}</p>
-            <!--todo, where is delete button actually located?-->
-            <button id="dashboard-upload-delete" class="{{#compare taxReturns.0.status.id 4 operator=">="}} hidden {{/compare}}" data-id="{{documentItem.id}}">delete file</button>
             <div id="button-close-preview" class="i--icon-red-x"></div>
         </div>
         <img class="image-document-preview add-top-margin" src="{{documentItem.url}}"/>
@@ -55,7 +53,7 @@
                 <button id="dashboard-upload-cancel" type="reset" class="hidden long purple">Cancel</button>
             </form>
             {{#each activeItem.documents}}
-                {{>dashboard-document-tile documentID=documentId thumbnailURL=thumbnailUrl  name=name  uploadedTime="" activeItemId=checkListItemId }}
+                {{>dashboard-document-tile}}
             {{/each}}
         {{else}}
             <div id="container-upload-explained">
@@ -66,3 +64,4 @@
     </section>
 {{/if}}
 {{>dashboard-submit-return-modal}}
+{{>dashboard-delete-file-modal}}
