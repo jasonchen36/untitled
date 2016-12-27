@@ -4,7 +4,7 @@
             <div class="i--icon-chat icon-sidebar-item"></div>
             <p class="label-sidebar-menu-item font-sidebar-dark-grey">MESSAGE CENTER</p>
             {{#if newMessageCount}}
-                <div id="dashboard-chat-message-count" class="label-sidebar-messages-count">{{newMessageCount}}</div>
+                <div id="dashboard-chat-m" class="label-sidebar-messages-count">{{newMessageCount}}</div>
             {{/if}}
         </div>
         <div id="dashboard-upload-activate" class="sidebar-menu-item">
@@ -18,7 +18,7 @@
         <div id="container-dashboard-sidekick-ad">
             <div class="i--icon-get-app"></div>
             <p class="label-sidekick-blurb">Photograph & upload your tax docs with TaxPlan’s FREE Sidekick app.</p>
-            <button class="green">Get it now</button>
+            <button id="dashboard-get-the-app" type="button" class="green">Get it now</button>
         </div>
     </section>
 {{else}}
