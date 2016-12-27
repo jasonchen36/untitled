@@ -1,15 +1,19 @@
 <section id="personal-profile-credits" class="full-screen-grid-container main-container">
     <div class="small-12 medium-7">
+        <div class="container-header fixed-page-header">
+            <h1 class="header">Credits</h1>
+            <button id="credits-submit" type="submit" class="green header">Next</button>
+            <button id="credits-back" class="grey header">Previous</button>
+        </div>
         <div class="content-form">
-            <div class="container-header">
-                <h1 class="header">Credits</h1>
-                <button id="credits-submit" type="submit" class="green header">Next</button>
-                <button id="credits-back" class="grey header">Previous</button>
-            </div>
             <form id="credits-form">
                 {{#each taxReturns}}
                     <h1 class="subtitle">{{firstName}} please select all your credits in 2016:</h1>
-                    {{>personal-profile-options questions=questions.answers activeTiles=questions.answers.answer  tileContainerId=taxReturnId}}
+                    {{#compare @index 0 operator="=="}}
+                        {{>personal-profile-options questions=questions.answers activeTiles=questions.answers.answer  tileContainerId=taxReturnId isPrimaryFiler=true}}
+                    {{else}}
+                        {{>personal-profile-options questions=questions.answers activeTiles=questions.answers.answer  tileContainerId=taxReturnId}}
+                    {{/compare}}
                     <input type="hidden" id="tax-return-id-{{taxReturnId}}" name="taxReturnId" value="{{taxReturnId}}"/>
                 {{/each}}
             </form>

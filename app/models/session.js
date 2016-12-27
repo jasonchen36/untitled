@@ -113,7 +113,7 @@ sessionModel.getAdditionalDocumentObject = function(data){
 sessionModel.getDocumentChecklistObject = function(data){
     return {
         checklistItems: _.map(data.checklistitems, sessionModel.getDocumentChecklistItemObject),
-        additionalDocuments: _.map(data.additionalDocuments, sessionModel.getAdditionalDocumentObject)
+        // additionalDocuments: data.additionalDocuments
     };
 };
 
@@ -139,10 +139,14 @@ sessionModel.getUserTaxReturns = function(data){
         taxReturnId: data.id,
         productId: data.product_id,
         accountId: data.account_id,
-        statusId: data.status_id,
+        status: {
+            id: data.status.id,
+            name: data.status.name,
+            displayText: data.status.display_text
+        },
         firstName: data.first_name,
         lastName: data.last_name,
-        province: data.province_of_redidence, // todo, update after fixed in DB
+        province: data.province_of_residence,
         dateOfBirth: data.date_of_birth,
         canadianCitizen: data.canadian_citizen,
         authorizeCRA: data.authorize_cra

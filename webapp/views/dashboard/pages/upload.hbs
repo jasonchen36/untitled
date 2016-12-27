@@ -5,54 +5,55 @@
         <div class="i--icon-printer"></div>
     </div>
     {{#each documentChecklist.checklistItems}}
-        <div class="upload-checklist-item" data-id="{{checklistItemId}}">
-            <div class="i--icon-question"></div>
-            <div class="label-document-name">{{name}}</div>
-            <div class="f--futura-book">Statement of Renumeration Paid</div> <!--TODO: Bind to subtitle-->
-            <div class="label-document-filers f--futura-book">
-            {{#each filers}}
-                  {{name}}<br>
-             {{/each}}
-            </div>
-            <div class="label-document-count">{{count documents}}</div>
+        <div id="upload-checklist-item-{{checklistItemId}}" class="upload-checklist-item" data-id="{{checklistItemId}}">
+            <div class="label-document-name float-left display-inline-block">{{name}}</div>
+            <div class="i--icon-right-arrow float-right display-inline-block"></div>
         </div>
     {{/each}}
-    <div class="upload-checklist-item" data-id="0">
-        <div class="i--icon-question"></div>
-        <div class="label-document-name">Additional Documents</div>
-        <div class="label-document-count">{{count documents}}</div>
+    <div id="upload-checklist-item-0" class="upload-checklist-item" data-id="0">
+        <div class="label-document-name float-left display-inline-block">Additional Documents</div>
+        <div class="i--icon-right-arrow float-right display-inline-block"></div>
     </div>
 </section>
-<section id="dashboard-upload" class="add-right-padding">
-    <div class="border-bottom-dark-grey">
-        <!--TODO: Show after done uploading-->
-        {{#if false}}
-            <div class="i--icon-green-check"></div>
-        {{/if}}
-        <p id="label-upload-instructions" class="display-inline-block side-info-blurb label-instruction-header">After you have finished uploading all your documents you can submit your uploads to TaxPlan by clicking “Start My Return”</p>
-        <button class="green header long">Start My Return</button>
-    </div>
-    {{#if activeItem}}
-        <h1 class="label-activeItem-name display-inline-block">{{activeItem.name}}</h1>
-        <div class="label-activeItem-subtitle f--futura-book add-margin-left display-inline-block">Statement of Renumeration Paid</div>
-        <div id="dashboard-upload-progress" class="progress-bar"></div>
-        <form id="dashboard-upload-form" enctype="multipart/form-data">
-            <p class="label-instruction-upload">Drop files here to upload</p>
-            <p class="f--futura-book">or</p>
-            <input id="dashboard-upload-input" type="file" name="uploadFileName" data-url="{{uploadUrl}}" >
-            <input id="dashboard-upload-checklist-item" type="hidden" name="checklistItemId" value="{{activeItem.checklistItemId}}" >
-            <button id="dashboard-upload-select" type="button" class="purple long">Select Files</button>
-            <button id="dashboard-upload-submit" type="submit" class="hidden long purple">Upload</button>
-            <button id="dashboard-upload-cancel" type="reset" class="hidden long purple">Cancel</button>
-        </form>
-         {{#each activeItem.documents}}
-             {{>dashboard-document-tile documentID=documentId thumbnailURL=thumbnailUrl  name=name  uploadedTime=""  }}
-         {{/each}}
-    {{else}}
-        <div id="container-upload-explained">
-            <h1>Upload Explained</h1>
-            <p class="side-info-blurb">Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis mollis, est non commodo luctus, nisi erat porttitor ligula non commodo luctus.</p>
+{{#if isPreview}}
+    <section id="dashboard-document-preview" class="small-6 medium-9">
+        <div class="border-bottom-dark-grey">
+            <p class="display-inline-block label-document-name-header">{{documentItem.name}}</p>
+            <p id="label-upload-instructions" class="display-inline-block side-info-blurb label-instruction-header">Uploaded at {{documentItem.createdAt}}</p>
+            <div id="button-close-preview" class="i--icon-red-x"></div>
         </div>
-    {{/if}}
-  
-</section>
+        <img class="image-document-preview add-top-margin" src="{{documentItem.url}}"/>
+    </section>
+{{else}}
+    <section id="dashboard-upload" class="add-right-padding">
+        <div class="border-bottom-dark-grey">
+            <div id="dashboard-upload-success" class="i--icon-green-check hidden"></div>
+            <p id="label-upload-instructions" class="display-inline-block side-info-blurb label-instruction-header">After you have finished uploading all your documents you can submit your uploads to TaxPlan by clicking “Start My Return”</p>
+            <button id="tax-return-submit" class="green header long {{#compare taxReturns.0.status.id 4 operator=">="}} hidden{{/compare}}">Start My Return</button>
+        </div>
+        {{#if activeItem}}
+            <h1 class="label-activeItem-name display-inline-block">{{activeItem.name}}</h1>
+            <div class="label-activeItem-subtitle f--futura-book add-margin-left display-inline-block">Statement of Renumeration Paid</div>
+            <div id="dashboard-upload-progress" class="progress-bar"></div>
+            <form id="dashboard-upload-form" enctype="multipart/form-data">
+                <p class="label-instruction-upload">Drop files here to upload</p>
+                <p class="f--futura-book">or</p>
+                <input id="dashboard-upload-input" type="file" name="uploadFileName" data-url="{{uploadUrl}}" >
+                <input id="dashboard-upload-checklist-item" type="hidden" name="checklistItemId" value="{{activeItem.checklistItemId}}" >
+                <button id="dashboard-upload-select" type="button" class="purple long">Select Files</button>
+                <button id="dashboard-upload-submit" type="submit" class="hidden long purple">Upload</button>
+                <button id="dashboard-upload-cancel" type="reset" class="hidden long purple">Cancel</button>
+            </form>
+            {{#each activeItem.documents}}
+                {{>dashboard-document-tile}}
+            {{/each}}
+        {{else}}
+            <div id="container-upload-explained">
+                <h1>Upload Explained</h1>
+                <p class="side-info-blurb">Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis mollis, est non commodo luctus, nisi erat porttitor ligula non commodo luctus.</p>
+            </div>
+        {{/if}}
+    </section>
+{{/if}}
+{{>dashboard-submit-return-modal}}
+{{>dashboard-delete-file-modal}}

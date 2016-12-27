@@ -1,11 +1,11 @@
 <section id="tax-profile-quote" class="full-screen-grid-container main-container">
     <div class="small-12 medium-7">
+        <div class="container-header fixed-page-header">
+            <h1 class="header">Quote</h1>
+            <button id="quote-submit" type="submit" class="green header">Get Started!</button>
+            <button id="quote-back" class="grey header">Previous</button>
+        </div>
         <div class="content-form">
-            <div class="container-header">
-                <h1 class="header">Quote</h1>
-                <button id="quote-submit" type="submit" class="green header">Get Started!</button>
-                <button id="quote-back" class="grey header">Previous</button>
-            </div>
             <form id="quote-form" class="container-credits-form horizontal-center">
                 <p class="label-blurb">The fee for TAXplan Canada to
                     prepare your 2015
@@ -15,15 +15,9 @@
                         {{#compare taxReturnId ../taxReturnId operator="=="}}
                             <div class="border-bottom-light-gray border-top-light-gray">
                                 <p class="line-item item">Tax Prep. - {{firstName}}</p>
-                                <button id="quote-details" type="submit" class="green-outline button-details">Details</button>
+                                <button class="quote-details green-outline button-details" data-quote-index="{{@index}}">Details</button>
                                 <p class="line-item price">${{../price}}</p>
                             </div>
-                            <!--<div class="border-bottom-light-gray">-->
-                                <!--<p class="line-item item">Tax Prep. - {{firstName}}</p>-->
-                                <!--<button id="quote-submit" type="submit" class="green-outline button-details">Details</button>-->
-                                <!--<p class="line-item price">${{../price}}</p>-->
-                                <!--<p class="side-info-blurb">*with conditions</p>-->
-                            <!--</div>-->
                         {{/compare}}
                     {{/each}}
                 {{/each}}

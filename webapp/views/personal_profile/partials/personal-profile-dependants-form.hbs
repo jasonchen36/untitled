@@ -5,10 +5,12 @@
             <div class="container-inline-input long">
                 <label for="dependants-first-name">DEPENDANT FIRST NAME</label>
                 <input id="dependants-first-name-{{taxReturnId}}" type="text" value="" class="inline-input"/>
+                <p id="dependants-first-name-label-error-{{taxReturnId}}" class="label-error">First name needed</p>
             </div>
             <div class="container-inline-input long">
                 <label for="dependants-last-name">DEPENDANT LAST NAME</label>
                 <input id="dependants-last-name-{{taxReturnId}}" type="text" value="" class="inline-input"/>
+                <p id="dependants-last-name-label-error-{{taxReturnId}}" class="label-error">Last name needed</p>
             </div>
             <div class="container-inline-input long">
                 <label class="under">DATE OF BIRTH</label>
@@ -18,12 +20,15 @@
             </div>
             <div class="container-inline-input short">
                 <input id="dependants-birthday-day-{{taxReturnId}}" type="text" value="" class="inline-input text-center" placeholder="DD" maxlength="2"/>
+                <p id="dependants-birthday-day-label-error-{{taxReturnId}}" class="label-error">Day needed</p>
             </div>
             <div class="container-inline-input short">
                 <input id="dependants-birthday-month-{{taxReturnId}}" type="text" value="" class="inline-input text-center" placeholder="MM" maxlength="2"/>
+                <p id="dependants-birthday-month-label-error-{{taxReturnId}}" class="label-error">Month needed</p>
             </div>
             <div class="container-inline-input short">
                 <input id="dependants-birthday-year-{{taxReturnId}}" type="text" value="" class="inline-input text-center" placeholder="YYYY" maxlength="4"/>
+                <p id="dependants-birthday-year-label-error-{{taxReturnId}}" class="label-error">Year needed</p>
             </div>
             <div class="container-inline-input long">
                 <div class="drop-down">
@@ -45,6 +50,7 @@
                         <option value="14">Daughter</option>
                     </select>
                 </div>
+                <p id="dependants-relationship-label-error-{{taxReturnId}}" class="label-error">Relationship needed</p>
             </div>
         </div>
         <div class="add-top-padding">

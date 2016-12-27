@@ -4,23 +4,21 @@
             <div class="i--icon-chat icon-sidebar-item"></div>
             <p class="label-sidebar-menu-item font-sidebar-dark-grey">MESSAGE CENTER</p>
             {{#if newMessageCount}}
-                <div class="label-sidebar-messages-count">{{newMessageCount}}</div>
+                <div id="dashboard-chat-m" class="label-sidebar-messages-count">{{newMessageCount}}</div>
             {{/if}}
         </div>
         <div id="dashboard-upload-activate" class="sidebar-menu-item">
             <div class="i--icon-upload icon-sidebar-item"></div>
             <p class="label-sidebar-menu-item font-sidebar-dark-grey">UPLOAD YOUR DOCUMENTS</p>
         </div>
-        {{#if enableTaxReturn}}
-            <div id="dashboard-my-return-activate" class="sidebar-menu-item">
-                <div class="i--icon-return icon-sidebar-item"></div>
-                <p class="label-sidebar-menu-item font-sidebar-dark-grey">YOUR TAX RETURN</p>
-            </div>
-        {{/if}}
+        <div id="dashboard-my-return-activate" class="sidebar-menu-item {{#compare taxReturns.0.status.id 4 operator="<"}} hidden {{/compare}}">
+            <div class="i--icon-return icon-sidebar-item"></div>
+            <p class="label-sidebar-menu-item font-sidebar-dark-grey">YOUR TAX RETURN</p>
+        </div>
         <div id="container-dashboard-sidekick-ad">
             <div class="i--icon-get-app"></div>
             <p class="label-sidekick-blurb">Photograph & upload your tax docs with TaxPlan’s FREE Sidekick app.</p>
-            <button class="green">Get it now</button>
+            <button id="dashboard-get-the-app" type="button" class="green">Get it now</button>
         </div>
     </section>
 {{else}}
@@ -34,12 +32,10 @@
                 <div class="i--icon-upload icon-sidebar-item collapsed"></div>
                 <p id="dashboard-upload-activate" class="label-sidebar-menu-item collapsed font-sidebar-dark-grey">UPLOAD</p>
             </div>
-            {{#if data.enableTaxReturn}}
-            <div id="dashboard-my-return-activate" class="sidebar-menu-item collapsed">
-                    <div class="i--icon-return icon-sidebar-item collapsed"></div>
-                    <p class="label-sidebar-menu-item collapsed font-sidebar-dark-grey">RETURN</p>
+            <div id="dashboard-my-return-activate" class="sidebar-menu-item collapsed {{#compare taxReturns.0.status.id 4 operator="<"}} hidden {{/compare}}">
+                <div class="i--icon-return icon-sidebar-item collapsed"></div>
+                <p class="label-sidebar-menu-item collapsed font-sidebar-dark-grey">RETURN</p>
             </div>
-            {{/if}}
             <div id="container-dashboard-sidekick-ad" class="collapsed">
                 <div class="i--icon-get-app collapsed"></div>
                 <p class="label-sidebar-menu-item collapsed font-green">GET THE APP</p>

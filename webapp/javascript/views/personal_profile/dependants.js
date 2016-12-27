@@ -184,7 +184,14 @@
             day = dependantsForm.find('#dependants-birthday-day-'+taxReturnId),
             month = dependantsForm.find('#dependants-birthday-month-'+taxReturnId),
             year = dependantsForm.find('#dependants-birthday-year-'+taxReturnId),
-            relationship = dependantsForm.find('#dependants-relationship-'+taxReturnId);
+            relationship = dependantsForm.find('#dependants-relationship-'+taxReturnId),
+
+            firstNameLabelError = dependantsForm.find('#dependants-first-name-label-error-'+taxReturnId),
+            lastNameLabelError = dependantsForm.find('#dependants-last-name-label-error-'+taxReturnId),
+            dayLabelError = dependantsForm.find('#dependants-birthday-day-label-error-'+taxReturnId),
+            monthLabelError = dependantsForm.find('#dependants-birthday-month-label-error-'+taxReturnId),
+            yearLabelError = dependantsForm.find('#dependants-birthday-year-label-error-'+taxReturnId),
+            relationshipLabelError = dependantsForm.find('#dependants-relationship-label-error-'+taxReturnId);
 
         firstName.removeClass(helpers.errorClass);
         lastName.removeClass(helpers.errorClass);
@@ -193,34 +200,47 @@
         year.removeClass(helpers.errorClass);
         relationship.removeClass(helpers.errorClass);
 
+        firstNameLabelError.removeClass(helpers.errorClass);
+        lastNameLabelError.removeClass(helpers.errorClass);
+        dayLabelError.removeClass(helpers.errorClass);
+        monthLabelError.removeClass(helpers.errorClass);
+        yearLabelError.removeClass(helpers.errorClass);
+        relationshipLabelError.removeClass(helpers.errorClass);
+
         //firstName
         if (helpers.isEmpty(firstName.val())){
             firstName.addClass(helpers.errorClass);
+            firstNameLabelError.addClass(helpers.errorClass);
             errors++;
         }
         //lastName
         if (helpers.isEmpty(lastName.val())){
             lastName.addClass(helpers.errorClass);
+            lastNameLabelError.addClass(helpers.errorClass);
             errors++;
         }
         //day
         if (helpers.isEmpty(day.val())){
             day.addClass(helpers.errorClass);
+            dayLabelError.addClass(helpers.errorClass);
             errors++;
         }
         //month
         if (helpers.isEmpty(month.val())){
             month.addClass(helpers.errorClass);
+            monthLabelError.addClass(helpers.errorClass);
             errors++;
         }
         //year
         if (helpers.isEmpty(year.val())){
             year.addClass(helpers.errorClass);
+            yearLabelError.addClass(helpers.errorClass);
             errors++;
         }
         //relationship
         if (helpers.isEmpty(relationship.val())){
             relationship.addClass(helpers.errorClass);
+            relationshipLabelError.addClass(helpers.errorClass);
             errors++;
         }
         return errors < 1;

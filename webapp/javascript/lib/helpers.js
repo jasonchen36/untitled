@@ -199,8 +199,8 @@
              // TODO find a better way to do this
              userData[149] = tile.hasClass(that.activeClass)? 1:0;
 
-             tile = $("#birth-day-" + containerId);
-             tile = $("#birth-month-" + containerId);
+             tile = $("#marital-status-day-" + containerId);
+             tile = $("#marital-status-month-" + containerId);
 
 
             container.find('.'+that.activeClass).each(function(){

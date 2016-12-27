@@ -4,7 +4,7 @@
     /* *************** variables ***************/
     var $ = jQuery,
         that = app.services.dashboard,
-        apiservice = app.apiservice, 
+        apiservice = app.apiservice,
         cookies = app.cookies,
         userSessionStore,
         helpers = app.helpers,
@@ -20,7 +20,15 @@
 
 
     /* *************** private methods ***************/
-
+    function updateUserSession(data, newPage){
+        if(!data || typeof data !== 'object'){
+            data = that.getUserSession();
+        }
+        if(newPage && newPage.length > 0){
+            data.currentPage = newPage;
+        }
+        userSessionStore = data;
+    }
 
     function triggerInitScripts(){
         var dashboardViews = app.views.dashboard;
@@ -59,7 +67,7 @@
 
     function changePageChat(){
 
-      
+
         apiservice.getMessages(userObject)
             .then(function(response){
 
@@ -123,6 +131,8 @@
             if(typeof data !== 'object'){
                 data = that.getUserSession();
             }
+            //update session with new page
+            updateUserSession(data, newPage);
             cookies.setCookie(dashboardStateCookie, {
                 currentPage: newPage
             });
@@ -141,6 +151,11 @@
         var currentPage = getCurrentPage(),
             currentPageIndex = that.dashboardOrder.indexOf(currentPage),
             newPage;
+        if(typeof data !== 'object'){
+            data = that.getUserSession();
+        }
+        //update session with new data
+        updateUserSession(data);
 
         newPage = that.dashboardOrder[currentPageIndex];
 
@@ -155,9 +170,6 @@
     this.getUserSession = function(){
         return userSessionStore;
     };
-
-
-
 
 
     this.init = function(){
@@ -189,12 +201,23 @@
                 .on('click', '#dashboard-my-return-activate', function (event) {
                     event.preventDefault();
                     changePageHelper('my-return');
+                    $(this).addClass(activeClass);
                     document.getElementById('dashboard-chat-activate').classList.remove('active');
                     document.getElementById('dashboard-upload-activate').classList.remove('active');
+                })
+                .on('click', '#dashboard-get-the-app', function (event) {
+                    event.preventDefault();
+                    //todo, put in real url
+                    window.location.href = '#get-the-app';
                 });
 
-            //functions
-            that.refreshPage();
+            var userSession = startUserSession();
+            apiservice.getTaxReturns(userSession)
+                .then(function(data) {
+                    userSession.taxReturns = data;
+                    // functions
+                    that.refreshPage(userSession);
+                });
         }
     };
 

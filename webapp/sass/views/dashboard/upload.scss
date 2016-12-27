@@ -20,7 +20,7 @@
 }
 
 .label-instruction-header{
-  width:44%;
+  width:30%;
 }
 
 #dashboard-upload-form{
@@ -66,10 +66,20 @@
 }
 
 .upload-checklist-item {
-  height: 150px;
-  padding: 20px 5px 5px 5px;
+  height: 60px;
+  padding: 15px 5px 5px 5px;
   border-bottom: 1px solid $color-border-light-grey;
   position: relative;
+
+  &.active, &:hover{
+    background: $color-global-yellow;
+  }
+}
+
+.i--icon-right-arrow{
+  height: 20px;
+  width: 12px;
+  margin: 5px 10px 0px 0px;
 }
 
 .label-document-count{
@@ -88,7 +98,7 @@
 
 .label-document-name-header{
   font-size: 2.5rem;
-  margin: 15px 0px;
+  margin: 15px 0px 0px 10px;
 }
 
 .label-document-filers{
@@ -140,6 +150,11 @@
   float: left;
   height:46px;
   width:46px;
+
+  &.float-right{
+    float: right;
+    margin-left: 30px;
+  }
 }
 
 .i--icon-red-x{

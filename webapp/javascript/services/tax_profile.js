@@ -137,9 +137,26 @@
 
             //shared bindings
             $(document)
-                .on('click', '.'+helpers.tileClass, function (event) {
+                .on('touchend click', '.'+helpers.tileClass, function (event) {
                     event.preventDefault();
-                    $(this).toggleClass(helpers.activeClass);
+                    var that = $(this),
+                        dataType = that.attr('data-type');
+                    if (!that.hasClass(helpers.activeClass)){
+                        if (dataType === 'NotSure' || dataType === 'NoneApply') {
+                            //remove active state from regular tile
+                            that.parent().find('.'+helpers.tileClass).each(function(){
+                                $(this).removeClass(helpers.activeClass);
+                            });
+                        } else {
+                            //regular tile, remove active state from notsure and noneapply
+                            that.parent().find('.'+helpers.tileClass+'[data-type="NotSure"], .'+helpers.tileClass+'[data-type="NoneApply"]').each(function(){
+                                $(this).removeClass(helpers.activeClass);
+                            });
+                        }
+                        that.addClass(helpers.activeClass);
+                    } else {
+                        that.removeClass(helpers.activeClass);
+                    }
                 })
                 .on('click', '.'+helpers.tileClass+'-instructions', function (event) {
                     event.preventDefault();

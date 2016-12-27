@@ -1,8 +1,14 @@
 <section data-id="{{tileContainerId}}" class="grid-container taxplan-tile-container">
     {{#each questions}}
-        <div data-id="{{id}}" class="taxplan-tile {{customTileClass}} {{#isActiveTile id ../activeTiles}} active{{/isActiveTile}}" data-instructions="{{{instructions}}}">
-
-            <span class="taxplan-tile-label">{{text}}</span>
-        </div>
+        {{#switch type}}
+            {{#case "NotSure" break=true}}
+                {{#unless ../isPrimaryFiler}}
+                    {{>tax-profile-tile activeTiles=../activeTiles}}
+                {{/unless}}
+            {{/case}}
+            {{#default}}
+                {{>tax-profile-tile activeTiles=../activeTiles}}
+            {{/default}}
+        {{/switch}}
     {{/each}}
 </section>

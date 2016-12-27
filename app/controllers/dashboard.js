@@ -39,7 +39,7 @@ dashboardPages.getDashboardPage = function(req, res, next){
 
         const documentChecklistRequest = {
             method: 'GET',
-            uri: process.env.API_URL+'/quote/' + quoteId + '/checklist',//todo, dynamic quote id
+            uri: process.env.API_URL+'/quote/' + quoteId + '/checklist',
             headers: {
                 'Authorization': 'Bearer '+session.getUserProfileValue(req,'token')
             },

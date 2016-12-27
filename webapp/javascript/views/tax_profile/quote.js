@@ -7,12 +7,26 @@
         quoteForm,
         quoteSubmit,
         quoteBack,
+        quoteDetails,
+        quoteModalContainer,
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
     function submitQuote(){
-        //todo
         window.location.href = '/register';
+    }
+
+    function openQuoteDetails(element){
+        var quoteDetailIndex = element.attr('data-quote-index'),
+            taxProfileSession = taxProfile.getAccountSession(),
+            data = {
+                firstName: taxProfileSession.users[quoteDetailIndex].firstName,
+                lineItems: taxProfileSession.quote.lineItems
+            },
+            template = Handlebars.templates['tax-profile-quote'],
+            html = template(data);
+        quoteModalContainer.html(html);
+        window.location.hash = 'modal-tax-profile-quote';
     }
 
     this.init = function(){
@@ -22,8 +36,9 @@
             quoteForm = $('#quote-form');
             quoteSubmit = $('#quote-submit');
             quoteBack = $('#quote-back');
+            quoteDetails = $('.quote-details');
+            quoteModalContainer = $('#modal-tax-profile-quote');
 
-            quoteDetails = $('.button-details');
             //listeners
             quoteForm.on('submit',function(event){
                 event.preventDefault();
@@ -35,38 +50,14 @@
                 submitQuote();
             });
 
-            quoteDetails.on('mouseover',function(event){
-                event.preventDefault();
-                // TODO: Avoid hard-coding prices
-                  $('#tax-profile-instructions').html('<div class="display-inline-table full-width">'+
-                      '<p class="display-inline-block float-left">Lorem Ipsum</p>'+
-                      '<p class="display-inline-block float-right">$19.00</p>'+
-                  '</div>'+
-                   '<div class="display-inline-table full-width">'+
-                      '<p class="display-inline-block float-left">Lorem Ipsum</p>'+
-                      '<p class="display-inline-block float-right">$19.00</p>'+
-                  '</div>'+
-                  '<div class="display-inline-table full-width">'+
-                      '<p class="display-inline-block float-left">Lorem Ipsum</p>'+
-                      '<p class="display-inline-block float-right">$19.00</p>'+
-                  '</div>'+
-                  '<div class="display-inline-table full-width">'+
-                      '<p class="display-inline-block float-left">Total</p>'+
-                      '<p class="display-inline-block float-right">$19.00</p>'+
-                  '</div>');
-            });
-
-            quoteDetails.on('mouseout',function(event){
-                event.preventDefault();
-                // TODO: Avoid hard-coding prices
-                  $('#tax-profile-instructions').html('<p id="tax-profile-instructions" class="side-info-blurb">'+
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris aliquam velit ut faucibus consequat. In hac habitasse platea dictumst. Proin at volutpat velit. Quisque congue varius nulla non aliquam. Integer condimentum dapibus ipsum, sit amet pharetra ligula aliquam sit amet. Praesent dui tortor, molestie et sodales non, vulputate in ligula. Curabitur nec justo tellus. Sed ac arcu porttitor, blandit sapien convallis, ultrices nisi. Duis aliquam iaculis nunc sed sodales. Phasellus cursus convallis scelerisque. Nulla consectetur, nunc at maximus tincidunt, mauris sapien vehicula libero, at bibendum metus dui ac magna. Donec tempus justo eu vestibulum dictum.'+
-                  '</p>');
-            });
-
             quoteBack.on('click',function(event){
                 event.preventDefault();
                 taxProfile.goToPreviousPage();
+            });
+
+            quoteDetails.on('click',function(event){
+                event.preventDefault();
+                openQuoteDetails($(this));
             });
         }
     };

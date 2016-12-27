@@ -1,18 +1,18 @@
 <section id="personal-profile-marital-status" class="full-screen-grid-container main-container">
     <div class="small-12 medium-7">
+        <div class="container-header fixed-page-header">
+            <h1 class="header">Marital Status</h1>
+            <button id="marital-status-submit" type="submit" class="green header">Next</button>
+            <button id="marital-status-back" class="grey header">Previous</button>
+        </div>
         <div class="content-form">
-            <div class="container-header">
-                <h1 class="header">Marital Status</h1>
-                <button id="marital-status-submit" type="submit" class="green header">Next</button>
-                <button id="marital-status-back" class="grey header">Previous</button>
-            </div>
             <form id="marital-status-form">
                 {{#each taxReturns}}
                     <h1 class="subtitle display-inline-table full-width">{{firstName}}, what was your martial status on Dec 31, 2015:</h1>
                     {{#if @index}}
-                        <div class="display-inline-table full-width add-top-margin" id="marital-status-same-{{taxReturnId}}">
-                            <div class="checkbox"></div>
-                            <p class="checkbox-label" >SAME MARITAL STATUS AS ABOVE</p>
+                        <div class="display-inline-table full-width add-top-margin">
+                            <div class="checkbox" id="marital-status-same-{{taxReturnId}}"></div>
+                            <p class="checkbox-label" >SAME MARITAL STATUS AS {{accountInfo.firstName}}</p>
                         </div>
                     {{/if}}
                     {{>personal-profile-single-options questions=questions.answers.0.tiles activeTiles=questions.answers.answer tileContainerId=taxReturnId}}
