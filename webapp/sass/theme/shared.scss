@@ -62,7 +62,7 @@ input {
   }
 }
 
-button {
+button, .button {
   @include transition-with-defaults(opacity);
   &.disabled {
     opacity: 0.6;
@@ -209,7 +209,7 @@ textarea {
 }
 
 .hidden {
-  display: none;
+  display: none!important;
 }
 
 .horizontal-center{

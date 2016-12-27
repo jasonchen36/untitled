@@ -15,15 +15,15 @@
         var uri = sessionData.apiUrl+'/questions/product/'+sessionData.productId+'/category/'+ category;
 
         var ajaxPromise = ajax.ajax(
-              'GET',
-               uri,
-              {
-              },
-              'json',
-              {
-                  'Authorization': 'Bearer '+ accountInfo.token
-              }
-          );
+            'GET',
+            uri,
+            {
+            },
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
 
         return ajaxPromise;
 
@@ -36,19 +36,19 @@
 
         var uri = sessionData.apiUrl + '/tax_return/' + taxReturnId;
         var ajaxPromise =ajax.ajax(
-              'PUT',
-               uri,
-               {
-                   accountId: accountInfo.accountId,
-                   productId: accountInfo.productId,
-                   firstName: firstName,
-                   lastName: lastName
-               },
-               'json',
-               {
-                   'Authorization': 'Bearer '+ accountInfo.token
-               }
-           );
+            'PUT',
+            uri,
+            {
+                accountId: accountInfo.accountId,
+                productId: accountInfo.productId,
+                firstName: firstName,
+                lastName: lastName
+            },
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
 
 
         return ajaxPromise;
@@ -61,17 +61,17 @@
 
         var uri = sessionData.apiUrl + '/tax_return/' + taxReturnId;
         var ajaxPromise =ajax.ajax(
-              'GET',
-               uri,
-               {
-                   accountId: accountInfo.accountId,
-                   productId: accountInfo.productId
-               },
-               'json',
-               {
-                   'Authorization': 'Bearer '+ accountInfo.token
-               }
-           );
+            'GET',
+            uri,
+            {
+                accountId: accountInfo.accountId,
+                productId: accountInfo.productId
+            },
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
 
 
         return ajaxPromise;
@@ -86,15 +86,15 @@
         uri = sessionData.apiUrl + '/tax_return/' + taxReturnId + '/answers/category/' + category;
 
         var ajaxPromise = ajax.ajax(
-              'GET',
-               uri,
-              {
-              },
-              'json',
-              {
-                  'Authorization': 'Bearer '+ accountInfo.token
-              }
-         );
+            'GET',
+            uri,
+            {
+            },
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
 
         return ajaxPromise;
 
@@ -110,53 +110,53 @@
         var answers = [];
         var answerIndex = 0;
 
-       _.each(entry, function(answer) {
+        _.each(entry, function(answer) {
 
-             var questionId = answerKeys[answerIndex];
-             if(!isNaN(questionId))
-             {
+            var questionId = answerKeys[answerIndex];
+            if(!isNaN(questionId))
+            {
 
-            // TODO the server is not taking other answers when it should
-            //  Change when API server is ready
-                 var text= answer;
-            //     var text= '';
+                // TODO the server is not taking other answers when it should
+                //  Change when API server is ready
+                //      var text= answer;
+                var text= '';
 
-                 if(answer === 1){
-                     text = 'Yes';
-                 } else if (answer === 0){
-                     text = 'No';
-                 }
+                if(answer === 1){
+                    text = 'Yes';
+                } else if (answer === 0){
+                    text = 'No';
+                }
 
-                 if(typeof text != 'undefined'  && text.length > 1) {
+                if(typeof text != 'undefined'  && text.length > 1) {
 
-                     answers.push(
-                         {
+                    answers.push(
+                        {
                             questionId: questionId,
                             text: text
-                         });
-                 }
-             }
+                        });
+                }
+            }
 
-             answerIndex++;
-
-
-         });
+            answerIndex++;
 
 
-         var uri = sessionData.apiUrl + '/tax_return/' +  taxReturnId + '/answers/';
+        });
 
-         var ajaxPromise = ajax.ajax(
-              'POST',
-              uri,
-              {
-                 'answers': answers
-              },
-              'json-text',
-              {
-                 'Authorization': 'Bearer '+ accountInfo.token
-              }
 
-         );
+        var uri = sessionData.apiUrl + '/tax_return/' +  taxReturnId + '/answers/';
+
+        var ajaxPromise = ajax.ajax(
+            'POST',
+            uri,
+            {
+                'answers': answers
+            },
+            'json-text',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+
+        );
 
         return ajaxPromise;
 
@@ -358,21 +358,52 @@
         uri = sessionData.apiUrl + '/quote/' + quoteId + '/checklist';
 
         var ajaxPromise = ajax.ajax(
-              'GET',
-               uri,
-              {
-              },
-              'json',
-              {
-                  'Authorization': 'Bearer '+ accountInfo.token
-              }
-         );
+            'GET',
+            uri,
+            {
+            },
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
 
         return ajaxPromise;
 
     };
 
-
-
+    this.getTaxReturns = function(sessionData){
+        var accountInfo = helpers.getAccountInformation(sessionData),
+            uri = sessionData.apiUrl + '/account/' + accountInfo.accountId;
+        return ajax.ajax(
+            'GET',
+            uri,
+            {},
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        ).then(function(response){
+            var taxReturns = _.map(response.taxReturns, function(entry){
+                return {
+                    taxReturnId: entry.id,
+                    productId: entry.product_id,
+                    accountId: entry.account_id,
+                    status: {
+                        id: entry.status.id,
+                        name: entry.status.name,
+                        displayText: entry.status.display_text
+                    },
+                    firstName: entry.first_name,
+                    lastName: entry.last_name,
+                    province: entry.province_of_residence,
+                    dateOfBirth: entry.date_of_birth,
+                    canadianCitizen: entry.canadian_citizen,
+                    authorizeCRA: entry.authorize_cra
+                };
+            });
+            return Promise.resolve(taxReturns);
+        });
+    };
 
 }).apply(app.apiservice);

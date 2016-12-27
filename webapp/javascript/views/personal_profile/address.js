@@ -34,7 +34,8 @@
                         addressLine2: '',
                         city: value.city,
                         province: value.province,
-                        postalCode: value.postalCode
+                        postalCode: value.postalCode,
+                        country: value.country
                     };
                     //todo, resolve if the address is new or needs to be updated (different api call)
                     return ajax.ajax(

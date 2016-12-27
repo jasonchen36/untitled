@@ -139,7 +139,11 @@ sessionModel.getUserTaxReturns = function(data){
         taxReturnId: data.id,
         productId: data.product_id,
         accountId: data.account_id,
-        statusId: data.status_id,
+        status: {
+            id: data.status.id,
+            name: data.status.name,
+            displayText: data.status.display_text
+        },
         firstName: data.first_name,
         lastName: data.last_name,
         province: data.province_of_residence,
