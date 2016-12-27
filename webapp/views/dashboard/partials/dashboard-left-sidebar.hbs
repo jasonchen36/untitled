@@ -11,13 +11,12 @@
             <div class="i--icon-upload icon-sidebar-item"></div>
             <p class="label-sidebar-menu-item font-sidebar-dark-grey">UPLOAD YOUR DOCUMENTS</p>
         </div>
-        <!--todo, variable for return started -->
-        {{#if true}}
+        {{#compare taxReturns.0.status.id 3 operator=">"}}
             <div id="dashboard-my-return-activate" class="sidebar-menu-item">
                 <div class="i--icon-return icon-sidebar-item"></div>
                 <p class="label-sidebar-menu-item font-sidebar-dark-grey">YOUR TAX RETURN</p>
             </div>
-        {{/if}}
+        {{/compare}}
         <div id="container-dashboard-sidekick-ad">
             <div class="i--icon-get-app"></div>
             <p class="label-sidekick-blurb">Photograph & upload your tax docs with TaxPlan’s FREE Sidekick app.</p>
@@ -35,13 +34,12 @@
                 <div class="i--icon-upload icon-sidebar-item collapsed"></div>
                 <p id="dashboard-upload-activate" class="label-sidebar-menu-item collapsed font-sidebar-dark-grey">UPLOAD</p>
             </div>
-            <!--todo, variable for return started -->
-            {{#if true}}
+            {{#compare taxReturns.0.status.id 3 operator=">"}}
                 <div id="dashboard-my-return-activate" class="sidebar-menu-item collapsed">
                     <div class="i--icon-return icon-sidebar-item collapsed"></div>
                     <p class="label-sidebar-menu-item collapsed font-sidebar-dark-grey">RETURN</p>
                 </div>
-            {{/if}}
+            {{/compare}}
             <div id="container-dashboard-sidekick-ad" class="collapsed">
                 <div class="i--icon-get-app collapsed"></div>
                 <p class="label-sidebar-menu-item collapsed font-green">GET THE APP</p>
