@@ -93,7 +93,7 @@
 }
 
 .label-document-name{
-  font-size:1.25vw;
+  font-size:1.1vw;
 }
 
 .label-document-name-header{
@@ -122,6 +122,15 @@
   height: 282px;
   vertical-align: top;
   background: $color-global-white;
+  .i--icon-red-x{
+    display: inline-block;
+    position: absolute;
+    right: 0;
+    top: 0;
+    float: right;
+    height:35px;
+    width:35px;
+  }
 }
 
 #container-document-tile-info{
@@ -157,12 +166,12 @@
   }
 }
 
-.i--icon-red-x{
-  display: inline-block;
-  margin: 20px 10px 0px 0px;
-  float: right;
-  height:46px;
-  width:46px;
+#button-close-preview{
+    display: inline-block;
+    margin: 20px 10px 0px 0px;
+    float: right;
+    height:46px;
+    width:46px;
 }
 
 .i--icon-return-machine{
