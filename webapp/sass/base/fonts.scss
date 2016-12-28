@@ -12,21 +12,21 @@ Note: font file paths are relative to deployed file paths, not source paths
 // Reference Example:
 //@font-face {
 //  font-family: 'FuturaMedium';
-//  src: url('/public/fonts/FuturaPTMedium.woff2') format('woff2'), url('/public/fonts/FuturaPTMedium.woff') format('woff'),url('/public/fonts/FuturaPTMedium.ttf') format('truetype');
+//  src: url('/fonts/FuturaPTMedium.woff2') format('woff2'), url('/fonts/FuturaPTMedium.woff') format('woff'),url('/fonts/FuturaPTMedium.ttf') format('truetype');
 //  font-weight: normal;
 //  font-style: normal
 //}
 
 @font-face {
   font-family: 'FuturaHeavy';
-  src: url('/public/fonts/FuturaPTHeavy.woff2') format('woff2'), url('/public/fonts/FuturaPTHeavy.woff') format('woff'),url('/public/fonts/FuturaPTHeavy.ttf') format('truetype');
+  src: url('/fonts/FuturaPTHeavy.woff2') format('woff2'), url('/fonts/FuturaPTHeavy.woff') format('woff'),url('/fonts/FuturaPTHeavy.ttf') format('truetype');
   font-weight: normal;
   font-style: normal
 }
 
 @font-face {
   font-family: 'FuturaBook';
-  src: url('/public/fonts/FuturaPTBook.woff2') format('woff2'), url('/public/fonts/FuturaPTBook.woff') format('woff'),url('/public/fonts/FuturaPTBook.ttf') format('truetype');
+  src: url('/fonts/FuturaPTBook.woff2') format('woff2'), url('/fonts/FuturaPTBook.woff') format('woff'),url('/fonts/FuturaPTBook.ttf') format('truetype');
   font-weight: normal;
   font-style: normal
 }

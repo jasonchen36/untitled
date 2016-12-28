@@ -157,7 +157,8 @@ module.exports = function(grunt){
                     style: 'compressed',
                     trace: true,
                     loadPath: [
-                        'webapp/bower_components/css-modal'
+                        'webapp/bower_components/css-modal',
+                        'webapp/bower_components/components-font-awesome/scss'
                     ]
                 }
             },
