@@ -11,7 +11,6 @@
         dependantsBack,
         dependantsEdit,
         dependantsDelete,
-        tileOptions,
         errorClass = app.helpers.errorClass,
         activeClass = app.helpers.activeClass,
         disabledClass = app.helpers.disabledClass;
@@ -21,11 +20,13 @@
             var formData = helpers.getTileFormDataArray(dependantsForm);
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
-
+            var hasDependants = $('#has-dependants-' + taxReturn.taxReturnId);
+            if (hasDependants.hasClass(activeClass)) {
             helpers.resetForm(dependantsForm);
             $('.'+helpers.formContainerClass).each(function(){
                 validateDependantsFormData($(this));
             });
+            }
             if(!helpers.formHasErrors(dependantsForm)){
                 dependantsSubmit.addClass(disabledClass);
                 return Promise.resolve()
@@ -280,6 +281,8 @@
                 var dependantsLine = $('#container-dependants-line-' + taxReturn.taxReturnId);
                 var dependantsContainerLine = $('#dependant-name-list-'+taxReturn.taxReturnId);
                 var dependantsContainerLine2 = $('#dependant-date-list-'+taxReturn.taxReturnId);
+                var dependantsContainerLine3 = $('#dependant-delete-list-'+taxReturn.taxReturnId);
+                var dependantsContainerLine4 = $('#dependant-edit-list-'+taxReturn.taxReturnId);
                 var firstName = $('#dependants-first-name-'+taxReturn.taxReturnId);
                 var lastName = $('#dependants-last-name-'+taxReturn.taxReturnId);
                 var add = $('.i--icon-add');
@@ -349,8 +352,10 @@
                     });
                     if(!helpers.formHasErrors(dependantsContainer)){
                     dependantsContainer.toggle();
-                    dependantsContainerLine.append('<p>' + firstName.val() + " " + lastName.val() + '</p>');
-                    dependantsContainerLine2.append('<p>' + day.val() + '/' + month.val() + '/' + year.val().slice(-2) + '</p>');
+                    dependantsContainerLine.append('<p id="side-info-blurb3-'+taxReturn.taxReturnId+'">' + firstName.val() + " " + lastName.val() + '</p>');
+                    dependantsContainerLine2.append('<p id=side-info-blurb3-'+taxReturn.taxReturnId+'>' + day.val() + '/' + month.val() + '/' + year.val().slice(-2) + '</p>');
+                    dependantsContainerLine3.append('</br><button id="dependants-delete-'+taxReturn.taxReturnId+'" class="green-outline">Delete</button>');
+                    dependantsContainerLine4.append('</br><button id="dependants-edit-'+taxReturn.taxReturnId+'" class="green-outline">Edit</button>');
                   }
                 });
 
