@@ -19,42 +19,42 @@
         disabledClass = app.helpers.disabledClass;
 
     function submitBirthdate(){
-      var formData = helpers.getFormData(birthdateForm);
-      helpers.resetForm(birthdateForm);
-      if (helpers.isEmpty(dayInput.val().trim()) || dayInput.val().length !== 2 || parseInt(dayInput.val()) < 1 || parseInt(dayInput.val()) > 31){
-           dayInput.addClass(errorClass);
-           birthdateDayLabelError.addClass(errorClass);
-      }
-      if (helpers.isEmpty(monthInput.val().trim()) || monthInput.val().length !== 2 || parseInt(monthInput.val()) < 1 || parseInt(monthInput.val()) > 12){
-           monthInput.addClass(errorClass);
-          birthdateMonthLabelError.addClass(errorClass);
-       }
-      if (helpers.isEmpty(yearInput.val().trim()) || yearInput.val().length !== 2){
-           yearInput.addClass(errorClass);
-          birthdateYearLabelError.addClass(errorClass);
-      }
-      if (!helpers.formHasErrors(birthdateForm)) {
-           birthdateSubmit.addClass(disabledClass);
-           ajax.ajax(
-               'POST',
-               '/personal-profile',
-               {
-                 action: 'api-pp-date-of-birth',
-                 data: formData
-               },
-               'json',
-               { }
-           )
-               .then(function(response){
-                   window.location.href = '/dashboard';
-               })
-               .catch(function(jqXHR,textStatus,errorThrown){
-                   ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
-                   birthdateSubmit.removeClass(disabledClass);
-               });
-       }
+        var formData = helpers.getFormData(birthdateForm);
+        helpers.resetForm(birthdateForm);
+        if (!helpers.isValidDay(dayInput.val())){
+            dayInput.addClass(errorClass);
+            birthdateDayLabelError.addClass(errorClass);
+        }
+        if (!helpers.isValidMonth(monthInput.val())){
+            monthInput.addClass(errorClass);
+            birthdateMonthLabelError.addClass(errorClass);
+        }
+        if (!helpers.isValidYear(yearInput.val())){
+            yearInput.addClass(errorClass);
+            birthdateYearLabelError.addClass(errorClass);
+        }
+        if (!helpers.formHasErrors(birthdateForm)) {
+            birthdateSubmit.addClass(disabledClass);
+            ajax.ajax(
+                'POST',
+                '/personal-profile',
+                {
+                    action: 'api-pp-date-of-birth',
+                    data: formData
+                },
+                'json',
+                { }
+            )
+                .then(function(response){
+                    window.location.href = '/dashboard';
+                })
+                .catch(function(jqXHR,textStatus,errorThrown){
+                    ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
+                    birthdateSubmit.removeClass(disabledClass);
+                });
+        }
     }
-    
+
     function toggleCheckboxActiveState(element){
         element.find('.checkbox').first().toggleClass(helpers.activeClass);
     }
