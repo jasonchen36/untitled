@@ -11,6 +11,10 @@
         birthdateDayLabelError,
         birthdateMonthLabelError,
         birthdateYearLabelError,
+        dayInput,
+        monthInput,
+        yearInput,
+        checkboxes,
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
@@ -50,6 +54,10 @@
                });
        }
     }
+    
+    function toggleCheckboxActiveState(element){
+        element.find('.checkbox').first().toggleClass(helpers.activeClass);
+    }
 
     this.init = function(){
         if ($('#personal-profile-birthdate').length > 0) {
@@ -61,7 +69,7 @@
             dayInput = $('#dependants-birthday-day');
             monthInput = $('#dependants-birthday-month');
             yearInput = $('#dependants-birthday-year');
-            checkbox = $('.checkbox');
+            checkboxes = $('.checkbox-container');
 
             birthdateDayLabelError = $('#birthdate-day-label-error');
             birthdateMonthLabelError = $('#birthdate-month-label-error');
@@ -83,9 +91,9 @@
                 personalProfile.goToPreviousPage();
             });
 
-            checkbox.on('click',function(event){
+            checkboxes.on('click',function(event){
                 event.preventDefault();
-                $(this).toggleClass(helpers.activeClass);
+                toggleCheckboxActiveState($(this));
             });
         }
     };
