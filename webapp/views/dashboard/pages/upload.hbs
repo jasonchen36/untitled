@@ -2,7 +2,8 @@
 <section id="dashboard-upload-checklist" class="medium-2">
     <div id="container-checklist-header-cell">
         <h2 class="label-checklist-header f--futura-book">Document Checklist</h2>
-        <div class="i--icon-printer"></div>
+        <!--todo, get pdf url-->
+        <a class="i--icon-printer" target="_blank" href="#pdf-url{{documentChecklist.pdfUrl}}"></a>
     </div>
     {{#each documentChecklist.checklistItems}}
         <div id="upload-checklist-item-{{checklistItemId}}" class="upload-checklist-item" data-id="{{checklistItemId}}">
