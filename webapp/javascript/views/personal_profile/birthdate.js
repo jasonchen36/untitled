@@ -21,15 +21,15 @@
     function submitBirthdate(){
       var formData = helpers.getFormData(birthdateForm);
       helpers.resetForm(birthdateForm);
-      if (helpers.isEmpty(dayInput.val().trim())){
+      if (helpers.isEmpty(dayInput.val().trim()) || dayInput.val().length !== 2 || parseInt(dayInput.val()) < 1 || parseInt(dayInput.val()) > 31){
            dayInput.addClass(errorClass);
            birthdateDayLabelError.addClass(errorClass);
       }
-      if (helpers.isEmpty(monthInput.val().trim())){
+      if (helpers.isEmpty(monthInput.val().trim()) || monthInput.val().length !== 2 || parseInt(monthInput.val()) < 1 || parseInt(monthInput.val()) > 12){
            monthInput.addClass(errorClass);
           birthdateMonthLabelError.addClass(errorClass);
        }
-      if (helpers.isEmpty(yearInput.val().trim())){
+      if (helpers.isEmpty(yearInput.val().trim()) || yearInput.val().length !== 2){
            yearInput.addClass(errorClass);
           birthdateYearLabelError.addClass(errorClass);
       }
