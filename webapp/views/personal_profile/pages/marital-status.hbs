@@ -10,14 +10,14 @@
                 {{#each taxReturns}}
                     <h1 class="subtitle display-inline-table full-width">{{firstName}}, what was your martial status on Dec 31, 2015:</h1>
                     {{#if @index}}
-                        <div class="display-inline-table full-width add-top-margin">
-                            <div class="checkbox" id="marital-status-same-{{taxReturnId}}"></div>
+                        <div id="marital-status-same-{{taxReturnId}}" class="checkbox-container display-inline-table full-width add-top-margin">
+                            <div class="checkbox"></div>
                             <p class="checkbox-label" >SAME MARITAL STATUS AS {{accountInfo.firstName}}</p>
                         </div>
                     {{/if}}
                     {{>personal-profile-single-options questions=questions.answers.0.tiles activeTiles=questions.answers.answer tileContainerId=taxReturnId}}
-                    <div class="marital-status-changed-container">
-                        <div class="checkbox" id="marital-status-changed-{{taxReturnId}}"></div>
+                    <div id="marital-status-changed-{{taxReturnId}}" class="checkbox-container marital-status-changed-container">
+                        <div class="checkbox"></div>
                         <p class="checkbox-label">MY MARITAL STATUS CHANGED IN 2016</p>
                         <p id ="indicate-date-{{taxReturnId}}" hidden>PLEASE INDICATE THE DATE OF CHANGE:</p>
                         <div class="taxplan-form-container" data-id="{{taxReturnId}}" >
@@ -32,7 +32,7 @@
                         </div>
 
                     </div>
-               {{/each}}
+                {{/each}}
             </form>
         </div>
     </div>

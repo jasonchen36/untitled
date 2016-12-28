@@ -335,17 +335,21 @@
 
                 checkbox.on('click',function(event){
                     event.preventDefault();
-                    $(this).toggleClass(helpers.activeClass);
+                    var parentElement = $(this),
+                        childElement = parentElement.find('.checkbox').first();
+                    childElement.toggleClass(helpers.activeClass);
                     day.toggle();
                     month.toggle();
                 });
 
                 sameStatus.on('click', function (event) {
                     event.preventDefault();
-                    $(this).toggleClass(helpers.activeClass);
-                    if(sameStatus.hasClass(activeClass)) {
+                    var parentElement = $(this),
+                        childElement = parentElement.find('.checkbox').first();
+                    childElement.toggleClass(helpers.activeClass);
+                    if(childElement.hasClass(activeClass)) {
                         if ($('#marital-status-changed-' + firstReturnId).hasClass(activeClass)) {
-                            checkbox.addClass(activeClass);
+                            checkbox.find('.checkbox').first().addClass(activeClass);
                             day.show();
                             day.val($('#marital-status-day-' + firstReturnId).val());
                             month.show();
@@ -389,7 +393,7 @@
                         }
 
                     } else {
-                        checkbox.removeClass(activeClass);
+                        checkbox.find('.checkbox').first().removeClass(activeClass);
                         day.hide();
                         month.hide();
                         marriedChoice.removeClass(activeClass);
