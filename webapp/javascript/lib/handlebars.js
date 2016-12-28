@@ -90,7 +90,7 @@
             delete this._switch_value_;
             return html;
         });
-        
+
         Handlebars.registerHelper('case', function(value, options) {
             var args = Array.prototype.slice.call(arguments),
                 caseValues = args;
@@ -105,10 +105,58 @@
                 return options.fn(this);
             }
         });
-        
+
         Handlebars.registerHelper('default', function(options) {
             if (!this._switch_break_) {
                 return options.fn(this);
+            }
+        });
+
+        Handlebars.registerHelper('documentImageHelper', function(imageUrl, documentName){
+            if (!imageUrl || imageUrl.length < 1){
+                var fileExtension = documentName.substring(documentName.lastIndexOf('.'), documentName.length),
+                    fontAwesomeIcon;
+                switch(fileExtension){
+                    //images
+                    case '.png':
+                    case '.jpg':
+                    case '.jpeg':
+                    case '.gif':
+                        fontAwesomeIcon = 'fa-file-image-o';
+                        break;
+                    //text
+                    case '.doc':
+                    case '.docx':
+                    case '.txt':
+                    case '.rtf':
+                        fontAwesomeIcon = 'fa-file-text-o';
+                        break;
+                    //zip
+                    case '.zip':
+                        fontAwesomeIcon = 'fa-file-archive-o';
+                        break;
+                    //spreadsheet
+                    case '.xls':
+                    case '.xlsx':
+                        fontAwesomeIcon = 'fa-file-excel-o';
+                        break;
+                    //powerpoint
+                    case '.ppt':
+                    case '.pptx':
+                        fontAwesomeIcon = 'fa-file-powerpoint-o';
+                        break;
+                    //pdf
+                    case '.pdf':
+                        fontAwesomeIcon = 'fa-file-pdf-o';
+                        break;
+                    //default
+                    default:
+                        fontAwesomeIcon = 'fa-file-o';
+                        break;
+                }
+                return '<i class="fa '+fontAwesomeIcon+'" aria-hidden="true"></i>';
+            } else {
+                return '<img class="full-width" src="'+imageUrl+'"/>';
             }
         });
 

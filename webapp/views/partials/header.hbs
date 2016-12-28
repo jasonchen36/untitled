@@ -1,8 +1,14 @@
 <header class="full-screen-grid-container fixed-header">
     <div class="i--icon-logo"></div>
     {{#if data.hasUserProfileSession}}
-        <p class="text-header dark-grey">{{ data.users.0.firstName }}</p>
-        <div class="i--icon-default-user"></div>
+        <div class="dropdown">
+            <p class="text-header dark-grey">{{ data.users.0.firstName }}</p>
+            <div class="i--icon-default-user"></div>
+            <div class="dropdown-content">
+                <a href="#">Settings</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
         <p class="text-header dark-grey">SETTINGS</p>
     {{/if}}
     <p class="text-header">NEED HELP? CALL US: 1-855-610-PLAN (7526)</p>

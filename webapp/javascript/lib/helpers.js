@@ -1,7 +1,6 @@
 (function(){
 
     var $ = jQuery,
-        activeClass = app.helpers.activeClass,
         that = app.helpers;
 
     this.activeClass = 'active';
@@ -181,7 +180,7 @@
     };
 
 
-  this.getMaritalStatusFormDataArray = function(formElement){
+    this.getMaritalStatusFormDataArray = function(formElement){
         var data = [],
             container,
             containerId,
@@ -189,18 +188,18 @@
         formElement.find('.'+that.tileContainerClass).each(function(){
             container = $(this);
             containerId = container.attr('data-id');
-            var userData = {taxReturnId:container.attr('data-id'), 
-                            firstName:container.attr('value')};
+            var userData = {taxReturnId:container.attr('data-id'),
+                firstName:container.attr('value')};
 
 
-             tile = $("#marital-status-changed-" + containerId);
+            tile = $("#marital-status-changed-" + containerId);
 
 
-             // TODO find a better way to do this
-             userData[149] = tile.hasClass(that.activeClass)? 1:0;
+            // TODO find a better way to do this
+            userData[149] = tile.hasClass(that.activeClass)? 1:0;
 
-             tile = $("#marital-status-day-" + containerId);
-             tile = $("#marital-status-month-" + containerId);
+            tile = $("#marital-status-day-" + containerId);
+            tile = $("#marital-status-month-" + containerId);
 
 
             container.find('.'+that.activeClass).each(function(){
@@ -258,22 +257,6 @@
         return selectedCount > 1;
     };
 
-
-    this.hasSelectedTileFromMultiSelect = function(formData, dataId){
-    
-         var hasSelectedTile = false;
-          _.forOwn(formData, function(value, key) {
-             Object.keys(formData[key]).forEach(function (entry) {
-                if(entry.hasClass(activeClass)){
-                   hasSelectedTile = true;
-                 }
-              });
-        });
-       
-        return hasSelectedTile;
-    };
-
-
     this.noneAppliedMultipleSelectedTiles = function(formData){
         //todo, is none apply always last tile?
         var lastFormVal = -1;
@@ -323,27 +306,17 @@
     };
 
     this.isEmpty = function(input){
-      if (!input){
-       return true;
-     } else if (input.length < 1){
-       return true;
-     } else {
-       return false;
-     }
+        if (!input){
+            return true;
+        } else if (input.length < 1){
+            return true;
+        } else {
+            return false;
+        }
     };
 
     this.getAverage = function(index, length) {
         return Math.round(index / length * 100);
-    };
-
-    this.hasName = function(data){
-        var hasName = true;
-        _.forOwn(data, function(value, key) {
-            if( ( typeof ( Object.values(data[key])[1]) == 'undefined' ) || ( (Object.values(data[key])[1]).length < 1) ){
-                hasName = false;
-            }
-        });
-        return hasName;
     };
 
     this.isValidPostalCode = function (postalCode) {
@@ -352,12 +325,17 @@
         // return regex.test(postalCode.value);
         return true;
     };
-
-    this.isValidNumber = function(num){
-        if(/^([0-9]+)$/.test(num)) {
-            return true;
-        }
-        return false;
+    
+    this.isValidDay = function(value){
+        return !that.isEmpty(value.trim()) && value.length === 2 && parseInt(value) >= 1 && parseInt(value) <= 31;
+    };
+    
+    this.isValidMonth = function(value){
+        return !that.isEmpty(value.trim()) && value.length === 2 && parseInt(value) >= 1 && parseInt(value) <= 12;
+    };
+    
+    this.isValidYear = function(value){
+        return !that.isEmpty(value.trim()) && value.length === 2;
     };
 
 }).apply(app.helpers);

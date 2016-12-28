@@ -2,11 +2,12 @@
 Imports and settings that are not likely to change with theme development
 */
 
-@import "lib/normalize";
+@import "vendor/normalize";
 @import "modal";
+@import "font-awesome";
 
 /*
 Optional modules
 */
-@import "lib/slick";
-@import "lib/slick-theme";
+@import "vendor/slick";
+@import "vendor/slick-theme";

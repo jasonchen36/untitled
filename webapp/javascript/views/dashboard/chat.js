@@ -4,11 +4,14 @@
         that = app.views.dashboard.chat,
         helpers = app.helpers,
         apiservice = app.apiservice,
+        dashboard = app.services.dashboard,
         chatForm,
         chatSubmit,
         chatMessageInput,
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
+    
+    this.chatMessageReceived = false;
 
     function submitNewMessage(){
         if (!chatSubmit.hasClass(disabledClass)) {
@@ -22,9 +25,8 @@
 
                 apiservice.postMessages(userObject, formData.message)
                     .then(function(response){
-
-                        app.services.dashboard.refreshPage();
-
+                        that.chatMessageReceived = true;
+                        dashboard.refreshPage();
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         console.log(jqXHR,textStatus,errorThrown);

@@ -80,8 +80,8 @@
                             taxReturn.firstName = nameData[index];
                             taxReturn.questions = response[1][index];
                             _.each(taxReturn.questions.answers, function(question){
-                              question.answer = 0;
-                              question.class = "";
+                                question.answer = 0;
+                                question.class = "";
 
                                 if(questionIndex===0){
                                     question.id="has-dependants-"+taxReturn.taxReturnId;
@@ -90,13 +90,13 @@
                                 }
                                 questionIndex++;
 
-                              if ( !question.text) {
-                                question.answer = 0;
-                                question.class = "";
-                              } else if (question.text === "Yes"){
+                                if ( !question.text) {
+                                    question.answer = 0;
+                                    question.class = "";
+                                } else if (question.text === "Yes"){
                                     question.answer = 1;
                                     question.class = "active";
-                              }
+                                }
 
                             });
                             index++;
@@ -119,69 +119,69 @@
             var accountInfo = helpers.getAccountInformation(sessionData);
             var nameData = helpers.getFormDataArray(maritalStatusForm);
             nameData = nameData[0];
-                maritalStatusSubmit.addClass(disabledClass);
+            maritalStatusSubmit.addClass(disabledClass);
 
-                return Promise.resolve()
-                    .then(function() {
-                        var promiseArrayPut = [];
-                        var promiseArrayGet = [];
-                        var promiseArrayQuestions = [];
+            return Promise.resolve()
+                .then(function() {
+                    var promiseArrayPut = [];
+                    var promiseArrayGet = [];
+                    var promiseArrayQuestions = [];
 
-                        //todo, product and question category in variable
-                        var ajaxAnswers = apiservice.getQuestions(sessionData,5);
-                        promiseArrayQuestions.push(ajaxAnswers);
+                    //todo, product and question category in variable
+                    var ajaxAnswers = apiservice.getQuestions(sessionData,5);
+                    promiseArrayQuestions.push(ajaxAnswers);
 
-                        _.each(formData, function(entry) {
-                 
-                            var ajaxOne =  apiservice.postAnswers(sessionData,
-                                entry.taxReturnId, entry);
-                            promiseArrayPut.push(ajaxOne);
+                    _.each(formData, function(entry) {
 
-                            var ajaxTwo = apiservice.getAnswers(sessionData,
-                                entry.taxReturnId,5);
+                        var ajaxOne =  apiservice.postAnswers(sessionData,
+                            entry.taxReturnId, entry);
+                        promiseArrayPut.push(ajaxOne);
 
-                            promiseArrayGet.push(ajaxTwo);
-                        });
+                        var ajaxTwo = apiservice.getAnswers(sessionData,
+                            entry.taxReturnId,5);
 
-                        return Promise.all([Promise.all(promiseArrayPut),
-                            Promise.all(promiseArrayGet),
-                            Promise.all(promiseArrayQuestions)]);
+                        promiseArrayGet.push(ajaxTwo);
+                    });
 
-                    })
-                    .then(function(response) {
+                    return Promise.all([Promise.all(promiseArrayPut),
+                        Promise.all(promiseArrayGet),
+                        Promise.all(promiseArrayQuestions)]);
 
-                        var data = {};
-                        data.accountInfo = accountInfo;
-                        data.taxReturns = formData;
-                        data.taxReturns.questions = response[2];
+                })
+                .then(function(response) {
 
-                        var index = 0;
-                        _.each(data.taxReturns, function(taxReturn){
-                            taxReturn.firstName = nameData[index];
-                            taxReturn.questions = response[1][index];
+                    var data = {};
+                    data.accountInfo = accountInfo;
+                    data.taxReturns = formData;
+                    data.taxReturns.questions = response[2];
 
-                            _.each(taxReturn.questions.answers, function(question){
-                              question.answer = 0;
-                              question.class = "";
+                    var index = 0;
+                    _.each(data.taxReturns, function(taxReturn){
+                        taxReturn.firstName = nameData[index];
+                        taxReturn.questions = response[1][index];
 
-                              if ( !question.text) {
+                        _.each(taxReturn.questions.answers, function(question){
+                            question.answer = 0;
+                            question.class = "";
+
+                            if ( !question.text) {
                                 question.answer = 0;
                                 question.class = "";
-                              } else if (question.text === "Yes"){
-                                    question.answer = 1;
-                                    question.class = "active";
-                              }
+                            } else if (question.text === "Yes"){
+                                question.answer = 1;
+                                question.class = "active";
+                            }
 
-                            });
-                            index++;
                         });
-
-                        personalProfile.goToPreviousPage(data);
-                    })
-                    .catch(function(jqXHR,textStatus,errorThrown){
-                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
-                        maritalStatusSubmit.removeClass(disabledClass);
+                        index++;
                     });
+
+                    personalProfile.goToPreviousPage(data);
+                })
+                .catch(function(jqXHR,textStatus,errorThrown){
+                    ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
+                    maritalStatusSubmit.removeClass(disabledClass);
+                });
 
         }
     }
@@ -190,33 +190,33 @@
         var formData = helpers.getMaritalStatusFormDataArray(maritalStatusForm);
         var errors = 0;
         _.each(formData, function(taxReturn){
-        var
-            statusChanged = maritalStatusForm.find('#marital-status-changed-'+taxReturn.taxReturnId),
-            day = maritalStatusForm.find('#marital-status-day-'+taxReturn.taxReturnId),
-            month = maritalStatusForm.find('#marital-status-month-'+taxReturn.taxReturnId);
+            var statusChangedParent = maritalStatusForm.find('#marital-status-changed-'+taxReturn.taxReturnId),
+                statusChangedChild = statusChangedParent.find('.checkbox').first(),
+                dayInput = maritalStatusForm.find('#marital-status-day-'+taxReturn.taxReturnId),
+                monthInput = maritalStatusForm.find('#marital-status-month-'+taxReturn.taxReturnId);
 
 
-        statusChanged.removeClass(helpers.errorClass);
-        day.removeClass(helpers.errorClass);
-        month.removeClass(helpers.errorClass);
+            statusChangedChild.removeClass(helpers.errorClass);
+            dayInput.removeClass(helpers.errorClass);
+            monthInput.removeClass(helpers.errorClass);
 
-        // Is status Changed?
-        if (statusChanged.hasClass(activeClass)){
+            // Is status Changed?
+            if (statusChangedChild.hasClass(activeClass)){
 
-            // day
-            if(helpers.isEmpty(day.val()) || !helpers.isValidNumber(day.val())){
-                day.addClass(helpers.errorClass);
-                errors++;
+                // day
+                if (!helpers.isValidDay(dayInput.val())){
+                    dayInput.addClass(helpers.errorClass);
+                    errors++;
+                }
+
+                // month
+                if (!helpers.isValidMonth(monthInput.val())){
+                    monthInput.addClass(helpers.errorClass);
+                    errors++;
+                }
             }
-
-            // month
-            if(helpers.isEmpty(month.val()) || !helpers.isValidNumber(month.val())){
-                month.addClass(helpers.errorClass);
-                errors++;
-            }
-        }
-            });
-    return errors < 1;
+        });
+        return errors < 1;
 
     }
 

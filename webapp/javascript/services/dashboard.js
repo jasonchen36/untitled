@@ -8,6 +8,7 @@
         cookies = app.cookies,
         userSessionStore,
         helpers = app.helpers,
+        chat = app.views.dashboard.chat,
         activeClass = helpers.activeClass,
         landingPageContainer = $('#dashboard-container'),
         dashboardStateCookie = 'store-dashboard-state';
@@ -61,13 +62,15 @@
 
     function changePageHelper(pageName){
         if (getCurrentPage() !== pageName) {
-            that.changePage(pageName);
+            if(pageName == 'chat')  {
+                changePageChat();
+            }  else  {
+                that.changePage(pageName);
+            }
         }
     }
 
     function changePageChat(){
-
-
         apiservice.getMessages(userObject)
             .then(function(response){
 
@@ -92,6 +95,21 @@
                         foundToday = true;
                     }
                 });
+
+                if(chat.chatMessageReceived){
+                    chat.chatMessageReceived = false;
+                    dataObject.messages.push(getChatMessageObject({
+                        body: 'Your message has been received',//todo, use real copy text
+                        client_id: 0,
+                        date: moment.now(),
+                        from_id: 32,
+                        from_role: 'TAXPlan',
+                        fromname: 'TAXPlan',
+                        id: 0,
+                        status: 'read',
+                        subject: ''
+                    }));
+                }
 
                 that.changePage('chat', dataObject);
             })
@@ -190,7 +208,7 @@
                 })
                 .on('click', '#dashboard-chat-activate', function (event) {
                     event.preventDefault();
-                    changePageChat();
+                    changePageHelper('chat');
                     $(this).addClass(activeClass);
                     document.getElementById('dashboard-upload-activate').classList.remove('active');
                     var startMyReturn = document.getElementById('dashboard-my-return-activate');
