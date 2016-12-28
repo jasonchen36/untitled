@@ -1,6 +1,7 @@
 (function(){
 
     var $ = jQuery,
+        activeClass = app.helpers.activeClass,
         that = app.helpers;
 
     this.activeClass = 'active';
@@ -198,8 +199,8 @@
              // TODO find a better way to do this
              userData[149] = tile.hasClass(that.activeClass)? 1:0;
 
-             tile = $("#birth-day-" + containerId);
-             tile = $("#birth-month-" + containerId);
+             tile = $("#marital-status-day-" + containerId);
+             tile = $("#marital-status-month-" + containerId);
 
 
             container.find('.'+that.activeClass).each(function(){
@@ -263,7 +264,7 @@
          var hasSelectedTile = false;
           _.forOwn(formData, function(value, key) {
              Object.keys(formData[key]).forEach(function (entry) {
-                if(entry == dataId){
+                if(entry.hasClass(activeClass)){
                    hasSelectedTile = true;
                  }
               });
@@ -350,6 +351,13 @@
         // var regex = new RegExp(/^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]( )?\d[ABCEGHJKLMNPRSTVWXYZ]\d$/i);
         // return regex.test(postalCode.value);
         return true;
+    };
+
+    this.isValidNumber = function(num){
+        if(/^([0-9]+)$/.test(num)) {
+            return true;
+        }
+        return false;
     };
 
 }).apply(app.helpers);

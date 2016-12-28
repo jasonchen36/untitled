@@ -8,11 +8,6 @@
         addressForm,
         addressSubmit,
         addressBack,
-        addressFirstLineErrorLabel,
-        addressCityErrorLabel,
-        addressPostalCodeErrorLabel,
-        addressProvinceErrorLabel,
-        addressResidenceErrorLabel,
         addressIsSameCheckbox,
         errorClass = helpers.errorClass,
         disabledClass = helpers.disabledClass;
@@ -34,7 +29,8 @@
                         addressLine2: '',
                         city: value.city,
                         province: value.province,
-                        postalCode: value.postalCode
+                        postalCode: value.postalCode,
+                        country: value.country
                     };
                     //todo, resolve if the address is new or needs to be updated (different api call)
                     return ajax.ajax(
@@ -109,53 +105,64 @@
             postalCode = addressForm.find('#postal-code-'+taxReturnId),
             province = addressForm.find('#province-'+taxReturnId),
             provinceResidence = addressForm.find('#province-residence-'+taxReturnId),
+            country = addressForm.find('#country-'+taxReturnId),
 
             addressFirstLineErrorLabel = addressForm.find('#address-first-line-label-error-' + taxReturnId),
             addressCityErrorLabel = addressForm.find('#address-city-label-error-' + taxReturnId),
             addressPostalCodeErrorLabel = addressForm.find('#address-postal-code-label-error-' + taxReturnId),
             addressProvinceErrorLabel = addressForm.find('#address-province-label-error-' + taxReturnId),
-            addressResidenceErrorLabel = addressForm.find('#address-residence-label-error-' + taxReturnId);
+            addressResidenceErrorLabel = addressForm.find('#address-residence-label-error-' + taxReturnId),
+            addressCountryErrorLabel = addressForm.find('#country-label-error-' + taxReturnId);
 
-        streetAddress.removeClass(helpers.errorClass);
-        city.removeClass(helpers.errorClass);
-        postalCode.removeClass(helpers.errorClass);
-        province.removeClass(helpers.errorClass);
-        provinceResidence.removeClass(helpers.errorClass);
 
-        addressFirstLineErrorLabel.removeClass(helpers.errorClass);
-        addressCityErrorLabel.removeClass(helpers.errorClass);
-        addressPostalCodeErrorLabel.removeClass(helpers.errorClass);
-        addressProvinceErrorLabel.removeClass(helpers.errorClass);
-        addressResidenceErrorLabel.removeClass(helpers.errorClass);
+        streetAddress.removeClass(errorClass);
+        city.removeClass(errorClass);
+        postalCode.removeClass(errorClass);
+        province.removeClass(errorClass);
+        provinceResidence.removeClass(errorClass);
+        country.removeClass(errorClass);
+        
+        addressFirstLineErrorLabel.removeClass(errorClass);
+        addressCityErrorLabel.removeClass(errorClass);
+        addressPostalCodeErrorLabel.removeClass(errorClass);
+        addressProvinceErrorLabel.removeClass(errorClass);
+        addressResidenceErrorLabel.removeClass(errorClass);
+        addressCountryErrorLabel.removeClass(errorClass);
 
         //street address
         if (helpers.isEmpty(streetAddress.val())){
-            streetAddress.addClass(helpers.errorClass);
-            addressFirstLineErrorLabel.addClass(helpers.errorClass);
+            streetAddress.addClass(errorClass);
+            addressFirstLineErrorLabel.addClass(errorClass);
             errors++;
         }
         //city
         if (helpers.isEmpty(city.val())){
-            city.addClass(helpers.errorClass);
-            addressCityErrorLabel.addClass(helpers.errorClass);
+            city.addClass(errorClass);
+            addressCityErrorLabel.addClass(errorClass);
             errors++;
         }
         //province
         if (helpers.isEmpty(province.val())){
-            province.addClass(helpers.errorClass);
-            addressProvinceErrorLabel.addClass(helpers.errorClass);
+            province.addClass(errorClass);
+            addressProvinceErrorLabel.addClass(errorClass);
             errors++;
         }
         //postal code
         if (helpers.isEmpty(postalCode.val()) || !helpers.isValidPostalCode(postalCode.val())){
-            postalCode.addClass(helpers.errorClass);
-            addressPostalCodeErrorLabel.addClass(helpers.errorClass);
+            postalCode.addClass(errorClass);
+            addressPostalCodeErrorLabel.addClass(errorClass);
             errors++;
         }
         //province residence
         if (helpers.isEmpty(provinceResidence.val())){
-            provinceResidence.addClass(helpers.errorClass);
-            addressResidenceErrorLabel.addClass(helpers.errorClass);
+            provinceResidence.addClass(errorClass);
+            addressResidenceErrorLabel.addClass(errorClass);
+            errors++;
+        }
+        //country
+        if (helpers.isEmpty(country.val())){
+            country.addClass(errorClass);
+            addressCountryErrorLabel.addClass(errorClass);
             errors++;
         }
         return errors < 1;
@@ -180,6 +187,8 @@
             parentContainer.find('#postal-code-'+taxReturnId).val(formData.postalCode).prop('disabled', true);
             //province
             parentContainer.find('#province-'+taxReturnId).val(formData.province).prop('disabled', true);
+            //country
+            parentContainer.find('#country-'+taxReturnId).val(formData.country).prop('disabled', true);
         } else {
             //checkbox
             checkbox.removeClass(helpers.activeClass);

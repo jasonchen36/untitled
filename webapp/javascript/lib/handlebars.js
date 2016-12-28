@@ -1,5 +1,5 @@
 (function(){
-    
+
     this.applyHelpers = function(){
         //compare
         Handlebars.registerHelper('compare', function(lvalue, rvalue, options) {
@@ -80,7 +80,38 @@
                 return '';
             }
         });
+
+        // https://github.com/wycats/handlebars.js/issues/927
+        Handlebars.registerHelper('switch', function(value, options) {
+            this._switch_value_ = value;
+            this._switch_break_ = false;
+            var html = options.fn(this);
+            delete this._switch_break_;
+            delete this._switch_value_;
+            return html;
+        });
         
+        Handlebars.registerHelper('case', function(value, options) {
+            var args = Array.prototype.slice.call(arguments),
+                caseValues = args;
+            options = args.pop();
+
+            if (this._switch_break_ || caseValues.indexOf(this._switch_value_) === -1) {
+                return '';
+            } else {
+                if (options.hash.break === true) {
+                    this._switch_break_ = true;
+                }
+                return options.fn(this);
+            }
+        });
+        
+        Handlebars.registerHelper('default', function(options) {
+            if (!this._switch_break_) {
+                return options.fn(this);
+            }
+        });
+
     };
-    
+
 }).apply(app.handlebars);

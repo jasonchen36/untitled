@@ -9,6 +9,7 @@ Use helper classes to style elements that otherwise wouldn't need to have a full
 //main styles
 //-----------------------------
 $header-height: 85px;
+$header-text-size: 1.5vw;
 
 * {
   @extend .f--futura-heavy;
@@ -61,7 +62,7 @@ input {
   }
 }
 
-button {
+button, .button {
   @include transition-with-defaults(opacity);
   &.disabled {
     opacity: 0.6;
@@ -90,7 +91,7 @@ button {
   font-size: 12px;
   outline:none;
   &.long{
-    width:240px;
+    width:15vw;
   }
   &.short{
     width:98px;
@@ -208,7 +209,7 @@ textarea {
 }
 
 .hidden {
-  display: none;
+  display: none!important;
 }
 
 .horizontal-center{
@@ -236,6 +237,10 @@ textarea {
   text-transform: uppercase;
 }
 
+.font-header-size{
+  font-size:$header-text-size;
+}
+
 //border classes
 //-----------------------------
 .border-top-light-gray{
@@ -248,6 +253,14 @@ textarea {
 
 .border-bottom-dark-grey{
   border-bottom: 1px solid $color-global-border-grey;
+}
+
+.border-left-dark-grey{
+  border-left: 1px solid $color-global-border-grey;
+}
+
+.border-right-dark-grey{
+  border-right: 1px solid $color-global-border-grey;
 }
 
 .border-none{
@@ -284,7 +297,8 @@ textarea {
   background: $color-global-bg;
   position: relative;
   overflow-y: auto;
-  min-height:calc(100% - #{$header-height});
+  min-height:100%;
+  @extend .add-padding-for-header;
 }
 
 .yellow-container{
@@ -305,6 +319,7 @@ textarea {
 //-----------------------------
 .content-form{
   margin-left:20px;
+  margin-top: 100px;
 }
 
 .wrapper-container{
@@ -341,6 +356,10 @@ textarea {
 
 .no-margin{
   margin: 0;
+}
+
+.no-margin-bottom{
+  margin-bottom: 0;
 }
 
 .add-bottom-padding{
@@ -404,6 +423,12 @@ textarea {
   display:inline-block;
 }
 
+.line{
+  width: calc(100% - 76px);
+  height: 1px;
+  background: $color-global-border-grey;
+}
+
 //visibility
 //-----------------------------
 .hide-for-small {
@@ -457,4 +482,33 @@ textarea {
 .label-popup-header{
   color:$color-global-red;
   font-size: 1.4rem;
+}
+
+//fixed styling classes
+//--------------------------------
+.fixed-header{
+  position: fixed;
+  height: $header-height;
+  z-index: 4;
+  width: 100%;
+  background: white;
+}
+
+.add-padding-for-header{
+  padding-top: $header-height;
+}
+
+.fixed-page-header{
+  position: fixed;
+  background: $color-global-bg;
+  z-index: 3;
+  border-bottom:1px solid $color-global-border-grey;
+  margin-left:20px;
+  @extend .small-12, .medium-7;
+}
+
+.fixed-progress-bar{
+  position: fixed;
+  margin-top: $header-height;
+  z-index: 5;
 }

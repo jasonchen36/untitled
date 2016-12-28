@@ -11,21 +11,25 @@
         birthdateDayLabelError,
         birthdateMonthLabelError,
         birthdateYearLabelError,
+        dayInput,
+        monthInput,
+        yearInput,
+        checkboxes,
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
     function submitBirthdate(){
       var formData = helpers.getFormData(birthdateForm);
       helpers.resetForm(birthdateForm);
-      if (helpers.isEmpty(dayInput.val().trim())){
+      if (helpers.isEmpty(dayInput.val().trim()) || dayInput.val().length !== 2 || parseInt(dayInput.val()) < 1 || parseInt(dayInput.val()) > 31){
            dayInput.addClass(errorClass);
            birthdateDayLabelError.addClass(errorClass);
       }
-      if (helpers.isEmpty(monthInput.val().trim())){
+      if (helpers.isEmpty(monthInput.val().trim()) || monthInput.val().length !== 2 || parseInt(monthInput.val()) < 1 || parseInt(monthInput.val()) > 12){
            monthInput.addClass(errorClass);
           birthdateMonthLabelError.addClass(errorClass);
        }
-      if (helpers.isEmpty(yearInput.val().trim())){
+      if (helpers.isEmpty(yearInput.val().trim()) || yearInput.val().length !== 2){
            yearInput.addClass(errorClass);
           birthdateYearLabelError.addClass(errorClass);
       }
@@ -50,6 +54,10 @@
                });
        }
     }
+    
+    function toggleCheckboxActiveState(element){
+        element.find('.checkbox').first().toggleClass(helpers.activeClass);
+    }
 
     this.init = function(){
         if ($('#personal-profile-birthdate').length > 0) {
@@ -61,7 +69,7 @@
             dayInput = $('#dependants-birthday-day');
             monthInput = $('#dependants-birthday-month');
             yearInput = $('#dependants-birthday-year');
-            checkbox = $('.checkbox');
+            checkboxes = $('.checkbox-container');
 
             birthdateDayLabelError = $('#birthdate-day-label-error');
             birthdateMonthLabelError = $('#birthdate-month-label-error');
@@ -83,9 +91,9 @@
                 personalProfile.goToPreviousPage();
             });
 
-            checkbox.on('click',function(event){
+            checkboxes.on('click',function(event){
                 event.preventDefault();
-                $(this).toggleClass(helpers.activeClass);
+                toggleCheckboxActiveState($(this));
             });
         }
     };

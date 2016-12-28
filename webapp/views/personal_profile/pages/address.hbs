@@ -1,11 +1,11 @@
 <section id="personal-profile-address" class="full-screen-grid-container main-container" >
     <div class="small-12 medium-7">
+        <div class="container-header fixed-page-header">
+            <h1 class="header">Address</h1>
+            <button id="address-submit" class="green header">Next</button>
+            <button id="address-back" class="grey header">Previous</button>
+        </div>
         <div class="content-form">
-            <div class="container-header">
-                <h1 class="header">Address</h1>
-                <button id="address-submit" class="green header">Next</button>
-                <button id="address-back" class="grey header">Previous</button>
-            </div>
             <form id="address-form">
                 <h1 class="subtitle">Almost done! We need to know the mailing address for all your filers:</h1>
                 <div id="container-address-form">
@@ -53,6 +53,11 @@
                                         </select>
                                     </div>
                                     <p id="address-residence-label-error-{{taxReturnId}}" class="label-error">Province needed</p>
+                                </div>
+                                <div class="container-inline-input long">
+                                    <label for="country-{{taxReturnId}}" class="under">COUNTRY</label>
+                                    <input class="inline-input" id="country-{{taxReturnId}}" name="country" type="text" value="{{country}}"/>
+                                    <p id="address-country-label-error-{{taxReturnId}}" class="label-error">Country needed</p>
                                 </div>
                             </div>
                         </div>

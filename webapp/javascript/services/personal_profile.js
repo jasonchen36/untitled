@@ -26,11 +26,11 @@
     function changePage(newPage, data){
         return new Promise(function(resolve,reject) {
 
-           var sessionData = that.getPersonalProfileSession();
+            var sessionData = that.getPersonalProfileSession();
 
-           if(newPage && newPage.length > 0){
-               sessionData.currentPage = newPage;
-           }
+            if(newPage && newPage.length > 0){
+                sessionData.currentPage = newPage;
+            }
 
             if(typeof data !== 'object'){
                 data = sessionData;
@@ -58,6 +58,8 @@
         personalProfileViews.income.init();
         personalProfileViews.deductions.init();
         personalProfileViews.credits.init();
+
+        setSmallOptionTiles();
     }
 
     function startPersonalProfileSession(){
@@ -89,6 +91,13 @@
         });
     }
 
+    function setSmallOptionTiles(){
+        var sessionData = that.getPersonalProfileSession();
+        if(sessionData.currentPage == "marital-status" || sessionData.currentPage == "dependants"){
+            $('.'+helpers.tileClass).addClass("small-button");
+        }
+    }
+
 
     /* *************** public methods ***************/
     this.goToNextPage = function(data){
@@ -102,7 +111,7 @@
     this.goToPreviousPage = function(data){
         var currentPage = getCurrentPage(),
             currentPageIndex = that.personalProfileFlow.indexOf(currentPage);
-    
+
         if (currentPageIndex !== 0){
             changePage(that.personalProfileFlow[currentPageIndex-1], data);
         }
@@ -130,7 +139,24 @@
             $(document)
                 .on('touchend click', '.'+helpers.tileClass, function (event) {
                     event.preventDefault();
-                    $(this).toggleClass(helpers.activeClass);
+                    var that = $(this),
+                        dataType = that.attr('data-type');
+                        if (!that.hasClass(helpers.activeClass)){
+                            if (dataType === 'NotSure' || dataType === 'NoneApply') {
+                                //remove active state from regular tile
+                                that.parent().find('.'+helpers.tileClass).each(function(){
+                                    $(this).removeClass(helpers.activeClass);
+                                });
+                            } else {
+                                //regular tile, remove active state from notsure and noneapply
+                                that.parent().find('.'+helpers.tileClass+'[data-type="NotSure"], .'+helpers.tileClass+'[data-type="NoneApply"]').each(function(){
+                                    $(this).removeClass(helpers.activeClass);
+                                });
+                            }
+                            that.addClass(helpers.activeClass);
+                        } else {
+                            that.removeClass(helpers.activeClass);
+                        }
                 })
                 .on('mouseover', '.'+helpers.tileClass, function (event) {
                     event.preventDefault();

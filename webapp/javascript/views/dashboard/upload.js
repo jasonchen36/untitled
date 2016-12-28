@@ -7,6 +7,7 @@
         disabledClass = helpers.disabledClass,
         dashboard = app.services.dashboard,
         animations = app.animations,
+        ajax = app.ajax,
         fileUpload,
         uploadChecklistItemsClass = '.upload-checklist-item',
         fileUploadSubmitId = '#dashboard-upload-submit',
@@ -14,9 +15,13 @@
         fileUploadSelectId = '#dashboard-upload-select',
         documentTile = '#container-document-tile',
         buttonClosePreview = '#button-close-preview',
+        buttonDeleteFile = '.dashboard-upload-delete',
         taxReturnSubmit,
         taxReturnForm,
         progressBar,
+        fileUploadSuccess,
+        deleteFileForm,
+        currentDeleteFileElement,
         errorClass = helpers.errorClass,
         hiddenClass = helpers.hiddenClass,
         initialized = false;
@@ -40,6 +45,7 @@
                     });
             },
             done: function (e, data) {
+                fileUploadSuccess.removeClass(helpers.hiddenClass);
                 resetUploadForm();
             },
             fail: function (e, data) {
@@ -51,6 +57,7 @@
                 resetUploadForm();
             },
             progressall: function (e, data) {
+                fileUploadSuccess.addClass(helpers.hiddenClass);
                 var percentageComplete = parseInt(data.loaded / data.total * 100, 10);
                 animations.animateElement(progressBar,{
                     properties: {
@@ -60,7 +67,7 @@
             }
         });
     }
-    
+
     function resetUploadForm(){
         $(fileUploadCancelId).addClass(hiddenClass);
         $(fileUploadSelectId).removeClass(hiddenClass);
@@ -80,10 +87,10 @@
             } else {
                 userSession.activeItem = _.find(userSession.documentChecklist.checklistItems, ['checklistItemId', dataId]);
             }
-            console.log("Usersession",userSession);
             dashboard.refreshPage(userSession);
-
         }
+
+        $("#upload-checklist-item-"+dataId).addClass(helpers.activeClass);
     }
 
     function previewDocument(documentId, checklistId){
@@ -105,9 +112,59 @@
     }
 
     function submitReturn(){
-        //todo, api call
-        window.location.hash = '#!';
-        $('#dashboard-my-return-activate').click();
+        var userSession = dashboard.getUserSession(),
+            taxReturnId = userSession.taxReturns[0].taxReturnId;
+        ajax.ajax(
+            'PUT',
+            userSession.apiUrl+'/tax_return/'+taxReturnId+'/status',
+            {
+                statusId: 4//data entry complete
+            }
+        )
+            .then(function(){
+                //update tax return objects in session
+                return apiservice.getTaxReturns(userSession);
+            })
+            .then(function(data){
+                userSession.taxReturns = data;
+                window.location.hash = '!';
+                dashboard.changePage('my-return',userSession);
+            })
+            .catch(function(jqXHR,textStatus,errorThrown){
+                //todo, error message
+                console.log(jqXHR,textStatus,errorThrown);
+                window.location.hash = '!';
+            });
+    }
+
+    function confirmDeleteFile(element){
+        currentDeleteFileElement = element;
+        window.location.hash = 'modal-delete-file-submit';
+    }
+
+    function deleteFileById(){
+        var userSession = dashboard.getUserSession(),
+            documentId = currentDeleteFileElement.attr('data-id'),
+            quoteId = currentDeleteFileElement.attr('data-quote-id');
+        ajax.ajax(
+            'DELETE',
+            userSession.apiUrl+'/quote/'+quoteId+'/document/'+documentId,
+            {
+            },
+            'json',
+            {
+                'Authorization': 'Bearer '+ userSession.token
+            }
+        )
+            .then(function() {
+                window.location.hash = '!';
+                window.location.reload();
+            })
+            .catch(function(jqXHR,textStatus,errorThrown){
+                //todo, error message
+                console.log(jqXHR,textStatus,errorThrown);
+                window.location.hash = '!';
+            });
     }
 
     this.init = function(){
@@ -125,10 +182,12 @@
             progressBar = $('#dashboard-upload-progress');
             taxReturnSubmit = $('#tax-return-submit');
             taxReturnForm = $('#modal-tax-return-submit-form');
+            fileUploadSuccess = $('#dashboard-upload-success');
+            deleteFileForm = $('#modal-delete-file-submit-form');
 
             //listeners
             taxReturnSubmit.on('click',function(event){
-               event.preventDefault();
+                event.preventDefault();
                 confirmReturnSubmission();
             });
 
@@ -136,7 +195,12 @@
                 event.preventDefault();
                 submitReturn();
             });
-            
+
+            deleteFileForm.on('submit',function(event){
+                event.preventDefault();
+                deleteFileById();
+            });
+
             $(document)
                 .off('click', uploadChecklistItemsClass)
                 .on('click', uploadChecklistItemsClass, function (event) {
@@ -169,7 +233,12 @@
                     event.preventDefault();
                     closePreview();
                 })
-            ;
+                .off('click', buttonDeleteFile)
+                .on('click', buttonDeleteFile, function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    confirmDeleteFile($(this));
+                });
 
             //functions
             initializeFileUpload();

@@ -163,7 +163,7 @@ session.actionStartUserProfileSession = function(req, token){
                     }
                     return promise.reject(error);
                 });
-        })
+        });
 };
 
 session.hasUserProfileSession = function(req){
