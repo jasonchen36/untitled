@@ -10,6 +10,7 @@
     this.tileClass = 'taxplan-tile';
     this.tileContainerClass = 'taxplan-tile-container';
     this.formContainerClass = 'taxplan-form-container';
+    this.cookieCurrentPage = 'store-current-page';
 
     this.sizeOfObject = function(data){
         if (data){

@@ -5,6 +5,7 @@
         that = app.services.personalProfile,
         helpers = app.helpers,
         animations = app.animations,
+        cookies = app.cookies,
         personalProfilePageContainer = $('#page-personal-profile'),
         profileBar = $('#tax-profile-progress-bar'),
         personalProfileSessionStore;
@@ -29,7 +30,7 @@
             var sessionData = that.getPersonalProfileSession();
 
             if(newPage && newPage.length > 0){
-                sessionData.currentPage = newPage;
+                sessionData.currentPage = cookies.setCookie(helpers.cookieCurrentPage, newPage);
             }
 
             if(typeof data !== 'object'){
@@ -65,7 +66,8 @@
     function startPersonalProfileSession(){
         personalProfileSessionStore = personalProfileObject;
         personalProfileSessionStore.questions = questionsObject;
-        if(!personalProfileSessionStore.hasOwnProperty('currentPage') || personalProfileSessionStore.currentPage.length < 1){
+        personalProfileSessionStore.currentPage = cookies.getCookie(helpers.cookieCurrentPage);
+        if(personalProfileSessionStore.currentPage.length < 1){
             personalProfileSessionStore.currentPage = that.personalProfileFlow[0];
             changePage(personalProfileSessionStore.currentPage);
         } else {
