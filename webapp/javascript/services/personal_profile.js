@@ -36,7 +36,7 @@
             if(typeof data !== 'object'){
                 data = sessionData;
             }
-
+            
             animateProgressBar();
             var template = Handlebars.templates[newPage],
                 html = template(data);
@@ -71,7 +71,7 @@
             personalProfileSessionStore.currentPage = that.personalProfileFlow[0];
             changePage(personalProfileSessionStore.currentPage);
         } else {
-            that.goToNextPage();
+            changePage(that.getPersonalProfileSession().currentPage);
         }
     }
 
@@ -130,8 +130,6 @@
     this.getPersonalProfileSession = function(){
         return personalProfileSessionStore;
     };
-
-
 
     this.init = function(){
         if (personalProfilePageContainer.length > 0) {
