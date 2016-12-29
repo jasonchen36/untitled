@@ -36,7 +36,7 @@
             if(typeof data !== 'object'){
                 data = sessionData;
             }
-            
+
             animateProgressBar();
             var template = Handlebars.templates[newPage],
                 html = template(data);
@@ -67,12 +67,12 @@
         personalProfileSessionStore = personalProfileObject;
         personalProfileSessionStore.questions = questionsObject;
         personalProfileSessionStore.currentPage = getCurrentPageCookie();
-        if(personalProfileSessionStore.currentPage.length < 1){
+        if(true) {
+            //todo, uncomment when development is done
+            // if(personalProfileSessionStore.currentPage.length < 1){
             personalProfileSessionStore.currentPage = that.personalProfileFlow[0];
-            changePage(personalProfileSessionStore.currentPage);
-        } else {
-            changePage(that.getPersonalProfileSession().currentPage);
         }
+        changePage(personalProfileSessionStore.currentPage);
     }
 
     function getCurrentPage(){
@@ -158,22 +158,22 @@
                     event.preventDefault();
                     var that = $(this),
                         dataType = that.attr('data-type');
-                        if (!that.hasClass(helpers.activeClass)){
-                            if (dataType === 'NotSure' || dataType === 'NoneApply') {
-                                //remove active state from regular tile
-                                that.parent().find('.'+helpers.tileClass).each(function(){
-                                    $(this).removeClass(helpers.activeClass);
-                                });
-                            } else {
-                                //regular tile, remove active state from notsure and noneapply
-                                that.parent().find('.'+helpers.tileClass+'[data-type="NotSure"], .'+helpers.tileClass+'[data-type="NoneApply"]').each(function(){
-                                    $(this).removeClass(helpers.activeClass);
-                                });
-                            }
-                            that.addClass(helpers.activeClass);
+                    if (!that.hasClass(helpers.activeClass)){
+                        if (dataType === 'NotSure' || dataType === 'NoneApply') {
+                            //remove active state from regular tile
+                            that.parent().find('.'+helpers.tileClass).each(function(){
+                                $(this).removeClass(helpers.activeClass);
+                            });
                         } else {
-                            that.removeClass(helpers.activeClass);
+                            //regular tile, remove active state from notsure and noneapply
+                            that.parent().find('.'+helpers.tileClass+'[data-type="NotSure"], .'+helpers.tileClass+'[data-type="NoneApply"]').each(function(){
+                                $(this).removeClass(helpers.activeClass);
+                            });
                         }
+                        that.addClass(helpers.activeClass);
+                    } else {
+                        that.removeClass(helpers.activeClass);
+                    }
                 })
                 .on('mouseover', '.'+helpers.tileClass, function (event) {
                     event.preventDefault();
