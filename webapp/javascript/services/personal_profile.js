@@ -30,7 +30,7 @@
             var sessionData = that.getPersonalProfileSession();
 
             if(newPage && newPage.length > 0){
-                sessionData.currentPage = cookies.setCookie(helpers.cookieCurrentPage, newPage);
+                sessionData.currentPage = setCurrentPageCookie(newPage);
             }
 
             if(typeof data !== 'object'){
@@ -66,7 +66,7 @@
     function startPersonalProfileSession(){
         personalProfileSessionStore = personalProfileObject;
         personalProfileSessionStore.questions = questionsObject;
-        personalProfileSessionStore.currentPage = cookies.getCookie(helpers.cookieCurrentPage);
+        personalProfileSessionStore.currentPage = getCurrentPageCookie();
         if(personalProfileSessionStore.currentPage.length < 1){
             personalProfileSessionStore.currentPage = that.personalProfileFlow[0];
             changePage(personalProfileSessionStore.currentPage);
@@ -97,6 +97,23 @@
         var sessionData = that.getPersonalProfileSession();
         if(sessionData.currentPage == "marital-status" || sessionData.currentPage == "dependants"){
             $('.'+helpers.tileClass).addClass("small-button");
+        }
+    }
+
+    function setCurrentPageCookie(newPage){
+        cookies.setCookie(helpers.cookieCurrentPage,{
+            page: newPage,
+            expiry: moment().add(1, 'hour')
+        });
+        return getCurrentPageCookie();
+    }
+
+    function getCurrentPageCookie(){
+        var currentPageCookie = cookies.getCookie(helpers.cookieCurrentPage);
+        if (_.size(currentPageCookie) > 0 && cookies.isCookieValid(currentPageCookie.expiry)){
+            return currentPageCookie.page;
+        } else {
+            return '';
         }
     }
 

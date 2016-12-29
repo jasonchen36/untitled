@@ -22,5 +22,9 @@
     this.areCookiesEnabled = function(){
         return store.enabled;
     };
+    
+    this.isCookieValid = function(expiry){
+        return moment().isBefore(expiry);
+    };
 
 }).apply(app.cookies);

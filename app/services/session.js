@@ -117,17 +117,10 @@ session.actionStartUserProfileSession = function(req, token){
                         return promise.resolve(sessionModel.getUserProfileObject(response));
                     } catch(error){
                         if(!error){
-                            error = 'Could not create user account';
+                            error = 'Could not get user account';
                         }
                         return promise.reject(error);
                     }
-                })
-                .catch(function (response) {
-                    var error = response;
-                    if (response && response.hasOwnProperty('error')){
-                        error = response.error;
-                    }
-                    return promise.reject(error);
                 });
         })
         .then(function(userProfileSession){
@@ -155,14 +148,14 @@ session.actionStartUserProfileSession = function(req, token){
                         }
                         return promise.reject(error);
                     }
-                })
-                .catch(function (response) {
-                    var error = response;
-                    if (response && response.hasOwnProperty('error')){
-                        error = response.error;
-                    }
-                    return promise.reject(error);
                 });
+        })
+        .catch(function (response) {
+            var error = response;
+            if (response && response.hasOwnProperty('error')){
+                error = response.error;
+            }
+            return promise.reject(error);
         });
 };
 
