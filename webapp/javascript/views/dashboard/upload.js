@@ -82,7 +82,8 @@
                 //additional documents
                 userSession.activeItem = {
                     name: 'Additional Documents',
-                    checklistItemId: 0
+                    checklistItemId: 0,
+                    documents: userSession.documentChecklist.additionalDocuments
                 };
             } else {
                 userSession.activeItem = _.find(userSession.documentChecklist.checklistItems, ['checklistItemId', dataId]);
