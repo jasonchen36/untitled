@@ -8,7 +8,8 @@
         cookies = app.cookies,
         personalProfilePageContainer = $('#page-personal-profile'),
         profileBar = $('#tax-profile-progress-bar'),
-        personalProfileSessionStore;
+        personalProfileSessionStore,
+        pageSessionStore;
 
     this.personalProfileFlow = [
         'last-name',
@@ -35,6 +36,8 @@
 
             if(typeof data !== 'object'){
                 data = sessionData;
+            } else {
+                pageSessionStore = data;
             }
 
             animateProgressBar();
@@ -146,6 +149,10 @@
 
     this.getPersonalProfileSession = function(){
         return personalProfileSessionStore;
+    };
+
+    this.getPageSession = function(){
+        return pageSessionStore;
     };
 
     this.init = function(){
