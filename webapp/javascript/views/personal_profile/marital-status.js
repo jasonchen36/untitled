@@ -25,22 +25,20 @@
                 window.location.hash = 'modal-personal-profile-popup';
             } else if (!helpers.formHasErrors(maritalStatusForm)) {
                 maritalStatusSubmit.addClass(disabledClass);
-
                 return Promise.resolve()
                     .then(function() {
-                        var promiseArrayPut = [];
-                        var promiseArrayGet = [];
-                        var promiseArrayQuestions = [];
+                        var nextPageCategoryId = 9,
+                            promiseSaveAnswers = [],
+                            promiseGetAnswers = [],
+                            promiseGetDependants = [],
+                            promiseGetQuestions = apiservice.getQuestions(sessionData,nextPageCategoryId);
 
                         //todo, product and question category in variable
-                        var ajaxAnswers = apiservice.getQuestions(sessionData,9);
-                        promiseArrayQuestions.push(ajaxAnswers);
-
                         _.each(formData, function(entry) {
 
                             var ajaxOne =  apiservice.postMaritalAnswers(sessionData,
                                 entry.taxReturnId, entry);
-                            promiseArrayPut.push(ajaxOne);
+                            promiseSaveAnswers.push(ajaxOne);
 
                             // if status changed update date
                             if(entry[149] === 1) {
@@ -50,19 +48,19 @@
                                 entry.answer = day + '/' + month;
                                 ajaxOne =  apiservice.postMaritalDate(sessionData,
                                     entry.taxReturnId, entry);
-                                promiseArrayPut.push(ajaxOne);
+                                promiseSaveAnswers.push(ajaxOne);
                             }
+                            promiseGetAnswers.push(apiservice.getAnswers(sessionData,entry.taxReturnId,nextPageCategoryId));
+                            promiseGetDependants.push(apiservice.getDependants(sessionData,entry.taxReturnId));
 
-                            var ajaxTwo = apiservice.getAnswers(sessionData,
-                                entry.taxReturnId,9);
-
-                            promiseArrayGet.push(ajaxTwo);
                         });
 
-                        return Promise.all([Promise.all(promiseArrayPut),
-                            Promise.all(promiseArrayGet),
-                            Promise.all(promiseArrayQuestions)]);
-
+                        return Promise.all([
+                            Promise.all(promiseSaveAnswers),
+                            Promise.all(promiseGetAnswers),
+                            promiseGetQuestions,
+                            Promise.all(promiseGetDependants)
+                        ]);
                     })
                     .then(function(response) {
                         var data = {};
@@ -72,6 +70,7 @@
                         _.each(data.taxReturns, function(taxReturn, index){
                             taxReturn.firstName = nameData[index];
                             taxReturn.questions = response[1][index];
+                            taxReturn.dependants = response[3][index];
                             _.each(taxReturn.questions.answers, function(answer){
                                 answer.answer = 0;
                                 answer.class = '';
@@ -102,29 +101,31 @@
 
             return Promise.resolve()
                 .then(function() {
-                    var promiseArrayPut = [];
-                    var promiseArrayGet = [];
-                    var promiseArrayQuestions = [];
+                    var promiseSaveAnswers = [];
+                    var promiseGetAnswers = [];
+                    var promiseGetQuestions = [];
 
                     //todo, product and question category in variable
                     var ajaxAnswers = apiservice.getQuestions(sessionData,5);
-                    promiseArrayQuestions.push(ajaxAnswers);
+                    promiseGetQuestions.push(ajaxAnswers);
 
                     _.each(formData, function(entry) {
 
                         var ajaxOne =  apiservice.postAnswers(sessionData,
                             entry.taxReturnId, entry);
-                        promiseArrayPut.push(ajaxOne);
+                        promiseSaveAnswers.push(ajaxOne);
 
                         var ajaxTwo = apiservice.getAnswers(sessionData,
                             entry.taxReturnId,5);
 
-                        promiseArrayGet.push(ajaxTwo);
+                        promiseGetAnswers.push(ajaxTwo);
                     });
 
-                    return Promise.all([Promise.all(promiseArrayPut),
-                        Promise.all(promiseArrayGet),
-                        Promise.all(promiseArrayQuestions)]);
+                    return Promise.all([
+                        Promise.all(promiseSaveAnswers),
+                        Promise.all(promiseGetAnswers),
+                        Promise.all(promiseGetQuestions)
+                    ]);
 
                 })
                 .then(function(response) {

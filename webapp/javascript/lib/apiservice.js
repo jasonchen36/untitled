@@ -405,7 +405,7 @@
             return Promise.resolve(taxReturns);
         });
     };
-    
+
     this.getMarriageTiles = function(taxReturnId,answer){
         var marriageTiles = [
             {
@@ -449,6 +449,19 @@
             entry.class = answer===entry.question_text?helpers.activeClass:'';
             return entry;
         });
+    };
+
+    this.getDependants = function(sessionData, taxReturnId){
+        var accountInfo = helpers.getAccountInformation(sessionData);
+        return ajax.ajax(
+            'GET',
+            sessionData.apiUrl+'/tax_return/'+taxReturnId+'/dependants',
+            {},
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
     };
 
 }).apply(app.apiservice);
