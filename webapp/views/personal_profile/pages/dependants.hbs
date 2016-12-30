@@ -11,11 +11,8 @@
                     <div class="border-bottom-light-grey add-bottom-padding taxplan-form-container" data-id="{{taxReturnId}}">
                         <h1 class="subtitle">{{firstName}}, do you have any children or elderly parents as dependants?</h1>
                         {{>personal-profile-options questions=questions.answers tileContainerId=taxReturnId}}
-                        {{#if hasDependants}}
-                            {{>personal-profile-dependants-form}}
-                        {{/if}}
                         {{#each dependants}}
-                            {{>personal-profile-dependants-line}}
+                            {{>personal-profile-dependants-line filerName=../firstName}}
                         {{/each}}
                     </div>
                 {{/each}}

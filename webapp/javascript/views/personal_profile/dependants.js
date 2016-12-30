@@ -10,6 +10,9 @@
         dependantsSubmit,
         dependantsBack,
         dependantsTiles,
+        dependantsEditButtons,
+        dependantsDeleteButtons,
+        dependantsAddButtons,
         activeClass = helpers.activeClass,
         disabledClass = helpers.disabledClass;
 
@@ -230,7 +233,19 @@
         //refresh page
         personalProfile.refreshPage(pageData);
     }
+    
+    function editDependant(dependentId){
+        console.log('edit dependant '+dependentId);
+    }
 
+    function deleteDependant(dependentId){
+        console.log('delete dependant '+dependentId);
+    }
+
+    function addDependant(taxReturnId){
+        console.log('add dependent to tax return '+taxReturnId);
+    }
+    
     this.init = function(){
         if ($('#personal-profile-dependants').length > 0) {
             //variables
@@ -238,6 +253,9 @@
             dependantsForm = $('#dependants-form');
             dependantsBack = $('#dependants-back');
             dependantsTiles = $('.'+helpers.tileClass);
+            dependantsEditButtons = $('.dependants-button-edit');
+            dependantsDeleteButtons = $('.dependants-button-delete');
+            dependantsAddButtons = $('.dependants-button-add');
 
             //listeners
             dependantsBack.on('click',function(event){
@@ -258,6 +276,21 @@
             dependantsTiles.on('click',function(event){
                 event.preventDefault();
                 updateUserDependants($(this));
+            });
+
+            dependantsEditButtons.on('click',function(event){
+                event.preventDefault();
+                editDependant(parseInt($(this).attr('data-id')));
+            });
+
+            dependantsDeleteButtons.on('click',function(event){
+                event.preventDefault();
+                deleteDependant(parseInt($(this).attr('data-id')));
+            });
+
+            dependantsAddButtons.on('click',function(event){
+                event.preventDefault();
+                addDependant(parseInt($(this).attr('data-id')));
             });
 
         }

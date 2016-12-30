@@ -1,20 +1,20 @@
-<div id="container-dependants-line-{{taxReturnId}}" class="border-bottom-light-gray">
-    <div class="container-inline-input long" id="dependant-name-list-{{taxReturnId}}">
-        <p id="side-info-blurb3-{{taxReturnId}}">Skippy Doctor</p>
+<div class="border-bottom-light-gray">
+    <div class="container-inline-input long">
+        <p>{{first_name}} {{last_name}}</p>
     </div>
-    <div class="container-inline-input" id="dependant-date-list-{{taxReturnId}}">
-        <p id="side-info-blurb2-{{taxReturnId}}">06/03/93</p>
+    <div class="container-inline-input">
+        <p>{{date_of_birth}}</p>
     </div>
     <div class="container-inline-input container-small-button">
-        <div class="container-inline-input" id="dependant-delete-list-{{taxReturnId}}">
-            <button id="dependants-delete-{{taxReturnId}}" class="green-outline">Delete</button>
+        <div class="container-inline-input">
+            <button class="dependants-button-delete green-outline" data-id="{{id}}">Delete</button>
         </div>
-        <div class="container-inline-input" id="dependant-edit-list-{{taxReturnId}}">
-            <button id="dependants-edit-{{taxReturnId}}" class="green-outline">Edit</button>
+        <div class="container-inline-input">
+            <button class="dependants-button-edit green-outline" data-id="{{id}}">Edit</button>
         </div>
     </div>
-    <div class="border-bottom-light-gray add-bottom-padding add-top-padding">
+    <div class="dependants-button-add border-bottom-light-gray add-bottom-padding add-top-padding" data-id="{{tax_return_id}}">
         <div class="i--icon-add"></div>
-        <label class="label-add">ADD A DEPENDANT FOR {{firstName}}</label>
+        <label class="label-add">ADD A DEPENDANT FOR {{filerName}}</label>
     </div>
 </div>
