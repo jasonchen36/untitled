@@ -405,5 +405,50 @@
             return Promise.resolve(taxReturns);
         });
     };
+    
+    this.getMarriageTiles = function(taxReturnId,answer){
+        var marriageTiles = [
+            {
+                id:'married-married-'+taxReturnId,
+                question_id:'129',
+                instructions:'',
+                question_text:'Married'
+            },
+            {
+                id:'married-divorced-'+taxReturnId,
+                question_id:'129',
+                instructions:'',
+                question_text:'Divorced'
+            },
+            {
+                id:'married-separated-'+taxReturnId,
+                question_id:'129',
+                instructions:'',
+                question_text:'Separated'
+            },
+            {
+                id:'married-widowed-'+taxReturnId,
+                question_id:'129',
+                instructions:'',
+                question_text:'Widowed'
+            },
+            {
+                id:'married-common-law-'+taxReturnId,
+                question_id:'129',
+                instructions:'',
+                question_text:'Common Law'
+            },
+            {
+                id:'married-single-'+taxReturnId,
+                question_id:'129',
+                instructions:'',
+                question_text:'Single'
+            }
+        ];
+        return _.map(marriageTiles, function(entry){
+            entry.class = answer===entry.question_text?helpers.activeClass:'';
+            return entry;
+        });
+    };
 
 }).apply(app.apiservice);

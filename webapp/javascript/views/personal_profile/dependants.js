@@ -6,82 +6,59 @@
         personalProfile = app.services.personalProfile,
         dependantsForm,
         ajax = app.ajax,
-        apiservice = app.apiservice,
+        apiService = app.apiservice,
         dependantsSubmit,
         dependantsBack,
-        dependantsEdit,
-        dependantsDelete,
-        errorClass = app.helpers.errorClass,
-        activeClass = app.helpers.activeClass,
-        disabledClass = app.helpers.disabledClass;
+        activeClass = helpers.activeClass,
+        disabledClass = helpers.disabledClass;
 
     function submitDependants(){
         if (!dependantsSubmit.hasClass(disabledClass)) {
-            var formData = helpers.getTileFormDataArray(dependantsForm);
-            var sessionData = personalProfile.getPersonalProfileSession();
-            var accountInfo = helpers.getAccountInformation(sessionData);
-            var hasDependants = $('#has-dependants-' + taxReturn.taxReturnId);
-            if (hasDependants.hasClass(activeClass)) {
+            var formData = helpers.getTileFormDataArray(dependantsForm),
+                sessionData = personalProfile.getPersonalProfileSession(),
+                accountInfo = helpers.getAccountInformation(sessionData),
+                nextScreenCategoryId = 2;
+            //todo, form validation
             helpers.resetForm(dependantsForm);
             $('.'+helpers.formContainerClass).each(function(){
                 validateDependantsFormData($(this));
             });
-            }
             if(!helpers.formHasErrors(dependantsForm)){
                 dependantsSubmit.addClass(disabledClass);
                 return Promise.resolve()
                     .then(function() {
-                        var promiseArrayPut = [];
-                        var promiseArrayGet = [];
-                        var promiseArrayQuestions = [];
-
-                        //todo, product and question category in variable
-                        var ajaxAnswers = apiservice.getQuestions(sessionData,2);
-                        promiseArrayQuestions.push(ajaxAnswers);
-
+                        var promiseSaveAnswers = updateDependants(),
+                            promiseGetAnswers = [],
+                            promiseGetQuestions = apiService.getQuestions(sessionData,nextScreenCategoryId);
                         _.each(formData, function(entry) {
-
-                            //todo,
-                            /*var ajaxOne =  apiservice.postAnswers(sessionData,
-                             entry.taxReturnId, entry);
-                             promiseArrayPut.push(ajaxOne);*/
-
-                            var ajaxTwo = apiservice.getAnswers(sessionData,
-                                entry.taxReturnId,2);
-
-                            promiseArrayGet.push(ajaxTwo);
+                            promiseGetAnswers.push(apiService.getAnswers(sessionData,entry.taxReturnId,nextScreenCategoryId));
                         });
-
-                        return Promise.all([Promise.all(promiseArrayPut),
-                            Promise.all(promiseArrayGet),
-                            Promise.all(promiseArrayQuestions)]);
-
+                        return Promise.all([
+                            Promise.all(promiseSaveAnswers),
+                            Promise.all(promiseGetAnswers),
+                            promiseGetQuestions
+                        ]);
                     })
                     .then(function(response) {
-
                         var data = {};
                         data.accountInfo = accountInfo;
                         data.taxReturns = formData;
                         data.taxReturns.questions = response[2];
-
-                        var index = 0;
-                        _.each(data.taxReturns, function(taxReturn){
+                        _.each(data.taxReturns, function(taxReturn, index){
                             taxReturn.firstName = nameData[index];
                             taxReturn.questions = response[1][index];
                             _.each(taxReturn.questions.answers, function(question){
-                              question.answer = 0;
-                              question.class = "";
-
-                              if ( !question.text) {
                                 question.answer = 0;
-                                question.class = "";
-                              } else if (question.text === "Yes"){
+                                question.class = '';
+                                if (!question.text) {
+                                    question.answer = 0;
+                                    question.class = '';
+                                } else if (question.text === 'Yes'){
                                     question.answer = 1;
-                                    question.class = "active";
-                              }
+                                    question.class = 'active';
+                                }
 
                             });
-                            index++;
                         });
 
                         personalProfile.goToNextPage(data);
@@ -90,90 +67,68 @@
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         dependantsSubmit.removeClass(disabledClass);
                     });
-              }
+            }
         }
     }
 
     function updateDependants(){
+        //todo, return array of promises
+        return [];
+    }
+
+    function goToPreviousScreen(){
         if (!dependantsSubmit.hasClass(disabledClass)) {
-            var formData = helpers.getTileFormDataArray(dependantsForm);
-            var sessionData = personalProfile.getPersonalProfileSession();
-            var accountInfo = helpers.getAccountInformation(sessionData);
-            var nameData = helpers.getFormDataArray(dependantsForm);
+            var formData = helpers.getTileFormDataArray(dependantsForm),
+                sessionData = personalProfile.getPersonalProfileSession(),
+                accountInfo = helpers.getAccountInformation(sessionData),
+                nameData = helpers.getFormDataArray(dependantsForm),
+                previousScreenCategoryId = 8;
             nameData = nameData[0];
-                dependantsSubmit.addClass(disabledClass);
-                return Promise.resolve()
-                    .then(function() {
-                        var promiseArrayPut = [];
-                        var promiseArrayGet = [];
-                        var promiseArrayQuestions = [];
-
-                        //todo, product and question category in variable
-                        var ajaxAnswers = apiservice.getQuestions(sessionData,8);
-                        promiseArrayQuestions.push(ajaxAnswers);
-
-                        _.each(formData, function(entry) {
-
-                            //todo,
-                            /*var ajaxOne =  apiservice.postAnswers(sessionData,
-                             entry.taxReturnId, entry);
-                             promiseArrayPut.push(ajaxOne);*/
-
-                            var ajaxTwo = apiservice.getAnswers(sessionData,
-                                entry.taxReturnId,8);
-
-                            promiseArrayGet.push(ajaxTwo);
-                        });
-
-                        return Promise.all([Promise.all(promiseArrayPut),
-                            Promise.all(promiseArrayGet),
-                            Promise.all(promiseArrayQuestions)]);
-
-                    })
-                    .then(function(response) {
-
-                        var data = {};
-                        data.accountInfo = accountInfo;
-                        data.taxReturns = formData;
-                        data.taxReturns.questions = response[2];
-
-                        var married = {id:"married-married", question_id:"129", class:"", instructions:"", question_text:"Married"};
-                        var divorced = {id:"married-divorced", question_id:"129", class:"", instructions:"", question_text:"Divorced"};
-                        var separated = {id:"married-separated", question_id:"129",  class:"", instructions:"", question_text:"Separated"};
-                        var widowed = {id:"married-widowed", question_id:"129",  class:"", instructions:"", question_text:"Widowed"};
-                        var commonLaw = {id:"married-common-law", question_id:"129",  class:"", instructions:"", question_text:"Common Law"};
-                        var single = {id:"married-single", question_id:"129",  class:"", instructions:"", question_text:"Single"};
-                        var marriageTiles = [married, divorced, separated, widowed, commonLaw, single];
-
-                        var index = 0;
-                        _.each(data.taxReturns, function(taxReturn){
-                            taxReturn.questions = response[1][index];
-                            taxReturn.firstName = nameData[index];
-                            _.each(taxReturn.questions.answers, function(question){
-                                question.tiles = marriageTiles;
-                                question.answer = 0;
-                                question.class = "";
-
-                                if ( !question.text) {
-                                    question.answer = 0;
-                                    question.class = "";
-                                } else if (question.text === "Yes"){
-                                    question.answer = 1;
-                                    question.class = "active";
-                                }
-
-                            });
-                            index++;
-
-                        });
-
-                        personalProfile.goToPreviousPage(data);
-                    })
-                    .catch(function(jqXHR,textStatus,errorThrown){
-                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
-                        dependantsSubmit.removeClass(disabledClass);
+            dependantsSubmit.addClass(disabledClass);
+            return Promise.resolve()
+                .then(function() {
+                    var promiseSaveAnswers = updateDependants(),
+                        promiseGetQuestions = apiService.getQuestions(sessionData,previousScreenCategoryId),
+                        promiseGetAnswers = [];
+                    _.each(formData, function(entry) {
+                        promiseGetAnswers.push(apiService.getAnswers(sessionData,entry.taxReturnId,previousScreenCategoryId));
                     });
-            }
+                    return Promise.all([
+                        Promise.all(promiseSaveAnswers),
+                        Promise.all(promiseGetAnswers),
+                        promiseGetQuestions
+                    ]);
+                })
+                .then(function(response) {
+                    var data = {};
+                    data.accountInfo = accountInfo;
+                    data.taxReturns = sessionData.taxReturns;
+                    data.taxReturns.questions = response[2];
+                    _.each(data.taxReturns, function(taxReturn, index){
+                        taxReturn.questions = response[1][index];
+                        taxReturn.firstName = nameData[index];
+                        taxReturn.accountInfo = accountInfo;
+                        taxReturn.accountInfo.firstName = accountInfo.firstName.toUpperCase();
+                        _.each(taxReturn.questions.answers, function(answer){
+                            answer.tiles = apiService.getMarriageTiles(taxReturn.taxReturnId, answer.text);
+                            answer.answer = 0;
+                            answer.class = '';
+                            if (!answer.text) {
+                                answer.answer = 0;
+                                answer.class = '';
+                            } else if (answer.text === 'Yes'){
+                                answer.answer = 1;
+                                answer.class = 'active';
+                            }
+                        });
+                    });
+                    personalProfile.goToPreviousPage(data);
+                })
+                .catch(function(jqXHR,textStatus,errorThrown){
+                    ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
+                    dependantsSubmit.removeClass(disabledClass);
+                });
+        }
     }
 
     function validateDependantsFormData(dependantsForm){
@@ -259,7 +214,7 @@
         accountSession.users.forEach(function(entry){
             entry.activeTiles.dependants = formData[entry.id];
             try {
-                //if "yes" is selected
+                //if 'yes' is selected
                 entry.hasDependants = formData[entry.id][9201];//todo, find better way of linking model id
             } catch(exception){
 //do nothing
@@ -269,9 +224,29 @@
     }
 
     this.init = function(){
-      dependantsForm = $('#dependants-form');
-
         if ($('#personal-profile-dependants').length > 0) {
+            //variables
+            dependantsSubmit = $('#dependants-submit');
+            dependantsForm = $('#dependants-form');
+            dependantsBack = $('#dependants-back');
+
+            //listeners
+            dependantsBack.on('click',function(event){
+                event.preventDefault();
+                goToPreviousScreen();
+            });
+
+            dependantsForm.on('submit',function(event){
+                event.preventDefault();
+                submitDependants();
+            });
+
+            dependantsSubmit.on('click',function(event){
+                event.preventDefault();
+                submitDependants();
+            });
+
+
             var formData = helpers.getTileFormDataArray(dependantsForm);
 
             _.each(formData, function(taxReturn){
@@ -290,8 +265,6 @@
                 var month = $('#dependants-birthday-month-'+taxReturn.taxReturnId);
                 var year = $('#dependants-birthday-year-'+taxReturn.taxReturnId);
                 var dependantsContainer = $('#container-dependants-form-'+taxReturn.taxReturnId);
-                dependantsSubmit = $('#dependants-submit');
-                var dependantsBack = $('#dependants-back');
                 var dependantsEdit = $('#dependants-edit-'+taxReturn.taxReturnId);
                 var dependantsDelete = $('#dependants-delete-'+taxReturn.taxReturnId);
 
@@ -299,24 +272,10 @@
                 $(document).off('click', '.'+helpers.tileClass);
 
                 //listeners
-                dependantsForm.on('submit',function(event){
-                    event.preventDefault();
-                    submitDependants();
-                });
-
-                dependantsSubmit.on('click',function(event){
-                    event.preventDefault();
-                    submitDependants();
-                });
 
                 dependantsEdit.on('click',function(event){
                     event.preventDefault();
                     //TODO: Edit dependant function
-                });
-
-                dependantsBack.on('click',function(event){
-                    event.preventDefault();
-                    updateDependants();
                 });
 
                 dependantsDelete.on('click',function(event){
@@ -327,7 +286,7 @@
 
                 hasDependants.on('click', function(event){
                     event.preventDefault();
-                    $(this).toggleClass(helpers.activeClass);
+                    $(this).toggleClass(activeClass);
                     noDependants.removeClass(activeClass);
 
                     if(hasDependants.hasClass(activeClass)) {
@@ -351,17 +310,17 @@
                         validateDependantsFormData($(this));
                     });
                     if(!helpers.formHasErrors(dependantsContainer)){
-                    dependantsContainer.toggle();
-                    dependantsContainerLine.append('<p id="side-info-blurb3-'+taxReturn.taxReturnId+'">' + firstName.val() + " " + lastName.val() + '</p>');
-                    dependantsContainerLine2.append('<p id=side-info-blurb3-'+taxReturn.taxReturnId+'>' + day.val() + '/' + month.val() + '/' + year.val().slice(-2) + '</p>');
-                    dependantsContainerLine3.append('</br><button id="dependants-delete-'+taxReturn.taxReturnId+'" class="green-outline">Delete</button>');
-                    dependantsContainerLine4.append('</br><button id="dependants-edit-'+taxReturn.taxReturnId+'" class="green-outline">Edit</button>');
-                  }
+                        dependantsContainer.toggle();
+                        dependantsContainerLine.append('<p id="side-info-blurb3-'+taxReturn.taxReturnId+'">' + firstName.val() + " " + lastName.val() + '</p>');
+                        dependantsContainerLine2.append('<p id=side-info-blurb3-'+taxReturn.taxReturnId+'>' + day.val() + '/' + month.val() + '/' + year.val().slice(-2) + '</p>');
+                        dependantsContainerLine3.append('</br><button id="dependants-delete-'+taxReturn.taxReturnId+'" class="green-outline">Delete</button>');
+                        dependantsContainerLine4.append('</br><button id="dependants-edit-'+taxReturn.taxReturnId+'" class="green-outline">Edit</button>');
+                    }
                 });
 
                 noDependants.on('click', function(event){
                     event.preventDefault();
-                    $(this).toggleClass(helpers.activeClass);
+                    $(this).toggleClass(activeClass);
                     hasDependants.removeClass(activeClass);
                     dependantsContainer.hide();
                     dependantsLine.hide();
