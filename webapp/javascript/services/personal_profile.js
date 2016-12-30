@@ -144,7 +144,7 @@
             currentPageIndex = that.personalProfileFlow.indexOf(currentPage),
             newPage;
         newPage = that.personalProfileFlow[currentPageIndex];
-        changePage(newPage);
+        changePage(newPage, data);
     };
 
     this.getPersonalProfileSession = function(){

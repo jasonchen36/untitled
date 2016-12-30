@@ -191,19 +191,44 @@
     }
 
     function updateUserDependants(selectedTile){
-        var sessionData = personalProfile.getPageSession();
-        console.log('page session',sessionData);
+        var pageData = personalProfile.getPageSession(),
+            tileId = parseInt(selectedTile.attr('id'));
         //enforce toggle
         if(selectedTile.hasClass(activeClass)){
-            selectedTile.removeClass(activeClass);
+            //deselect option
+            _.each(pageData.taxReturns, function(taxReturn){
+                _.each(taxReturn.questions.answers, function(answer){
+                    if(answer.id === tileId){
+                        answer.class = '';
+                    }
+                    return answer;
+                });
+            });
         } else {
-            selectedTile.parent().find('.'+helpers.tileClass).removeClass(activeClass);
-            selectedTile.addClass(activeClass);
+            //select option
+            var hasSelectedTile;
+            _.each(pageData.taxReturns, function(taxReturn){
+                hasSelectedTile = false;
+                _.each(taxReturn.questions.answers, function(answer){
+                    if(answer.id === tileId){
+                        answer.class = activeClass;
+                        hasSelectedTile = true;
+                    }
+                    return answer;
+                });
+                if (hasSelectedTile){
+                    //deselect siblings
+                    _.each(taxReturn.questions.answers, function(answer){
+                        if(answer.id !== tileId){
+                            answer.class = '';
+                        }
+                        return answer;
+                    });
+                }
+            });
         }
-        //update data object
-
         //refresh page
-        personalProfile.refreshPage(sessionData);
+        personalProfile.refreshPage(pageData);
     }
 
     this.init = function(){
