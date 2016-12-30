@@ -10,6 +10,7 @@
         helpers = app.helpers,
         chat = app.views.dashboard.chat,
         activeClass = helpers.activeClass,
+        checklist,
         landingPageContainer = $('#dashboard-container'),
         dashboardStateCookie = 'store-dashboard-state';
 
@@ -64,6 +65,8 @@
         if (getCurrentPage() !== pageName) {
             if(pageName == 'chat')  {
                 changePageChat();
+            } else if(pageName == 'upload')  {
+               changePageUpload();
             }  else  {
                 that.changePage(pageName);
             }
@@ -120,6 +123,31 @@
     }
 
 
+    function changePageUpload(){
+
+
+        apiservice.getChecklist(userObject, userObject.quoteId)
+            .then(function(response){
+
+
+                var dataObject = {};
+                dataObject.documentChecklist = getDocumentChecklistObject(response);
+                dataObject.currentPage= "upload",                      
+
+
+                that.checklist = dataObject.documentChecklist;
+              //  app.views.dashboard.upload.
+
+                that.changePage('upload', dataObject);
+            })
+            .catch(function(jqXHR,textStatus,errorThrown){
+                console.log(jqXHR,textStatus,errorThrown);
+
+            });
+    }
+
+
+
     function getChatMessageObject(data){
 
 
@@ -137,9 +165,40 @@
             isFromTaxPlan: data.from_role === 'TAXPlan', // todo is this the final role name?  
             isFirst: false
         };
-    }
+    };
 
 
+
+    function getDocumentChecklistFilerName(data){
+
+        var name = data.first_name;
+        if(data.last_name !== null)  {
+            name =  name + " " + data.last_name;
+        }
+
+        return {
+            name: name
+       };
+    };
+
+
+
+    function getDocumentChecklistItemObject(data){
+        return {
+            checklistItemId: data.checklist_item_id,
+            name: data.name,
+            documents: data.documents,
+            filers: _.map(data.filers, getDocumentChecklistFilerName)
+        };
+    };
+
+
+    function getDocumentChecklistObject(data){
+        return {
+            checklistItems: _.map(data.checklistitems, getDocumentChecklistItemObject),
+         //   additionalDocuments: data.additionalDocuments
+        };
+    };
 
 
 
@@ -208,7 +267,7 @@
                 })
                 .on('click', '#dashboard-chat-activate', function (event) {
                     event.preventDefault();
-                    changePageHelper('chat');
+                     changePageHelper('chat');
                     $(this).addClass(activeClass);
                     document.getElementById('dashboard-upload-activate').classList.remove('active');
                     var startMyReturn = document.getElementById('dashboard-my-return-activate');
