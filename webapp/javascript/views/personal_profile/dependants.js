@@ -55,7 +55,7 @@
                                     question.class = '';
                                 } else if (question.text === 'Yes'){
                                     question.answer = 1;
-                                    question.class = 'active';
+                                    question.class = activeClass;
                                 }
 
                             });
@@ -111,15 +111,6 @@
                         taxReturn.accountInfo.firstName = accountInfo.firstName.toUpperCase();
                         _.each(taxReturn.questions.answers, function(answer){
                             answer.tiles = apiService.getMarriageTiles(taxReturn.taxReturnId, answer.text);
-                            answer.answer = 0;
-                            answer.class = '';
-                            if (!answer.text) {
-                                answer.answer = 0;
-                                answer.class = '';
-                            } else if (answer.text === 'Yes'){
-                                answer.answer = 1;
-                                answer.class = 'active';
-                            }
                         });
                     });
                     personalProfile.goToPreviousPage(data);

@@ -65,43 +65,22 @@
 
                     })
                     .then(function(response) {
-
                         var data = {};
                         data.accountInfo = accountInfo;
                         data.taxReturns = formData;
                         data.taxReturns.questions = response[2];
-
-                        var index = 0;
-
-
-
-                        _.each(data.taxReturns, function(taxReturn){
-                            var questionIndex = 0;
+                        _.each(data.taxReturns, function(taxReturn, index){
                             taxReturn.firstName = nameData[index];
                             taxReturn.questions = response[1][index];
-                            _.each(taxReturn.questions.answers, function(question){
-                                question.answer = 0;
-                                question.class = "";
-
-                                if(questionIndex===0){
-                                    question.id="has-dependants-"+taxReturn.taxReturnId;
-                                }else{
-                                    question.id="no-dependants-"+taxReturn.taxReturnId;
+                            _.each(taxReturn.questions.answers, function(answer){
+                                answer.answer = 0;
+                                answer.class = '';
+                                if (answer.text && answer.text === answer.question_text){
+                                    answer.answer = 1;
+                                    answer.class = activeClass;
                                 }
-                                questionIndex++;
-
-                                if ( !question.text) {
-                                    question.answer = 0;
-                                    question.class = "";
-                                } else if (question.text === "Yes"){
-                                    question.answer = 1;
-                                    question.class = "active";
-                                }
-
                             });
-                            index++;
                         });
-
                         personalProfile.goToNextPage(data);
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
