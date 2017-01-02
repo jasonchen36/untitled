@@ -45,7 +45,7 @@
                                 entry.questionId = 150;
                                 var day = maritalStatusForm.find('#marital-status-day-'+entry.taxReturnId);
                                 var month = maritalStatusForm.find('#marital-status-month-'+entry.taxReturnId);
-                                entry.answer = day + '/' + month;
+                                entry.answer = '2016-' + month.val() + '-' + day.val();
                                 ajaxOne =  apiservice.postMaritalDate(sessionData,
                                     entry.taxReturnId, entry);
                                 promiseSaveAnswers.push(ajaxOne);

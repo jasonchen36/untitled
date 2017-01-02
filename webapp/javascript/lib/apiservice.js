@@ -242,15 +242,13 @@
 
         _.each(entry, function(answer) {
 
-            if(!isNaN(questionId)) {
 
-                // TODO the server is not taking other answers when it should
-                //  Change when API server is ready
+            if(!isNaN(questionId) && questionId === 150) {
+
                 var text = answer;
-                //     var text= '';
 
-
-                if (typeof text != 'undefined' && text.length > 1) {
+                // TODO better check later
+                if (typeof text != 'undefined' && text.length === 10 && text != 'Common Law') {
 
                     answers.push(
                         {
