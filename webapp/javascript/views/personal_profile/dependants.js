@@ -31,7 +31,7 @@
                 dependantsSubmit.addClass(disabledClass);
                 return Promise.resolve()
                     .then(function() {
-                        var promiseSaveAnswers = updateDependants(),
+                        var promiseSaveAnswers = updateTileAnswers(formData),
                             promiseGetAnswers = [],
                             promiseGetQuestions = apiService.getQuestions(sessionData,nextScreenCategoryId);
                         _.each(formData, function(entry) {
@@ -75,9 +75,18 @@
         }
     }
 
-    function updateDependants(){
-        //todo, return array of promises
-        return [];
+    function updateTileAnswers(formData){
+        var sessionData = personalProfile.getPersonalProfileSession(),
+            pageData = personalProfile.getPageSession(),
+            promiseSaveAnswers = [],
+            formDataEntry;
+        _.each(pageData.taxReturns, function(entry){
+            formDataEntry = _.find(formData,function(dataEntry) {
+                return parseInt(dataEntry.taxReturnId) === parseInt(entry.taxReturnId);
+            });
+            promiseSaveAnswers.push(apiService.postAnswers(sessionData, entry.taxReturnId, formDataEntry));
+        });
+        return promiseSaveAnswers;
     }
 
     function goToPreviousScreen(){
@@ -89,7 +98,7 @@
             dependantsSubmit.addClass(disabledClass);
             return Promise.resolve()
                 .then(function() {
-                    var promiseSaveAnswers = updateDependants(),
+                    var promiseSaveAnswers = updateTileAnswers(formData),
                         promiseGetQuestions = apiService.getQuestions(sessionData,previousScreenCategoryId),
                         promiseGetAnswers = [];
                     _.each(formData, function(entry) {
