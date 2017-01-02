@@ -94,18 +94,7 @@
                             //todo, update with new API route to get tax return with questions and answers in one object
                             uri = sessionData.apiUrl + '/tax_return/' + entry.taxReturnId + '/answers/category/' + 8;
 
-                            var ajaxTwo = ajax.ajax(
-                                'GET',
-                                uri,
-                                {
-                                },
-                                'json',
-                                 {
-                                  'Authorization': 'Bearer '+ accountInfo.token
-                                 }
-                            );
-
-                            promiseArrayGet.push(ajaxTwo);
+                            promiseArrayGet.push(apiService.getAnswers(sessionData, entry.taxReturnId, 8));
                         });
 
                       return Promise.all([Promise.all(promiseArrayPut),
@@ -119,23 +108,41 @@
                         data.accountInfo = accountInfo;
                         data.taxReturns = formData;
                         data.taxReturns.questions = response[2];
+
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){
                             taxReturn.questions = response[1][index];
+
                             taxReturn.firstName = nameData[index];
                             taxReturn.accountInfo = accountInfo;
                             taxReturn.accountInfo.firstName = accountInfo.firstName.toUpperCase();
+                            var answerIndex = 0;
                             _.each(taxReturn.questions.answers, function(answer){
-                                answer.tiles = apiService.getMarriageTiles(taxReturn.taxReturnId, answer.text);
-                                answer.answer = 0;
-                                answer.class = "";
-                                if (!answer.text) {
+                                if(answerIndex === 0) {
+                                    answer.tiles = apiService.getMarriageTiles(taxReturn.taxReturnId, answer.text);
                                     answer.answer = 0;
                                     answer.class = "";
-                                } else if (answer.text === "Yes"){
-                                    answer.answer = 1;
-                                    answer.class = helpers.activeClass;
+                                    if (!answer.text) {
+                                        answer.answer = 0;
+                                        answer.class = "";
+                                    } else if (answer.text === "Yes") {
+                                        answer.answer = 1;
+                                        answer.class = helpers.activeClass;
+                                    }
+                                }else if(answerIndex === 1){
+                                    answer.answer = 0;
+                                    answer.class = "";
+                                    if(answer.text === "Yes"){
+                                        answer.answer = 1;
+                                        answer.class = helpers.activeClass;
+                                    }
+                                }else{
+                                    if(answer.text.length === 10){
+                                        answer.day = answer.text.substring(8, 9);
+                                        answer.month = answer.text.substring(5,6);
+                                    }
                                 }
+                                answerIndex++;
                             });
                             index++;
 

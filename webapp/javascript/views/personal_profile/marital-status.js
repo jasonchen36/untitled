@@ -255,7 +255,7 @@
                 var day = $('#marital-status-day-' + taxReturn.taxReturnId);
                 var month = $('#marital-status-month-' + taxReturn.taxReturnId);
                 var sameStatus = $('#marital-status-same-' + taxReturn.taxReturnId);
-
+                var dateChangedText = $('#indicate-date-' + taxReturn.taxReturnId);
 
                 var marriedChoice = $('#married-married-' + taxReturn.taxReturnId);
                 var divorcedChoice = $('#married-divorced-' + taxReturn.taxReturnId);
@@ -320,6 +320,7 @@
                     childElement.toggleClass(helpers.activeClass);
                     day.toggle();
                     month.toggle();
+                    dateChangedText.toggle();
                 });
 
                 sameStatus.on('click', function (event) {
@@ -334,6 +335,7 @@
                             day.val($('#marital-status-day-' + firstReturnId).val());
                             month.show();
                             month.val($('#marital-status-month-' + firstReturnId).val());
+                            dateChangedText.show();
                         }
 
                         if($('#married-married-' + firstReturnId).hasClass(activeClass)){
@@ -376,6 +378,7 @@
                         checkbox.find('.checkbox').first().removeClass(activeClass);
                         day.hide();
                         month.hide();
+                        dateChangedText.hide();
                         marriedChoice.removeClass(activeClass);
                         divorcedChoice.removeClass(activeClass);
                         separatedChoice.removeClass(activeClass);
