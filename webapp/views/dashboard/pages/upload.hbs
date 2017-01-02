@@ -6,7 +6,9 @@
         <a class="i--icon-printer" target="_blank" href="{{apiUrl}}/quote/{{quoteId}}/checklist/PDF"></a>
     </div>
     {{#each documentChecklist.checklistItems}}
-        <div id="upload-checklist-item-{{checklistItemId}}" class="upload-checklist-item" data-id="{{checklistItemId}}">
+        <div id="upload-checklist-item-{{checklistItemId}}" class="upload-checklist-item
+       {{#compare ../activeItem.checklistItemId checklistItemId operator="=="}}active{{/compare}}
+         " data-id="{{checklistItemId}}">
             <div class="label-document-name float-left display-inline-block">{{name}}</div>
             <div class="i--icon-right-arrow float-right display-inline-block"></div>
         </div>
