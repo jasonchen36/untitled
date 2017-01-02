@@ -23,6 +23,7 @@
             var formData = helpers.getTileFormDataArray(dependantsForm),
                 sessionData = personalProfile.getPersonalProfileSession(),
                 accountInfo = helpers.getAccountInformation(sessionData),
+                pageData = personalProfile.getPageSession(),
                 nextScreenCategoryId = 2;
             dependantsSubmit.addClass(disabledClass);
             return Promise.resolve()
@@ -30,32 +31,29 @@
                     var promiseSaveAnswers = updateTileAnswers(formData),
                         promiseGetAnswers = [],
                         promiseGetQuestions = apiService.getQuestions(sessionData,nextScreenCategoryId);
-                    _.each(formData, function(entry) {
+                    _.each(pageData.taxReturns, function(entry) {
                         promiseGetAnswers.push(apiService.getAnswers(sessionData,entry.taxReturnId,nextScreenCategoryId));
                     });
                     return Promise.all([
                         Promise.all(promiseSaveAnswers),
                         Promise.all(promiseGetAnswers),
-                        promiseGetQuestions
+                        promiseGetQuestions,
+                        apiService.getTaxReturns(sessionData)
                     ]);
                 })
                 .then(function(response) {
                     var data = {};
                     data.accountInfo = accountInfo;
-                    data.taxReturns = formData;
+                    data.taxReturns = response[3];
                     data.taxReturns.questions = response[2];
                     _.each(data.taxReturns, function(taxReturn, index){
-                        taxReturn.firstName = nameData[index];
                         taxReturn.questions = response[1][index];
-                        _.each(taxReturn.questions.answers, function(question){
-                            question.answer = 0;
-                            question.class = '';
-                            if (!question.text) {
-                                question.answer = 0;
-                                question.class = '';
-                            } else if (question.text === 'Yes'){
-                                question.answer = 1;
-                                question.class = activeClass;
+                        _.each(taxReturn.questions.answers, function(answer){
+                            answer.answer = 0;
+                            answer.class = '';
+                            if (answer.text.toLowerCase() === 'yes'){
+                                answer.answer = 1;
+                                answer.class = activeClass;
                             }
                         });
                     });
@@ -87,6 +85,7 @@
             var formData = helpers.getTileFormDataArray(dependantsForm),
                 sessionData = personalProfile.getPersonalProfileSession(),
                 accountInfo = helpers.getAccountInformation(sessionData),
+                pageData = personalProfile.getPageSession(),
                 previousScreenCategoryId = 8;
             dependantsSubmit.addClass(disabledClass);
             return Promise.resolve()
@@ -94,19 +93,20 @@
                     var promiseSaveAnswers = updateTileAnswers(formData),
                         promiseGetQuestions = apiService.getQuestions(sessionData,previousScreenCategoryId),
                         promiseGetAnswers = [];
-                    _.each(formData, function(entry) {
+                    _.each(pageData.taxReturns, function(entry) {
                         promiseGetAnswers.push(apiService.getAnswers(sessionData,entry.taxReturnId,previousScreenCategoryId));
                     });
                     return Promise.all([
                         Promise.all(promiseSaveAnswers),
                         Promise.all(promiseGetAnswers),
-                        promiseGetQuestions
+                        promiseGetQuestions,
+                        apiService.getTaxReturns(sessionData)
                     ]);
                 })
                 .then(function(response) {
                     var data = {};
                     data.accountInfo = accountInfo;
-                    data.taxReturns = sessionData.taxReturns;
+                    data.taxReturns = response[3];
                     data.taxReturns.questions = response[2];
                     _.each(data.taxReturns, function(taxReturn, index){
                         taxReturn.questions = response[1][index];
@@ -254,7 +254,6 @@
                     //create dependant
                     apiService.createDependant(sessionData, taxReturnId, formData)
                         .then(function(response){
-                            console.log(response);
                             return apiService.linkDependant(sessionData, taxReturnId, response.dependantId);
                         })
                         .then(function(){

@@ -4,6 +4,7 @@
         that = app.views.personalProfile.address,
         helpers = app.helpers,
         personalProfile = app.services.personalProfile,
+        apiService = app.apiservice,
         ajax = app.ajax,
         addressForm,
         addressSubmit,
@@ -199,6 +200,59 @@
         }
     }
 
+    function goToPreviousScreen(){
+        if (!addressSubmit.hasClass(disabledClass)) {
+            var formData = helpers.getFormData(addressForm),
+                sessionData = personalProfile.getPersonalProfileSession(),
+                accountInfo = helpers.getAccountInformation(sessionData),
+                pageData = personalProfile.getPageSession(),
+                previousScreenCategoryId = 9;
+            addressSubmit.addClass(disabledClass);
+            return Promise.resolve()
+                .then(function() {
+                    //todo, save answers
+                    var promiseSaveAnswers = [],
+                        promiseGetDependants = [],
+                        promiseGetQuestions = apiService.getQuestions(sessionData,previousScreenCategoryId),
+                        promiseGetAnswers = [];
+                    _.each(pageData.taxReturns, function(entry) {
+                        promiseGetAnswers.push(apiService.getAnswers(sessionData,entry.taxReturnId,previousScreenCategoryId));
+                        promiseGetDependants.push(apiService.getDependants(sessionData,entry.taxReturnId));
+                    });
+                    return Promise.all([
+                        Promise.all(promiseSaveAnswers),
+                        Promise.all(promiseGetAnswers),
+                        promiseGetQuestions,
+                        apiService.getTaxReturns(sessionData),
+                        Promise.all(promiseGetDependants)
+                    ]);
+                })
+                .then(function(response) {
+                    var data = {};
+                    data.accountInfo = accountInfo;
+                    data.taxReturns = response[3];
+                    data.taxReturns.questions = response[2];
+                    _.each(data.taxReturns, function(taxReturn, index){
+                        taxReturn.questions = response[1][index];
+                        taxReturn.dependants = response[4][index];
+                        _.each(taxReturn.questions.answers, function(answer){
+                            answer.answer = 0;
+                            answer.class = '';
+                            if (answer.text.toLowerCase() === 'yes'){
+                                answer.answer = 1;
+                                answer.class = helpers.activeClass;
+                            }
+                        });
+                    });
+                    personalProfile.goToPreviousPage(data);
+                })
+                .catch(function(jqXHR,textStatus,errorThrown){
+                    ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
+                    addressSubmit.removeClass(disabledClass);
+                });
+        }
+    }
+
     this.init = function(){
         if ($('#personal-profile-address').length > 0) {
 
@@ -221,7 +275,7 @@
 
             addressBack.on('click',function(event){
                 event.preventDefault();
-                personalProfile.goToPreviousPage();
+                goToPreviousScreen();
             });
 
             addressIsSameCheckbox.on('click',function(event){
