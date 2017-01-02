@@ -328,7 +328,7 @@
                         childElement = parentElement.find('.checkbox').first();
                     childElement.toggleClass(helpers.activeClass);
                     if(childElement.hasClass(activeClass)) {
-                        if ($('#marital-status-changed-' + firstReturnId).hasClass(activeClass)) {
+                        if ($('#marital-status-changed-' + firstReturnId).find('.checkbox').first().hasClass(activeClass)) {
                             checkbox.find('.checkbox').first().addClass(activeClass);
                             day.show();
                             day.val($('#marital-status-day-' + firstReturnId).val());
