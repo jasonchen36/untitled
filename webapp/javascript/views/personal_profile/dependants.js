@@ -219,8 +219,16 @@
     }
 
     function editDependant(element){
-        var dependentId = parseInt(element.attr('data-id'));
-        console.log('edit dependant '+dependentId);
+        var pageData = personalProfile.getPageSession(),
+            dependentId = parseInt(element.attr('data-id')),
+            hasSelectedDependant;
+        _.each(pageData.taxReturns, function(taxReturn){
+            hasSelectedDependant = _.find(taxReturn.dependants, {id: dependentId});
+            if (hasSelectedDependant){
+                taxReturn.dependantForm = hasSelectedDependant;
+            }
+        });
+        personalProfile.refreshPage(pageData);
     }
 
     function saveDependant(element){
@@ -230,7 +238,6 @@
                 console.log('call api');
             }
         }
-        //todo, validate form
         //todo, share dependant logic
         console.log('save dependant');
     }

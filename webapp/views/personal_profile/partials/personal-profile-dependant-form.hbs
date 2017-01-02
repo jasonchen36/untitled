@@ -1,12 +1,12 @@
 <div class="border-bottom-light-gray border-top-light-gray add-bottom-padding add-top-padding clear-both">
     <div class="container-inline-input long">
         <label for="first-name-{{taxReturnId}}">DEPENDANT FIRST NAME</label>
-        <input id="first-name-{{taxReturnId}}" name="firstName" type="text" value="" class="inline-input"/>
+        <input id="first-name-{{taxReturnId}}" name="firstName" type="text" value="{{dependantForm.first_name}}" class="inline-input"/>
         <p class="label-error">First name needed</p>
     </div>
     <div class="container-inline-input long">
         <label for="last-name-{{taxReturnId}}">DEPENDANT LAST NAME</label>
-        <input id="last-name-{{taxReturnId}}" type="text" value="" name="lastName" class="inline-input"/>
+        <input id="last-name-{{taxReturnId}}" type="text" value="{{dependantForm.last_name}}" name="lastName" class="inline-input"/>
         <p class="label-error">Last name needed</p>
     </div>
     <div class="container-inline-input long">
@@ -16,35 +16,35 @@
         <label class="under" for="relationship-{{taxReturnId}}">RELATIONSHIP</label>
     </div>
     <div class="container-inline-input short">
-        <input id="birth-day-{{taxReturnId}}" type="text" value="" class="inline-input text-center" placeholder="DD" maxlength="2" name="day"/>
+        <input id="birth-day-{{taxReturnId}}" type="text" value="{{dependantForm.day}}" class="inline-input text-center" placeholder="DD" maxlength="2" name="day"/>
         <p class="label-error">Day needed</p>
     </div>
     <div class="container-inline-input short">
-        <input id="birth-month-{{taxReturnId}}" type="text" value="" class="inline-input text-center" placeholder="MM" maxlength="2" name="month"/>
+        <input id="birth-month-{{taxReturnId}}" type="text" value="{{dependantForm.month}}" class="inline-input text-center" placeholder="MM" maxlength="2" name="month"/>
         <p class="label-error">Month needed</p>
     </div>
     <div class="container-inline-input short">
-        <input id="birth-year-{{taxReturnId}}" type="text" value="" class="inline-input text-center" placeholder="YYYY" maxlength="4" name="year"/>
+        <input id="birth-year-{{taxReturnId}}" type="text" value="{{dependantForm.year}}" class="inline-input text-center" placeholder="YYYY" maxlength="4" name="year"/>
         <p class="label-error">Year needed</p>
     </div>
     <div class="container-inline-input long">
         <div class="drop-down">
             <select id="relationship-{{taxReturnId}}" name="relationship" class="drop-down-select">
                 <option value="">Select…</option>
-                <option value="1">Mother</option>
-                <option value="2">Father</option>
-                <option value="3">Sister</option>
-                <option value="4">Brother</option>
-                <option value="5">Aunt</option>
-                <option value="6">Uncle</option>
-                <option value="7">Niece</option>
-                <option value="8">Nephew</option>
-                <option value="9">Grandfather</option>
-                <option value="10">Grandmother</option>
-                <option value="11">Grandson</option>
-                <option value="12">Granddaughter</option>
-                <option value="13">Son</option>
-                <option value="14">Daughter</option>
+                <option value="Mother" {{{isOptionSelected "Mother" dependantForm.relationship}}}>Mother</option>
+                <option value="Father" {{{isOptionSelected "Father" dependantForm.relationship}}}>Father</option>
+                <option value="Sister" {{{isOptionSelected "Sister" dependantForm.relationship}}}>Sister</option>
+                <option value="Brother" {{{isOptionSelected "Brother" dependantForm.relationship}}}>Brother</option>
+                <option value="Aunt" {{{isOptionSelected "Aunt" dependantForm.relationship}}}>Aunt</option>
+                <option value="Uncle" {{{isOptionSelected "Uncle" dependantForm.relationship}}}>Uncle</option>
+                <option value="Niece" {{{isOptionSelected "Niece" dependantForm.relationship}}}>Niece</option>
+                <option value="Nephew" {{{isOptionSelected "Nephew" dependantForm.relationship}}}>Nephew</option>
+                <option value="Grandfather" {{{isOptionSelected "Grandfather" dependantForm.relationship}}}>Grandfather</option>
+                <option value="Grandmother" {{{isOptionSelected "Grandmother" dependantForm.relationship}}}>Grandmother</option>
+                <option value="Grandson" {{{isOptionSelected "Grandson" dependantForm.relationship}}}>Grandson</option>
+                <option value="Granddaughter" {{{isOptionSelected "Granddaughter" dependantForm.relationship}}}>Granddaughter</option>
+                <option value="Son" {{{isOptionSelected "Son" dependantForm.relationship}}}>Son</option>
+                <option value="Daughter" {{{isOptionSelected "Daughter" dependantForm.relationship}}}>Daughter</option>
             </select>
         </div>
         <p class="label-error">Relationship needed</p>
