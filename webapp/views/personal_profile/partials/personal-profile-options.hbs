@@ -3,11 +3,11 @@
         {{#switch type}}
             {{#case "NotSure" break=true}}
                 {{#unless ../isPrimaryFiler}}
-                    {{>personal-profile-tile activeTiles=../activeTiles}}
+                    {{>personal-profile-tile}}
                 {{/unless}}
             {{/case}}
             {{#default}}
-                {{>personal-profile-tile activeTiles=../activeTiles}}
+                {{>personal-profile-tile}}
             {{/default}}
         {{/switch}}
     {{/each}}

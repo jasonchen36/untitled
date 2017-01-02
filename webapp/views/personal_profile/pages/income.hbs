@@ -9,11 +9,11 @@
             <form id="income-form">
                 {{#each taxReturns}}
                     <h1 class="subtitle">{{firstName}} please select all your sources of income in 2016:</h1>
-                {{#compare @index 0 operator="=="}}
-                    {{>personal-profile-options questions=questions.answers activeTiles=questions.answers.answer tileContainerId=taxReturnId isPrimaryFiler=true}}
-                {{else}}
-                    {{>personal-profile-options questions=questions.answers activeTiles=questions.answers.answer tileContainerId=taxReturnId}}
-                {{/compare}}
+                    {{#compare @index 0 operator="=="}}
+                        {{>personal-profile-options questions=questions.answers tileContainerId=taxReturnId isPrimaryFiler=true}}
+                    {{else}}
+                        {{>personal-profile-options questions=questions.answers tileContainerId=taxReturnId}}
+                    {{/compare}}
                     <input type="hidden" id="tax-return-first-name-{{taxReturnId}}" name="taxReturnFirstName{{taxReturnId}}" value="{{firstName}}"/>
                 {{/each}}
             </form>

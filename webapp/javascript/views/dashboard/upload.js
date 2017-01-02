@@ -83,7 +83,8 @@
                 //additional documents
                 dasboard.activeItem = {
                     name: 'Additional Documents',
-                    checklistItemId: 0
+                    checklistItemId: 0,
+                    documents: userSession.documentChecklist.additionalDocuments
                 };
             } else {
                 dashboard.activeItem = _.find(dashboard.checklist.checklistItems, ['checklistItemId', dataId]);

@@ -6,366 +6,416 @@
         personalProfile = app.services.personalProfile,
         dependantsForm,
         ajax = app.ajax,
-        apiservice = app.apiservice,
+        apiService = app.apiservice,
         dependantsSubmit,
         dependantsBack,
-        dependantsEdit,
-        dependantsDelete,
-        errorClass = app.helpers.errorClass,
-        activeClass = app.helpers.activeClass,
-        disabledClass = app.helpers.disabledClass;
+        dependantsTiles,
+        dependantsEditButtons,
+        dependantsDeleteButtons,
+        dependantsAddButtons,
+        dependantsSaveButtons,
+        dependantsCancelButtons,
+        dependantCheckboxes,
+        activeClass = helpers.activeClass,
+        disabledClass = helpers.disabledClass;
 
     function submitDependants(){
         if (!dependantsSubmit.hasClass(disabledClass)) {
-            var formData = helpers.getTileFormDataArray(dependantsForm);
-            var sessionData = personalProfile.getPersonalProfileSession();
-            var accountInfo = helpers.getAccountInformation(sessionData);
-            var hasDependants = $('#has-dependants-' + taxReturn.taxReturnId);
-            if (hasDependants.hasClass(activeClass)) {
-            helpers.resetForm(dependantsForm);
-            $('.'+helpers.formContainerClass).each(function(){
-                validateDependantsFormData($(this));
-            });
-            }
-            if(!helpers.formHasErrors(dependantsForm)){
-                dependantsSubmit.addClass(disabledClass);
+            var formData = helpers.getTileFormDataArray(dependantsForm),
+                sessionData = personalProfile.getPersonalProfileSession(),
+                accountInfo = helpers.getAccountInformation(sessionData),
+                pageData = personalProfile.getPageSession(),
+                nextScreenCategoryId = 2;
+            dependantsSubmit.addClass(disabledClass);
+            if(!validateDependantsTiles()) {
+                window.location.hash = 'modal-personal-profile-popup';
+            } else {
                 return Promise.resolve()
-                    .then(function() {
-                        var promiseArrayPut = [];
-                        var promiseArrayGet = [];
-                        var promiseArrayQuestions = [];
-
-                        //todo, product and question category in variable
-                        var ajaxAnswers = apiservice.getQuestions(sessionData,2);
-                        promiseArrayQuestions.push(ajaxAnswers);
-
-                        _.each(formData, function(entry) {
-
-                            //todo,
-                            /*var ajaxOne =  apiservice.postAnswers(sessionData,
-                             entry.taxReturnId, entry);
-                             promiseArrayPut.push(ajaxOne);*/
-
-                            var ajaxTwo = apiservice.getAnswers(sessionData,
-                                entry.taxReturnId,2);
-
-                            promiseArrayGet.push(ajaxTwo);
+                    .then(function () {
+                        var promiseSaveAnswers = updateTileAnswers(formData),
+                            promiseGetAnswers = [],
+                            promiseGetQuestions = apiService.getQuestions(sessionData, nextScreenCategoryId);
+                        _.each(pageData.taxReturns, function (entry) {
+                            promiseGetAnswers.push(apiService.getAnswers(sessionData, entry.taxReturnId, nextScreenCategoryId));
                         });
-
-                        return Promise.all([Promise.all(promiseArrayPut),
-                            Promise.all(promiseArrayGet),
-                            Promise.all(promiseArrayQuestions)]);
-
+                        return Promise.all([
+                            Promise.all(promiseSaveAnswers),
+                            Promise.all(promiseGetAnswers),
+                            promiseGetQuestions,
+                            apiService.getTaxReturns(sessionData)
+                        ]);
                     })
-                    .then(function(response) {
-
+                    .then(function (response) {
                         var data = {};
                         data.accountInfo = accountInfo;
-                        data.taxReturns = formData;
+                        data.taxReturns = response[3];
                         data.taxReturns.questions = response[2];
-
-                        var index = 0;
-                        _.each(data.taxReturns, function(taxReturn){
-                            taxReturn.firstName = nameData[index];
+                        _.each(data.taxReturns, function (taxReturn, index) {
                             taxReturn.questions = response[1][index];
-                            _.each(taxReturn.questions.answers, function(question){
-                              question.answer = 0;
-                              question.class = "";
-
-                              if ( !question.text) {
-                                question.answer = 0;
-                                question.class = "";
-                              } else if (question.text === "Yes"){
-                                    question.answer = 1;
-                                    question.class = "active";
-                              }
-
+                            _.each(taxReturn.questions.answers, function (answer) {
+                                answer.answer = 0;
+                                answer.class = '';
+                                if (answer.text && answer.text.toLowerCase() === 'yes') {
+                                    answer.answer = 1;
+                                    answer.class = activeClass;
+                                }
                             });
-                            index++;
                         });
-
                         personalProfile.goToNextPage(data);
                     })
-                    .catch(function(jqXHR,textStatus,errorThrown){
-                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
+                    .catch(function (jqXHR, textStatus, errorThrown) {
+                        ajax.ajaxCatch(jqXHR, textStatus, errorThrown);
                         dependantsSubmit.removeClass(disabledClass);
                     });
-              }
+            }
         }
     }
 
-    function updateDependants(){
-        if (!dependantsSubmit.hasClass(disabledClass)) {
-            var formData = helpers.getTileFormDataArray(dependantsForm);
-            var sessionData = personalProfile.getPersonalProfileSession();
-            var accountInfo = helpers.getAccountInformation(sessionData);
-            var nameData = helpers.getFormDataArray(dependantsForm);
-            nameData = nameData[0];
-                dependantsSubmit.addClass(disabledClass);
-                return Promise.resolve()
-                    .then(function() {
-                        var promiseArrayPut = [];
-                        var promiseArrayGet = [];
-                        var promiseArrayQuestions = [];
-
-                        //todo, product and question category in variable
-                        var ajaxAnswers = apiservice.getQuestions(sessionData,8);
-                        promiseArrayQuestions.push(ajaxAnswers);
-
-                        _.each(formData, function(entry) {
-
-                            //todo,
-                            /*var ajaxOne =  apiservice.postAnswers(sessionData,
-                             entry.taxReturnId, entry);
-                             promiseArrayPut.push(ajaxOne);*/
-
-                            var ajaxTwo = apiservice.getAnswers(sessionData,
-                                entry.taxReturnId,8);
-
-                            promiseArrayGet.push(ajaxTwo);
-                        });
-
-                        return Promise.all([Promise.all(promiseArrayPut),
-                            Promise.all(promiseArrayGet),
-                            Promise.all(promiseArrayQuestions)]);
-
-                    })
-                    .then(function(response) {
-
-                        var data = {};
-                        data.accountInfo = accountInfo;
-                        data.taxReturns = formData;
-                        data.taxReturns.questions = response[2];
-
-                        var married = {id:"married-married", question_id:"129", class:"", instructions:"", question_text:"Married"};
-                        var divorced = {id:"married-divorced", question_id:"129", class:"", instructions:"", question_text:"Divorced"};
-                        var separated = {id:"married-separated", question_id:"129",  class:"", instructions:"", question_text:"Separated"};
-                        var widowed = {id:"married-widowed", question_id:"129",  class:"", instructions:"", question_text:"Widowed"};
-                        var commonLaw = {id:"married-common-law", question_id:"129",  class:"", instructions:"", question_text:"Common Law"};
-                        var single = {id:"married-single", question_id:"129",  class:"", instructions:"", question_text:"Single"};
-                        var marriageTiles = [married, divorced, separated, widowed, commonLaw, single];
-
-                        var index = 0;
-                        _.each(data.taxReturns, function(taxReturn){
-                            taxReturn.questions = response[1][index];
-                            taxReturn.firstName = nameData[index];
-                            _.each(taxReturn.questions.answers, function(question){
-                                question.tiles = marriageTiles;
-                                question.answer = 0;
-                                question.class = "";
-
-                                if ( !question.text) {
-                                    question.answer = 0;
-                                    question.class = "";
-                                } else if (question.text === "Yes"){
-                                    question.answer = 1;
-                                    question.class = "active";
-                                }
-
-                            });
-                            index++;
-
-                        });
-
-                        personalProfile.goToPreviousPage(data);
-                    })
-                    .catch(function(jqXHR,textStatus,errorThrown){
-                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
-                        dependantsSubmit.removeClass(disabledClass);
-                    });
-            }
+    function updateTileAnswers(formData){
+        var sessionData = personalProfile.getPersonalProfileSession(),
+            pageData = personalProfile.getPageSession(),
+            promiseSaveAnswers = [],
+            formDataEntry;
+        _.each(pageData.taxReturns, function(entry){
+            formDataEntry = _.find(formData,function(dataEntry) {
+                return parseInt(dataEntry.taxReturnId) === parseInt(entry.taxReturnId);
+            });
+            promiseSaveAnswers.push(apiService.postAnswers(sessionData, entry.taxReturnId, formDataEntry));
+        });
+        return promiseSaveAnswers;
     }
 
-    function validateDependantsFormData(dependantsForm){
+    function goToPreviousScreen(){
+        if (!dependantsSubmit.hasClass(disabledClass)) {
+            var formData = helpers.getTileFormDataArray(dependantsForm),
+                sessionData = personalProfile.getPersonalProfileSession(),
+                accountInfo = helpers.getAccountInformation(sessionData),
+                pageData = personalProfile.getPageSession(),
+                previousScreenCategoryId = 8;
+            dependantsSubmit.addClass(disabledClass);
+            return Promise.resolve()
+                .then(function() {
+                    var promiseSaveAnswers = updateTileAnswers(formData),
+                        promiseGetQuestions = apiService.getQuestions(sessionData,previousScreenCategoryId),
+                        promiseGetAnswers = [];
+                    _.each(pageData.taxReturns, function(entry) {
+                        promiseGetAnswers.push(apiService.getAnswers(sessionData,entry.taxReturnId,previousScreenCategoryId));
+                    });
+                    return Promise.all([
+                        Promise.all(promiseSaveAnswers),
+                        Promise.all(promiseGetAnswers),
+                        promiseGetQuestions,
+                        apiService.getTaxReturns(sessionData)
+                    ]);
+                })
+                .then(function(response) {
+                    var data = {};
+                    data.accountInfo = accountInfo;
+                    data.taxReturns = response[3];
+                    data.taxReturns.questions = response[2];
+                    _.each(data.taxReturns, function(taxReturn, index){
+                        taxReturn.questions = response[1][index];
+                        taxReturn.accountInfo = accountInfo;
+                        taxReturn.accountInfo.firstName = accountInfo.firstName.toUpperCase();
+                        _.each(taxReturn.questions.answers, function(answer){
+                            answer.tiles = apiService.getMarriageTiles(taxReturn.taxReturnId, answer.text);
+                        });
+                    });
+                    personalProfile.goToPreviousPage(data);
+                })
+                .catch(function(jqXHR,textStatus,errorThrown){
+                    ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
+                    dependantsSubmit.removeClass(disabledClass);
+                });
+        }
+    }
+
+    function validateDependantsTiles(){
+        var formData = helpers.getTileFormDataArray(dependantsForm),
+            tilesAreValid = true;
+        _.each(formData, function(entry){
+            if (_.values(entry).indexOf(1) === -1){
+                tilesAreValid = false;
+            }
+        });
+        return tilesAreValid;
+    }
+
+    function validateDependantsFormData(formContainer){
         var errors = 0,
-            taxReturnId = dependantsForm.attr('data-id'),
-            firstName = dependantsForm.find('#dependants-first-name-'+taxReturnId),
-            lastName = dependantsForm.find('#dependants-last-name-'+taxReturnId),
-            day = dependantsForm.find('#dependants-birthday-day-'+taxReturnId),
-            month = dependantsForm.find('#dependants-birthday-month-'+taxReturnId),
-            year = dependantsForm.find('#dependants-birthday-year-'+taxReturnId),
-            relationship = dependantsForm.find('#dependants-relationship-'+taxReturnId),
+            formData = helpers.getFormData(formContainer),
+            input;
 
-            firstNameLabelError = dependantsForm.find('#dependants-first-name-label-error-'+taxReturnId),
-            lastNameLabelError = dependantsForm.find('#dependants-last-name-label-error-'+taxReturnId),
-            dayLabelError = dependantsForm.find('#dependants-birthday-day-label-error-'+taxReturnId),
-            monthLabelError = dependantsForm.find('#dependants-birthday-month-label-error-'+taxReturnId),
-            yearLabelError = dependantsForm.find('#dependants-birthday-year-label-error-'+taxReturnId),
-            relationshipLabelError = dependantsForm.find('#dependants-relationship-label-error-'+taxReturnId);
-
-        firstName.removeClass(helpers.errorClass);
-        lastName.removeClass(helpers.errorClass);
-        day.removeClass(helpers.errorClass);
-        month.removeClass(helpers.errorClass);
-        year.removeClass(helpers.errorClass);
-        relationship.removeClass(helpers.errorClass);
-
-        firstNameLabelError.removeClass(helpers.errorClass);
-        lastNameLabelError.removeClass(helpers.errorClass);
-        dayLabelError.removeClass(helpers.errorClass);
-        monthLabelError.removeClass(helpers.errorClass);
-        yearLabelError.removeClass(helpers.errorClass);
-        relationshipLabelError.removeClass(helpers.errorClass);
+        //reset form
+        formContainer.find('.'+helpers.errorClass).removeClass(helpers.errorClass);
 
         //firstName
-        if (helpers.isEmpty(firstName.val())){
-            firstName.addClass(helpers.errorClass);
-            firstNameLabelError.addClass(helpers.errorClass);
+        if (helpers.isEmpty(formData.firstName)){
+            input = formContainer.find('[name="firstName"]');
+            input.addClass(helpers.errorClass);
+            input.parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
             errors++;
         }
         //lastName
-        if (helpers.isEmpty(lastName.val())){
-            lastName.addClass(helpers.errorClass);
-            lastNameLabelError.addClass(helpers.errorClass);
+        if (helpers.isEmpty(formData.lastName)){
+            input = formContainer.find('[name="lastName"]');
+            input.addClass(helpers.errorClass);
+            input.parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
             errors++;
         }
         //day
-        if (helpers.isEmpty(day.val())){
-            day.addClass(helpers.errorClass);
-            dayLabelError.addClass(helpers.errorClass);
+        if (!helpers.isValidDay(formData.day)){
+            input = formContainer.find('[name="day"]');
+            input.addClass(helpers.errorClass);
+            input.parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
             errors++;
         }
         //month
-        if (helpers.isEmpty(month.val())){
-            month.addClass(helpers.errorClass);
-            monthLabelError.addClass(helpers.errorClass);
+        if (!helpers.isValidMonth(formData.month)){
+            input = formContainer.find('[name="month"]');
+            input.addClass(helpers.errorClass);
+            input.parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
             errors++;
         }
         //year
-        if (helpers.isEmpty(year.val())){
-            year.addClass(helpers.errorClass);
-            yearLabelError.addClass(helpers.errorClass);
+        if (!helpers.isValidFullYear(formData.year)){
+            input = formContainer.find('[name="year"]');
+            input.addClass(helpers.errorClass);
+            input.parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
             errors++;
         }
         //relationship
-        if (helpers.isEmpty(relationship.val())){
-            relationship.addClass(helpers.errorClass);
-            relationshipLabelError.addClass(helpers.errorClass);
+        if (helpers.isEmpty(formData.relationship)){
+            input = formContainer.find('[name="relationship"]');
+            input.addClass(helpers.errorClass);
+            input.parent().parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
             errors++;
         }
         return errors < 1;
     }
 
-    function updateUserDependants(selectedTile,parentContainer){
-        var accountSession = personalProfile.getPersonalProfileSession(),
-            formData = helpers.getTileFormData(dependantsForm);
-        //enforce toggle
-        _.forOwn(formData[parentContainer.attr('data-id')], function(value, key) {
-            if(key !== selectedTile.attr('data-id')){
-                formData[parentContainer.attr('data-id')][key] = 0;
+    function updateUserDependants(selectedTile){
+        var pageData = personalProfile.getPageSession(),
+            tileId = parseInt(selectedTile.attr('id')),
+            tileQuestionId = parseInt(selectedTile.attr('data-id'));
+        if (!selectedTile.hasClass(activeClass)) {
+            //enforce toggle
+            if(!tileId){
+                //never been answered
+                var taxReturnId = parseInt(selectedTile.parent().attr('data-id'));
+                _.each(pageData.taxReturns, function (taxReturn) {
+                    if (parseInt(taxReturn.taxReturnId) === taxReturnId) {
+                        _.each(taxReturn.questions.answers, function (answer) {
+                            if (answer.question_id === tileQuestionId) {
+                                answer.class = activeClass;
+                            } else {
+                                answer.class = '';
+                            }
+                            return answer;
+                        });
+                    }
+                });
+            } else {
+                var hasSelectedTile;
+                _.each(pageData.taxReturns, function (taxReturn) {
+                    hasSelectedTile = false;
+                    _.each(taxReturn.questions.answers, function (answer) {
+                        if (answer.id === tileId) {
+                            answer.class = activeClass;
+                            hasSelectedTile = true;
+                        }
+                        return answer;
+                    });
+                    if (hasSelectedTile) {
+                        //deselect siblings
+                        _.each(taxReturn.questions.answers, function (answer) {
+                            if (answer.id !== tileId) {
+                                answer.class = '';
+                            }
+                            return answer;
+                        });
+                    }
+                });
+            }
+            //refresh page
+            personalProfile.refreshPage(pageData);
+        }
+    }
+
+    function editDependant(element){
+        var pageData = personalProfile.getPageSession(),
+            dependentId = parseInt(element.attr('data-id')),
+            hasSelectedDependant;
+        _.each(pageData.taxReturns, function(taxReturn){
+            hasSelectedDependant = _.find(taxReturn.dependants, {id: dependentId});
+            if (hasSelectedDependant){
+                taxReturn.dependantForm = hasSelectedDependant;
             }
         });
-        //save temporary changes
-        accountSession.users.forEach(function(entry){
-            entry.activeTiles.dependants = formData[entry.id];
-            try {
-                //if "yes" is selected
-                entry.hasDependants = formData[entry.id][9201];//todo, find better way of linking model id
-            } catch(exception){
-//do nothing
+        personalProfile.refreshPage(pageData);
+    }
+
+    function cancelEditAddDependant(element){
+        var pageData = personalProfile.getPageSession(),
+            taxReturnId = parseInt(element.attr('data-tax-return-id'));
+        _.each(pageData.taxReturns, function(taxReturn){
+            if (parseInt(taxReturn.taxReturnId) === taxReturnId){
+                delete taxReturn.dependantForm;
             }
         });
-        personalProfile.refreshPage(accountSession);
+        personalProfile.refreshPage(pageData);
+    }
+
+    function saveDependant(element){
+        var formContainer = element.parent().parent();
+        if (!element.hasClass(helpers.disabledClass)){
+            if(validateDependantsFormData(formContainer)){
+                //todo, connect share dependant logic
+                var sessionData = personalProfile.getPersonalProfileSession(),
+                    dependantId = element.attr('data-id'),
+                    taxReturnId = parseInt(element.attr('data-tax-return-id')),
+                    formData = helpers.getFormData(formContainer);
+                element.addClass(helpers.disabledClass);
+                if (dependantId.length > 0){
+                    //update dependant
+                    formData.id = parseInt(dependantId);
+                    apiService.updateDependant(sessionData, taxReturnId, formData)
+                        .then(function(){
+                            //get updated dependants information
+                            return updateDependantsTemplate();
+                        });
+                } else {
+                    //create dependant
+                    apiService.createDependant(sessionData, taxReturnId, formData)
+                        .then(function(response){
+                            return apiService.linkDependant(sessionData, taxReturnId, response.dependantId);
+                        })
+                        .then(function(){
+                            //get updated dependants information
+                            return updateDependantsTemplate();
+                        });
+                }
+            }
+        }
+    }
+
+    function shareDependant(element){
+        //todo, share dependant logic
+        element.find('.checkbox').first().toggleClass(helpers.activeClass);
+    }
+
+    function updateDependantsTemplate(){
+        var sessionData = personalProfile.getPersonalProfileSession(),
+            pageData = personalProfile.getPageSession(),
+            promiseGetDependants = [];
+        return Promise.resolve()
+            .then(function(){
+                _.each(pageData.taxReturns, function(entry) {
+                    promiseGetDependants.push(apiService.getDependants(sessionData, entry.taxReturnId));
+                });
+                return Promise.all(promiseGetDependants);
+            })
+            .then(function(response){
+                //refresh template
+                _.each(pageData.taxReturns, function(taxReturn, index){
+                    taxReturn.dependants = response[index];
+                });
+                personalProfile.refreshPage(pageData);
+            });
+    }
+
+    function deleteDependant(element){
+        if (!element.hasClass(helpers.disabledClass)){
+            element.addClass(helpers.disabledClass);
+            var dependantId = parseInt(element.attr('data-id')),
+                taxReturnId = parseInt(element.attr('data-tax-return-id')),
+                sessionData = personalProfile.getPersonalProfileSession();
+            apiService.deleteDependantById(sessionData, taxReturnId, dependantId)
+                .then(function(){
+                    //get updated dependants information
+                    return updateDependantsTemplate();
+                })
+                .catch(function(jqXHR,textStatus,errorThrown){
+                    ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
+                    element.removeClass(helpers.disabledClass);
+                });
+        }
+    }
+
+    function addDependant(element){
+        var pageData = personalProfile.getPageSession(),
+            taxReturnId = parseInt(element.attr('data-tax-return-id'));
+        _.each(pageData.taxReturns, function(taxReturn){
+            if (parseInt(taxReturn.taxReturnId) === taxReturnId){
+                taxReturn.dependantForm = {};
+            }
+        });
+        personalProfile.refreshPage(pageData);
     }
 
     this.init = function(){
-      dependantsForm = $('#dependants-form');
-
         if ($('#personal-profile-dependants').length > 0) {
-            var formData = helpers.getTileFormDataArray(dependantsForm);
+            //variables
+            dependantsSubmit = $('#dependants-submit');
+            dependantsForm = $('#dependants-form');
+            dependantsBack = $('#dependants-back');
+            dependantsTiles = $('.'+helpers.tileClass);
+            dependantsEditButtons = $('.dependants-button-edit');
+            dependantsDeleteButtons = $('.dependants-button-delete');
+            dependantsAddButtons = $('.dependants-button-add');
+            dependantsSaveButtons = $('.dependants-button-save');
+            dependantsCancelButtons = $('.dependants-button-cancel');
+            dependantCheckboxes = $('.checkbox-container');
 
-            _.each(formData, function(taxReturn){
-                var hasDependants = $('#has-dependants-' + taxReturn.taxReturnId);
-                var noDependants = $('#no-dependants-' + taxReturn.taxReturnId);
-                var dependantsSave = $('#dependants-save-'+taxReturn.taxReturnId);
-                var dependantsLine = $('#container-dependants-line-' + taxReturn.taxReturnId);
-                var dependantsContainerLine = $('#dependant-name-list-'+taxReturn.taxReturnId);
-                var dependantsContainerLine2 = $('#dependant-date-list-'+taxReturn.taxReturnId);
-                var dependantsContainerLine3 = $('#dependant-delete-list-'+taxReturn.taxReturnId);
-                var dependantsContainerLine4 = $('#dependant-edit-list-'+taxReturn.taxReturnId);
-                var firstName = $('#dependants-first-name-'+taxReturn.taxReturnId);
-                var lastName = $('#dependants-last-name-'+taxReturn.taxReturnId);
-                var add = $('.i--icon-add');
-                var day = $('#dependants-birthday-day-'+taxReturn.taxReturnId);
-                var month = $('#dependants-birthday-month-'+taxReturn.taxReturnId);
-                var year = $('#dependants-birthday-year-'+taxReturn.taxReturnId);
-                var dependantsContainer = $('#container-dependants-form-'+taxReturn.taxReturnId);
-                dependantsSubmit = $('#dependants-submit');
-                var dependantsBack = $('#dependants-back');
-                var dependantsEdit = $('#dependants-edit-'+taxReturn.taxReturnId);
-                var dependantsDelete = $('#dependants-delete-'+taxReturn.taxReturnId);
+            //listeners
+            dependantsBack.on('click',function(event){
+                event.preventDefault();
+                goToPreviousScreen();
+            });
 
-                //overwrite standard tile selector active toggle
-                $(document).off('click', '.'+helpers.tileClass);
+            dependantsForm.on('submit',function(event){
+                event.preventDefault();
+                submitDependants();
+            });
 
-                //listeners
-                dependantsForm.on('submit',function(event){
-                    event.preventDefault();
-                    submitDependants();
-                });
+            dependantsSubmit.on('click',function(event){
+                event.preventDefault();
+                submitDependants();
+            });
 
-                dependantsSubmit.on('click',function(event){
-                    event.preventDefault();
-                    submitDependants();
-                });
+            dependantsTiles.on('click',function(event){
+                event.preventDefault();
+                updateUserDependants($(this));
+            });
 
-                dependantsEdit.on('click',function(event){
-                    event.preventDefault();
-                    //TODO: Edit dependant function
-                });
+            dependantsEditButtons.on('click',function(event){
+                event.preventDefault();
+                editDependant($(this));
+            });
 
-                dependantsBack.on('click',function(event){
-                    event.preventDefault();
-                    updateDependants();
-                });
+            dependantsDeleteButtons.on('click',function(event){
+                event.preventDefault();
+                deleteDependant($(this));
+            });
 
-                dependantsDelete.on('click',function(event){
-                    event.preventDefault();
-                    dependantsContainerLine.remove();
-                    dependantsContainerLine2.remove();
-                });
+            dependantsAddButtons.on('click',function(event){
+                event.preventDefault();
+                addDependant($(this));
+            });
 
-                hasDependants.on('click', function(event){
-                    event.preventDefault();
-                    $(this).toggleClass(helpers.activeClass);
-                    noDependants.removeClass(activeClass);
+            dependantsSaveButtons.on('click',function(event){
+                event.preventDefault();
+                saveDependant($(this));
+            });
 
-                    if(hasDependants.hasClass(activeClass)) {
-                        dependantsContainer.show();
-                        dependantsLine.show();
-                    }else{
-                        dependantsContainer.hide();
-                        dependantsLine.hide();
-                    }
-                });
+            dependantsCancelButtons.on('click',function(event){
+                event.preventDefault();
+                cancelEditAddDependant($(this));
+            });
 
-                add.on('click',function(event){
-                    event.preventDefault();
-                    dependantsContainer.toggle();
-                });
-
-                dependantsSave.on('click',function(event){
-                    event.preventDefault();
-                    helpers.resetForm(dependantsContainer);
-                    $('.'+helpers.formContainerClass).each(function(){
-                        validateDependantsFormData($(this));
-                    });
-                    if(!helpers.formHasErrors(dependantsContainer)){
-                    dependantsContainer.toggle();
-                    dependantsContainerLine.append('<p id="side-info-blurb3-'+taxReturn.taxReturnId+'">' + firstName.val() + " " + lastName.val() + '</p>');
-                    dependantsContainerLine2.append('<p id=side-info-blurb3-'+taxReturn.taxReturnId+'>' + day.val() + '/' + month.val() + '/' + year.val().slice(-2) + '</p>');
-                    dependantsContainerLine3.append('</br><button id="dependants-delete-'+taxReturn.taxReturnId+'" class="green-outline">Delete</button>');
-                    dependantsContainerLine4.append('</br><button id="dependants-edit-'+taxReturn.taxReturnId+'" class="green-outline">Edit</button>');
-                  }
-                });
-
-                noDependants.on('click', function(event){
-                    event.preventDefault();
-                    $(this).toggleClass(helpers.activeClass);
-                    hasDependants.removeClass(activeClass);
-                    dependantsContainer.hide();
-                    dependantsLine.hide();
-                });
+            dependantCheckboxes.on('click',function(event){
+                event.preventDefault();
+                shareDependant($(this));
             });
 
         }

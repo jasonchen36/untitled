@@ -49,7 +49,6 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
                 },
                 dataObject = session.getUserProfileSession(req);
             try {
-
                 res.render('personal_profile/personal_profile', {
                     meta: {
                         pageTitle: util.globals.metaTitlePrefix + 'Personal Profile'

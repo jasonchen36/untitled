@@ -242,15 +242,13 @@
 
         _.each(entry, function(answer) {
 
-            if(!isNaN(questionId)) {
 
-                // TODO the server is not taking other answers when it should
-                //  Change when API server is ready
+            if(!isNaN(questionId) && questionId === 150) {
+
                 var text = answer;
-                //     var text= '';
 
-
-                if (typeof text != 'undefined' && text.length > 1) {
+                // TODO better check later
+                if (typeof text != 'undefined' && text.length === 10 && text != 'Common Law') {
 
                     answers.push(
                         {
@@ -404,6 +402,135 @@
             });
             return Promise.resolve(taxReturns);
         });
+    };
+
+    this.getMarriageTiles = function(taxReturnId,answer){
+        var marriageTiles = [
+            {
+                id:'married-married-'+taxReturnId,
+                question_id:'129',
+                instructions:'',
+                question_text:'Married'
+            },
+            {
+                id:'married-divorced-'+taxReturnId,
+                question_id:'129',
+                instructions:'',
+                question_text:'Divorced'
+            },
+            {
+                id:'married-separated-'+taxReturnId,
+                question_id:'129',
+                instructions:'',
+                question_text:'Separated'
+            },
+            {
+                id:'married-widowed-'+taxReturnId,
+                question_id:'129',
+                instructions:'',
+                question_text:'Widowed'
+            },
+            {
+                id:'married-common-law-'+taxReturnId,
+                question_id:'129',
+                instructions:'',
+                question_text:'Common Law'
+            },
+            {
+                id:'married-single-'+taxReturnId,
+                question_id:'129',
+                instructions:'',
+                question_text:'Single'
+            }
+        ];
+        return _.map(marriageTiles, function(entry){
+            entry.class = answer===entry.question_text?helpers.activeClass:'';
+            return entry;
+        });
+    };
+
+    this.getDependants = function(sessionData, taxReturnId){
+        var accountInfo = helpers.getAccountInformation(sessionData);
+        return ajax.ajax(
+            'GET',
+            sessionData.apiUrl+'/tax_return/'+taxReturnId+'/dependants',
+            {},
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        )
+            .then(function(response){
+                _.each(response, function(dependant){
+                    dependant.day = moment(dependant.date_of_birth).format('DD');
+                    dependant.month = moment(dependant.date_of_birth).format('MM');
+                    dependant.year = moment(dependant.date_of_birth).format('YYYY');
+                    return dependant;
+                });
+                return Promise.resolve(response);
+            });
+    };
+
+    this.deleteDependantById = function(sessionData, taxReturnId, dependantId){
+        var accountInfo = helpers.getAccountInformation(sessionData);
+        return ajax.ajax(
+            'DELETE',
+            sessionData.apiUrl+'/tax_return/'+taxReturnId+'/dependant/'+dependantId,
+            {},
+            '',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
+    };
+
+    this.updateDependant = function(sessionData, taxReturnId, formData){
+        var accountInfo = helpers.getAccountInformation(sessionData);
+        return ajax.ajax(
+            'PUT',
+            sessionData.apiUrl+'/tax_return/'+taxReturnId+'/dependant/'+formData.id,
+            {
+                'firstName': formData.firstName,
+                'lastName': formData.lastName,
+                'dateOfBirth': formData.year+'-'+formData.month+'-'+formData.day,
+                'relationship': formData.relationship
+            },
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
+    };
+
+    this.createDependant = function(sessionData, taxReturnId, formData){
+        var accountInfo = helpers.getAccountInformation(sessionData);
+        return ajax.ajax(
+            'POST',
+            sessionData.apiUrl+'/tax_return/'+taxReturnId+'/dependant',
+            {
+                'firstName': formData.firstName,
+                'lastName': formData.lastName,
+                'dateOfBirth': formData.year+'-'+formData.month+'-'+formData.day,
+                'relationship': formData.relationship
+            },
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
+    };
+    
+    this.linkDependant = function(sessionData, taxReturnId, dependantId){
+        var accountInfo = helpers.getAccountInformation(sessionData);
+        return ajax.ajax(
+            'POST',
+            sessionData.apiUrl+'/tax_return/'+taxReturnId+'/dependant/'+dependantId,
+            {},
+            '',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
     };
 
 }).apply(app.apiservice);

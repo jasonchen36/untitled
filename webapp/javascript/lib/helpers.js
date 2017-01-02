@@ -10,6 +10,8 @@
     this.tileClass = 'taxplan-tile';
     this.tileContainerClass = 'taxplan-tile-container';
     this.formContainerClass = 'taxplan-form-container';
+    this.cookieCurrentPage = 'store-current-page';
+    this.errorLabelClass = 'label-error';
 
     this.sizeOfObject = function(data){
         if (data){
@@ -194,6 +196,7 @@
 
             tile = $("#marital-status-changed-" + containerId);
 
+            tile = tile.find('.checkbox').first();
 
             // TODO find a better way to do this
             userData[149] = tile.hasClass(that.activeClass)? 1:0;
@@ -327,15 +330,19 @@
     };
     
     this.isValidDay = function(value){
-        return !that.isEmpty(value.trim()) && value.length === 2 && parseInt(value) >= 1 && parseInt(value) <= 31;
+        return !that.isEmpty(value.trim()) && value.trim().length === 2 && parseInt(value) >= 1 && parseInt(value) <= 31;
     };
     
     this.isValidMonth = function(value){
-        return !that.isEmpty(value.trim()) && value.length === 2 && parseInt(value) >= 1 && parseInt(value) <= 12;
+        return !that.isEmpty(value.trim()) && value.trim().length === 2 && parseInt(value) >= 1 && parseInt(value) <= 12;
     };
     
     this.isValidYear = function(value){
-        return !that.isEmpty(value.trim()) && value.length === 2;
+        return !that.isEmpty(value.trim()) && value.trim().length === 2;
+    };
+    
+    this.isValidFullYear = function(value){
+        return !that.isEmpty(value.trim()) && value.trim().length === 4;
     };
 
 }).apply(app.helpers);

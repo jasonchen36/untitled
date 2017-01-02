@@ -15,7 +15,7 @@
                             <p class="checkbox-label" >SAME MARITAL STATUS AS {{accountInfo.firstName}}</p>
                         </div>
                     {{/if}}
-                    {{>personal-profile-single-options questions=questions.answers.0.tiles activeTiles=questions.answers.answer tileContainerId=taxReturnId}}
+                    {{>personal-profile-single-options questions=questions.answers.0.tiles tileContainerId=taxReturnId}}
                     <div id="marital-status-changed-{{taxReturnId}}" class="checkbox-container marital-status-changed-container">
                         <div class="checkbox"></div>
                         <p class="checkbox-label">MY MARITAL STATUS CHANGED IN 2016</p>

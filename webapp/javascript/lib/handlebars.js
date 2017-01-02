@@ -160,6 +160,20 @@
             }
         });
 
+        Handlebars.registerHelper('hasDependantsSelected', function(answers, options){
+            var hasDependantsSelected = false;
+            _.each(answers,function(entry){
+                if(entry.question_text.toLowerCase() === 'yes' && entry.class === 'active'){
+                    hasDependantsSelected = true;
+                }
+            });
+            if (hasDependantsSelected){
+                return options.fn(this);
+            } else {
+                return options.inverse(this);
+            }
+        });
+
     };
 
 }).apply(app.handlebars);
