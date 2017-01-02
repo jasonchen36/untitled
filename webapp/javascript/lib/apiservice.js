@@ -461,7 +461,16 @@
             {
                 'Authorization': 'Bearer '+ accountInfo.token
             }
-        );
+        )
+            .then(function(response){
+                _.each(response, function(dependant){
+                    dependant.day = moment(dependant.date_of_birth).format('DD');
+                    dependant.month = moment(dependant.date_of_birth).format('MM');
+                    dependant.year = moment(dependant.date_of_birth).format('YYYY');
+                    return dependant;
+                });
+                return Promise.resolve(response);
+            });
     };
 
     this.deleteDependantById = function(sessionData, taxReturnId, dependantId){

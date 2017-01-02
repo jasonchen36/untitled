@@ -14,6 +14,7 @@
         dependantsDeleteButtons,
         dependantsAddButtons,
         dependantsSaveButtons,
+        dependantCheckboxes,
         activeClass = helpers.activeClass,
         disabledClass = helpers.disabledClass;
 
@@ -234,12 +235,16 @@
     function saveDependant(element){
         if (!element.hasClass(helpers.disabledClass)){
             if(validateDependantsFormData(element.parent().parent())){
+                //todo, connect share dependant logic
                 // element.addClass(helpers.disabledClass);
                 console.log('call api');
             }
         }
+    }
+
+    function shareDependant(element){
         //todo, share dependant logic
-        console.log('save dependant');
+        element.find('.checkbox').first().toggleClass(helpers.activeClass);
     }
 
     function deleteDependant(element){
@@ -294,6 +299,7 @@
             dependantsDeleteButtons = $('.dependants-button-delete');
             dependantsAddButtons = $('.dependants-button-add');
             dependantsSaveButtons = $('.dependants-button-save');
+            dependantCheckboxes = $('.checkbox-container');
 
             //listeners
             dependantsBack.on('click',function(event){
@@ -334,6 +340,11 @@
             dependantsSaveButtons.on('click',function(event){
                 event.preventDefault();
                 saveDependant($(this));
+            });
+
+            dependantCheckboxes.on('click',function(event){
+                event.preventDefault();
+                shareDependant($(this));
             });
 
         }
