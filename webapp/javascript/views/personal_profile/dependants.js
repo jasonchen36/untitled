@@ -14,6 +14,7 @@
         dependantsDeleteButtons,
         dependantsAddButtons,
         dependantsSaveButtons,
+        dependantsCancelButtons,
         dependantCheckboxes,
         activeClass = helpers.activeClass,
         disabledClass = helpers.disabledClass;
@@ -232,6 +233,17 @@
         personalProfile.refreshPage(pageData);
     }
 
+    function cancelEditAddDependant(element){
+        var pageData = personalProfile.getPageSession(),
+            taxReturnId = parseInt(element.attr('data-tax-return-id'));
+        _.each(pageData.taxReturns, function(taxReturn){
+            if (parseInt(taxReturn.taxReturnId) === taxReturnId){
+                delete taxReturn.dependantForm;
+            }
+        });
+        personalProfile.refreshPage(pageData);
+    }
+
     function saveDependant(element){
         var formContainer = element.parent().parent();
         if (!element.hasClass(helpers.disabledClass)){
@@ -330,6 +342,7 @@
             dependantsDeleteButtons = $('.dependants-button-delete');
             dependantsAddButtons = $('.dependants-button-add');
             dependantsSaveButtons = $('.dependants-button-save');
+            dependantsCancelButtons = $('.dependants-button-cancel');
             dependantCheckboxes = $('.checkbox-container');
 
             //listeners
@@ -371,6 +384,11 @@
             dependantsSaveButtons.on('click',function(event){
                 event.preventDefault();
                 saveDependant($(this));
+            });
+
+            dependantsCancelButtons.on('click',function(event){
+                event.preventDefault();
+                cancelEditAddDependant($(this));
             });
 
             dependantCheckboxes.on('click',function(event){
