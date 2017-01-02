@@ -10,9 +10,9 @@
                 {{#each taxReturns}}
                     <h1 class="subtitle">{{firstName}} please select all your credits in 2016:</h1>
                     {{#compare @index 0 operator="=="}}
-                        {{>personal-profile-options questions=questions.answers activeTiles=questions.answers.answer  tileContainerId=taxReturnId isPrimaryFiler=true}}
+                        {{>personal-profile-options questions=questions.answers tileContainerId=taxReturnId isPrimaryFiler=true}}
                     {{else}}
-                        {{>personal-profile-options questions=questions.answers activeTiles=questions.answers.answer  tileContainerId=taxReturnId}}
+                        {{>personal-profile-options questions=questions.answers tileContainerId=taxReturnId}}
                     {{/compare}}
                     <input type="hidden" id="tax-return-id-{{taxReturnId}}" name="taxReturnId" value="{{taxReturnId}}"/>
                 {{/each}}

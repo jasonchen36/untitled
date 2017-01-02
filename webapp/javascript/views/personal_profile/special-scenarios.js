@@ -4,6 +4,7 @@
         that = app.views.personalProfile.specialScenarios,
         helpers = app.helpers,
         ajax = app.ajax,
+        apiService = app.apiservice,
         personalProfile = app.services.personalProfile,
         specialScenariosForm,
         specialScenariosSubmit,
@@ -118,40 +119,27 @@
                         data.accountInfo = accountInfo;
                         data.taxReturns = formData;
                         data.taxReturns.questions = response[2];
-
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){
                             taxReturn.questions = response[1][index];
                             taxReturn.firstName = nameData[index];
                             taxReturn.accountInfo = accountInfo;
                             taxReturn.accountInfo.firstName = accountInfo.firstName.toUpperCase();
-
-                            var married = {id:"married-married-"+taxReturn.taxReturnId, question_id:"129", class:"", instructions:"", question_text:"Married"};
-                            var divorced = {id:"married-divorced-"+taxReturn.taxReturnId, question_id:"129", class:"", instructions:"", question_text:"Divorced"};
-                            var separated = {id:"married-separated-"+taxReturn.taxReturnId, question_id:"129",  class:"", instructions:"", question_text:"Separated"};
-                            var widowed = {id:"married-widowed-"+taxReturn.taxReturnId, question_id:"129",  class:"", instructions:"", question_text:"Widowed"};
-                            var commonLaw = {id:"married-common-law-"+taxReturn.taxReturnId, question_id:"129",  class:"", instructions:"", question_text:"Common Law"};
-                            var single = {id:"married-single-"+taxReturn.taxReturnId, question_id:"129",  class:"", instructions:"", question_text:"Single"};
-                            var marriageTiles = [married, divorced, separated, widowed, commonLaw, single];
-                            
-                            _.each(taxReturn.questions.answers, function(question){
-                                question.tiles = marriageTiles;
-                                question.answer = 0;
-                                question.class = "";
-
-                                if ( !question.text) {
-                                    question.answer = 0;
-                                    question.class = "";
-                                } else if (question.text === "Yes"){
-                                    question.answer = 1;
-                                    question.class = "active";
+                            _.each(taxReturn.questions.answers, function(answer){
+                                answer.tiles = apiService.getMarriageTiles(taxReturn.taxReturnId, answer.text);
+                                answer.answer = 0;
+                                answer.class = "";
+                                if (!answer.text) {
+                                    answer.answer = 0;
+                                    answer.class = "";
+                                } else if (answer.text === "Yes"){
+                                    answer.answer = 1;
+                                    answer.class = helpers.activeClass;
                                 }
-
                             });
                             index++;
 
                         });
-
                         personalProfile.goToNextPage(data);
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){

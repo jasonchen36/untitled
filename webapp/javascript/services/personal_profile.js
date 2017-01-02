@@ -5,9 +5,11 @@
         that = app.services.personalProfile,
         helpers = app.helpers,
         animations = app.animations,
+        cookies = app.cookies,
         personalProfilePageContainer = $('#page-personal-profile'),
         profileBar = $('#tax-profile-progress-bar'),
-        personalProfileSessionStore;
+        personalProfileSessionStore,
+        pageSessionStore;
 
     this.personalProfileFlow = [
         'last-name',
@@ -29,11 +31,13 @@
             var sessionData = that.getPersonalProfileSession();
 
             if(newPage && newPage.length > 0){
-                sessionData.currentPage = newPage;
+                sessionData.currentPage = setCurrentPageCookie(newPage);
             }
 
             if(typeof data !== 'object'){
                 data = sessionData;
+            } else {
+                pageSessionStore = data;
             }
 
             animateProgressBar();
@@ -65,12 +69,13 @@
     function startPersonalProfileSession(){
         personalProfileSessionStore = personalProfileObject;
         personalProfileSessionStore.questions = questionsObject;
-        if(!personalProfileSessionStore.hasOwnProperty('currentPage') || personalProfileSessionStore.currentPage.length < 1){
+        personalProfileSessionStore.currentPage = getCurrentPageCookie();
+        if(true) {
+            //todo, uncomment when development is done
+            // if(personalProfileSessionStore.currentPage.length < 1){
             personalProfileSessionStore.currentPage = that.personalProfileFlow[0];
-            changePage(personalProfileSessionStore.currentPage);
-        } else {
-            that.goToNextPage();
         }
+        changePage(personalProfileSessionStore.currentPage);
     }
 
     function getCurrentPage(){
@@ -98,6 +103,23 @@
         }
     }
 
+    function setCurrentPageCookie(newPage){
+        cookies.setCookie(helpers.cookieCurrentPage,{
+            page: newPage,
+            expiry: moment().add(1, 'hour')
+        });
+        return getCurrentPageCookie();
+    }
+
+    function getCurrentPageCookie(){
+        var currentPageCookie = cookies.getCookie(helpers.cookieCurrentPage);
+        if (_.size(currentPageCookie) > 0 && cookies.isCookieValid(currentPageCookie.expiry)){
+            return currentPageCookie.page;
+        } else {
+            return '';
+        }
+    }
+
 
     /* *************** public methods ***************/
     this.goToNextPage = function(data){
@@ -122,14 +144,16 @@
             currentPageIndex = that.personalProfileFlow.indexOf(currentPage),
             newPage;
         newPage = that.personalProfileFlow[currentPageIndex];
-        changePage(newPage);
+        changePage(newPage, data);
     };
 
     this.getPersonalProfileSession = function(){
         return personalProfileSessionStore;
     };
 
-
+    this.getPageSession = function(){
+        return pageSessionStore;
+    };
 
     this.init = function(){
         if (personalProfilePageContainer.length > 0) {
@@ -141,22 +165,22 @@
                     event.preventDefault();
                     var that = $(this),
                         dataType = that.attr('data-type');
-                        if (!that.hasClass(helpers.activeClass)){
-                            if (dataType === 'NotSure' || dataType === 'NoneApply') {
-                                //remove active state from regular tile
-                                that.parent().find('.'+helpers.tileClass).each(function(){
-                                    $(this).removeClass(helpers.activeClass);
-                                });
-                            } else {
-                                //regular tile, remove active state from notsure and noneapply
-                                that.parent().find('.'+helpers.tileClass+'[data-type="NotSure"], .'+helpers.tileClass+'[data-type="NoneApply"]').each(function(){
-                                    $(this).removeClass(helpers.activeClass);
-                                });
-                            }
-                            that.addClass(helpers.activeClass);
+                    if (!that.hasClass(helpers.activeClass)){
+                        if (dataType === 'NotSure' || dataType === 'NoneApply') {
+                            //remove active state from regular tile
+                            that.parent().find('.'+helpers.tileClass).each(function(){
+                                $(this).removeClass(helpers.activeClass);
+                            });
                         } else {
-                            that.removeClass(helpers.activeClass);
+                            //regular tile, remove active state from notsure and noneapply
+                            that.parent().find('.'+helpers.tileClass+'[data-type="NotSure"], .'+helpers.tileClass+'[data-type="NoneApply"]').each(function(){
+                                $(this).removeClass(helpers.activeClass);
+                            });
                         }
+                        that.addClass(helpers.activeClass);
+                    } else {
+                        that.removeClass(helpers.activeClass);
+                    }
                 })
                 .on('mouseover', '.'+helpers.tileClass, function (event) {
                     event.preventDefault();
