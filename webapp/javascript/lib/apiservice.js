@@ -486,4 +486,53 @@
         );
     };
 
+    this.updateDependant = function(sessionData, taxReturnId, formData){
+        var accountInfo = helpers.getAccountInformation(sessionData);
+        return ajax.ajax(
+            'PUT',
+            sessionData.apiUrl+'/tax_return/'+taxReturnId+'/dependant/'+formData.id,
+            {
+                'firstName': formData.firstName,
+                'lastName': formData.lastName,
+                'dateOfBirth': formData.year+'-'+formData.month+'-'+formData.day,
+                'relationship': formData.relationship
+            },
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
+    };
+
+    this.createDependant = function(sessionData, taxReturnId, formData){
+        var accountInfo = helpers.getAccountInformation(sessionData);
+        return ajax.ajax(
+            'POST',
+            sessionData.apiUrl+'/tax_return/'+taxReturnId+'/dependant',
+            {
+                'firstName': formData.firstName,
+                'lastName': formData.lastName,
+                'dateOfBirth': formData.year+'-'+formData.month+'-'+formData.day,
+                'relationship': formData.relationship
+            },
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
+    };
+    
+    this.linkDependant = function(sessionData, taxReturnId, dependantId){
+        var accountInfo = helpers.getAccountInformation(sessionData);
+        return ajax.ajax(
+            'POST',
+            sessionData.apiUrl+'/tax_return/'+taxReturnId+'/dependant/'+dependantId,
+            {},
+            '',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
+    };
+
 }).apply(app.apiservice);
