@@ -198,9 +198,10 @@
         var pageData = personalProfile.getPageSession(),
             tileId = parseInt(selectedTile.attr('id')),
             tileQuestionId = parseInt(selectedTile.attr('data-id'));
-        if(!tileId){
-            //never been answered
-            if (!selectedTile.hasClass(activeClass)) {
+        if (!selectedTile.hasClass(activeClass)) {
+            //enforce toggle
+            if(!tileId){
+                //never been answered
                 var taxReturnId = parseInt(selectedTile.parent().attr('data-id'));
                 _.each(pageData.taxReturns, function (taxReturn) {
                     if (parseInt(taxReturn.taxReturnId) === taxReturnId) {
@@ -214,11 +215,7 @@
                         });
                     }
                 });
-            }
-        } else {
-            //enforce toggle
-            if (!selectedTile.hasClass(activeClass)) {
-                //select option
+            } else {
                 var hasSelectedTile;
                 _.each(pageData.taxReturns, function (taxReturn) {
                     hasSelectedTile = false;
@@ -240,9 +237,9 @@
                     }
                 });
             }
+            //refresh page
+            personalProfile.refreshPage(pageData);
         }
-        //refresh page
-        personalProfile.refreshPage(pageData);
     }
 
     function editDependant(element){
