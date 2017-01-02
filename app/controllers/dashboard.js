@@ -37,42 +37,29 @@ dashboardPages.getDashboardPage = function(req, res, next){
 
         var quoteId = accountData.quotes[0].id;
 
-        const documentChecklistRequest = {
-            method: 'GET',
-            uri: process.env.API_URL+'/quote/' + quoteId + '/checklist',
-            headers: {
-                'Authorization': 'Bearer '+session.getUserProfileValue(req,'token')
-            },
-            body: {},
-            json: true
-        };
-        promise.all([
-            requestPromise(documentChecklistRequest)
-        ])
-            .then(function (response) {
-                const dataObject = session.getUserProfileSession(req);
-                try {
+        const dataObject = session.getUserProfileSession(req);
+        try {
+                      
+                dataObject.documentChecklist = "";
+                dataObject.newMessageCount = 0;
+                dataObject.messages = [];
+                dataObject.quoteId = quoteId;
+                dataObject.uploadUrl = userProfile.apiUrl + '/quote/' + quoteId + '/document';
 
-                    dataObject.documentChecklist = "";
-     //               dataObject.documentChecklist = sessionModel.getDocumentChecklistObject(response[0]);
-                    dataObject.newMessageCount = 0;
-                    dataObject.messages = [];
-                    dataObject.quoteId = quoteId;
-                    dataObject.uploadUrl = userProfile.apiUrl + '/quote/' + quoteId + '/document';
 
-                    res.render('dashboard/dashboard', {
-                        meta: {
-                            pageTitle: util.globals.metaTitlePrefix + 'Dashboard'
-                        },
-                        data: dataObject,
-                        locals: {
-                            userToString: JSON.stringify(dataObject)
-                        }
-                    });
-                } catch(error){
-                    next(new errors.InternalServerError(error));
-                }  
-            });
+                res.render('dashboard/dashboard', {
+                    meta: {
+                        pageTitle: util.globals.metaTitlePrefix + 'Dashboard'
+                    },
+                    data: dataObject,
+                    locals: {
+                        userToString: JSON.stringify(dataObject)
+                    }
+                });
+            } catch(error){
+                next(new errors.InternalServerError(error));
+        }  
+
     })
         .catch(function (response) {
             var error = response;
@@ -80,7 +67,9 @@ dashboardPages.getDashboardPage = function(req, res, next){
                 error = response.error;
             }
             next(new errors.InternalServerError(error));
-        });
+        });  
+
+
 };
 
 
