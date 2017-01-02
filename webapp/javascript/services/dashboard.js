@@ -11,6 +11,7 @@
         chat = app.views.dashboard.chat,
         activeClass = helpers.activeClass,
         checklist,
+        activeItem,
         landingPageContainer = $('#dashboard-container'),
         dashboardStateCookie = 'store-dashboard-state';
 
@@ -136,6 +137,10 @@
 
 
                 that.checklist = dataObject.documentChecklist;
+
+                dataObject.activeItem = that.activeItem;
+
+
               //  app.views.dashboard.upload.
 
                 that.changePage('upload', dataObject);
@@ -238,6 +243,8 @@
 
         if(newPage == 'chat')  {
             changePageChat();
+        } else if(newPage == 'upload')  {
+           changePageUpload();
         }  else  {
             that.changePage(newPage);
         }
@@ -267,7 +274,7 @@
                 })
                 .on('click', '#dashboard-chat-activate', function (event) {
                     event.preventDefault();
-                     changePageHelper('chat');
+                    changePageHelper('chat');
                     $(this).addClass(activeClass);
                     document.getElementById('dashboard-upload-activate').classList.remove('active');
                     var startMyReturn = document.getElementById('dashboard-my-return-activate');

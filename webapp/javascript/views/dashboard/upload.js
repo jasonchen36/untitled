@@ -77,16 +77,17 @@
     function setActiveItem(dataId){
         var userSession = dashboard.getUserSession();
         userSession.isPreview = "";
-        if(userSession.hasOwnProperty('activeItem') || userSession.activeItem !== dataId) {
+
+        if(dashboard.hasOwnProperty('activeItem') || dashboard.activeItem !== dataId) {
             if (dataId === 0) {
                 //additional documents
-                userSession.activeItem = {
+                dasboard.activeItem = {
                     name: 'Additional Documents',
                     checklistItemId: 0
                 };
             } else {
-                userSession.activeItem = _.find(userSession.documentChecklist.checklistItems, ['checklistItemId', dataId]);
-            }
+                dashboard.activeItem = _.find(dashboard.checklist.checklistItems, ['checklistItemId', dataId]);
+            } 
             dashboard.refreshPage(userSession);
         }
 
@@ -168,13 +169,14 @@
     }
 
     this.init = function(){
+
         if ($('#dashboard-upload').length > 0) {
             //set initial active item
             if (!initialized){
                 initialized = true;
-                if (dashboard.getUserSession().documentChecklist.checklistItems.length > 0){
-                    setActiveItem(dashboard.getUserSession().documentChecklist.checklistItems[0].checklistItemId);
-                }
+                if (dashboard.checklist.checklistItems.length > 0){
+                   setActiveItem(dashboard.checklist.checklistItems[0].checklistItemId);
+                } 
             }
 
             //variables

@@ -52,7 +52,9 @@ dashboardPages.getDashboardPage = function(req, res, next){
             .then(function (response) {
                 const dataObject = session.getUserProfileSession(req);
                 try {
-                    dataObject.documentChecklist = sessionModel.getDocumentChecklistObject(response[0]);
+
+                    dataObject.documentChecklist = "";
+     //               dataObject.documentChecklist = sessionModel.getDocumentChecklistObject(response[0]);
                     dataObject.newMessageCount = 0;
                     dataObject.messages = [];
                     dataObject.quoteId = quoteId;
@@ -69,7 +71,7 @@ dashboardPages.getDashboardPage = function(req, res, next){
                     });
                 } catch(error){
                     next(new errors.InternalServerError(error));
-                }
+                }  
             });
     })
         .catch(function (response) {
