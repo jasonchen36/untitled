@@ -15,11 +15,14 @@
                             {{#each dependants}}
                                 {{>personal-profile-dependant}}
                             {{/each}}
-                            <div class="dependants-button-add border-bottom-light-gray add-bottom-padding add-top-padding" data-id="{{tax_return_id}}">
+                            <div class="dependants-button-add border-bottom-light-gray add-bottom-padding add-top-padding" data-tax-return-id="{{taxReturnId}}">
                                 <div class="i--icon-add"></div>
                                 <label class="label-add">ADD A DEPENDANT FOR {{firstName}}</label>
                             </div>
                         {{/hasDependantsSelected}}
+                        {{#if dependantForm}}
+                            {{>personal-profile-dependant-form filerName=firstName}}
+                        {{/if}}
                     </div>
                 {{/each}}
             </form>

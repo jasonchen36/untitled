@@ -13,6 +13,7 @@
         dependantsEditButtons,
         dependantsDeleteButtons,
         dependantsAddButtons,
+        dependantsSaveButtons,
         activeClass = helpers.activeClass,
         disabledClass = helpers.disabledClass;
 
@@ -243,8 +244,13 @@
         personalProfile.refreshPage(pageData);
     }
 
-    function editDependant(dependentId){
+    function editDependant(element){
+        var dependentId = parseInt(element.attr('data-id'));
         console.log('edit dependant '+dependentId);
+    }
+
+    function saveDependant(element){
+        console.log('save dependant');
     }
 
     function deleteDependant(element){
@@ -277,8 +283,15 @@
         }
     }
 
-    function addDependant(taxReturnId){
-        console.log('add dependent to tax return '+taxReturnId);
+    function addDependant(element){
+        var pageData = personalProfile.getPageSession(),
+            taxReturnId = parseInt(element.attr('data-tax-return-id'));
+        _.each(pageData.taxReturns, function(taxReturn){
+            if (parseInt(taxReturn.taxReturnId) === taxReturnId){
+                taxReturn.dependantForm = {};
+            }
+        });
+        personalProfile.refreshPage(pageData);
     }
 
     this.init = function(){
@@ -291,6 +304,7 @@
             dependantsEditButtons = $('.dependants-button-edit');
             dependantsDeleteButtons = $('.dependants-button-delete');
             dependantsAddButtons = $('.dependants-button-add');
+            dependantsSaveButtons = $('.dependants-button-save');
 
             //listeners
             dependantsBack.on('click',function(event){
@@ -315,7 +329,7 @@
 
             dependantsEditButtons.on('click',function(event){
                 event.preventDefault();
-                editDependant(parseInt($(this).attr('data-id')));
+                editDependant($(this));
             });
 
             dependantsDeleteButtons.on('click',function(event){
@@ -325,7 +339,12 @@
 
             dependantsAddButtons.on('click',function(event){
                 event.preventDefault();
-                addDependant(parseInt($(this).attr('data-id')));
+                addDependant($(this));
+            });
+
+            dependantsSaveButtons.on('click',function(event){
+                event.preventDefault();
+                saveDependant($(this));
             });
 
         }
