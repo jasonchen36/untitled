@@ -183,17 +183,7 @@
         var pageData = personalProfile.getPageSession(),
             tileId = parseInt(selectedTile.attr('id'));
         //enforce toggle
-        if(selectedTile.hasClass(activeClass)){
-            //deselect option
-            _.each(pageData.taxReturns, function(taxReturn){
-                _.each(taxReturn.questions.answers, function(answer){
-                    if(answer.id === tileId){
-                        answer.class = '';
-                    }
-                    return answer;
-                });
-            });
-        } else {
+        if(!selectedTile.hasClass(activeClass)){
             //select option
             var hasSelectedTile;
             _.each(pageData.taxReturns, function(taxReturn){
