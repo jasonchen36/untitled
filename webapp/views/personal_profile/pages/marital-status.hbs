@@ -38,8 +38,8 @@
                         <p id ="indicate-date-{{taxReturnId}}" >PLEASE INDICATE THE DATE OF CHANGE:</p>
                         <div class="taxplan-form-container" data-id="{{taxReturnId}}" >
                             <div>
-                                <input class="small-2 small text-center" placeholder="DD" id="marital-status-day-{{taxReturnId}}" maxlength="2" />
-                                <input class="small-2 small text-center" placeholder="MM" id="marital-status-month-{{taxReturnId}}" maxlength="2" />
+                                <input class="small-2 small text-center" placeholder="DD" id="marital-status-day-{{taxReturnId}}" maxlength="2" value="{{questions.answers.2.day}}"/>
+                                <input class="small-2 small text-center" placeholder="MM" id="marital-status-month-{{taxReturnId}}" maxlength="2" value="{{questions.answers.2.month}}"/>
                             </div>
                             <div class="display-inline-table full-width">
                                 <p id="birth-day-error-label-{{taxReturnId}}" class="label-error display-inline-block add-margin-right small-2">Day needed</p>

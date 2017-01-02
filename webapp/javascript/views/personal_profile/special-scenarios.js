@@ -137,9 +137,11 @@
                                         answer.class = helpers.activeClass;
                                     }
                                 }else{
+                                    answer.day = "";
+                                    answer.month= "";
                                     if(answer.text.length === 10){
-                                        answer.day = answer.text.substring(8, 9);
-                                        answer.month = answer.text.substring(5,6);
+                                        answer.day = answer.text.substring(8, 10);
+                                        answer.month = answer.text.substring(5,7);
                                     }
                                 }
                                 answerIndex++;
