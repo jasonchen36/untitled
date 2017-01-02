@@ -111,9 +111,22 @@
 
                     _.each(formData, function(entry) {
 
-                        var ajaxOne =  apiservice.postAnswers(sessionData,
+                        var ajaxOne =  apiservice.postMaritalAnswers(sessionData,
                             entry.taxReturnId, entry);
                         promiseSaveAnswers.push(ajaxOne);
+
+                        // if status changed update date
+                        if(entry[149] === 1) {
+                            entry.questionId = 150;
+                            var day = maritalStatusForm.find('#marital-status-day-'+entry.taxReturnId);
+                            var month = maritalStatusForm.find('#marital-status-month-'+entry.taxReturnId);
+                            if(helpers.isValidDay(day.val()) && helpers.isValidMonth(month.val())) {
+                                entry.answer = '2016-' + month.val() + '-' + day.val();
+                                ajaxOne = apiservice.postMaritalDate(sessionData,
+                                    entry.taxReturnId, entry);
+                                promiseSaveAnswers.push(ajaxOne);
+                            }
+                        }
 
                         var ajaxTwo = apiservice.getAnswers(sessionData,
                             entry.taxReturnId,5);
