@@ -464,4 +464,17 @@
         );
     };
 
+    this.deleteDependantById = function(sessionData, taxReturnId, dependantId){
+        var accountInfo = helpers.getAccountInformation(sessionData);
+        return ajax.ajax(
+            'DELETE',
+            sessionData.apiUrl+'/tax_return/'+taxReturnId+'/dependant/'+dependantId,
+            {},
+            '',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
+    };
+
 }).apply(app.apiservice);

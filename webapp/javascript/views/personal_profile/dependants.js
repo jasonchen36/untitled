@@ -233,19 +233,45 @@
         //refresh page
         personalProfile.refreshPage(pageData);
     }
-    
+
     function editDependant(dependentId){
         console.log('edit dependant '+dependentId);
     }
 
-    function deleteDependant(dependentId){
-        console.log('delete dependant '+dependentId);
+    function deleteDependant(element){
+        if (!element.hasClass(helpers.disabledClass)){
+            element.addClass(helpers.disabledClass);
+            var dependantId = parseInt(element.attr('data-id')),
+                taxReturnId = parseInt(element.attr('data-tax-return-id')),
+                sessionData = personalProfile.getPersonalProfileSession(),
+                pageData = personalProfile.getPageSession();
+            apiService.deleteDependantById(sessionData, taxReturnId, dependantId)
+                .then(function(){
+                    //get updated dependants information
+                    var promiseGetDependants = [];
+                    _.each(pageData.taxReturns, function(entry) {
+                        promiseGetDependants.push(apiService.getDependants(sessionData, entry.taxReturnId));
+                    });
+                    return Promise.all(promiseGetDependants);
+                })
+                .then(function(response){
+                    //refresh template
+                    _.each(pageData.taxReturns, function(taxReturn, index){
+                        taxReturn.dependants = response[index];
+                    });
+                    personalProfile.refreshPage(pageData);
+                })
+                .catch(function(jqXHR,textStatus,errorThrown){
+                    ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
+                    element.removeClass(helpers.disabledClass);
+                });
+        }
     }
 
     function addDependant(taxReturnId){
         console.log('add dependent to tax return '+taxReturnId);
     }
-    
+
     this.init = function(){
         if ($('#personal-profile-dependants').length > 0) {
             //variables
@@ -285,7 +311,7 @@
 
             dependantsDeleteButtons.on('click',function(event){
                 event.preventDefault();
-                deleteDependant(parseInt($(this).attr('data-id')));
+                deleteDependant($(this));
             });
 
             dependantsAddButtons.on('click',function(event){
