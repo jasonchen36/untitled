@@ -4,7 +4,12 @@
   cursor: pointer;
   @include transition-with-defaults(border-color);
   @include unselectable;
-  &.active, &:hover{
+  &.active{
     border-color: green;
+  }
+  @media (min-width:1025px){ //hover only on desktop breakpoint
+    &:hover {
+      border-color: green;
+    }
   }
 }
