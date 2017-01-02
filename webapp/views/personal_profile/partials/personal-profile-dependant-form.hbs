@@ -1,64 +1,59 @@
-<div id="container-dependants-form-{{taxReturnId}}">
-    <h1 class="filer-name">{{filerName}}</h1>
-    <div class="border-bottom-light-gray border-top-light-gray add-bottom-padding add-top-padding">
-        <div>
-            <div class="container-inline-input long">
-                <label for="dependants-first-name-{{taxReturnId}}">DEPENDANT FIRST NAME</label>
-                <input id="dependants-first-name-{{taxReturnId}}" type="text" value="" class="inline-input"/>
-                <p id="dependants-first-name-label-error-{{taxReturnId}}" class="label-error">First name needed</p>
-            </div>
-            <div class="container-inline-input long">
-                <label for="dependants-last-name-{{taxReturnId}}">DEPENDANT LAST NAME</label>
-                <input id="dependants-last-name-{{taxReturnId}}" type="text" value="" class="inline-input"/>
-                <p id="dependants-last-name-label-error-{{taxReturnId}}" class="label-error">Last name needed</p>
-            </div>
-            <div class="container-inline-input long">
-                <label class="under">DATE OF BIRTH</label>
-            </div>
-            <div class="container-inline-input long">
-                <label class="under" for="dependants-relationship-{{taxReturnId}}">RELATIONSHIP</label>
-            </div>
-            <div class="container-inline-input short">
-                <input id="dependants-birthday-day-{{taxReturnId}}" type="text" value="" class="inline-input text-center" placeholder="DD" maxlength="2"/>
-                <p id="dependants-birthday-day-label-error-{{taxReturnId}}" class="label-error">Day needed</p>
-            </div>
-            <div class="container-inline-input short">
-                <input id="dependants-birthday-month-{{taxReturnId}}" type="text" value="" class="inline-input text-center" placeholder="MM" maxlength="2"/>
-                <p id="dependants-birthday-month-label-error-{{taxReturnId}}" class="label-error">Month needed</p>
-            </div>
-            <div class="container-inline-input short">
-                <input id="dependants-birthday-year-{{taxReturnId}}" type="text" value="" class="inline-input text-center" placeholder="YYYY" maxlength="4"/>
-                <p id="dependants-birthday-year-label-error-{{taxReturnId}}" class="label-error">Year needed</p>
-            </div>
-            <div class="container-inline-input long">
-                <div class="drop-down">
-                    <select id="dependants-relationship-{{taxReturnId}}" class="drop-down-select">
-                        <option value="">Select…</option>
-                        <option value="1">Mother</option>
-                        <option value="2">Father</option>
-                        <option value="3">Sister</option>
-                        <option value="4">Brother</option>
-                        <option value="5">Aunt</option>
-                        <option value="6">Uncle</option>
-                        <option value="7">Niece</option>
-                        <option value="8">Nephew</option>
-                        <option value="9">Grandfather</option>
-                        <option value="10">Grandmother</option>
-                        <option value="11">Grandson</option>
-                        <option value="12">Granddaughter</option>
-                        <option value="13">Son</option>
-                        <option value="14">Daughter</option>
-                    </select>
-                </div>
-                <p id="dependants-relationship-label-error-{{taxReturnId}}" class="label-error">Relationship needed</p>
-            </div>
+<div class="border-bottom-light-gray border-top-light-gray add-bottom-padding add-top-padding clear-both">
+    <div class="container-inline-input long">
+        <label for="first-name-{{taxReturnId}}">DEPENDANT FIRST NAME</label>
+        <input id="first-name-{{taxReturnId}}" name="firstName" type="text" value="" class="inline-input"/>
+        <p class="label-error">First name needed</p>
+    </div>
+    <div class="container-inline-input long">
+        <label for="last-name-{{taxReturnId}}">DEPENDANT LAST NAME</label>
+        <input id="last-name-{{taxReturnId}}" type="text" value="" name="lastName" class="inline-input"/>
+        <p class="label-error">Last name needed</p>
+    </div>
+    <div class="container-inline-input long">
+        <label class="under">DATE OF BIRTH</label>
+    </div>
+    <div class="container-inline-input long">
+        <label class="under" for="relationship-{{taxReturnId}}">RELATIONSHIP</label>
+    </div>
+    <div class="container-inline-input short">
+        <input id="birth-day-{{taxReturnId}}" type="text" value="" class="inline-input text-center" placeholder="DD" maxlength="2" name="day"/>
+        <p class="label-error">Day needed</p>
+    </div>
+    <div class="container-inline-input short">
+        <input id="birth-month-{{taxReturnId}}" type="text" value="" class="inline-input text-center" placeholder="MM" maxlength="2" name="month"/>
+        <p class="label-error">Month needed</p>
+    </div>
+    <div class="container-inline-input short">
+        <input id="birth-year-{{taxReturnId}}" type="text" value="" class="inline-input text-center" placeholder="YYYY" maxlength="4" name="year"/>
+        <p class="label-error">Year needed</p>
+    </div>
+    <div class="container-inline-input long">
+        <div class="drop-down">
+            <select id="relationship-{{taxReturnId}}" name="relationship" class="drop-down-select">
+                <option value="">Select…</option>
+                <option value="1">Mother</option>
+                <option value="2">Father</option>
+                <option value="3">Sister</option>
+                <option value="4">Brother</option>
+                <option value="5">Aunt</option>
+                <option value="6">Uncle</option>
+                <option value="7">Niece</option>
+                <option value="8">Nephew</option>
+                <option value="9">Grandfather</option>
+                <option value="10">Grandmother</option>
+                <option value="11">Grandson</option>
+                <option value="12">Granddaughter</option>
+                <option value="13">Son</option>
+                <option value="14">Daughter</option>
+            </select>
         </div>
-        <div class="add-top-padding">
-            <div id="share-spouse-name-{{taxReturnId}}" class="checkbox"></div>
-            <p class="checkbox-label">THIS DEPENDANT IS ALSO SHARED WITH SPOUSE NAME</p>
-        </div>
-        <div class="add-top-padding">
-            <button class="dependants-button-save green">Save</button>
-        </div>
+        <p class="label-error">Relationship needed</p>
+    </div>
+    <div class="add-top-padding checkbox-container">
+        <div id="share-spouse-{{taxReturnId}}" class="checkbox"></div>
+        <p class="checkbox-label">THIS DEPENDANT IS ALSO SHARED WITH SPOUSE NAME</p>
+    </div>
+    <div class="add-top-padding">
+        <button class="dependants-button-save green">Save</button>
     </div>
 </div>

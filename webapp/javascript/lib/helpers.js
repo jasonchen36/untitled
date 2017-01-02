@@ -11,6 +11,7 @@
     this.tileContainerClass = 'taxplan-tile-container';
     this.formContainerClass = 'taxplan-form-container';
     this.cookieCurrentPage = 'store-current-page';
+    this.errorLabelClass = 'label-error';
 
     this.sizeOfObject = function(data){
         if (data){
@@ -328,15 +329,19 @@
     };
     
     this.isValidDay = function(value){
-        return !that.isEmpty(value.trim()) && value.length === 2 && parseInt(value) >= 1 && parseInt(value) <= 31;
+        return !that.isEmpty(value.trim()) && value.trim().length === 2 && parseInt(value) >= 1 && parseInt(value) <= 31;
     };
     
     this.isValidMonth = function(value){
-        return !that.isEmpty(value.trim()) && value.length === 2 && parseInt(value) >= 1 && parseInt(value) <= 12;
+        return !that.isEmpty(value.trim()) && value.trim().length === 2 && parseInt(value) >= 1 && parseInt(value) <= 12;
     };
     
     this.isValidYear = function(value){
-        return !that.isEmpty(value.trim()) && value.length === 2;
+        return !that.isEmpty(value.trim()) && value.trim().length === 2;
+    };
+    
+    this.isValidFullYear = function(value){
+        return !that.isEmpty(value.trim()) && value.trim().length === 4;
     };
 
 }).apply(app.helpers);

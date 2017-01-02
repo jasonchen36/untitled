@@ -23,56 +23,47 @@
                 sessionData = personalProfile.getPersonalProfileSession(),
                 accountInfo = helpers.getAccountInformation(sessionData),
                 nextScreenCategoryId = 2;
-            //todo, form validation
-            helpers.resetForm(dependantsForm);
-            $('.'+helpers.formContainerClass).each(function(){
-                validateDependantsFormData($(this));
-            });
-            if(!helpers.formHasErrors(dependantsForm)){
-                dependantsSubmit.addClass(disabledClass);
-                return Promise.resolve()
-                    .then(function() {
-                        var promiseSaveAnswers = updateTileAnswers(formData),
-                            promiseGetAnswers = [],
-                            promiseGetQuestions = apiService.getQuestions(sessionData,nextScreenCategoryId);
-                        _.each(formData, function(entry) {
-                            promiseGetAnswers.push(apiService.getAnswers(sessionData,entry.taxReturnId,nextScreenCategoryId));
-                        });
-                        return Promise.all([
-                            Promise.all(promiseSaveAnswers),
-                            Promise.all(promiseGetAnswers),
-                            promiseGetQuestions
-                        ]);
-                    })
-                    .then(function(response) {
-                        var data = {};
-                        data.accountInfo = accountInfo;
-                        data.taxReturns = formData;
-                        data.taxReturns.questions = response[2];
-                        _.each(data.taxReturns, function(taxReturn, index){
-                            taxReturn.firstName = nameData[index];
-                            taxReturn.questions = response[1][index];
-                            _.each(taxReturn.questions.answers, function(question){
+            dependantsSubmit.addClass(disabledClass);
+            return Promise.resolve()
+                .then(function() {
+                    var promiseSaveAnswers = updateTileAnswers(formData),
+                        promiseGetAnswers = [],
+                        promiseGetQuestions = apiService.getQuestions(sessionData,nextScreenCategoryId);
+                    _.each(formData, function(entry) {
+                        promiseGetAnswers.push(apiService.getAnswers(sessionData,entry.taxReturnId,nextScreenCategoryId));
+                    });
+                    return Promise.all([
+                        Promise.all(promiseSaveAnswers),
+                        Promise.all(promiseGetAnswers),
+                        promiseGetQuestions
+                    ]);
+                })
+                .then(function(response) {
+                    var data = {};
+                    data.accountInfo = accountInfo;
+                    data.taxReturns = formData;
+                    data.taxReturns.questions = response[2];
+                    _.each(data.taxReturns, function(taxReturn, index){
+                        taxReturn.firstName = nameData[index];
+                        taxReturn.questions = response[1][index];
+                        _.each(taxReturn.questions.answers, function(question){
+                            question.answer = 0;
+                            question.class = '';
+                            if (!question.text) {
                                 question.answer = 0;
                                 question.class = '';
-                                if (!question.text) {
-                                    question.answer = 0;
-                                    question.class = '';
-                                } else if (question.text === 'Yes'){
-                                    question.answer = 1;
-                                    question.class = activeClass;
-                                }
-
-                            });
+                            } else if (question.text === 'Yes'){
+                                question.answer = 1;
+                                question.class = activeClass;
+                            }
                         });
-
-                        personalProfile.goToNextPage(data);
-                    })
-                    .catch(function(jqXHR,textStatus,errorThrown){
-                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
-                        dependantsSubmit.removeClass(disabledClass);
                     });
-            }
+                    personalProfile.goToNextPage(data);
+                })
+                .catch(function(jqXHR,textStatus,errorThrown){
+                    ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
+                    dependantsSubmit.removeClass(disabledClass);
+                });
         }
     }
 
@@ -133,71 +124,54 @@
         }
     }
 
-    function validateDependantsFormData(dependantsForm){
+    function validateDependantsFormData(formContainer){
         var errors = 0,
-            taxReturnId = dependantsForm.attr('data-id'),
-            firstName = dependantsForm.find('#dependants-first-name-'+taxReturnId),
-            lastName = dependantsForm.find('#dependants-last-name-'+taxReturnId),
-            day = dependantsForm.find('#dependants-birthday-day-'+taxReturnId),
-            month = dependantsForm.find('#dependants-birthday-month-'+taxReturnId),
-            year = dependantsForm.find('#dependants-birthday-year-'+taxReturnId),
-            relationship = dependantsForm.find('#dependants-relationship-'+taxReturnId),
+            formData = helpers.getFormData(formContainer),
+            input;
 
-            firstNameLabelError = dependantsForm.find('#dependants-first-name-label-error-'+taxReturnId),
-            lastNameLabelError = dependantsForm.find('#dependants-last-name-label-error-'+taxReturnId),
-            dayLabelError = dependantsForm.find('#dependants-birthday-day-label-error-'+taxReturnId),
-            monthLabelError = dependantsForm.find('#dependants-birthday-month-label-error-'+taxReturnId),
-            yearLabelError = dependantsForm.find('#dependants-birthday-year-label-error-'+taxReturnId),
-            relationshipLabelError = dependantsForm.find('#dependants-relationship-label-error-'+taxReturnId);
-
-        firstName.removeClass(helpers.errorClass);
-        lastName.removeClass(helpers.errorClass);
-        day.removeClass(helpers.errorClass);
-        month.removeClass(helpers.errorClass);
-        year.removeClass(helpers.errorClass);
-        relationship.removeClass(helpers.errorClass);
-
-        firstNameLabelError.removeClass(helpers.errorClass);
-        lastNameLabelError.removeClass(helpers.errorClass);
-        dayLabelError.removeClass(helpers.errorClass);
-        monthLabelError.removeClass(helpers.errorClass);
-        yearLabelError.removeClass(helpers.errorClass);
-        relationshipLabelError.removeClass(helpers.errorClass);
+        //reset form
+        formContainer.find('.'+helpers.errorClass).removeClass(helpers.errorClass);
 
         //firstName
-        if (helpers.isEmpty(firstName.val())){
-            firstName.addClass(helpers.errorClass);
-            firstNameLabelError.addClass(helpers.errorClass);
+        if (helpers.isEmpty(formData.firstName)){
+            input = formContainer.find('[name="firstName"]');
+            input.addClass(helpers.errorClass);
+            input.parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
             errors++;
         }
         //lastName
-        if (helpers.isEmpty(lastName.val())){
-            lastName.addClass(helpers.errorClass);
-            lastNameLabelError.addClass(helpers.errorClass);
+        if (helpers.isEmpty(formData.lastName)){
+            input = formContainer.find('[name="lastName"]');
+            input.addClass(helpers.errorClass);
+            input.parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
             errors++;
         }
         //day
-        if (helpers.isEmpty(day.val())){
-            day.addClass(helpers.errorClass);
-            dayLabelError.addClass(helpers.errorClass);
+        if (!helpers.isValidDay(formData.day)){
+            input = formContainer.find('[name="day"]');
+            input.addClass(helpers.errorClass);
+            input.parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
             errors++;
         }
         //month
-        if (helpers.isEmpty(month.val())){
-            month.addClass(helpers.errorClass);
-            monthLabelError.addClass(helpers.errorClass);
+        if (!helpers.isValidMonth(formData.month)){
+            input = formContainer.find('[name="month"]');
+            input.addClass(helpers.errorClass);
+            input.parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
             errors++;
         }
         //year
-        if (helpers.isEmpty(year.val())){
-            year.addClass(helpers.errorClass);
-            yearLabelError.addClass(helpers.errorClass);
+        if (!helpers.isValidFullYear(formData.year)){
+            input = formContainer.find('[name="year"]');
+            input.addClass(helpers.errorClass);
+            input.parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
             errors++;
         }
         //relationship
-        if (helpers.isEmpty(relationship.val())){
-            relationship.addClass(helpers.errorClass);
-            relationshipLabelError.addClass(helpers.errorClass);
+        if (helpers.isEmpty(formData.relationship)){
+            input = formContainer.find('[name="relationship"]');
+            input.addClass(helpers.errorClass);
+            input.parent().parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
             errors++;
         }
         return errors < 1;
@@ -250,6 +224,14 @@
     }
 
     function saveDependant(element){
+        if (!element.hasClass(helpers.disabledClass)){
+            if(validateDependantsFormData(element.parent().parent())){
+                // element.addClass(helpers.disabledClass);
+                console.log('call api');
+            }
+        }
+        //todo, validate form
+        //todo, share dependant logic
         console.log('save dependant');
     }
 
