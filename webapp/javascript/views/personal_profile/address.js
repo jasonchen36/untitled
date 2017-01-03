@@ -22,8 +22,11 @@
         });
         if (!helpers.formHasErrors(addressForm)) {
             addressSubmit.addClass(disabledClass);
+            return Promise.resolve()
+            .then(function(){
             var body,
                 taxReturnData,
+                promiseArrayQuestions = [],
                 addressRequests = _.map(formData, function(value, key) {
                     body = {
                         addressLine1:  value.street,
@@ -42,19 +45,27 @@
                         {}
                     );
                 }),
+                dateOfBirthRequests = _.map(formData, function(value, key) {
+                var uri = sessionData.apiUrl+ '/tax_return/' + key,
+                accountInfo = helpers.getAccountInformation(sessionData);
+                var promiseAnswers = ajax.ajax(
+                    'GET',
+                    uri,
+                    {
+                    },
+                    'json',
+                   {
+                          'Authorization': 'Bearer '+ accountInfo.token
+                   }
+                );
+                promiseArrayQuestions.push(promiseAnswers);
+              }),
                 taxReturnRequests = _.map(formData, function(formValue, formKey) {
                     taxReturnData = _.find(sessionData.taxReturns, function(entry){
                         return parseInt(formKey) === entry.taxReturnId;
                     });
                     body = {
-                        accountId:  taxReturnData.accountId,
-                        productId:  taxReturnData.productId,
-                        firstName: taxReturnData.firstName,
-                        lastName: taxReturnData.lastName,
-                        provinceOfResidence: formValue.provinceResidence,
-                        dateOfBirth: taxReturnData.dateOfBirth,
-                        canadianCitizen: taxReturnData.canadianCitizen,
-                        authorizeCra: taxReturnData.authorizeCRA
+                        provinceOfResidence: formValue.provinceResidence
                     };
                     return ajax.ajax(
                         'PUT',
@@ -63,24 +74,65 @@
                         'json',
                         {}
                     );
+                }),
+                addressAssociationRequests = _.map(formData, function(value, key) {
+                    return ajax.ajax(
+                        'POST',
+                        sessionData.apiUrl+'/tax_return/'+taxReturnData.taxReturnId+'/address/'+value.addressId,
+                        body,
+                        '',
+                        {}
+                    );
                 });
-            Promise.all(addressRequests)
+
+            return Promise.all([Promise.all(promiseArrayQuestions),Promise.all(addressRequests),Promise.all(addressAssociationRequests)]);
+          })
                 .then(function(response){
-                    var addressAssociationRequests = _.map(response, function(value, key) {
-                        return ajax.ajax(
-                            'POST',
-                            sessionData.apiUrl+'/tax_return/'+taxReturnData.taxReturnId+'/address/'+value.addressId,
-                            body,
-                            '',
-                            {}
-                        );
-                    });
-                    return Promise.all(addressAssociationRequests);
+                   console.log("what is the response", response);
+                   var taxReturn = response[0];
+                   console.log("this is the tax return", taxReturn);
+                   var accountInfo = helpers.getAccountInformation(sessionData);
+                       taxReturn.accountInfo = accountInfo;
+                       var answerIndex = 0;
+                       _.each(taxReturn, function(answer){
+                         console.log("this is the answer", answer);
+
+                        console.log("this is the dob", answer.date_of_birth);
+
+                        //  console.log("this is the promise value", answer.[[PromiseValue]);
+                          //  if(answerIndex === 0) {
+                          //      answer.tiles = apiService.getMarriageTiles(taxReturn.taxReturnId, answer.text);
+                          //      answer.answer = 0;
+                          //      answer.class = "";
+                          //      if (!answer.text) {
+                          //          answer.answer = 0;
+                          //          answer.class = "";
+                          //      } else if (answer.text === "Yes") {
+                          //          answer.answer = 1;
+                          //          answer.class = helpers.activeClass;
+                          //      }
+                          //  }else if(answerIndex === 1){
+                          //      answer.answer = 0;
+                          //      answer.class = "";
+                          //      if(answer.text === "Yes"){
+                          //          answer.answer = 1;
+                          //          answer.class = helpers.activeClass;
+                          //      }
+                          //  }else{
+                          //      answer.day = "";
+                          //      answer.month= "";
+                          //      if(answer.text.length === 10){
+                          //          answer.day = answer.text.substring(8, 10);
+                          //          answer.month = answer.text.substring(5,7);
+                          //      }
+                          //  }
+                          //  answerIndex++;
+                       });
                 })
                 .then(function(){
                     return Promise.all(taxReturnRequests)
                         .then(function(){
-                            //todo, get updated profile data?
+                            console.log("what is the taxReturnRequests", taxReturnRequests[2]);
                             personalProfile.goToNextPage();
                         });
                 })
@@ -122,7 +174,7 @@
         province.removeClass(errorClass);
         provinceResidence.removeClass(errorClass);
         country.removeClass(errorClass);
-        
+
         addressFirstLineErrorLabel.removeClass(errorClass);
         addressCityErrorLabel.removeClass(errorClass);
         addressPostalCodeErrorLabel.removeClass(errorClass);
