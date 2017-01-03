@@ -36,7 +36,7 @@
                             promiseGetAnswers = [],
                             promiseGetQuestions = apiService.getQuestions(sessionData, nextScreenCategoryId);
                         _.each(pageData.taxReturns, function (entry) {
-                            promiseGetAnswers.push(apiService.getAnswers(sessionData, entry.taxReturnId, nextScreenCategoryId));
+                            promiseGetAnswers.push(apiService.getAddresses(sessionData, entry.taxReturnId));
                         });
                         return Promise.all([
                             Promise.all(promiseSaveAnswers),
@@ -51,15 +51,7 @@
                         data.taxReturns = response[3];
                         data.taxReturns.questions = response[2];
                         _.each(data.taxReturns, function (taxReturn, index) {
-                            taxReturn.questions = response[1][index];
-                            _.each(taxReturn.questions.answers, function (answer) {
-                                answer.answer = 0;
-                                answer.class = '';
-                                if (answer.text && answer.text.toLowerCase() === 'yes') {
-                                    answer.answer = 1;
-                                    answer.class = activeClass;
-                                }
-                            });
+                            taxReturn.address = response[1][index][0];
                         });
                         personalProfile.goToNextPage(data);
                     })

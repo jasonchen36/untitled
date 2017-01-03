@@ -21,7 +21,7 @@
                             <div>
                                 <div class="container-inline-input long">
                                     <label for="first-line-{{taxReturnId}}">STREET ADDRESS</label>
-                                    <input id="first-line-{{taxReturnId}}" type="text" value="{{address.street}}" class="inline-input" name="street"/>
+                                    <input id="first-line-{{taxReturnId}}" type="text" value="{{address.address_line1}}" class="inline-input" name="street"/>
                                     <p id="address-first-line-label-error-{{taxReturnId}}" class="label-error">Address line needed</p>
                                 </div>
                                 <div class="container-inline-input short">
@@ -33,14 +33,14 @@
                                     <label for="province-{{taxReturnId}}">PROVINCE</label>
                                     <div class="drop-down">
                                         <select class="drop-down-select" id="province-{{taxReturnId}}" name="province">
-                                            {{>province-options selectedProvince=address.province}}
+                                            {{>province-options selectedProvince=address.providence}}
                                         </select>
                                     </div>
                                     <p id="address-province-label-error-{{taxReturnId}}" class="label-error">Province needed</p>
                                 </div>
                                 <div class="container-inline-input short">
                                     <label for="postal-code-{{taxReturnId}}">POSTAL CODE</label>
-                                    <input id="postal-code-{{taxReturnId}}" type="text" value="{{address.postalCode}}" class="inline-input" name="postalCode" maxlength="6"/>
+                                    <input id="postal-code-{{taxReturnId}}" type="text" value="{{address.postal_code}}" class="inline-input" name="postalCode" maxlength="6"/>
                                     <p id="address-postal-code-label-error-{{taxReturnId}}" class="label-error">Postal Code needed</p>
                                 </div>
                             </div>
@@ -49,7 +49,7 @@
                                     <label for="province-residence-{{taxReturnId}}" class="under">PROVINCE OF RESIDENCE (DEC 31, 2016)</label>
                                     <div class="drop-down">
                                         <select class="drop-down-select" id="province-residence-{{taxReturnId}}" name="provinceResidence">
-                                            {{>province-options selectedProvince=province}}
+                                            {{>province-options}}
                                         </select>
                                     </div>
                                     <p id="address-residence-label-error-{{taxReturnId}}" class="label-error">Province needed</p>
