@@ -12,8 +12,13 @@
     height:46px;
   }
   @include unselectable;
-  &.active, &:hover {
+  &.active{
     background-color: $color-global-yellow;
+  }
+  @media (min-width:1025px){ //hover only on desktop breakpoint
+    &:hover {
+      background-color: $color-global-yellow;
+    }
   }
 }
 
