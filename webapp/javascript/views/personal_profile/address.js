@@ -238,7 +238,7 @@
                         _.each(taxReturn.questions.answers, function(answer){
                             answer.answer = 0;
                             answer.class = '';
-                            if (answer.text.toLowerCase() === 'yes'){
+                            if (answer.text && answer.text.toLowerCase() === 'yes'){
                                 answer.answer = 1;
                                 answer.class = helpers.activeClass;
                             }

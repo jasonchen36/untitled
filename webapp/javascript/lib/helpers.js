@@ -196,6 +196,7 @@
 
             tile = $("#marital-status-changed-" + containerId);
 
+            tile = tile.find('.checkbox').first();
 
             // TODO find a better way to do this
             userData[149] = tile.hasClass(that.activeClass)? 1:0;

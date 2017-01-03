@@ -14,6 +14,7 @@
         dependantsDeleteButtons,
         dependantsAddButtons,
         dependantsSaveButtons,
+        dependantsCancelButtons,
         dependantCheckboxes,
         activeClass = helpers.activeClass,
         disabledClass = helpers.disabledClass;
@@ -26,43 +27,47 @@
                 pageData = personalProfile.getPageSession(),
                 nextScreenCategoryId = 2;
             dependantsSubmit.addClass(disabledClass);
-            return Promise.resolve()
-                .then(function() {
-                    var promiseSaveAnswers = updateTileAnswers(formData),
-                        promiseGetAnswers = [],
-                        promiseGetQuestions = apiService.getQuestions(sessionData,nextScreenCategoryId);
-                    _.each(pageData.taxReturns, function(entry) {
-                        promiseGetAnswers.push(apiService.getAnswers(sessionData,entry.taxReturnId,nextScreenCategoryId));
-                    });
-                    return Promise.all([
-                        Promise.all(promiseSaveAnswers),
-                        Promise.all(promiseGetAnswers),
-                        promiseGetQuestions,
-                        apiService.getTaxReturns(sessionData)
-                    ]);
-                })
-                .then(function(response) {
-                    var data = {};
-                    data.accountInfo = accountInfo;
-                    data.taxReturns = response[3];
-                    data.taxReturns.questions = response[2];
-                    _.each(data.taxReturns, function(taxReturn, index){
-                        taxReturn.questions = response[1][index];
-                        _.each(taxReturn.questions.answers, function(answer){
-                            answer.answer = 0;
-                            answer.class = '';
-                            if (answer.text.toLowerCase() === 'yes'){
-                                answer.answer = 1;
-                                answer.class = activeClass;
-                            }
+            if(!validateDependantsTiles()) {
+                window.location.hash = 'modal-personal-profile-popup';
+            } else {
+                return Promise.resolve()
+                    .then(function () {
+                        var promiseSaveAnswers = updateTileAnswers(formData),
+                            promiseGetAnswers = [],
+                            promiseGetQuestions = apiService.getQuestions(sessionData, nextScreenCategoryId);
+                        _.each(pageData.taxReturns, function (entry) {
+                            promiseGetAnswers.push(apiService.getAnswers(sessionData, entry.taxReturnId, nextScreenCategoryId));
                         });
+                        return Promise.all([
+                            Promise.all(promiseSaveAnswers),
+                            Promise.all(promiseGetAnswers),
+                            promiseGetQuestions,
+                            apiService.getTaxReturns(sessionData)
+                        ]);
+                    })
+                    .then(function (response) {
+                        var data = {};
+                        data.accountInfo = accountInfo;
+                        data.taxReturns = response[3];
+                        data.taxReturns.questions = response[2];
+                        _.each(data.taxReturns, function (taxReturn, index) {
+                            taxReturn.questions = response[1][index];
+                            _.each(taxReturn.questions.answers, function (answer) {
+                                answer.answer = 0;
+                                answer.class = '';
+                                if (answer.text && answer.text.toLowerCase() === 'yes') {
+                                    answer.answer = 1;
+                                    answer.class = activeClass;
+                                }
+                            });
+                        });
+                        personalProfile.goToNextPage(data);
+                    })
+                    .catch(function (jqXHR, textStatus, errorThrown) {
+                        ajax.ajaxCatch(jqXHR, textStatus, errorThrown);
+                        dependantsSubmit.removeClass(disabledClass);
                     });
-                    personalProfile.goToNextPage(data);
-                })
-                .catch(function(jqXHR,textStatus,errorThrown){
-                    ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
-                    dependantsSubmit.removeClass(disabledClass);
-                });
+            }
         }
     }
 
@@ -125,6 +130,17 @@
         }
     }
 
+    function validateDependantsTiles(){
+        var formData = helpers.getTileFormDataArray(dependantsForm),
+            tilesAreValid = true;
+        _.each(formData, function(entry){
+            if (_.values(entry).indexOf(1) === -1){
+                tilesAreValid = false;
+            }
+        });
+        return tilesAreValid;
+    }
+
     function validateDependantsFormData(formContainer){
         var errors = 0,
             formData = helpers.getFormData(formContainer),
@@ -180,43 +196,50 @@
 
     function updateUserDependants(selectedTile){
         var pageData = personalProfile.getPageSession(),
-            tileId = parseInt(selectedTile.attr('id'));
-        //enforce toggle
-        if(selectedTile.hasClass(activeClass)){
-            //deselect option
-            _.each(pageData.taxReturns, function(taxReturn){
-                _.each(taxReturn.questions.answers, function(answer){
-                    if(answer.id === tileId){
-                        answer.class = '';
+            tileId = parseInt(selectedTile.attr('id')),
+            tileQuestionId = parseInt(selectedTile.attr('data-id'));
+        if (!selectedTile.hasClass(activeClass)) {
+            //enforce toggle
+            if(!tileId){
+                //never been answered
+                var taxReturnId = parseInt(selectedTile.parent().attr('data-id'));
+                _.each(pageData.taxReturns, function (taxReturn) {
+                    if (parseInt(taxReturn.taxReturnId) === taxReturnId) {
+                        _.each(taxReturn.questions.answers, function (answer) {
+                            if (answer.question_id === tileQuestionId) {
+                                answer.class = activeClass;
+                            } else {
+                                answer.class = '';
+                            }
+                            return answer;
+                        });
                     }
-                    return answer;
                 });
-            });
-        } else {
-            //select option
-            var hasSelectedTile;
-            _.each(pageData.taxReturns, function(taxReturn){
-                hasSelectedTile = false;
-                _.each(taxReturn.questions.answers, function(answer){
-                    if(answer.id === tileId){
-                        answer.class = activeClass;
-                        hasSelectedTile = true;
-                    }
-                    return answer;
-                });
-                if (hasSelectedTile){
-                    //deselect siblings
-                    _.each(taxReturn.questions.answers, function(answer){
-                        if(answer.id !== tileId){
-                            answer.class = '';
+            } else {
+                var hasSelectedTile;
+                _.each(pageData.taxReturns, function (taxReturn) {
+                    hasSelectedTile = false;
+                    _.each(taxReturn.questions.answers, function (answer) {
+                        if (answer.id === tileId) {
+                            answer.class = activeClass;
+                            hasSelectedTile = true;
                         }
                         return answer;
                     });
-                }
-            });
+                    if (hasSelectedTile) {
+                        //deselect siblings
+                        _.each(taxReturn.questions.answers, function (answer) {
+                            if (answer.id !== tileId) {
+                                answer.class = '';
+                            }
+                            return answer;
+                        });
+                    }
+                });
+            }
+            //refresh page
+            personalProfile.refreshPage(pageData);
         }
-        //refresh page
-        personalProfile.refreshPage(pageData);
     }
 
     function editDependant(element){
@@ -227,6 +250,17 @@
             hasSelectedDependant = _.find(taxReturn.dependants, {id: dependentId});
             if (hasSelectedDependant){
                 taxReturn.dependantForm = hasSelectedDependant;
+            }
+        });
+        personalProfile.refreshPage(pageData);
+    }
+
+    function cancelEditAddDependant(element){
+        var pageData = personalProfile.getPageSession(),
+            taxReturnId = parseInt(element.attr('data-tax-return-id'));
+        _.each(pageData.taxReturns, function(taxReturn){
+            if (parseInt(taxReturn.taxReturnId) === taxReturnId){
+                delete taxReturn.dependantForm;
             }
         });
         personalProfile.refreshPage(pageData);
@@ -330,6 +364,7 @@
             dependantsDeleteButtons = $('.dependants-button-delete');
             dependantsAddButtons = $('.dependants-button-add');
             dependantsSaveButtons = $('.dependants-button-save');
+            dependantsCancelButtons = $('.dependants-button-cancel');
             dependantCheckboxes = $('.checkbox-container');
 
             //listeners
@@ -371,6 +406,11 @@
             dependantsSaveButtons.on('click',function(event){
                 event.preventDefault();
                 saveDependant($(this));
+            });
+
+            dependantsCancelButtons.on('click',function(event){
+                event.preventDefault();
+                cancelEditAddDependant($(this));
             });
 
             dependantCheckboxes.on('click',function(event){

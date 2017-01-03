@@ -45,7 +45,7 @@
                                 entry.questionId = 150;
                                 var day = maritalStatusForm.find('#marital-status-day-'+entry.taxReturnId);
                                 var month = maritalStatusForm.find('#marital-status-month-'+entry.taxReturnId);
-                                entry.answer = day + '/' + month;
+                                entry.answer = '2016-' + month.val() + '-' + day.val();
                                 ajaxOne =  apiservice.postMaritalDate(sessionData,
                                     entry.taxReturnId, entry);
                                 promiseSaveAnswers.push(ajaxOne);
@@ -74,7 +74,7 @@
                             _.each(taxReturn.questions.answers, function(answer){
                                 answer.answer = 0;
                                 answer.class = '';
-                                if (answer.text.toLowerCase() === 'yes'){
+                                if (answer.text && answer.text.toLowerCase() === 'yes'){
                                     answer.answer = 1;
                                     answer.class = activeClass;
                                 }
@@ -255,7 +255,7 @@
                 var day = $('#marital-status-day-' + taxReturn.taxReturnId);
                 var month = $('#marital-status-month-' + taxReturn.taxReturnId);
                 var sameStatus = $('#marital-status-same-' + taxReturn.taxReturnId);
-
+                var dateChangedText = $('#indicate-date-' + taxReturn.taxReturnId);
 
                 var marriedChoice = $('#married-married-' + taxReturn.taxReturnId);
                 var divorcedChoice = $('#married-divorced-' + taxReturn.taxReturnId);
@@ -320,6 +320,7 @@
                     childElement.toggleClass(helpers.activeClass);
                     day.toggle();
                     month.toggle();
+                    dateChangedText.toggle();
                 });
 
                 sameStatus.on('click', function (event) {
@@ -328,12 +329,13 @@
                         childElement = parentElement.find('.checkbox').first();
                     childElement.toggleClass(helpers.activeClass);
                     if(childElement.hasClass(activeClass)) {
-                        if ($('#marital-status-changed-' + firstReturnId).hasClass(activeClass)) {
+                        if ($('#marital-status-changed-' + firstReturnId).find('.checkbox').first().hasClass(activeClass)) {
                             checkbox.find('.checkbox').first().addClass(activeClass);
                             day.show();
                             day.val($('#marital-status-day-' + firstReturnId).val());
                             month.show();
                             month.val($('#marital-status-month-' + firstReturnId).val());
+                            dateChangedText.show();
                         }
 
                         if($('#married-married-' + firstReturnId).hasClass(activeClass)){
@@ -376,6 +378,7 @@
                         checkbox.find('.checkbox').first().removeClass(activeClass);
                         day.hide();
                         month.hide();
+                        dateChangedText.hide();
                         marriedChoice.removeClass(activeClass);
                         divorcedChoice.removeClass(activeClass);
                         separatedChoice.removeClass(activeClass);

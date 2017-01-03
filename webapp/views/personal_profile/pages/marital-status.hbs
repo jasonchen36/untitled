@@ -17,9 +17,10 @@
                     {{/if}}
                     {{>personal-profile-single-options questions=questions.answers.0.tiles tileContainerId=taxReturnId}}
                     <div id="marital-status-changed-{{taxReturnId}}" class="checkbox-container marital-status-changed-container">
-                        <div class="checkbox"></div>
+                        <div class="checkbox {{questions.answers.1.class}}"></div>
                         <p class="checkbox-label">MY MARITAL STATUS CHANGED IN 2016</p>
                     </div>
+                    {{#ifCond questions.answers.1.class ""}}
                     <p id ="indicate-date-{{taxReturnId}}" hidden>PLEASE INDICATE THE DATE OF CHANGE:</p>
                     <div class="taxplan-form-container" data-id="{{taxReturnId}}" >
                         <div>
@@ -31,6 +32,22 @@
                             <p id="birth-month-error-label-{{taxReturnId}}" class="label-error display-inline-block add-margin-right small-2">Month needed</p>
                         </div>
                     </div>
+                    {{/ifCond}}
+
+                    {{#ifCond questions.answers.1.class "active"}}
+                        <p id ="indicate-date-{{taxReturnId}}" >PLEASE INDICATE THE DATE OF CHANGE:</p>
+                        <div class="taxplan-form-container" data-id="{{taxReturnId}}" >
+                            <div>
+                                <input class="small-2 small text-center" placeholder="DD" id="marital-status-day-{{taxReturnId}}" maxlength="2" value="{{questions.answers.2.day}}"/>
+                                <input class="small-2 small text-center" placeholder="MM" id="marital-status-month-{{taxReturnId}}" maxlength="2" value="{{questions.answers.2.month}}"/>
+                            </div>
+                            <div class="display-inline-table full-width">
+                                <p id="birth-day-error-label-{{taxReturnId}}" class="label-error display-inline-block add-margin-right small-2">Day needed</p>
+                                <p id="birth-month-error-label-{{taxReturnId}}" class="label-error display-inline-block add-margin-right small-2">Month needed</p>
+                            </div>
+                        </div>
+                    {{/ifCond}}
+
                 {{/each}}
             </form>
         </div>
