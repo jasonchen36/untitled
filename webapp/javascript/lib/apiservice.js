@@ -533,4 +533,69 @@
         );
     };
 
+    this.getAddresses = function(sessionData, taxReturnId){
+        var accountInfo = helpers.getAccountInformation(sessionData);
+        return ajax.ajax(
+          'GET',
+            sessionData.apiUrl+'/tax_return/'+taxReturnId+'/addresses',
+            {},
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
+    };
+
+    this.createAddress = function(sessionData, taxReturnId, formData){
+        var accountInfo = helpers.getAccountInformation(sessionData);
+        return ajax.ajax(
+            'POST',
+            sessionData.apiUrl+'/tax_return/'+taxReturnId+'/address',
+            {
+                addressLine1: formData.addressLine1,
+                addressLine2: formData.addressLine2,
+                city: formData.city,
+                province: formData.province,
+                postalCode: formData.postalCode
+
+            },
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
+    };
+
+    this.linkExistingAddresses = function(sessionData, taxReturnId, addressId){
+        var accountInfo = helpers.getAccountInformation(sessionData);
+        return ajax.ajax(
+            'POST',
+            sessionData.apiUrl+'/tax_return/'+taxReturnId+'/address/'+addressId,
+            {},
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
+    };
+
+    this.updateAddress = function(sessionData, taxReturnId, addressId, formData){
+        var accountInfo = helpers.getAccountInformation(sessionData);
+        return ajax.ajax(
+            'PUT',
+            sessionData.apiUrl+'/tax_return/'+taxReturnId+'/address/'+addressId,
+            {
+                addressLine1: formData.addressLine1,
+                addressLine2: formData.addressLine2,
+                city: formData.city,
+                province: formData.province,
+                postalCode: formData.postalCode
+            },
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
+    };
+
 }).apply(app.apiservice);
