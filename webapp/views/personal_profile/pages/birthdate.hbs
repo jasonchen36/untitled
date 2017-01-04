@@ -7,29 +7,30 @@
         </div>
         <div class="content-form">
             <form id="birthdate-form">
+                {{#debug}}{{/debug}}
                 {{#each taxReturns}}
                     <div id="container-birthdate-form" class="border-bottom-light-gray add-bottom-padding taxplan-form-container"  data-id="{{taxReturnId}}">
                         <h1 class="filer-name">{{firstName}}:</h1>
                         <label class="under">DATE OF BIRTH</label>
                         <div class="container-inline-input short">
-                            <input id="dependants-birthday-day-{{taxReturnId}}" name="birthdate_day" type="text" value="" class="inline-input text-center" placeholder="DD" maxlength="2"/>
+                            <input id="dependants-birthday-day-{{taxReturnId}}" name="birthdate_day" type="text" value="{{day}}" class="inline-input text-center" placeholder="DD" maxlength="2" />
                             <p id="birthdate-day-label-error" class="label-error">Day needed</p>
                         </div>
                         <div class="container-inline-input short">
-                            <input id="dependants-birthday-month-{{taxReturnId}}" name="birthdate_month" type="text" value="" class="inline-input text-center" placeholder="MM" maxlength="2"/>
+                            <input id="dependants-birthday-month-{{taxReturnId}}" name="birthdate_month" type="text" value="{{month}}" class="inline-input text-center" placeholder="MM" maxlength="2"/>
                             <p id="birthdate-month-label-error" class="label-error">Month needed</p>
                         </div>
                         <div class="container-inline-input short">
-                            <input id="dependants-birthday-year-{{taxReturnId}}" name="birthdate_year" type="text" value="" class="inline-input text-center" placeholder="YY" maxlength="2"/>
+                            <input id="dependants-birthday-year-{{taxReturnId}}" name="birthdate_year" type="text" value="{{year}}" class="inline-input text-center" placeholder="YY" maxlength="2"/>
                             <p id="birthdate-year-label-error" class="label-error">Year needed</p>
                         </div>
 
                         <div class="add-top-padding checkbox-container">
-                            <div class="checkbox"></div>
+                            <div class="checkbox {{citizenClass}}"></div>
                             <p class="checkbox-label">I AM A CANADIAN CITIZEN</p>
                         </div>
                         <div class="checkbox-container">
-                            <div class="checkbox"></div>
+                            <div class="checkbox {{CRAClass}}"></div>
                             <p class="checkbox-label">CRA AUTHORIZATION</p>
                         </div>
                         <p class="side-info-blurb">Do you authorize the CRA (Canada Revenue Agency) to give only your name, address, date of birth, and Canadian citizenship status to Elections Canada to ensure that your information is up to date.</p>

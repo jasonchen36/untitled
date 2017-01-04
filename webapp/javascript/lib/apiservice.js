@@ -552,11 +552,11 @@
             'POST',
             sessionData.apiUrl+'/tax_return/'+taxReturnId+'/address',
             {
-                addressLine1: formData.addressLine1,
-                addressLine2: formData.addressLine2,
+                addressLine1: formData.street,
                 city: formData.city,
                 province: formData.province,
-                postalCode: formData.postalCode
+                postalCode: formData.postalCode,
+                country: formData.country
 
             },
             'json',
@@ -585,11 +585,11 @@
             'PUT',
             sessionData.apiUrl+'/tax_return/'+taxReturnId+'/address/'+addressId,
             {
-                addressLine1: formData.addressLine1,
-                addressLine2: formData.addressLine2,
+                addressLine1: formData.street,
                 city: formData.city,
                 province: formData.province,
-                postalCode: formData.postalCode
+                postalCode: formData.postalCode,
+                country: formData.country
             },
             'json',
             {

@@ -16,125 +16,85 @@
     function submitAddress(){
         var sessionData = personalProfile.getPersonalProfileSession(),
             formData = helpers.getFormData(addressForm);
+        var accountInfo = helpers.getAccountInformation(sessionData);
         helpers.resetForm(addressForm);
         $('.'+helpers.formContainerClass).each(function(){
             validateAddressFormData($(this));
         });
+
         if (!helpers.formHasErrors(addressForm)) {
             addressSubmit.addClass(disabledClass);
-            return Promise.resolve()
-            .then(function(){
-            var body,
-                taxReturnData,
-                promiseArrayQuestions = [],
-                addressRequests = _.map(formData, function(value, key) {
-                    body = {
-                        addressLine1:  value.street,
-                        addressLine2: '',
-                        city: value.city,
-                        province: value.province,
-                        postalCode: value.postalCode,
-                        country: value.country
-                    };
-                    //todo, resolve if the address is new or needs to be updated (different api call)
-                    return ajax.ajax(
-                        'POST',
-                        sessionData.apiUrl+'/tax_return/'+key+'/address',
-                        body,
-                        'json',
-                        {}
-                    );
-                }),
-                dateOfBirthRequests = _.map(formData, function(value, key) {
-                var uri = sessionData.apiUrl+ '/tax_return/' + key,
-                accountInfo = helpers.getAccountInformation(sessionData);
-                var promiseAnswers = ajax.ajax(
-                    'GET',
-                    uri,
-                    {
-                    },
-                    'json',
-                   {
-                          'Authorization': 'Bearer '+ accountInfo.token
-                   }
-                );
-                promiseArrayQuestions.push(promiseAnswers);
-              }),
-                taxReturnRequests = _.map(formData, function(formValue, formKey) {
-                    taxReturnData = _.find(sessionData.taxReturns, function(entry){
-                        return parseInt(formKey) === entry.taxReturnId;
-                    });
-                    body = {
-                        provinceOfResidence: formValue.provinceResidence
-                    };
-                    return ajax.ajax(
-                        'PUT',
-                        sessionData.apiUrl+'/tax_return/'+formKey,
-                        body,
-                        'json',
-                        {}
-                    );
-                }),
-                addressAssociationRequests = _.map(formData, function(value, key) {
-                    return ajax.ajax(
-                        'POST',
-                        sessionData.apiUrl+'/tax_return/'+taxReturnData.taxReturnId+'/address/'+value.addressId,
-                        body,
-                        '',
-                        {}
-                    );
-                });
 
-            return Promise.all([Promise.all(promiseArrayQuestions),Promise.all(addressRequests),Promise.all(addressAssociationRequests)]);
-          })
-                .then(function(response){
-                   console.log("what is the response", response);
-                   var taxReturn = response[0];
-                   console.log("this is the tax return", taxReturn);
-                   var accountInfo = helpers.getAccountInformation(sessionData);
-                       taxReturn.accountInfo = accountInfo;
-                       var answerIndex = 0;
-                       _.each(taxReturn, function(answer){
-                         console.log("this is the answer", answer);
-
-                        console.log("this is the dob", answer.date_of_birth);
-
-                        //  console.log("this is the promise value", answer.[[PromiseValue]);
-                          //  if(answerIndex === 0) {
-                          //      answer.tiles = apiService.getMarriageTiles(taxReturn.taxReturnId, answer.text);
-                          //      answer.answer = 0;
-                          //      answer.class = "";
-                          //      if (!answer.text) {
-                          //          answer.answer = 0;
-                          //          answer.class = "";
-                          //      } else if (answer.text === "Yes") {
-                          //          answer.answer = 1;
-                          //          answer.class = helpers.activeClass;
-                          //      }
-                          //  }else if(answerIndex === 1){
-                          //      answer.answer = 0;
-                          //      answer.class = "";
-                          //      if(answer.text === "Yes"){
-                          //          answer.answer = 1;
-                          //          answer.class = helpers.activeClass;
-                          //      }
-                          //  }else{
-                          //      answer.day = "";
-                          //      answer.month= "";
-                          //      if(answer.text.length === 10){
-                          //          answer.day = answer.text.substring(8, 10);
-                          //          answer.month = answer.text.substring(5,7);
-                          //      }
-                          //  }
-                          //  answerIndex++;
-                       });
-                })
+            var taxReturnIds = [];
+            var addressIds = [];
+            Promise.resolve()
                 .then(function(){
-                    return Promise.all(taxReturnRequests)
-                        .then(function(){
-                            console.log("what is the taxReturnRequests", taxReturnRequests[2]);
-                            personalProfile.goToNextPage();
-                        });
+                    var promiseAddresses = [];
+                    _.each(formData, function(entry, key){
+                        var getAddresses = apiService.getAddresses(sessionData, key);
+                        taxReturnIds.push(key);
+                        promiseAddresses.push(getAddresses);
+                    });
+                   return Promise.all(promiseAddresses);
+                })
+                .then(function(response){
+                    var promiseSaveAddresses = [];
+                    var index = 0;
+                    _.each(response, function(entry){
+                       if(entry.length > 0){
+                            var updateAddress = apiService.updateAddress(sessionData, taxReturnIds[index], entry[0].id, formData[taxReturnIds[index]]);
+                            addressIds[index] = entry[0].id;
+                            promiseSaveAddresses.push(updateAddress);
+                       }else{
+                           var createAddress = apiService.createAddress(sessionData, taxReturnIds[index], formData[taxReturnIds[index]]);
+                           promiseSaveAddresses.push(createAddress);
+                       }
+                        index++;
+                    });
+                    return Promise.all(promiseSaveAddresses);
+                })
+                .then(function(response){
+                    var index = 0;
+                    var promiseLinkAddresses = [];
+                    _.each(response, function(entry){
+                        if(typeof entry.addressId !== 'undefined'){
+                            var linkAddress = apiService.linkExistingAddresses(sessionData, taxReturnIds[index], entry.addressId);
+                            addressIds[index] = entry.addressId;
+                            promiseLinkAddresses.push(linkAddress);
+                        }
+                        index++;
+                    });
+                    return Promise.all(promiseLinkAddresses);
+                })
+                .then(function(response){
+                    var promiseGetReturns = [];
+                    promiseGetReturns.push(apiService.getTaxReturns(sessionData));
+                    return Promise.all(promiseGetReturns);
+                })
+                .then(function(response){
+                    var data = {};
+                    data.accountInfo = accountInfo;
+                    data.taxReturns = response[0];
+                    _.each(data.taxReturns, function(entry){
+                        if(entry.canadianCitizen === 1){
+                            entry.citizenClass = "active";
+                        }else{
+                            entry.citizenClass = "";
+                        }
+
+                        if(entry.authorizeCRA === 1){
+                            entry.CRAClass = "active";
+                        }else{
+                            entry.CRAClass = "";
+                        }
+                        if(entry.dateOfBirth !== null) {
+                            entry.year = entry.dateOfBirth.substring(2, 4);
+                            entry.month = entry.dateOfBirth.substring(5, 7);
+                            entry.day = entry.dateOfBirth.substring(8, 10);
+                        }
+
+                    });
+                    personalProfile.goToNextPage(data);
                 })
                 .catch(function(jqXHR,textStatus,errorThrown){
                     ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
