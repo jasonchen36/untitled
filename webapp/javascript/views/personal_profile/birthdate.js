@@ -21,9 +21,7 @@
     function submitBirthdate(){
         var sessionData = personalProfile.getPersonalProfileSession();
         var accountInfo = helpers.getAccountInformation(sessionData);
-        console.log(sessionData, "this is the session data");
         var formData = helpers.getFormData(birthdateForm);
-        console.log(formData, "this is the form data");
         helpers.resetForm(birthdateForm);
         $('.'+helpers.formContainerClass).each(function(){
             validateBirthdateFormData($(this));
@@ -33,14 +31,17 @@
             var body,
                 taxReturnData,
                 birthdateRequests = _.map(formData, function(entry, key) {
-                  console.log("this is the entry", entry);
-                  console.log("this is the key", key);
+                  var entireYear = 0;
+                    if (entry.birthdate_year > 17){
+                        entireYear = "19" + entry.birthdate_year;
+                      } else {
+                        entireYear = "20" + entry.birthdate_year;
+                      }
                     body = {
                         accountId: accountInfo.accountId,
                         productId: accountInfo.productId,
-                        dateOfBirth: "19" + entry.birthdate_year + "-" + entry.birthdate_month + "-" + entry.birthdate_day
+                        dateOfBirth: entireYear + "-" + entry.birthdate_month + "-" + entry.birthdate_day
                     };
-                  console.log("this is the body", JSON.stringify(body));
             return ajax.ajax(
                 'PUT',
                 sessionData.apiUrl+'/tax_return/'+key,
