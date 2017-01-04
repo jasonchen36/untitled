@@ -169,15 +169,26 @@ taxProfile.getTaxReturnQuote = function(req){
                 };
 
             var accountId = taxProfileSession.users[0].id;
-
             var taxReturnRequestObject,
                 taxReturnRequests = taxProfileSession.users.map(function(entry) {
-                    if (entry.taxReturnId == "") {
+                  if (entry.taxReturnId === "") {
+                  var filerType = "";
+                    if (parseInt(entry.id)) {
+                      filerType = "primary";
+                    }
+                    if (entry.id.toString().includes("spouse")) {
+                      filerType = "spouse";
+                    }
+                    if (entry.id.toString().includes("other")) {
+                      filerType = "other";
+                    }
+
                         taxReturnRequestObject = _.clone(requestObject, true);
                         taxReturnRequestObject.body = {
                             accountId: accountId,
                             productId: process.env.API_PRODUCT_ID,
-                            firstName: entry.firstName
+                            firstName: entry.firstName,
+                            filerType: filerType
                         };
                         return requestPromise(taxReturnRequestObject);
                     }

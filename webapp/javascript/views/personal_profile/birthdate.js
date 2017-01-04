@@ -19,32 +19,40 @@
         disabledClass = app.helpers.disabledClass;
 
     function submitBirthdate(){
+        var sessionData = personalProfile.getPersonalProfileSession();
+        var accountInfo = helpers.getAccountInformation(sessionData);
         var formData = helpers.getFormData(birthdateForm);
         helpers.resetForm(birthdateForm);
-        if (!helpers.isValidDay(dayInput.val())){
-            dayInput.addClass(errorClass);
-            birthdateDayLabelError.addClass(errorClass);
-        }
-        if (!helpers.isValidMonth(monthInput.val())){
-            monthInput.addClass(errorClass);
-            birthdateMonthLabelError.addClass(errorClass);
-        }
-        if (!helpers.isValidYear(yearInput.val())){
-            yearInput.addClass(errorClass);
-            birthdateYearLabelError.addClass(errorClass);
-        }
+        $('.'+helpers.formContainerClass).each(function(){
+            validateBirthdateFormData($(this));
+        });
         if (!helpers.formHasErrors(birthdateForm)) {
             birthdateSubmit.addClass(disabledClass);
-            ajax.ajax(
-                'POST',
-                '/personal-profile',
-                {
-                    action: 'api-pp-date-of-birth',
-                    data: formData
-                },
+            var body,
+                taxReturnData,
+                birthdateRequests = _.map(formData, function(entry, key) {
+                  var entireYear = 0;
+                    if (entry.birthdate_year > 17){
+                        entireYear = "19" + entry.birthdate_year;
+                      } else {
+                        entireYear = "20" + entry.birthdate_year;
+                      }
+                    body = {
+                        accountId: accountInfo.accountId,
+                        productId: accountInfo.productId,
+                        dateOfBirth: entireYear + "-" + entry.birthdate_month + "-" + entry.birthdate_day
+                    };
+            return ajax.ajax(
+                'PUT',
+                sessionData.apiUrl+'/tax_return/'+key,
+                body,
                 'json',
-                { }
-            )
+                {
+                  'Authorization': 'Bearer '+ accountInfo.token
+                }
+            );
+          });
+          Promise.all(birthdateRequests)
                 .then(function(response){
                     window.location.href = '/dashboard';
                 })
@@ -59,6 +67,49 @@
         element.find('.checkbox').first().toggleClass(helpers.activeClass);
     }
 
+    function validateBirthdateFormData(birthdateForm){
+      var errors = 0;
+      taxReturnId = birthdateForm.attr('data-id');
+      dayInput = $('#dependants-birthday-day-'+taxReturnId);
+      monthInput = $('#dependants-birthday-month-'+taxReturnId);
+      yearInput = $('#dependants-birthday-year-'+taxReturnId);
+      checkboxes = $('.checkbox-container');
+
+      birthdateDayLabelError = $('#birthdate-day-label-error');
+      birthdateMonthLabelError = $('#birthdate-month-label-error');
+      birthdateYearLabelError = $('#birthdate-year-label-error');
+
+      dayInput.removeClass(errorClass);
+      monthInput.removeClass(errorClass);
+      yearInput.removeClass(errorClass);
+      checkboxes.removeClass(errorClass);
+
+      birthdateDayLabelError.removeClass(errorClass);
+      birthdateMonthLabelError.removeClass(errorClass);
+      birthdateYearLabelError.removeClass(errorClass);
+
+      if (!helpers.isValidDay(dayInput.val())){
+          dayInput.addClass(errorClass);
+          birthdateDayLabelError.addClass(errorClass);
+          errors++;
+      }
+      if (!helpers.isValidMonth(monthInput.val())){
+          monthInput.addClass(errorClass);
+          birthdateMonthLabelError.addClass(errorClass);
+          errors++;
+      }
+      if (!helpers.isValidYear(yearInput.val())){
+          yearInput.addClass(errorClass);
+          birthdateYearLabelError.addClass(errorClass);
+          errors++;
+      }
+      if (!checkboxes.hasClass(helpers.activeClass)){
+          checkboxes.addClass(errorClass);
+          errors++;
+      }
+      return errors < 1;
+    }
+
     this.init = function(){
         if ($('#personal-profile-birthdate').length > 0) {
 
@@ -66,14 +117,7 @@
             birthdateForm = $('#birthdate-form');
             birthdateSubmit = $('#birthdate-submit');
             birthdateBack = $('#birthdate-back');
-            dayInput = $('#dependants-birthday-day');
-            monthInput = $('#dependants-birthday-month');
-            yearInput = $('#dependants-birthday-year');
             checkboxes = $('.checkbox-container');
-
-            birthdateDayLabelError = $('#birthdate-day-label-error');
-            birthdateMonthLabelError = $('#birthdate-month-label-error');
-            birthdateYearLabelError = $('#birthdate-year-label-error');
 
             //listeners
             birthdateForm.on('submit',function(event){

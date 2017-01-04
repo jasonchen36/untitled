@@ -110,16 +110,50 @@
                 })
                 .then(function(response) {
                     var data = {};
+
                     data.accountInfo = accountInfo;
                     data.taxReturns = response[3];
                     data.taxReturns.questions = response[2];
-                    _.each(data.taxReturns, function(taxReturn, index){
-                        taxReturn.questions = response[1][index];
+                    var index = 0;
+                    _.each(data.taxReturns, function(taxReturn){
+                        taxReturn.firstName = nameData[index];
                         taxReturn.accountInfo = accountInfo;
                         taxReturn.accountInfo.firstName = accountInfo.firstName.toUpperCase();
+                        var answerIndex = 0;
+                        taxReturn.questions = response[1][index];
                         _.each(taxReturn.questions.answers, function(answer){
-                            answer.tiles = apiService.getMarriageTiles(taxReturn.taxReturnId, answer.text);
+                            if(answerIndex === 0) {
+                                answer.tiles = apiService.getMarriageTiles(taxReturn.taxReturnId, answer.text);
+                                answer.answer = 0;
+                                answer.class = "";
+                                if (!answer.text) {
+                                    answer.answer = 0;
+                                    answer.class = "";
+                                } else if (answer.text === "Yes") {
+                                    answer.answer = 1;
+                                    answer.class = helpers.activeClass;
+                                }
+                            }else if(answerIndex === 1){
+                                answer.answer = 0;
+                                answer.class = "";
+                                if(answer.text === "Yes"){
+                                    answer.answer = 1;
+                                    answer.class = helpers.activeClass;
+                                }
+                            }else{
+                                answer.day = "";
+                                answer.month= "";
+                                if(answer.text.length === 10){
+                                    answer.day = answer.text.substring(8, 10);
+                                    answer.month = answer.text.substring(5,7);
+                                }
+                            }
+                            answerIndex++;
+
+
                         });
+                        index++;
+
                     });
                     personalProfile.goToPreviousPage(data);
                 })

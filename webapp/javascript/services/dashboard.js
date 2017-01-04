@@ -133,7 +133,7 @@
 
                 var dataObject = {};
                 dataObject.documentChecklist = getDocumentChecklistObject(response);
-                dataObject.currentPage= "upload",                      
+                dataObject.currentPage= "upload";
 
 
                 that.checklist = dataObject.documentChecklist;
@@ -170,7 +170,7 @@
             isFromTaxPlan: data.from_role === 'TAXPlan', // todo is this the final role name?  
             isFirst: false
         };
-    };
+    }
 
 
 
@@ -184,7 +184,7 @@
         return {
             name: name
        };
-    };
+    }
 
 
 
@@ -195,7 +195,7 @@
             documents: data.documents,
             filers: _.map(data.filers, getDocumentChecklistFilerName)
         };
-    };
+    }
 
 
     function getDocumentChecklistObject(data){
@@ -203,7 +203,7 @@
             checklistItems: _.map(data.checklistitems, getDocumentChecklistItemObject),
          //   additionalDocuments: data.additionalDocuments
         };
-    };
+    }
 
 
 
