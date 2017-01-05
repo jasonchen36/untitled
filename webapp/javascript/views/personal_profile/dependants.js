@@ -223,21 +223,20 @@
     function updateUserDependants(selectedTile){
         var pageData = personalProfile.getPageSession(),
             tileId = parseInt(selectedTile.attr('id')),
-            tileQuestionId = parseInt(selectedTile.attr('data-id'));
+            tileQuestionId = parseInt(selectedTile.attr('data-id')),
+            taxReturnId = parseInt(selectedTile.parent().attr('data-id'));
         if (!selectedTile.hasClass(activeClass)) {
             //enforce toggle
+            console.log("this is the tileId", tileId);
             if(!tileId){
                 //never been answered
-                var taxReturnId = parseInt(selectedTile.parent().attr('data-id'));
                 _.each(pageData.taxReturns, function (taxReturn) {
                     if (parseInt(taxReturn.taxReturnId) === taxReturnId) {
                         _.each(taxReturn.questions.answers, function (answer) {
                             if (answer.question_id === tileQuestionId) {
                                 answer.class = activeClass;
-                                dependantsAddButtons.hide();
                             } else {
                                 answer.class = '';
-                                dependantsAddButtons.show();
                             }
                             return answer;
                         });
@@ -248,19 +247,17 @@
                 _.each(pageData.taxReturns, function (taxReturn) {
                     hasSelectedTile = false;
                     _.each(taxReturn.questions.answers, function (answer) {
+                      console.log("this is the tileId", tileId);
                         if (answer.id === tileId) {
                             answer.class = activeClass;
                             hasSelectedTile = true;
-                            dependantsAddButtons.hide();
-                        } else {
-                            answer.class = '';
-                            dependantsAddButtons.show();
                         }
                         return answer;
                     });
                     if (hasSelectedTile) {
                         //deselect siblings
                         _.each(taxReturn.questions.answers, function (answer) {
+                            console.log("this is the tileId", tileId);
                             if (answer.id !== tileId) {
                                 answer.class = '';
                             }
@@ -271,6 +268,12 @@
             }
             //refresh page
             personalProfile.refreshPage(pageData);
+        } else {
+          console.log("hello");
+          console.log(taxReturnId);
+          var addButton = $('#add-button-'+taxReturnId);
+          console.log(addButton);
+          addButton.hide();
         }
     }
 
