@@ -33,7 +33,6 @@
                             promiseGetDependants = [],
                             promiseGetQuestions = apiservice.getQuestions(sessionData,nextPageCategoryId);
 
-                        //todo, product and question category in variable
                         _.each(formData, function(entry) {
 
                             var ajaxOne =  apiservice.postMaritalAnswers(sessionData,
@@ -97,85 +96,92 @@
             var accountInfo = helpers.getAccountInformation(sessionData);
             var nameData = helpers.getFormDataArray(maritalStatusForm);
             nameData = nameData[0];
-            maritalStatusSubmit.addClass(disabledClass);
 
-            return Promise.resolve()
-                .then(function() {
-                    var promiseSaveAnswers = [];
-                    var promiseGetAnswers = [];
-                    var promiseGetQuestions = [];
 
-                    //todo, product and question category in variable
-                    var ajaxAnswers = apiservice.getQuestions(sessionData,5);
-                    promiseGetQuestions.push(ajaxAnswers);
+            validateMaritalStatusFormData(maritalStatusForm);
 
-                    _.each(formData, function(entry) {
+            if(!validateMaritalStatusTiles(maritalStatusForm)){
+                window.location.hash = 'modal-personal-profile-popup';
+            } else if (!helpers.formHasErrors(maritalStatusForm)) {
+                maritalStatusSubmit.addClass(disabledClass);
+                return Promise.resolve()
+                    .then(function () {
+                        var promiseSaveAnswers = [];
+                        var promiseGetAnswers = [];
+                        var promiseGetQuestions = [];
 
-                        var ajaxOne =  apiservice.postMaritalAnswers(sessionData,
-                            entry.taxReturnId, entry);
-                        promiseSaveAnswers.push(ajaxOne);
+                        var previousPageCategoryId = 5;
+                        //todo, product and question category in variable
+                        var ajaxAnswers = apiservice.getQuestions(sessionData, previousPageCategoryId);
+                        promiseGetQuestions.push(ajaxAnswers);
 
-                        // if status changed update date
-                        if(entry[149] === 1) {
-                            entry.questionId = 150;
-                            var day = maritalStatusForm.find('#marital-status-day-'+entry.taxReturnId);
-                            var month = maritalStatusForm.find('#marital-status-month-'+entry.taxReturnId);
-                            if(helpers.isValidDay(day.val()) && helpers.isValidMonth(month.val())) {
-                                entry.answer = '2016-' + month.val() + '-' + day.val();
-                                ajaxOne = apiservice.postMaritalDate(sessionData,
-                                    entry.taxReturnId, entry);
-                                promiseSaveAnswers.push(ajaxOne);
+                        _.each(formData, function (entry) {
+
+                            var ajaxOne = apiservice.postMaritalAnswers(sessionData,
+                                entry.taxReturnId, entry);
+                            promiseSaveAnswers.push(ajaxOne);
+
+                            // if status changed update date
+                            if (entry[149] === 1) {
+                                entry.questionId = 150;
+                                var day = maritalStatusForm.find('#marital-status-day-' + entry.taxReturnId);
+                                var month = maritalStatusForm.find('#marital-status-month-' + entry.taxReturnId);
+                                if (helpers.isValidDay(day.val()) && helpers.isValidMonth(month.val())) {
+                                    entry.answer = '2016-' + month.val() + '-' + day.val();
+                                    ajaxOne = apiservice.postMaritalDate(sessionData,
+                                        entry.taxReturnId, entry);
+                                    promiseSaveAnswers.push(ajaxOne);
+                                }
                             }
-                        }
 
-                        var ajaxTwo = apiservice.getAnswers(sessionData,
-                            entry.taxReturnId,5);
+                            var ajaxTwo = apiservice.getAnswers(sessionData,
+                                entry.taxReturnId, previousPageCategoryId);
 
-                        promiseGetAnswers.push(ajaxTwo);
-                    });
+                            promiseGetAnswers.push(ajaxTwo);
+                        });
 
-                    return Promise.all([
-                        Promise.all(promiseSaveAnswers),
-                        Promise.all(promiseGetAnswers),
-                        Promise.all(promiseGetQuestions)
-                    ]);
+                        return Promise.all([
+                            Promise.all(promiseSaveAnswers),
+                            Promise.all(promiseGetAnswers),
+                            Promise.all(promiseGetQuestions)
+                        ]);
 
-                })
-                .then(function(response) {
+                    })
+                    .then(function (response) {
 
-                    var data = {};
-                    data.accountInfo = accountInfo;
-                    data.taxReturns = formData;
-                    data.taxReturns.questions = response[2];
+                        var data = {};
+                        data.accountInfo = accountInfo;
+                        data.taxReturns = formData;
+                        data.taxReturns.questions = response[2];
 
-                    var index = 0;
-                    _.each(data.taxReturns, function(taxReturn){
-                        taxReturn.firstName = nameData[index];
-                        taxReturn.questions = response[1][index];
+                        var index = 0;
+                        _.each(data.taxReturns, function (taxReturn) {
+                            taxReturn.firstName = nameData[index];
+                            taxReturn.questions = response[1][index];
 
-                        _.each(taxReturn.questions.answers, function(question){
-                            question.answer = 0;
-                            question.class = "";
-
-                            if ( !question.text) {
+                            _.each(taxReturn.questions.answers, function (question) {
                                 question.answer = 0;
                                 question.class = "";
-                            } else if (question.text === "Yes"){
-                                question.answer = 1;
-                                question.class = "active";
-                            }
 
+                                if (!question.text) {
+                                    question.answer = 0;
+                                    question.class = "";
+                                } else if (question.text === "Yes") {
+                                    question.answer = 1;
+                                    question.class = "active";
+                                }
+
+                            });
+                            index++;
                         });
-                        index++;
+
+                        personalProfile.goToPreviousPage(data);
+                    })
+                    .catch(function (jqXHR, textStatus, errorThrown) {
+                        ajax.ajaxCatch(jqXHR, textStatus, errorThrown);
+                        maritalStatusSubmit.removeClass(disabledClass);
                     });
-
-                    personalProfile.goToPreviousPage(data);
-                })
-                .catch(function(jqXHR,textStatus,errorThrown){
-                    ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
-                    maritalStatusSubmit.removeClass(disabledClass);
-                });
-
+            }
         }
     }
 
@@ -186,12 +192,16 @@
             var statusChangedParent = maritalStatusForm.find('#marital-status-changed-'+taxReturn.taxReturnId),
                 statusChangedChild = statusChangedParent.find('.checkbox').first(),
                 dayInput = maritalStatusForm.find('#marital-status-day-'+taxReturn.taxReturnId),
-                monthInput = maritalStatusForm.find('#marital-status-month-'+taxReturn.taxReturnId);
+                monthInput = maritalStatusForm.find('#marital-status-month-'+taxReturn.taxReturnId),
+                dayErrorMessage = maritalStatusForm.find('#day-error-label-'+taxReturn.taxReturnId),
+                monthErrorMessage = maritalStatusForm.find('#month-error-label-'+taxReturn.taxReturnId);
 
 
             statusChangedChild.removeClass(helpers.errorClass);
             dayInput.removeClass(helpers.errorClass);
             monthInput.removeClass(helpers.errorClass);
+            dayErrorMessage.removeClass(helpers.errorClass);
+            monthErrorMessage.removeClass(helpers.errorClass);
 
             // Is status Changed?
             if (statusChangedChild.hasClass(activeClass)){
@@ -199,12 +209,14 @@
                 // day
                 if (!helpers.isValidDay(dayInput.val())){
                     dayInput.addClass(helpers.errorClass);
+                    dayErrorMessage.addClass(helpers.errorClass);
                     errors++;
                 }
 
                 // month
                 if (!helpers.isValidMonth(monthInput.val())){
                     monthInput.addClass(helpers.errorClass);
+                    monthErrorMessage.addClass(helpers.errorClass);
                     errors++;
                 }
             }
