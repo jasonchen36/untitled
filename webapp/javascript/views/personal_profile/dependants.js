@@ -227,7 +227,6 @@
             taxReturnId = parseInt(selectedTile.parent().attr('data-id'));
         if (!selectedTile.hasClass(activeClass)) {
             //enforce toggle
-            console.log("this is the tileId", tileId);
             if(!tileId){
                 //never been answered
                 _.each(pageData.taxReturns, function (taxReturn) {
@@ -247,7 +246,6 @@
                 _.each(pageData.taxReturns, function (taxReturn) {
                     hasSelectedTile = false;
                     _.each(taxReturn.questions.answers, function (answer) {
-                      console.log("this is the tileId", tileId);
                         if (answer.id === tileId) {
                             answer.class = activeClass;
                             hasSelectedTile = true;
@@ -257,7 +255,6 @@
                     if (hasSelectedTile) {
                         //deselect siblings
                         _.each(taxReturn.questions.answers, function (answer) {
-                            console.log("this is the tileId", tileId);
                             if (answer.id !== tileId) {
                                 answer.class = '';
                             }
@@ -269,10 +266,7 @@
             //refresh page
             personalProfile.refreshPage(pageData);
         } else {
-          console.log("hello");
-          console.log(taxReturnId);
           var addButton = $('#add-button-'+taxReturnId);
-          console.log(addButton);
           addButton.hide();
         }
     }
@@ -405,15 +399,6 @@
 
 
             //listeners
-
-            // dependantTaxPlanTile.on('click',function(event){
-            //   console.log("it is getting hit");
-            //   event.preventDefault();
-            //   var taxReturnId = parseInt($(this).attr('data-id'));
-            //   console.log(taxReturnId);
-            //   addButton = $('#add-button-'+taxReturnId);
-            //   addButton.toggle();
-            // });
 
             dependantsBack.on('click',function(event){
                 event.preventDefault();
