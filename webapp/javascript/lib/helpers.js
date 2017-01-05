@@ -232,6 +232,11 @@
                 errorCount++;
             }
         });
+        formElement.find('.checkbox').each(function(){
+            if($(this).hasClass(that.errorClass)){
+                errorCount++;
+            }
+        });
         return errorCount > 0;
     };
 

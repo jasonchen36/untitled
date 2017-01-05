@@ -6,6 +6,7 @@
         personalProfile = app.services.personalProfile,
         birthdateForm,
         ajax = app.ajax,
+        apiService = app.apiservice,
         birthdateSubmit,
         birthdateBack,
         birthdateDayLabelError,
@@ -63,6 +64,80 @@
         }
     }
 
+    function goToPreviousScreen(){
+        var formData = helpers.getFormData(birthdateForm);
+        var sessionData = personalProfile.getPersonalProfileSession();
+        var accountInfo = helpers.getAccountInformation(sessionData);
+
+        birthdateSubmit.addClass(disabledClass);
+        return Promise.resolve()
+            .then(function() {
+                var promiseSaveAnswers = [];
+                var promiseGetAnswers = [];
+                var promiseGetQuestions = [];
+
+                helpers.resetForm(birthdateForm);
+                $('.'+helpers.formContainerClass).each(function(){
+                    validateBirthdateFormData($(this));
+                });
+
+                if (!helpers.formHasErrors(birthdateForm)) {
+                    var body;
+                    _.each(formData, function(entry, key) {
+                        var entireYear = 0;
+                        if (entry.birthdate_year > 17){
+                            entireYear = "19" + entry.birthdate_year;
+                        } else {
+                            entireYear = "20" + entry.birthdate_year;
+                        }
+                        // TODO, put this into an apiservice call
+                        body = {
+                            accountId: accountInfo.accountId,
+                            productId: accountInfo.productId,
+                            dateOfBirth: entireYear + "-" + entry.birthdate_month + "-" + entry.birthdate_day
+                        };
+                        var putBirthdate = ajax.ajax(
+                            'PUT',
+                            sessionData.apiUrl+'/tax_return/'+key,
+                            body,
+                            'json',
+                            {
+                                'Authorization': 'Bearer '+ accountInfo.token
+                            }
+                        );
+                        promiseSaveAnswers.push(putBirthdate);
+                    });
+                }
+
+                var ajaxQuestions = apiService.getQuestions(sessionData,2);
+                promiseGetQuestions.push(ajaxQuestions);
+
+                _.each(formData, function (entry, key) {
+                    promiseGetAnswers.push(apiService.getAddresses(sessionData, key));
+                });
+
+                return Promise.all([
+                    Promise.all(promiseSaveAnswers),
+                    Promise.all(promiseGetAnswers),
+                    promiseGetQuestions,
+                    apiService.getTaxReturns(sessionData)]);
+            })
+            .then(function(response) {
+                var data = {};
+                data.accountInfo = accountInfo;
+                data.taxReturns = response[3];
+                data.taxReturns.questions = response[2];
+                _.each(data.taxReturns, function (taxReturn, index) {
+                    taxReturn.address = response[1][index][0];
+                });
+                personalProfile.goToPreviousPage(data);
+            })
+            .catch(function(jqXHR,textStatus,errorThrown){
+                ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
+                birthdateSubmit.removeClass(disabledClass);
+            });
+    }
+
     function toggleCheckboxActiveState(element){
         element.find('.checkbox').first().toggleClass(helpers.activeClass);
     }
@@ -73,7 +148,8 @@
       dayInput = $('#dependants-birthday-day-'+taxReturnId);
       monthInput = $('#dependants-birthday-month-'+taxReturnId);
       yearInput = $('#dependants-birthday-year-'+taxReturnId);
-      checkboxes = $('.checkbox-container');
+      var canadianCitizen = $('#canadian-citizen-'+taxReturnId);
+      var CRAAuthorized = $('#CRA-authorized-'+taxReturnId);
 
       birthdateDayLabelError = $('#birthdate-day-label-error');
       birthdateMonthLabelError = $('#birthdate-month-label-error');
@@ -82,7 +158,8 @@
       dayInput.removeClass(errorClass);
       monthInput.removeClass(errorClass);
       yearInput.removeClass(errorClass);
-      checkboxes.removeClass(errorClass);
+      canadianCitizen.removeClass(errorClass);
+      CRAAuthorized.removeClass(errorClass);
 
       birthdateDayLabelError.removeClass(errorClass);
       birthdateMonthLabelError.removeClass(errorClass);
@@ -103,8 +180,12 @@
           birthdateYearLabelError.addClass(errorClass);
           errors++;
       }
-      if (!checkboxes.hasClass(helpers.activeClass)){
-          checkboxes.addClass(errorClass);
+      if (!canadianCitizen.hasClass(helpers.activeClass)){
+          canadianCitizen.addClass(errorClass);
+          errors++;
+      }
+       if (!CRAAuthorized.hasClass(helpers.activeClass)){
+          CRAAuthorized.addClass(errorClass);
           errors++;
       }
       return errors < 1;
@@ -132,7 +213,7 @@
 
             birthdateBack.on('click',function(event){
                 event.preventDefault();
-                personalProfile.goToPreviousPage();
+                goToPreviousScreen();
             });
 
             checkboxes.on('click',function(event){
