@@ -234,8 +234,10 @@
                         _.each(taxReturn.questions.answers, function (answer) {
                             if (answer.question_id === tileQuestionId) {
                                 answer.class = activeClass;
+                                dependantsAddButtons.hide();
                             } else {
                                 answer.class = '';
+                                dependantsAddButtons.show();
                             }
                             return answer;
                         });
@@ -249,6 +251,10 @@
                         if (answer.id === tileId) {
                             answer.class = activeClass;
                             hasSelectedTile = true;
+                            dependantsAddButtons.hide();
+                        } else {
+                            answer.class = '';
+                            dependantsAddButtons.show();
                         }
                         return answer;
                     });
@@ -392,8 +398,20 @@
             dependantsSaveButtons = $('.dependants-button-save');
             dependantsCancelButtons = $('.dependants-button-cancel');
             dependantCheckboxes = $('.checkbox-container');
+            dependantTaxPlanTile = $('.taxplan-tile-container');
+
 
             //listeners
+
+            // dependantTaxPlanTile.on('click',function(event){
+            //   console.log("it is getting hit");
+            //   event.preventDefault();
+            //   var taxReturnId = parseInt($(this).attr('data-id'));
+            //   console.log(taxReturnId);
+            //   addButton = $('#add-button-'+taxReturnId);
+            //   addButton.toggle();
+            // });
+
             dependantsBack.on('click',function(event){
                 event.preventDefault();
                 goToPreviousScreen();
