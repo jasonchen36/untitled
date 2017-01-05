@@ -213,13 +213,11 @@
             errors++;
         }
         //country
-        if (provinceResidence.val() === "FJ") {
-          if (helpers.isEmpty(country.val())){
+        if ((provinceResidence.val() === "FJ") && (helpers.isEmpty(country.val()))){
             country.addClass(errorClass);
             addressCountryErrorLabel.addClass(errorClass);
             errors++;
           }
-        }
         return errors < 1;
     }
 
