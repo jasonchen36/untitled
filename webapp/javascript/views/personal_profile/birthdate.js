@@ -151,9 +151,9 @@
       var canadianCitizen = $('#canadian-citizen-'+taxReturnId);
       var CRAAuthorized = $('#CRA-authorized-'+taxReturnId);
 
-      birthdateDayLabelError = $('#birthdate-day-label-error');
-      birthdateMonthLabelError = $('#birthdate-month-label-error');
-      birthdateYearLabelError = $('#birthdate-year-label-error');
+      birthdateDayLabelError = $('#birthdate-day-label-error-'+taxReturnId);
+      birthdateMonthLabelError = $('#birthdate-month-label-error-'+taxReturnId);
+      birthdateYearLabelError = $('#birthdate-year-label-error-'+taxReturnId);
 
       dayInput.removeClass(errorClass);
       monthInput.removeClass(errorClass);
