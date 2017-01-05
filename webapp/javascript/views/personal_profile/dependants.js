@@ -224,6 +224,7 @@
         var pageData = personalProfile.getPageSession(),
             tileId = parseInt(selectedTile.attr('id')),
             tileQuestionId = parseInt(selectedTile.attr('data-id')),
+            hasSelectedTile,
             taxReturnId = parseInt(selectedTile.parent().attr('data-id'));
         if (!selectedTile.hasClass(activeClass)) {
             //enforce toggle
@@ -242,7 +243,6 @@
                     }
                 });
             } else {
-                var hasSelectedTile;
                 _.each(pageData.taxReturns, function (taxReturn) {
                     hasSelectedTile = false;
                     _.each(taxReturn.questions.answers, function (answer) {
@@ -267,7 +267,11 @@
             personalProfile.refreshPage(pageData);
         } else {
           var addButton = $('#add-button-'+taxReturnId);
+          var dataFields = $('#data-fields-'+taxReturnId);
+          var formFields = $('#form-fields-'+taxReturnId);
           addButton.hide();
+          dataFields.hide();
+          formFields.hide();
         }
     }
 
