@@ -173,12 +173,11 @@
             errors++;
         }
         //country
-        // TODO validate country only if user's province of residence was foreign jurisdiction?
-        /*if (helpers.isEmpty(country.val())){
+        if ((provinceResidence.val() === "FJ") && (helpers.isEmpty(country.val()))){
             country.addClass(errorClass);
             addressCountryErrorLabel.addClass(errorClass);
             errors++;
-        }*/
+          }
         return errors < 1;
     }
 
