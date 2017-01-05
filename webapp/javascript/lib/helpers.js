@@ -63,6 +63,11 @@
                     input = $(this);
                     data[containerId][input.attr('name')] = input.val();
                 });
+                container.find('.checkbox').each(function(){
+                    input = $(this);
+                    data[containerId][input.attr('name')] = input.hasClass(that.activeClass)?1:0;
+
+                });
             });
         } else {
             //for regular forms like login, register, etc
@@ -233,6 +238,26 @@
             }
         });
         formElement.find('.checkbox').each(function(){
+            if($(this).hasClass(that.errorClass)){
+                errorCount++;
+            }
+        });
+        return errorCount > 0;
+    };
+
+    this.formHasNonCheckboxErrors = function(formElement){
+        var errorCount = 0;
+        formElement.find('input').each(function(){
+            if($(this).hasClass(that.errorClass)){
+                errorCount++;
+            }
+        });
+        formElement.find('textarea').each(function(){
+            if($(this).hasClass(that.errorClass)){
+                errorCount++;
+            }
+        });
+        formElement.find('select').each(function(){
             if($(this).hasClass(that.errorClass)){
                 errorCount++;
             }

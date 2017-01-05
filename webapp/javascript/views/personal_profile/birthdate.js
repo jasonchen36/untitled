@@ -38,10 +38,13 @@
                       } else {
                         entireYear = "20" + entry.birthdate_year;
                       }
+                    // TODO, put this into an apiservice call
                     body = {
                         accountId: accountInfo.accountId,
                         productId: accountInfo.productId,
-                        dateOfBirth: entireYear + "-" + entry.birthdate_month + "-" + entry.birthdate_day
+                        dateOfBirth: entireYear + "-" + entry.birthdate_month + "-" + entry.birthdate_day,
+                        canadianCitizen: entry.canadian_citizen.toString(),
+                        authorizeCra: entry.CRA_authorized.toString()
                     };
             return ajax.ajax(
                 'PUT',
@@ -81,7 +84,7 @@
                     validateBirthdateFormData($(this));
                 });
 
-                if (!helpers.formHasErrors(birthdateForm)) {
+                if (!helpers.formHasNonCheckboxErrors(birthdateForm)) {
                     var body;
                     _.each(formData, function(entry, key) {
                         var entireYear = 0;
@@ -94,7 +97,9 @@
                         body = {
                             accountId: accountInfo.accountId,
                             productId: accountInfo.productId,
-                            dateOfBirth: entireYear + "-" + entry.birthdate_month + "-" + entry.birthdate_day
+                            dateOfBirth: entireYear + "-" + entry.birthdate_month + "-" + entry.birthdate_day,
+                            canadianCitizen: entry.canadian_citizen.toString(),
+                            authorizeCra: entry.CRA_authorized.toString()
                         };
                         var putBirthdate = ajax.ajax(
                             'PUT',
