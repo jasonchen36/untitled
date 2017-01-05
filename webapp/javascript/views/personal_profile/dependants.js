@@ -242,7 +242,7 @@
                     }
                 });
             } else {
-              var hasSelectedTile;
+                var hasSelectedTile;
                 _.each(pageData.taxReturns, function (taxReturn) {
                     hasSelectedTile = false;
                     _.each(taxReturn.questions.answers, function (answer) {
@@ -399,7 +399,6 @@
             dependantsSaveButtons = $('.dependants-button-save');
             dependantsCancelButtons = $('.dependants-button-cancel');
             dependantCheckboxes = $('.checkbox-container');
-
 
             //listeners
             dependantsBack.on('click',function(event){
