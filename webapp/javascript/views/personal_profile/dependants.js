@@ -224,7 +224,6 @@
         var pageData = personalProfile.getPageSession(),
             tileId = parseInt(selectedTile.attr('id')),
             tileQuestionId = parseInt(selectedTile.attr('data-id')),
-            hasSelectedTile,
             taxReturnId = parseInt(selectedTile.parent().attr('data-id'));
         if (!selectedTile.hasClass(activeClass)) {
             //enforce toggle
@@ -243,6 +242,7 @@
                     }
                 });
             } else {
+              var hasSelectedTile;
                 _.each(pageData.taxReturns, function (taxReturn) {
                     hasSelectedTile = false;
                     _.each(taxReturn.questions.answers, function (answer) {
@@ -399,11 +399,9 @@
             dependantsSaveButtons = $('.dependants-button-save');
             dependantsCancelButtons = $('.dependants-button-cancel');
             dependantCheckboxes = $('.checkbox-container');
-            dependantTaxPlanTile = $('.taxplan-tile-container');
 
 
             //listeners
-
             dependantsBack.on('click',function(event){
                 event.preventDefault();
                 goToPreviousScreen();
