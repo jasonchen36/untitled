@@ -31,7 +31,7 @@
                                 </div>
                             {{/each}}
                             {{#if dependantForm}}
-                                {{>personal-profile-dependant-form filerType=filerName taxReturns=../taxReturns}}
+                                {{>personal-profile-dependant-form taxReturns=../taxReturns}}
                             {{else}}
                                 <div class="dependants-button-add border-bottom-light-gray add-bottom-padding add-top-padding" data-tax-return-id="{{taxReturnId}}">
                                     <div class="i--icon-add"></div>
