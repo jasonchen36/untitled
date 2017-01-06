@@ -10,6 +10,7 @@
         dependantsSubmit,
         dependantsBack,
         dependantsTiles,
+        saved,
         dependantsEditButtons,
         dependantsDeleteButtons,
         dependantsAddButtons,
@@ -20,7 +21,10 @@
         disabledClass = helpers.disabledClass;
 
     function submitDependants(){
-        if (!dependantsSubmit.hasClass(disabledClass)) {
+      if (saved === false){
+        alert('Please Save or Cancel your dependant info before moving forward.');
+      }
+        if ((!dependantsSubmit.hasClass(disabledClass)) && (saved === true)) {
             var formData = helpers.getTileFormDataArray(dependantsForm),
                 sessionData = personalProfile.getPersonalProfileSession(),
                 accountInfo = helpers.getAccountInformation(sessionData),
@@ -284,6 +288,7 @@
     }
 
     function cancelEditAddDependant(element){
+        saved = true;
         var pageData = personalProfile.getPageSession(),
             taxReturnId = parseInt(element.attr('data-tax-return-id'));
         _.each(pageData.taxReturns, function(taxReturn){
@@ -295,6 +300,7 @@
     }
 
     function saveDependant(element){
+        saved = true;
         var formContainer = element.parent().parent();
         if (!element.hasClass(helpers.disabledClass)){
             if(validateDependantsFormData(formContainer)){
@@ -370,6 +376,7 @@
     }
 
     function addDependant(element){
+        saved = false;
         var pageData = personalProfile.getPageSession(),
             taxReturnId = parseInt(element.attr('data-tax-return-id'));
         _.each(pageData.taxReturns, function(taxReturn){
@@ -427,6 +434,7 @@
 
             dependantsAddButtons.on('click',function(event){
                 event.preventDefault();
+
                 addDependant($(this));
             });
 
