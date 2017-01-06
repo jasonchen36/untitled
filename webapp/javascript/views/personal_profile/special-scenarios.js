@@ -164,6 +164,8 @@
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         specialScenariosSubmit.removeClass(disabledClass);
                     });
+            } else {
+              alert('Please select a tile for each person.');
             }
         }
     }

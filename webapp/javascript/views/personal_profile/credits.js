@@ -91,6 +91,8 @@
                     });
 
 
+            } else {
+              alert('Please select a tile for each person.');
             }
         }
     }

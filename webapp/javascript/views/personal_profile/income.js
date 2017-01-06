@@ -29,6 +29,8 @@
                     }
                   }
                 }
+              if (y > i) { continue; }
+              if (y < i) { break; }
             }
             if (y === i) {
                 return Promise.resolve()
@@ -90,6 +92,8 @@
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         incomeSubmit.removeClass(disabledClass);
                     });
+            } else {
+              alert('Please select a tile for each person.');
             }
         }
     }
