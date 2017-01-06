@@ -8,7 +8,6 @@
         <div class="content-form">
             <form id="income-form">
                 {{#each taxReturns}}
-                  <div id="container-income-form" class="border-bottom-light-gray add-bottom-padding taxplan-form-container"  data-id="{{taxReturnId}}">
                     <h1 class="subtitle">{{firstName}} please select all your sources of income in 2016:</h1>
                     {{#compare @index 0 operator="=="}}
                         {{>personal-profile-options questions=questions.answers tileContainerId=taxReturnId isPrimaryFiler=true}}
@@ -16,7 +15,6 @@
                         {{>personal-profile-options questions=questions.answers tileContainerId=taxReturnId}}
                     {{/compare}}
                     <input type="hidden" id="tax-return-first-name-{{taxReturnId}}" name="taxReturnFirstName{{taxReturnId}}" value="{{firstName}}"/>
-                  </div>
                 {{/each}}
             </form>
         </div>

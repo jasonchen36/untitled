@@ -19,10 +19,17 @@
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
 
-            if(!helpers.hasSelectedTile(formData)){
-                window.location.hash = 'modal-personal-profile-popup';
-            } else if(helpers.noneAppliedMultipleSelectedTiles(formData)){
-            } else {
+            var y = 0;
+            for (i = 0; i < formData.length; i++) {
+                  for (var key in formData[i]) {
+                  if (formData[i].hasOwnProperty(key)) {
+                    if (formData[i][key] === 1){
+                      y++;
+                    }
+                  }
+                }
+            }
+            if (y === i) {
                  return Promise.resolve()
                     .then(function() {
                         var promiseArrayPut = [];
