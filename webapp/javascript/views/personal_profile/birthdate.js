@@ -92,7 +92,7 @@
           birthdateMonthLabelError.addClass(errorClass);
           errors++;
       }
-      if (!helpers.isValidYear(yearInput.val())){
+      if (!helpers.isValidFullYear(yearInput.val())){
           yearInput.addClass(errorClass);
           birthdateYearLabelError.addClass(errorClass);
           errors++;
