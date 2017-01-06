@@ -224,6 +224,7 @@
         var pageData = personalProfile.getPageSession(),
             tileId = parseInt(selectedTile.attr('id')),
             tileQuestionId = parseInt(selectedTile.attr('data-id')),
+            hasSelectedTile,
             taxReturnId = parseInt(selectedTile.parent().attr('data-id'));
         if (!selectedTile.hasClass(activeClass)) {
             //enforce toggle
@@ -242,7 +243,6 @@
                     }
                 });
             } else {
-                var hasSelectedTile;
                 _.each(pageData.taxReturns, function (taxReturn) {
                     hasSelectedTile = false;
                     _.each(taxReturn.questions.answers, function (answer) {
@@ -266,19 +266,27 @@
             //refresh page
             personalProfile.refreshPage(pageData);
         } else {
-          console.log('it gets hit');
-          _.each(pageData.taxReturns, function(taxReturn){
-              if (parseInt(taxReturn.taxReturnId) === taxReturnId){
-                  taxReturn.dependantForm = {};
+          _.each(pageData.taxReturns, function (taxReturn) {
+              hasSelectedTile = true;
+              _.each(taxReturn.questions.answers, function (answer) {
+                  if (answer.id === tileId) {
+                      answer.class = '';
+                      hasSelectedTile = false;
+                  }
+                  return answer;
+              });
+              if (hasSelectedTile) {
+                  //deselect siblings
+                  _.each(taxReturn.questions.answers, function (answer) {
+                      if (answer.id !== tileId) {
+                          answer.class = '';
+                      }
+                      return answer;
+                  });
               }
           });
-          // var addButton = $('#add-button-'+taxReturnId);
-          // var dataFields = $('#data-fields-'+taxReturnId);
-          // var formFields = $('#form-fields-'+taxReturnId);
-          // addButton.hide();
-          // dataFields.hide();
-          // formFields.hide();
         }
+        personalProfile.refreshPage(pageData);
     }
 
     function editDependant(element){
