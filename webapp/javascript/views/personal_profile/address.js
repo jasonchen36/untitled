@@ -106,9 +106,9 @@
                             entry.CRAClass = "";
                         }
                         if(entry.dateOfBirth !== null) {
-                            entry.year = entry.dateOfBirth.substring(2, 4);
-                            entry.month = entry.dateOfBirth.substring(5, 7);
-                            entry.day = entry.dateOfBirth.substring(8, 10);
+                            entry.year = moment(entry.dateOfBirth).format("YYYY");
+                            entry.month = moment(entry.dateOfBirth).format("MM");
+                            entry.day = moment(entry.dateOfBirth).format("DD");
                         }
 
                     });
