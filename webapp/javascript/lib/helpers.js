@@ -353,10 +353,8 @@
     };
 
     this.isValidPostalCode = function (postalCode) {
-        //todo, not working with m5r2r7
-        // var regex = new RegExp(/^[ABCEGHJKLMNPRSTVXY]\d[ABCEGHJKLMNPRSTVWXYZ]( )?\d[ABCEGHJKLMNPRSTVWXYZ]\d$/i);
-        // return regex.test(postalCode.value);
-        return true;
+        var regex = new RegExp(/^[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy]\d[ABCEGHJKLMNPRSTVWXYZabceghjklmnprstvwxyz]( )?\d[ABCEGHJKLMNPRSTVWXYZabceghjklmnprstwxyz]\d$/i);
+        return regex.test(postalCode.value);
     };
 
     this.isValidDay = function(value){
@@ -372,7 +370,7 @@
     };
 
     this.isValidFullYear = function(value){
-        return !that.isEmpty(value.trim()) && value.trim().length === 4 && moment(value, "YYYY").fromNow() < 100;
+        return !that.isEmpty(value.trim()) && value.trim().length === 4 && moment().format('YYYY') - value < 100 && moment().format('YYYY') - value > 0;
     };
 
 }).apply(app.helpers);
