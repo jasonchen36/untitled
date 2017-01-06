@@ -125,29 +125,17 @@
 
 
     function changePageUpload(){
-
-
         apiservice.getChecklist(userObject, userObject.quoteId)
             .then(function(response){
-
-
-                var dataObject = {};
+                var dataObject = that.getUserSession();
                 dataObject.documentChecklist = getDocumentChecklistObject(response);
                 dataObject.currentPage= "upload";
-
-
                 that.checklist = dataObject.documentChecklist;
-
                 dataObject.activeItem = that.activeItem;
-
-
-              //  app.views.dashboard.upload.
-
                 that.changePage('upload', dataObject);
             })
             .catch(function(jqXHR,textStatus,errorThrown){
                 console.log(jqXHR,textStatus,errorThrown);
-
             });
     }
 
