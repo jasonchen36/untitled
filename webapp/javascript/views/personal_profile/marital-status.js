@@ -228,8 +228,7 @@
 
     function validateMaritalStatusTiles(maritalStatusForm){
         var formData = helpers.getMaritalStatusFormDataArray(maritalStatusForm);
-        var isValid = true;
-        var numActive = 0;
+        var isValid = false;
         _.each(formData, function(taxReturn) {
             var
                 married = maritalStatusForm.find('#married-married-' + taxReturn.taxReturnId),
@@ -240,17 +239,17 @@
                 single = maritalStatusForm.find('#married-single-' + taxReturn.taxReturnId);
 
             if(married.hasClass(activeClass)){
-                numActive++;
+                isValid = true;
             } else if(divorced.hasClass(activeClass)){
-                numActive++;
+                isValid = true;
             } else if(separated.hasClass(activeClass)){
-                numActive++;
+                isValid = true;
             } else if(widowed.hasClass(activeClass)){
-                numActive++;
+                isValid = true;
             } else if(commonLaw.hasClass(activeClass)){
-                numActive++;
+                isValid = true;
             } else if(single.hasClass(activeClass)){
-                numActive++;
+                isValid = true;
             }else{
                 isValid = false;
             }
