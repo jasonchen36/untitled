@@ -78,7 +78,7 @@
         apiservice.getMessages(userObject)
             .then(function(response){
 
-                var dataObject = {};
+                var dataObject = that.getUserSession();
                 dataObject.newMessageCount = 0;
                 dataObject.messages  = [];
 
