@@ -31,16 +31,10 @@
             var body,
                 taxReturnData,
                 birthdateRequests = _.map(formData, function(entry, key) {
-                  var entireYear = 0;
-                    if (entry.birthdate_year > 17){
-                        entireYear = "19" + entry.birthdate_year;
-                      } else {
-                        entireYear = "20" + entry.birthdate_year;
-                      }
                     body = {
                         accountId: accountInfo.accountId,
                         productId: accountInfo.productId,
-                        dateOfBirth: entireYear + "-" + entry.birthdate_month + "-" + entry.birthdate_day
+                        dateOfBirth: entry.birthdate_year + "-" + entry.birthdate_month + "-" + entry.birthdate_day
                     };
             return ajax.ajax(
                 'PUT',

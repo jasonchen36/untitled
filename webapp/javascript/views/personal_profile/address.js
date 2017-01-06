@@ -88,7 +88,7 @@
                             entry.CRAClass = "";
                         }
                         if(entry.dateOfBirth !== null) {
-                            entry.year = entry.dateOfBirth.substring(2, 4);
+                            entry.year = entry.dateOfBirth.substring(0, 4);
                             entry.month = entry.dateOfBirth.substring(5, 7);
                             entry.day = entry.dateOfBirth.substring(8, 10);
                         }
