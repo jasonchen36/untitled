@@ -326,7 +326,6 @@
     }
 
     function shareDependant(element){
-        //todo, share dependant logic
         element.find('.checkbox').first().toggleClass(helpers.activeClass);
     }
 
