@@ -49,22 +49,7 @@
                            var createAddress = apiService.createAddress(sessionData, taxReturnIds[index], formData[taxReturnIds[index]]);
                            promiseSaveAddresses.push(createAddress);
                        }
-
-                        //TODO put into apiservice
-                        var body = {
-                            accountId: accountInfo.accountId,
-                            productId: accountInfo.productId,
-                            provinceOfResidence: formData[taxReturnIds[index]].provinceResidence
-                        };
-                        var putResidence = ajax.ajax(
-                            'PUT',
-                            sessionData.apiUrl+'/tax_return/'+taxReturnIds[index],
-                            body,
-                            'json',
-                            {
-                                'Authorization': 'Bearer '+ accountInfo.token
-                            }
-                        );
+                        var putResidence = apiService.updateProvinceOfResidence(sessionData, taxReturnIds[index], formData[taxReturnIds[index]]);
                         promiseSaveAddresses.push(putResidence);
 
                         index++;
@@ -240,7 +225,6 @@
             addressSubmit.addClass(disabledClass);
             return Promise.resolve()
                 .then(function() {
-                    //todo, save answers
                     var promiseSaveAnswers = [],
                         promiseGetDependants = [],
                         promiseGetQuestions = apiService.getQuestions(sessionData,previousScreenCategoryId),

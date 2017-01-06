@@ -599,4 +599,40 @@
         );
     };
 
+    this.updateProvinceOfResidence = function(sessionData, taxReturnId, formData){
+      var accountInfo = helpers.getAccountInformation(sessionData);
+        return ajax.ajax(
+            'PUT',
+            sessionData.apiUrl+'/tax_return/'+taxReturnId,
+            {
+                accountId: accountInfo.accountId,
+                productId: accountInfo.productId,
+                provinceOfResidence: formData.provinceResidence
+            },
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
+    };
+
+    this.updateDateOfBirthCheckboxes = function(sessionData, taxReturnId, formData){
+        var accountInfo = helpers.getAccountInformation(sessionData);
+        return ajax.ajax(
+            'PUT',
+            sessionData.apiUrl+'/tax_return/'+taxReturnId,
+            {
+                accountId: accountInfo.accountId,
+                productId: accountInfo.productId,
+                dateOfBirth: entireYear + "-" + entry.birthdate_month + "-" + entry.birthdate_day,
+                canadianCitizen: entry.canadian_citizen.toString(),
+                authorizeCra: entry.CRA_authorized.toString()
+            },
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
+    };
+
 }).apply(app.apiservice);
