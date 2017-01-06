@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --reporter spec app/tests/**/*.js",
-    "start": "nf start"
+    "start": "nf start",
+    "dev": "foreman start -f Procfile_dev"
   },
   "repository": {
     "type": "git",
