@@ -397,7 +397,8 @@
                     province: entry.province_of_residence,
                     dateOfBirth: entry.date_of_birth,
                     canadianCitizen: entry.canadian_citizen,
-                    authorizeCRA: entry.authorize_cra
+                    authorizeCRA: entry.authorize_cra,
+                    filerType: entry.filer_type
                 };
             });
             return Promise.resolve(taxReturns);

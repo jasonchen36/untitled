@@ -59,18 +59,19 @@
                             Promise.all(promiseSaveAnswers),
                             Promise.all(promiseGetAnswers),
                             promiseGetQuestions,
+                            apiservice.getTaxReturns(sessionData),
                             Promise.all(promiseGetDependants)
                         ]);
                     })
                     .then(function(response) {
                         var data = {};
                         data.accountInfo = accountInfo;
-                        data.taxReturns = formData;
+                        data.taxReturns = response[3];
                         data.taxReturns.questions = response[2];
                         _.each(data.taxReturns, function(taxReturn, index){
                             taxReturn.firstName = nameData[index];
                             taxReturn.questions = response[1][index];
-                            taxReturn.dependants = response[3][index];
+                            taxReturn.dependants = response[4][index];
                             _.each(taxReturn.questions.answers, function(answer){
                                 answer.answer = 0;
                                 answer.class = '';

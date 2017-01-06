@@ -183,4 +183,16 @@
         return options.inverse(this);
     });
 
+    Handlebars.registerHelper('shareDependant', function(taxReturns, currentId, options) {
+        var isSpouseFiler = false;
+        if(taxReturns && taxReturns.length > 0){
+            taxReturns.forEach(function(entry){
+                if (parseInt(entry.taxReturnId) === parseInt(currentId) && entry.filerType.toLowerCase() === 'spouse'){
+                    isSpouseFiler = true;
+                }
+            });
+        }
+        return isSpouseFiler?options.fn(this):options.inverse(this);
+    });
+
 }).apply(app.handlebars);
