@@ -325,21 +325,20 @@
     this.isValidPostalCode = function (postalCode) {
         var regex = new RegExp(/^[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy]\d[ABCEGHJKLMNPRSTVWXYZabceghjklmnprstvwxyz]( )?\d[ABCEGHJKLMNPRSTVWXYZabceghjklmnprstwxyz]\d$/i);
         return regex.test(postalCode.value);
-        return true;
     };
-    
+
     this.isValidDay = function(value){
         return !that.isEmpty(value.trim()) && value.trim().length === 2 && parseInt(value) >= 1 && parseInt(value) <= 31;
     };
-    
+
     this.isValidMonth = function(value){
         return !that.isEmpty(value.trim()) && value.trim().length === 2 && parseInt(value) >= 1 && parseInt(value) <= 12;
     };
-    
+
     this.isValidYear = function(value){
         return !that.isEmpty(value.trim()) && value.trim().length === 2;
     };
-    
+
     this.isValidFullYear = function(value){
         return !that.isEmpty(value.trim()) && value.trim().length === 4;
     };

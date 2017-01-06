@@ -16,17 +16,23 @@
     function submitIncome(){
         if (!incomeSubmit.hasClass(disabledClass)) {
             var formData = helpers.getTileFormDataArray(incomeForm);
-
+            console.log(formData);
             nameData = helpers.getFormDataArray(incomeForm);
             nameData = nameData[0];
-
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
-
-            if(!helpers.hasSelectedTile(formData)){
-                window.location.hash = 'modal-personal-profile-popup';
-            } else if(helpers.noneAppliedMultipleSelectedTiles(formData)){
-            } else {
+            console.log($('.'+helpers.formContainerClass));
+            $('.'+helpers.formContainerClass).each(function(formData){
+                  console.log('this is hit');
+                  incomeForm.removeClass(errorClass);
+                  console.log(formData);
+                  console.log((!helpers.hasSelectedTile(formData)));
+              if(!helpers.hasSelectedTile(formData)){
+                  window.location.hash = 'modal-personal-profile-popup';
+                  incomeForm.addClass(errorClass);
+              }
+            });
+            if (!helpers.formHasErrors(incomeForm)) {
                 return Promise.resolve()
                     .then(function() {
                         var promiseArrayPut = [];
