@@ -141,8 +141,8 @@
                                     answer.month= "";
                                     if(answer.text !== null) {
                                         if (answer.text.length === 10) {
-                                            answer.day = answer.text.substring(8, 10);
-                                            answer.month = answer.text.substring(5, 7);
+                                            answer.day = moment(answer.text).format('DD');
+                                            answer.month = moment(answer.text).format('MM');
                                         }
                                     }
                                 }
