@@ -81,7 +81,7 @@
         if(dashboard.hasOwnProperty('activeItem') || dashboard.activeItem !== dataId) {
             if (dataId === 0) {
                 //additional documents
-                dasboard.activeItem = {
+                dashboard.activeItem = {
                     name: 'Additional Documents',
                     checklistItemId: 0,
                     documents: userSession.documentChecklist.additionalDocuments

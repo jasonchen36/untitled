@@ -175,12 +175,17 @@
         });
 
     };
-
-    Handlebars.registerHelper('ifCond', function(v1, v2, options) {
-        if(v1 === v2) {
-            return options.fn(this);
+    
+    Handlebars.registerHelper('shareDependant', function(taxReturns, currentId, options) {
+        var isSpouseFiler = false;
+        if(taxReturns && taxReturns.length > 0){
+            taxReturns.forEach(function(entry){
+                if (parseInt(entry.taxReturnId) === parseInt(currentId) && entry.filerType.toLowerCase() === 'spouse'){
+                    isSpouseFiler = true;
+                }
+            });
         }
-        return options.inverse(this);
+        return isSpouseFiler?options.fn(this):options.inverse(this);
     });
 
 }).apply(app.handlebars);

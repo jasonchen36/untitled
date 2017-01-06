@@ -20,7 +20,7 @@
                         <div class="checkbox {{questions.answers.1.class}}"></div>
                         <p class="checkbox-label">MY MARITAL STATUS CHANGED IN 2016</p>
                     </div>
-                    {{#ifCond questions.answers.1.class ""}}
+                    {{#compare questions.answers.1.class "" operator="==="}}
                     <p id ="indicate-date-{{taxReturnId}}" hidden>PLEASE INDICATE THE DATE OF CHANGE:</p>
                     <div class="taxplan-form-container" data-id="{{taxReturnId}}" >
                         <div>
@@ -32,9 +32,9 @@
                             <p id="month-error-label-{{taxReturnId}}" class="label-error display-inline-block add-margin-right small-2">Month needed</p>
                         </div>
                     </div>
-                    {{/ifCond}}
+                    {{/compare}}
 
-                    {{#ifCond questions.answers.1.class "active"}}
+                    {{#compare questions.answers.1.class "active" operator="==="}}
                         <p id ="indicate-date-{{taxReturnId}}" >PLEASE INDICATE THE DATE OF CHANGE:</p>
                         <div class="taxplan-form-container" data-id="{{taxReturnId}}" >
                             <div>
@@ -46,7 +46,7 @@
                                 <p id="month-error-label-{{taxReturnId}}" class="label-error display-inline-block add-margin-right small-2">Month needed</p>
                             </div>
                         </div>
-                    {{/ifCond}}
+                    {{/compare}}
 
                 {{/each}}
             </form>

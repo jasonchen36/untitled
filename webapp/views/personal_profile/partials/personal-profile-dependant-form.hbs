@@ -49,10 +49,16 @@
         </div>
         <p class="label-error">Relationship needed</p>
     </div>
-    <div class="add-top-padding checkbox-container">
-        <div id="share-spouse-{{taxReturnId}}" class="checkbox"></div>
-        <p class="checkbox-label">THIS DEPENDANT IS ALSO SHARED WITH SPOUSE NAME</p>
-    </div>
+    {{#shareDependant taxReturns taxReturnId}}
+        {{#each taxReturns}}
+            {{#compare taxReturnId ../taxReturnId operator="!=="}}
+                <div class="add-top-padding checkbox-container">
+                    <div class="checkbox" data-tax-return-id="{{taxReturnId}}"></div>
+                    <p class="checkbox-label">THIS DEPENDANT IS SHARED WITH {{firstName}}</p>
+                </div>
+            {{/compare}}
+        {{/each}}
+    {{/shareDependant}}
     <div class="add-top-padding">
         <button class="dependants-button-cancel grey" data-tax-return-id="{{taxReturnId}}">Cancel</button>
         <button class="dependants-button-save green" data-id="{{dependantForm.id}}" data-tax-return-id="{{taxReturnId}}">Save</button>
