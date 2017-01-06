@@ -338,7 +338,7 @@
     };
 
     this.isValidFullYear = function(value){
-        return !that.isEmpty(value.trim()) && value.trim().length === 4 && moment().format().substring(0,4) - value < 100 && moment().format().substring(0,4) - value > 0;
+        return !that.isEmpty(value.trim()) && value.trim().length === 4 && moment().format('YYYY') - value < 100 && moment().format('YYYY') - value > 0;
     };
 
 }).apply(app.helpers);
