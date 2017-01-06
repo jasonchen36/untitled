@@ -266,12 +266,18 @@
             //refresh page
             personalProfile.refreshPage(pageData);
         } else {
-          var addButton = $('#add-button-'+taxReturnId);
-          var dataFields = $('#data-fields-'+taxReturnId);
-          var formFields = $('#form-fields-'+taxReturnId);
-          addButton.hide();
-          dataFields.hide();
-          formFields.hide();
+          console.log('it gets hit');
+          _.each(pageData.taxReturns, function(taxReturn){
+              if (parseInt(taxReturn.taxReturnId) === taxReturnId){
+                  taxReturn.dependantForm = {};
+              }
+          });
+          // var addButton = $('#add-button-'+taxReturnId);
+          // var dataFields = $('#data-fields-'+taxReturnId);
+          // var formFields = $('#form-fields-'+taxReturnId);
+          // addButton.hide();
+          // dataFields.hide();
+          // formFields.hide();
         }
     }
 
