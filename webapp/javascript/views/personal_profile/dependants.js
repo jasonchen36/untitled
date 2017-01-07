@@ -21,10 +21,12 @@
         disabledClass = helpers.disabledClass;
 
     function submitDependants(){
+      var hasAlert = false;
       if (saved === false){
         alert('Please Save or Cancel your dependant info before moving forward.');
+        hasAlert = true;
       }
-        if ((!dependantsSubmit.hasClass(disabledClass)) && (saved === true)) {
+        if ((!dependantsSubmit.hasClass(disabledClass)) && ((!saved) || saved === true) && hasAlert === false){
             var formData = helpers.getTileFormDataArray(dependantsForm),
                 sessionData = personalProfile.getPersonalProfileSession(),
                 accountInfo = helpers.getAccountInformation(sessionData),

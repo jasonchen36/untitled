@@ -16,17 +16,12 @@
     function submitIncome(){
         if (!incomeSubmit.hasClass(disabledClass)) {
             var formData = helpers.getTileFormDataArray(incomeForm);
-            console.log(formData);
             nameData = helpers.getFormDataArray(incomeForm);
             nameData = nameData[0];
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
-            console.log($('.'+helpers.formContainerClass));
             $('.'+helpers.formContainerClass).each(function(formData){
-                  console.log('this is hit');
                   incomeForm.removeClass(errorClass);
-                  console.log(formData);
-                  console.log((!helpers.hasSelectedTile(formData)));
               if(!helpers.hasSelectedTile(formData)){
                   window.location.hash = 'modal-personal-profile-popup';
                   incomeForm.addClass(errorClass);
