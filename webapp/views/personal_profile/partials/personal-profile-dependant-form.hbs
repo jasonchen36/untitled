@@ -49,16 +49,26 @@
         </div>
         <p class="label-error">Relationship needed</p>
     </div>
-    {{#shareDependant taxReturns taxReturnId}}
-        {{#each taxReturns}}
-            {{#compare taxReturnId ../taxReturnId operator="!=="}}
-                <div class="add-top-padding checkbox-container">
-                    <div class="checkbox" data-tax-return-id="{{taxReturnId}}"></div>
-                    <p class="checkbox-label">THIS DEPENDANT IS SHARED WITH {{firstName}}</p>
-                </div>
-            {{/compare}}
-        {{/each}}
-    {{/shareDependant}}
+    {{#compare @root.taxReturns.length 1 operator='==='}}
+        <div class="add-top-padding checkbox-container">
+            <div id="shared-{{taxReturnId}}" class="checkbox" data-tax-return-id="{{taxReturnId}}"></div>
+            <p class="checkbox-label">THIS DEPENDANT IS SHARED</p>
+        </div>
+    {{/compare}}
+    {{#compare @root.taxReturns.length 1 operator='>'}}
+        {{#compare filerType 'primary' operator='==='}}
+            <div class="add-top-padding checkbox-container">
+                <div id="shared-{{taxReturnId}}" class="checkbox" data-tax-return-id="{{taxReturnId}}"></div>
+                <p class="checkbox-label">THIS DEPENDANT IS SHARED WITH SPOUSE/PARTNER</p>
+            </div>
+        {{/compare}}
+        {{#compare filerType 'spouse' operator='==='}}
+            <div class="add-top-padding checkbox-container">
+                <div id="shared-{{taxReturnId}}" class="checkbox" data-tax-return-id="{{taxReturnId}}"></div>
+                <p class="checkbox-label">THIS DEPENDANT IS SHARED WITH SPOUSE/PARTNER</p>
+            </div>
+        {{/compare}}
+    {{/compare}}
     <div class="add-top-padding">
         <button class="dependants-button-cancel grey" data-tax-return-id="{{taxReturnId}}">Cancel</button>
         <button class="dependants-button-save green" data-id="{{dependantForm.id}}" data-tax-return-id="{{taxReturnId}}">Save</button>
