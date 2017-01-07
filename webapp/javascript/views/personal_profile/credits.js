@@ -17,18 +17,23 @@
             var formData = helpers.getTileFormDataArray(creditsForm);
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
-
-            var y = 0;
-            for (i = 0; i < formData.length; i++) {
-                  for (var key in formData[i]) {
-                  if (formData[i].hasOwnProperty(key)) {
-                    if (formData[i][key] === 1){
-                      y++;
+            var tileCount = 0;
+            for (index = 0; index < formData.length; index++) {
+                  for (var key in formData[index]) {
+                  if (formData[index].hasOwnProperty(key)) {
+                    if (formData[index][key] === 1){
+                      tileCount++;
                     }
                   }
                 }
+              if (tileCount > index) {
+                selectedTile = true;
+              } else {
+                selectedTile = false;
+                break;
+              }
             }
-            if (y === i) {
+            if (selectedTile === true) {
               return Promise.resolve()
                     .then(function() {
                         var promiseArrayPut = [];
