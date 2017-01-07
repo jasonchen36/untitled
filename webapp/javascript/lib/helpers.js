@@ -353,8 +353,8 @@
     };
 
     this.isValidPostalCode = function (postalCode) {
-        var regex = new RegExp(/^[ABCEGHJKLMNPRSTVXYabceghjklmnprstvxy]\d[ABCEGHJKLMNPRSTVWXYZabceghjklmnprstvwxyz]( )?\d[ABCEGHJKLMNPRSTVWXYZabceghjklmnprstwxyz]\d$/i);
-        return regex.test(postalCode.value);
+        var regex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
+        return regex.test(postalCode);
     };
 
     this.isValidDay = function(value){
