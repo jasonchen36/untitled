@@ -20,14 +20,11 @@
             nameData = nameData[0];
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
-            $('.'+helpers.formContainerClass).each(function(formData){
-                  incomeForm.removeClass(errorClass);
-              if(!helpers.hasSelectedTile(formData)){
-                  window.location.hash = 'modal-personal-profile-popup';
-                  incomeForm.addClass(errorClass);
-              }
-            });
-            if (!helpers.formHasErrors(incomeForm)) {
+
+            if(!helpers.hasSelectedTile(formData)){
+                window.location.hash = 'modal-personal-profile-popup';
+            }else if(helpers.noneAppliedMultipleSelectedTiles(formData)) {
+            } else {
                 return Promise.resolve()
                     .then(function() {
                         var promiseArrayPut = [];

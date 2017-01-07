@@ -186,6 +186,11 @@
                     event.preventDefault();
                     event.stopPropagation();
                     $('#personal-profile-instructions').html($(this).data('instructions'));
+                })
+                .on('mouseleave', '.'+helpers.tileClass, function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    $('#personal-profile-instructions').html($('#personal-profile-sidebar-description').val());
                 });
         }
     };
