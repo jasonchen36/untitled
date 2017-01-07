@@ -188,12 +188,8 @@
         //checkbox toggle
         var checkbox = element.find('.checkbox').first(),
             parentContainer = element.parent();
-        /* TODO, are we validating the form on same as above too? Or only on submit?
-            Currently removing validation as bug in Postal Code validation stops from checking
-            that this same as above works
-        */
-        //if (validateAddressFormData(addressForm.find('.'+helpers.formContainerClass).first()) && !checkbox.hasClass(helpers.activeClass)) {
-        if (addressForm.find('.'+helpers.formContainerClass).first() && !checkbox.hasClass(helpers.activeClass)) {
+        if (validateAddressFormData(addressForm.find('.'+helpers.formContainerClass).first())) {
+            if (!checkbox.hasClass(helpers.activeClass)) {
                 //checkbox
                 checkbox.addClass(helpers.activeClass);
 
@@ -202,17 +198,17 @@
                     taxReturnId = parentContainer.attr('data-id');
 
                 //street address
-                parentContainer.find('#first-line-'+taxReturnId).val(formData.street).prop('disabled', true);
+                parentContainer.find('#first-line-' + taxReturnId).val(formData.street).prop('disabled', true);
                 //city
-                parentContainer.find('#city-'+taxReturnId).val(formData.city).prop('disabled', true);
+                parentContainer.find('#city-' + taxReturnId).val(formData.city).prop('disabled', true);
                 //postalCode
-                parentContainer.find('#postal-code-'+taxReturnId).val(formData.postalCode).prop('disabled', true);
+                parentContainer.find('#postal-code-' + taxReturnId).val(formData.postalCode).prop('disabled', true);
                 //province
-                parentContainer.find('#province-'+taxReturnId).val(formData.province).prop('disabled', true);
+                parentContainer.find('#province-' + taxReturnId).val(formData.province).prop('disabled', true);
                 //country
-                parentContainer.find('#country-'+taxReturnId).val(formData.country).prop('disabled', true);
+                parentContainer.find('#country-' + taxReturnId).val(formData.country).prop('disabled', true);
                 //province of residence
-                parentContainer.find('#province-residence-'+taxReturnId).val(formData.provinceResidence).prop('disabled', true);
+                parentContainer.find('#province-residence-' + taxReturnId).val(formData.provinceResidence).prop('disabled', true);
             } else {
                 //checkbox
                 checkbox.removeClass(helpers.activeClass);
@@ -221,6 +217,7 @@
                 parentContainer.find('input').val('').prop('disabled', false);
                 parentContainer.find('select').val('').prop('disabled', false);
             }
+        }
     }
 
     function goToPreviousScreen(){
