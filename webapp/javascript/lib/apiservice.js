@@ -394,7 +394,7 @@
                     },
                     firstName: entry.first_name,
                     lastName: entry.last_name,
-                    province: entry.province_of_residence,
+                    provinceOfResidence: entry.province_of_residence,
                     dateOfBirth: entry.date_of_birth,
                     canadianCitizen: entry.canadian_citizen,
                     authorizeCRA: entry.authorize_cra,

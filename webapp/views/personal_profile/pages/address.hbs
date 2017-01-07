@@ -15,7 +15,7 @@
                             {{#compare @index 0 operator="!="}}
                                 <div class="add-bottom-padding checkbox-container">
                                     <div class="checkbox"></div>
-                                    <p class="checkbox-label">SAME ADDRESS AS ABOVE</p>
+                                    <p class="checkbox-label">SAME ADDRESS AS {{@root.taxReturns.0.firstName}}</p>
                                 </div>
                             {{/compare}}
                             <div>
@@ -49,7 +49,7 @@
                                     <label for="province-residence-{{taxReturnId}}" class="under">PROVINCE OF RESIDENCE (DEC 31, 2016)</label>
                                     <div class="drop-down">
                                         <select class="drop-down-select" id="province-residence-{{taxReturnId}}" name="provinceResidence">
-                                            {{>province-options}}
+                                            {{>province-options selectedProvince=provinceOfResidence}}
                                         </select>
                                     </div>
                                     <p id="address-residence-label-error-{{taxReturnId}}" class="label-error">Province needed</p>
