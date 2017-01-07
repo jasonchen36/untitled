@@ -10,6 +10,7 @@
         dependantsSubmit,
         dependantsBack,
         dependantsTiles,
+        saved,
         dependantsEditButtons,
         dependantsDeleteButtons,
         dependantsAddButtons,
@@ -20,7 +21,10 @@
         disabledClass = helpers.disabledClass;
 
     function submitDependants(){
-        if (!dependantsSubmit.hasClass(disabledClass)) {
+      if (saved === false){
+        alert('Please Save or Cancel your dependant info before moving forward.');
+      }
+        if ((!dependantsSubmit.hasClass(disabledClass)) && (saved === true)) {
             var formData = helpers.getTileFormDataArray(dependantsForm),
                 sessionData = personalProfile.getPersonalProfileSession(),
                 accountInfo = helpers.getAccountInformation(sessionData),
@@ -225,12 +229,13 @@
     function updateUserDependants(selectedTile){
         var pageData = personalProfile.getPageSession(),
             tileId = parseInt(selectedTile.attr('id')),
-            tileQuestionId = parseInt(selectedTile.attr('data-id'));
+            tileQuestionId = parseInt(selectedTile.attr('data-id')),
+            hasSelectedTile,
+            taxReturnId = parseInt(selectedTile.parent().attr('data-id'));
         if (!selectedTile.hasClass(activeClass)) {
             //enforce toggle
             if(!tileId){
                 //never been answered
-                var taxReturnId = parseInt(selectedTile.parent().attr('data-id'));
                 _.each(pageData.taxReturns, function (taxReturn) {
                     if (parseInt(taxReturn.taxReturnId) === taxReturnId) {
                         _.each(taxReturn.questions.answers, function (answer) {
@@ -244,7 +249,6 @@
                     }
                 });
             } else {
-                var hasSelectedTile;
                 _.each(pageData.taxReturns, function (taxReturn) {
                     hasSelectedTile = false;
                     _.each(taxReturn.questions.answers, function (answer) {
@@ -267,7 +271,28 @@
             }
             //refresh page
             personalProfile.refreshPage(pageData);
+        } else {
+          _.each(pageData.taxReturns, function (taxReturn) {
+              hasSelectedTile = true;
+              _.each(taxReturn.questions.answers, function (answer) {
+                  if (answer.id === tileId) {
+                      answer.class = '';
+                      hasSelectedTile = false;
+                  }
+                  return answer;
+              });
+              if (hasSelectedTile) {
+                  //deselect siblings
+                  _.each(taxReturn.questions.answers, function (answer) {
+                      if (answer.id !== tileId) {
+                          answer.class = '';
+                      }
+                      return answer;
+                  });
+              }
+          });
         }
+        personalProfile.refreshPage(pageData);
     }
 
     function editDependant(element){
@@ -284,6 +309,7 @@
     }
 
     function cancelEditAddDependant(element){
+        saved = true;
         var pageData = personalProfile.getPageSession(),
             taxReturnId = parseInt(element.attr('data-tax-return-id'));
         _.each(pageData.taxReturns, function(taxReturn){
@@ -295,6 +321,7 @@
     }
 
     function saveDependant(element){
+        saved = true;
         var formContainer = element.parent().parent();
         if (!element.hasClass(helpers.disabledClass)){
             if(validateDependantsFormData(formContainer)){
@@ -370,6 +397,7 @@
     }
 
     function addDependant(element){
+        saved = false;
         var pageData = personalProfile.getPageSession(),
             taxReturnId = parseInt(element.attr('data-tax-return-id'));
         _.each(pageData.taxReturns, function(taxReturn){
@@ -427,6 +455,7 @@
 
             dependantsAddButtons.on('click',function(event){
                 event.preventDefault();
+
                 addDependant($(this));
             });
 
