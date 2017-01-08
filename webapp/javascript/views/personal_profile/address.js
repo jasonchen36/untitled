@@ -188,30 +188,35 @@
         //checkbox toggle
         var checkbox = element.find('.checkbox').first(),
             parentContainer = element.parent();
-        if (validateAddressFormData(addressForm.find('.'+helpers.formContainerClass).first()) && !checkbox.hasClass(helpers.activeClass)) {
-            //checkbox
-            checkbox.addClass(helpers.activeClass);
+        if (validateAddressFormData(addressForm.find('.'+helpers.formContainerClass).first())) {
+            if (!checkbox.hasClass(helpers.activeClass)) {
+                //checkbox
+                checkbox.addClass(helpers.activeClass);
 
-            //populate form
-            var formData = getTopFilerAddress(),
-                taxReturnId = parentContainer.attr('data-id');
-            //street address
-            parentContainer.find('#first-line-'+taxReturnId).val(formData.street).prop('disabled', true);
-            //city
-            parentContainer.find('#city-'+taxReturnId).val(formData.city).prop('disabled', true);
-            //postalCode
-            parentContainer.find('#postal-code-'+taxReturnId).val(formData.postalCode).prop('disabled', true);
-            //province
-            parentContainer.find('#province-'+taxReturnId).val(formData.province).prop('disabled', true);
-            //country
-            parentContainer.find('#country-'+taxReturnId).val(formData.country).prop('disabled', true);
-        } else {
-            //checkbox
-            checkbox.removeClass(helpers.activeClass);
+                //populate form
+                var formData = getTopFilerAddress(),
+                    taxReturnId = parentContainer.attr('data-id');
 
-            //reset form for manual entry
-            parentContainer.find('input').val('').prop('disabled', false);
-            parentContainer.find('select').val('').prop('disabled', false);
+                //street address
+                parentContainer.find('#first-line-' + taxReturnId).val(formData.street).prop('disabled', true);
+                //city
+                parentContainer.find('#city-' + taxReturnId).val(formData.city).prop('disabled', true);
+                //postalCode
+                parentContainer.find('#postal-code-' + taxReturnId).val(formData.postalCode).prop('disabled', true);
+                //province
+                parentContainer.find('#province-' + taxReturnId).val(formData.province).prop('disabled', true);
+                //country
+                parentContainer.find('#country-' + taxReturnId).val(formData.country).prop('disabled', true);
+                //province of residence
+                parentContainer.find('#province-residence-' + taxReturnId).val(formData.provinceResidence).prop('disabled', true);
+            } else {
+                //checkbox
+                checkbox.removeClass(helpers.activeClass);
+
+                //reset form for manual entry
+                parentContainer.find('input').val('').prop('disabled', false);
+                parentContainer.find('select').val('').prop('disabled', false);
+            }
         }
     }
 
@@ -222,48 +227,103 @@
                 accountInfo = helpers.getAccountInformation(sessionData),
                 pageData = personalProfile.getPageSession(),
                 previousScreenCategoryId = 9;
-            addressSubmit.addClass(disabledClass);
-            return Promise.resolve()
-                .then(function() {
-                    var promiseSaveAnswers = [],
-                        promiseGetDependants = [],
-                        promiseGetQuestions = apiService.getQuestions(sessionData,previousScreenCategoryId),
-                        promiseGetAnswers = [];
-                    _.each(pageData.taxReturns, function(entry) {
-                        promiseGetAnswers.push(apiService.getAnswers(sessionData,entry.taxReturnId,previousScreenCategoryId));
-                        promiseGetDependants.push(apiService.getDependants(sessionData,entry.taxReturnId));
-                    });
-                    return Promise.all([
-                        Promise.all(promiseSaveAnswers),
-                        Promise.all(promiseGetAnswers),
-                        promiseGetQuestions,
-                        apiService.getTaxReturns(sessionData),
-                        Promise.all(promiseGetDependants)
-                    ]);
-                })
-                .then(function(response) {
-                    var data = {};
-                    data.accountInfo = accountInfo;
-                    data.taxReturns = response[3];
-                    data.taxReturns.questions = response[2];
-                    _.each(data.taxReturns, function(taxReturn, index){
-                        taxReturn.questions = response[1][index];
-                        taxReturn.dependants = response[4][index];
-                        _.each(taxReturn.questions.answers, function(answer){
-                            answer.answer = 0;
-                            answer.class = '';
-                            if (answer.text && answer.text.toLowerCase() === 'yes'){
-                                answer.answer = 1;
-                                answer.class = helpers.activeClass;
-                            }
+
+            helpers.resetForm(addressForm);
+            $('.'+helpers.formContainerClass).each(function(){
+                validateAddressFormData($(this));
+            });
+
+            if (!helpers.formHasErrors(addressForm)) {
+                addressSubmit.addClass(disabledClass);
+                return Promise.resolve()
+                    .then(function () {
+                        addressSubmit.addClass(disabledClass);
+                        var taxReturnIds = [];
+                        var addressIds = [];
+                        Promise.resolve()
+                            .then(function () {
+                                var promiseAddresses = [];
+                                _.each(formData, function (entry, key) {
+                                    var getAddresses = apiService.getAddresses(sessionData, key);
+                                    taxReturnIds.push(key);
+                                    promiseAddresses.push(getAddresses);
+                                });
+                                return Promise.all(promiseAddresses);
+                            })
+                            .then(function (response) {
+                                var promiseSaveAddresses = [];
+                                var index = 0;
+                                _.each(response, function (entry) {
+                                    if (entry.length > 0) {
+                                        var updateAddress = apiService.updateAddress(sessionData, taxReturnIds[index], entry[0].id, formData[taxReturnIds[index]]);
+                                        addressIds[index] = entry[0].id;
+                                        promiseSaveAddresses.push(updateAddress);
+                                    } else {
+                                        var createAddress = apiService.createAddress(sessionData, taxReturnIds[index], formData[taxReturnIds[index]]);
+                                        promiseSaveAddresses.push(createAddress);
+                                    }
+                                    var putResidence = apiService.updateProvinceOfResidence(sessionData, taxReturnIds[index], formData[taxReturnIds[index]]);
+                                    promiseSaveAddresses.push(putResidence);
+
+                                    index++;
+                                });
+                                return Promise.all(promiseSaveAddresses);
+                            })
+                            .then(function (response) {
+                                var index = 0;
+                                var promiseLinkAddresses = [];
+                                _.each(response, function (entry) {
+                                    if (typeof entry.addressId !== 'undefined') {
+                                        var linkAddress = apiService.linkExistingAddresses(sessionData, taxReturnIds[index], entry.addressId);
+                                        addressIds[index] = entry.addressId;
+                                        promiseLinkAddresses.push(linkAddress);
+                                    }
+                                    index++;
+                                });
+                                return Promise.all(promiseLinkAddresses);
+                            });
+                    })
+                    .then(function () {
+                        var promiseSaveAnswers = [],
+                            promiseGetDependants = [],
+                            promiseGetQuestions = apiService.getQuestions(sessionData, previousScreenCategoryId),
+                            promiseGetAnswers = [];
+                        _.each(pageData.taxReturns, function (entry) {
+                            promiseGetAnswers.push(apiService.getAnswers(sessionData, entry.taxReturnId, previousScreenCategoryId));
+                            promiseGetDependants.push(apiService.getDependants(sessionData, entry.taxReturnId));
                         });
+                        return Promise.all([
+                            Promise.all(promiseSaveAnswers),
+                            Promise.all(promiseGetAnswers),
+                            promiseGetQuestions,
+                            apiService.getTaxReturns(sessionData),
+                            Promise.all(promiseGetDependants)
+                        ]);
+                    })
+                    .then(function (response) {
+                        var data = {};
+                        data.accountInfo = accountInfo;
+                        data.taxReturns = response[3];
+                        data.taxReturns.questions = response[2];
+                        _.each(data.taxReturns, function (taxReturn, index) {
+                            taxReturn.questions = response[1][index];
+                            taxReturn.dependants = response[4][index];
+                            _.each(taxReturn.questions.answers, function (answer) {
+                                answer.answer = 0;
+                                answer.class = '';
+                                if (answer.text && answer.text.toLowerCase() === 'yes') {
+                                    answer.answer = 1;
+                                    answer.class = helpers.activeClass;
+                                }
+                            });
+                        });
+                        personalProfile.goToPreviousPage(data);
+                    })
+                    .catch(function (jqXHR, textStatus, errorThrown) {
+                        ajax.ajaxCatch(jqXHR, textStatus, errorThrown);
+                        addressSubmit.removeClass(disabledClass);
                     });
-                    personalProfile.goToPreviousPage(data);
-                })
-                .catch(function(jqXHR,textStatus,errorThrown){
-                    ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
-                    addressSubmit.removeClass(disabledClass);
-                });
+            }
         }
     }
 

@@ -325,25 +325,50 @@
         var formContainer = element.parent().parent();
         if (!element.hasClass(helpers.disabledClass)){
             if(validateDependantsFormData(formContainer)){
-                //todo, connect share dependant logic
                 var sessionData = personalProfile.getPersonalProfileSession(),
                     dependantId = element.attr('data-id'),
                     taxReturnId = parseInt(element.attr('data-tax-return-id')),
                     formData = helpers.getFormData(formContainer);
                 element.addClass(helpers.disabledClass);
+
                 if (dependantId.length > 0){
                     //update dependant
                     formData.id = parseInt(dependantId);
                     apiService.updateDependant(sessionData, taxReturnId, formData)
-                        .then(function(){
+                        .then(function(response){
                             //get updated dependants information
+                            if(formData.isShared === 1 && sessionData.taxReturns.length > 1){
+                                var sharedReturnId = 0;
+                                if(sessionData.taxReturns[0].taxReturnId === taxReturnId){
+                                    sharedReturnId = sessionData.taxReturns[1].taxReturnId;
+                                }else{
+                                    sharedReturnId = sessionData.taxReturns[0].taxReturnId;
+                                }
+                                return apiService.linkDependant(sessionData, sharedReturnId, formData.id);
+                            }
+                        })
+                        .then(function(){
                             return updateDependantsTemplate();
                         });
                 } else {
                     //create dependant
+                    var oldResponse;
                     apiService.createDependant(sessionData, taxReturnId, formData)
                         .then(function(response){
+                            oldResponse = response;
                             return apiService.linkDependant(sessionData, taxReturnId, response.dependantId);
+                        })
+                        .then(function(){
+                            //get updated dependants information
+                            if(formData.isShared === 1 && sessionData.taxReturns.length > 1){
+                                var sharedReturnId = 0;
+                                if(sessionData.taxReturns[0].taxReturnId === taxReturnId){
+                                    sharedReturnId = sessionData.taxReturns[1].taxReturnId;
+                                }else{
+                                    sharedReturnId = sessionData.taxReturns[0].taxReturnId;
+                                }
+                                return apiService.linkDependant(sessionData, sharedReturnId, oldResponse.dependantId);
+                            }
                         })
                         .then(function(){
                             //get updated dependants information

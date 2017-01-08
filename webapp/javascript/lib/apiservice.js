@@ -433,7 +433,7 @@
                     },
                     firstName: entry.first_name,
                     lastName: entry.last_name,
-                    province: entry.province_of_residence,
+                    provinceOfResidence: entry.province_of_residence,
                     dateOfBirth: entry.date_of_birth,
                     canadianCitizen: entry.canadian_citizen,
                     authorizeCRA: entry.authorize_cra,
@@ -505,6 +505,11 @@
                     dependant.day = moment(dependant.date_of_birth).format('DD');
                     dependant.month = moment(dependant.date_of_birth).format('MM');
                     dependant.year = moment(dependant.date_of_birth).format('YYYY');
+                    if(dependant.is_shared === 1) {
+                        dependant.isShared = 'active';
+                    }else{
+                        dependant.isShared = '';
+                    }
                     return dependant;
                 });
                 return Promise.resolve(response);
@@ -533,7 +538,8 @@
                 'firstName': formData.firstName,
                 'lastName': formData.lastName,
                 'dateOfBirth': formData.year+'-'+formData.month+'-'+formData.day,
-                'relationship': formData.relationship
+                'relationship': formData.relationship,
+                'isShared': formData.isShared.toString()
             },
             'json',
             {
@@ -551,7 +557,8 @@
                 'firstName': formData.firstName,
                 'lastName': formData.lastName,
                 'dateOfBirth': formData.year+'-'+formData.month+'-'+formData.day,
-                'relationship': formData.relationship
+                'relationship': formData.relationship,
+                'isShared': formData.isShared.toString()
             },
             'json',
             {

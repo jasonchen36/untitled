@@ -66,7 +66,6 @@
                 container.find('.checkbox').each(function(){
                     input = $(this);
                     data[containerId][input.attr('name')] = input.hasClass(that.activeClass)?1:0;
-
                 });
             });
         } else {
@@ -84,6 +83,10 @@
             formElement.find('select').each(function(){
                 input = $(this);
                 data[input.attr('name')] = input.val();
+            });
+            formElement.find('.checkbox').each(function(){
+                input = $(this);
+                data[input.attr('name')] = input.hasClass(that.activeClass)?1:0;
             });
         }
         return data;
