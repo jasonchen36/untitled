@@ -10,7 +10,7 @@
         dependantsSubmit,
         dependantsBack,
         dependantsTiles,
-        saved,
+        saved = false,
         dependantsEditButtons,
         dependantsDeleteButtons,
         dependantsAddButtons,
@@ -21,10 +21,10 @@
         disabledClass = helpers.disabledClass;
 
     function submitDependants(){
-      if (saved === false){
-        alert('Please Save or Cancel your dependant info before moving forward.');
-      }
-        if ((!dependantsSubmit.hasClass(disabledClass)) && (saved === true)) {
+
+    
+        if ((!dependantsSubmit.hasClass(disabledClass))) {
+
             var formData = helpers.getTileFormDataArray(dependantsForm),
                 sessionData = personalProfile.getPersonalProfileSession(),
                 accountInfo = helpers.getAccountInformation(sessionData),
