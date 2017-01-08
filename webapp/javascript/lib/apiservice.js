@@ -7,6 +7,45 @@
 
 
 
+    this.putRequestReset = function(apiurl, email){
+
+        var uri = apiurl + '/users/reset';
+        var ajaxPromise =ajax.ajax(
+            'PUT',
+            uri,
+            {
+                 email: email
+            },
+            'json-text'
+        );
+
+
+        return ajaxPromise;
+
+    };
+
+
+    this.putAuthorizedPasswordReset = function(apiurl, password, token){
+
+        var uri = apiurl + '/users/reset/' + token ;
+        var ajaxPromise =ajax.ajax(
+            'PUT',
+            uri,
+            {
+                password: password
+            },
+            'json-text'
+        );
+
+
+        return ajaxPromise;
+
+    };
+
+
+
+
+
 
     this.getQuestions = function(sessionData, category){
 

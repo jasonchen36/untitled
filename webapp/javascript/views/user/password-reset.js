@@ -4,6 +4,7 @@
         that = app.views.user.passwordReset,
         helpers = app.helpers,
         ajax = app.ajax,
+        apiservice = app.apiservice,
         passwordResetForm = $('#password-reset-form'),
         passwordResetEmailInput = $('#password-reset-email'),
         passwordResetSubmit = $('#password-reset-submit'),
@@ -18,6 +19,45 @@
                 passwordResetEmailInput.addClass(errorClass);
             }
             if (!helpers.formHasErrors(passwordResetForm)) {
+               passwordResetSubmit.addClass(disabledClass);
+
+               return Promise.resolve()
+                    .then(function() {
+                        var promiseArray =  [];
+
+                       var ajaxCall = apiservice.putRequestReset(apiUrl, 
+                                                                 formData.email);
+                       promiseArray.push(ajaxCall);
+                      
+                       return Promise.all(promiseArray);
+
+                    })
+                    .then(function(response) {
+
+                        //todo, show success and then redirect
+                        window.location.href = '/login';
+
+                    })
+                    .catch(function(jqXHR,textStatus,errorThrown){
+                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
+                        passwordResetSubmit.removeClass(disabledClass);
+                    });
+
+
+            }
+        }
+    }
+
+
+    function submitResetPassword(){
+        if (!passwordResetSubmit.hasClass(disabledClass)) {
+            var formData = helpers.getFormData(passwordResetForm);
+            helpers.resetForm(passwordResetForm);
+            if (!helpers.isValidEmail(formData.email)) {
+                passwordResetEmailInput.addClass(errorClass);
+            }
+            if (!helpers.formHasErrors(passwordResetForm)) {
+
                 passwordResetSubmit.addClass(disabledClass);
                 ajax.ajax(
                     'POST',

@@ -18,10 +18,8 @@ router.route('/register')
     .get(authenticationMiddleware.redirectWithUserSession,authenticationMiddleware.redirectWithoutTaxProfileSession,userController.getRegisterPage)
     .post(userController.actionRegisterUser);
 
-router.route('/password-reset')
-    .get(authenticationMiddleware.redirectWithUserSession,userController.getPasswordResetPage)
-    .post(userController.actionPasswordReset)
-    .put(userController.actionAuthorizedPasswordReset);
+router.route('/forgot-password')
+    .get(authenticationMiddleware.redirectWithUserSession,userController.getPasswordResetPage);
 
 router.route('/password-reset/:token')
     .get(userController.getAuthorizedPasswordResetPage);

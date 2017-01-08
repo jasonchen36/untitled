@@ -15,7 +15,10 @@ userPages.getLoginPage = function(req, res, next){
         },
         account: session.getTaxProfileSession(req),
         user: session.getUserProfileSession(req),
-        locals: {}
+        locals: 
+        {
+           apiUrl: process.env.API_URL
+        }
     });
 };
 
@@ -72,7 +75,10 @@ userPages.getRegisterPage = function(req, res, next){
         },
         account: session.getTaxProfileSession(req),
         user: session.getUserProfileSession(req),
-        locals: {}
+        locals:
+        {
+           apiUrl: process.env.API_URL
+        }
     });
 };
 
@@ -133,43 +139,17 @@ userPages.getPasswordResetPage = function(req, res, next){
         },
         account: session.getTaxProfileSession(req),
         user: session.getUserProfileSession(req),
-        locals: {}
+        locals: 
+        {
+           apiUrl: process.env.API_URL
+        }
     });
 };
 
-userPages.actionPasswordReset = function(req, res, next){
-    req.checkBody('action').notEmpty();
-    req.checkBody('email').notEmpty();
-
-    if (req.validationErrors() || req.body.action !== 'api-password-reset'){
-        next(new errors.BadRequestError('password reset - validation errors',true));
-    } else {
-        const options = {
-            method: 'PUT',
-            uri: process.env.API_URL+'/users/reset',
-            body: {
-                email: req.body.email
-            },
-            json: true
-        };
-        requestPromise(options)
-            .then(function () {
-                res.status(util.http.status.accepted).json({
-                    action: 'password reset',
-                    status: 'success'
-                });
-            })
-            .catch(function (response) {
-                var error = response;
-                if (response && response.hasOwnProperty('error')){
-                    error = response.error;
-                }
-                next(new errors.BadRequestError(error,true));
-            });
-    }
-};
 
 userPages.getAuthorizedPasswordResetPage = function(req, res, next){
+
+
     res.render('user/password-reset-authorized', {
         meta: {
             pageTitle: util.globals.metaTitlePrefix + 'Password Reset'
@@ -177,41 +157,12 @@ userPages.getAuthorizedPasswordResetPage = function(req, res, next){
         account: session.getTaxProfileSession(req),
         user: session.getUserProfileSession(req),
         locals: {
-            token: req.params.token
+            token: req.params.token,
+            apiUrl: process.env.API_URL
         }
     });
 };
 
-userPages.actionAuthorizedPasswordReset = function(req, res, next){
-    req.checkBody('password').notEmpty();
-
-    if (req.validationErrors() || req.body.action !== 'api-authorized-password-reset'){
-        next(new errors.BadRequestError('authorized password reset - validation errors',true));
-    } else {
-        const options = {
-            method: 'PUT',
-            uri: process.env.API_URL+'/users/reset/'+req.body.token,
-            body: {
-                password: req.body.password
-            },
-            json: true
-        };
-        requestPromise(options)
-            .then(function () {
-                res.status(util.http.status.accepted).json({
-                    action: 'authorized password reset',
-                    status: 'success'
-                });
-            })
-            .catch(function (response) {
-                var error = response;
-                if (response && response.hasOwnProperty('error')){
-                    error = response.error;
-                }
-                next(new errors.BadRequestError(error,true));
-            });
-    }
-};
 
 /************ logout ************/
 userPages.getLogoutPage = function(req, res, next) {
