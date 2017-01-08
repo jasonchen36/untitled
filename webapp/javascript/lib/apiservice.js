@@ -466,6 +466,11 @@
                     dependant.day = moment(dependant.date_of_birth).format('DD');
                     dependant.month = moment(dependant.date_of_birth).format('MM');
                     dependant.year = moment(dependant.date_of_birth).format('YYYY');
+                    if(dependant.is_shared === 1) {
+                        dependant.isShared = 'active';
+                    }else{
+                        dependant.isShared = '';
+                    }
                     return dependant;
                 });
                 return Promise.resolve(response);
@@ -494,7 +499,8 @@
                 'firstName': formData.firstName,
                 'lastName': formData.lastName,
                 'dateOfBirth': formData.year+'-'+formData.month+'-'+formData.day,
-                'relationship': formData.relationship
+                'relationship': formData.relationship,
+                'isShared': formData.isShared.toString()
             },
             'json',
             {
@@ -512,7 +518,8 @@
                 'firstName': formData.firstName,
                 'lastName': formData.lastName,
                 'dateOfBirth': formData.year+'-'+formData.month+'-'+formData.day,
-                'relationship': formData.relationship
+                'relationship': formData.relationship,
+                'isShared': formData.isShared.toString()
             },
             'json',
             {
