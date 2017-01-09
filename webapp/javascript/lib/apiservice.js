@@ -566,7 +566,7 @@
             }
         );
     };
-    
+
     this.linkDependant = function(sessionData, taxReturnId, dependantId){
         var accountInfo = helpers.getAccountInformation(sessionData);
         return ajax.ajax(
@@ -698,7 +698,7 @@
             {
                 'Authorization': 'Bearer '+ accountInfo.token
             }
-        )
+        );
 
         return ajaxPromise;
     };
@@ -722,7 +722,7 @@
             {
                 'Authorization': 'Bearer '+ accountInfo.token
             }
-        )
+        );
 
         return ajaxPromise;
     };
@@ -739,9 +739,9 @@
             {
                 'Authorization': 'Bearer '+ accountInfo.token
             },
-            fileName, 
+            fileName,
             anchor
-        )
+        );
 
         return ajaxPromise;
     };

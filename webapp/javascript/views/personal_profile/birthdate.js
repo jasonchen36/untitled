@@ -49,8 +49,22 @@
                   'Authorization': 'Bearer '+ accountInfo.token
                 }
             );
+          }),
+          completedProfileStatusChange = _.map(formData, function (entry, key){
+            body = {
+              statusId: 11
+            };
+          return ajax.ajax(
+            'PUT',
+            sessionData.apiUrl+'/tax_return/'+key+'/status',
+            body,
+            'json',
+            {
+              'Authorization': 'Bearer '+ accountInfo.token
+            }
+          );
           });
-          Promise.all(birthdateRequests)
+          Promise.all(birthdateRequests, completedProfileStatusChange)
                 .then(function(response){
                     window.location.href = '/dashboard';
                 })
