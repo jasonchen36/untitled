@@ -392,7 +392,7 @@
 
         var accountInfo = helpers.getAccountInformation(sessionData);
 
-        uri = sessionData.apiUrl + '/accountId/' + accountInfo.accountId + 'productId' + accountInfo.productId + '/checklist';
+        uri = sessionData.apiUrl + '/accountId/' + accountInfo.accountId + '/productId/' + accountInfo.productId + '/checklist';
 
         var ajaxPromise = ajax.ajax(
             'GET',
@@ -732,7 +732,7 @@
 
         var accountInfo = helpers.getAccountInformation(sessionData);
 
-        var uri = sessionData.apiUrl + '/accountId/' + accountInfo.accountId + 'productId' + accountInfo.productId + '/PDF';
+        var uri = sessionData.apiUrl + '/accountId/' + accountInfo.accountId + '/productId/' + accountInfo.productId + '/PDF';
 
         var ajaxPromise = ajax.ajaxDownload(
             uri,
