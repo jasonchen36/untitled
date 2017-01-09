@@ -97,7 +97,7 @@
                         incomeSubmit.removeClass(disabledClass);
                     });
             } else {
-              alert('Please select a tile for each person.');
+              window.location.hash = 'modal-personal-profile-popup';
             }
         }
     }
