@@ -57,7 +57,6 @@
 
                         index++;
                     });
-                    return Promise.all(promiseSaveAddresses);
 
 
                   return Promise.all([Promise.all(promiseSaveAddresses),
