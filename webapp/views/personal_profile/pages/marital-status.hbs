@@ -8,7 +8,7 @@
         <div class="content-form">
             <form id="marital-status-form">
                 {{#each taxReturns}}
-                    <h1 class="subtitle display-inline-table full-width">{{firstName}}, what was your marital status on Dec 31, 2016:</h1>
+                    <h1 class="subtitle display-inline-table full-width  {{#if @index}}border-top-light-gray{{/if}}">{{firstName}}, what was your marital status on Dec 31, 2016:</h1>
                     {{#if @index}}
                         <div id="marital-status-same-{{taxReturnId}}" class="checkbox-container display-inline-table full-width add-top-margin">
                             <div class="checkbox"></div>

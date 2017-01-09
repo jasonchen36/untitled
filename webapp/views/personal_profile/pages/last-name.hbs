@@ -6,7 +6,7 @@
         </div>
         <div class="content-form">
             <form id="last-name-form">
-                <h1 class="subtitle">{{users.0.firstName}}, can you complete the full legal name for all filers?</h1>
+                <h1 class="subtitle  {{#if @index}}border-top-light-gray{{/if}}">{{users.0.firstName}}, can you complete the full legal name for all filers?</h1>
                 {{#each taxReturns}}
 
                     <div class="add-top-padding taxplan-form-container" data-id="{{firstName}}">
