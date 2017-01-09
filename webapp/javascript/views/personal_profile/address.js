@@ -365,6 +365,10 @@
                 event.preventDefault();
                 addressIsSameAsTopFiler($(this));
             });
+
+            $(document).ready(function(){
+                $(this).scrollTop(0);
+            });
         }
     };
 

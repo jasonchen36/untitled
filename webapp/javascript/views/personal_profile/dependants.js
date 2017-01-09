@@ -10,7 +10,7 @@
         dependantsSubmit,
         dependantsBack,
         dependantsTiles,
-        saved = false,
+        saved,
         dependantsEditButtons,
         dependantsDeleteButtons,
         dependantsAddButtons,
@@ -500,6 +500,10 @@
             dependantCheckboxes.on('click',function(event){
                 event.preventDefault();
                 shareDependant($(this));
+            });
+
+            $(document).ready(function(){
+                $(this).scrollTop(0);
             });
 
         }
