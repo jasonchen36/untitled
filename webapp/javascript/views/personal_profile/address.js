@@ -39,8 +39,10 @@
                 })
                 .then(function(response){
                     var promiseSaveAddresses = [];
+                    var promiseUpdateProvinceOfResidence = [];
                     var index = 0;
                     _.each(response, function(entry){
+
                        if(entry.length > 0){
                             var updateAddress = apiService.updateAddress(sessionData, taxReturnIds[index], entry[0].id, formData[taxReturnIds[index]]);
                             addressIds[index] = entry[0].id;
@@ -50,16 +52,24 @@
                            promiseSaveAddresses.push(createAddress);
                        }
                         var putResidence = apiService.updateProvinceOfResidence(sessionData, taxReturnIds[index], formData[taxReturnIds[index]]);
-                        promiseSaveAddresses.push(putResidence);
+                        promiseUpdateProvinceOfResidence.push(putResidence);
+
 
                         index++;
                     });
                     return Promise.all(promiseSaveAddresses);
+
+
+                  return Promise.all([Promise.all(promiseSaveAddresses),
+                            Promise.all(promiseUpdateProvinceOfResidence)]);
+
                 })
                 .then(function(response){
                     var index = 0;
+
                     var promiseLinkAddresses = [];
-                    _.each(response, function(entry){
+                    _.each(response[0], function(entry){
+
                         if(typeof entry.addressId !== 'undefined'){
                             var linkAddress = apiService.linkExistingAddresses(sessionData, taxReturnIds[index], entry.addressId);
                             addressIds[index] = entry.addressId;
