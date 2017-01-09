@@ -57,7 +57,6 @@
 
                         index++;
                     });
-                    return Promise.all(promiseSaveAddresses);
 
 
                   return Promise.all([Promise.all(promiseSaveAddresses),
@@ -365,6 +364,10 @@
             addressIsSameCheckbox.on('click',function(event){
                 event.preventDefault();
                 addressIsSameAsTopFiler($(this));
+            });
+
+            $(document).ready(function(){
+                $(this).scrollTop(0);
             });
         }
     };

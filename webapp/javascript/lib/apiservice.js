@@ -698,7 +698,7 @@
             {
                 'Authorization': 'Bearer '+ accountInfo.token
             }
-        )
+        );
 
         return ajaxPromise;
     };
@@ -722,7 +722,7 @@
             {
                 'Authorization': 'Bearer '+ accountInfo.token
             }
-        )
+        );
 
         return ajaxPromise;
     };
@@ -741,7 +741,7 @@
             },
             fileName, 
             anchor
-        )
+        );
 
         return ajaxPromise;
     };
