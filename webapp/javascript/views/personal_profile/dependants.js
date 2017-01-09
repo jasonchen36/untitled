@@ -23,7 +23,8 @@
     function submitDependants(){
       var hasAlert = false;
       if (saved === false){
-        alert('Please Save or Cancel your dependant info before moving forward.');
+        $('#popup-blurb').html('Please Save or Cancel your dependant info before moving forward.');
+        window.location.hash = 'modal-personal-profile-popup';
         hasAlert = true;
       }
         if ((!dependantsSubmit.hasClass(disabledClass)) && ((!saved) || saved === true) && hasAlert === false){
