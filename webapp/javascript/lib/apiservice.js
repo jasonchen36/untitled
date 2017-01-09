@@ -681,4 +681,72 @@
         );
     };
 
+
+
+    this.deleteDocument = function(sessionData,quoteId, documentId){
+
+        var accountInfo = helpers.getAccountInformation(sessionData);
+
+        var uri = sessionData.apiUrl + '/quote/'+quoteId+'/document/'+documentId;
+
+        var ajaxPromise = ajax.ajax(
+            'DELETE',
+            uri,
+            {
+            },
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        )
+
+        return ajaxPromise;
+    };
+
+
+
+    this.submitReturn = function(sessionData, quoteId){
+
+        var accountInfo = helpers.getAccountInformation(sessionData);
+
+        var uri = sessionData.apiUrl + '/quote/'+quoteId+'/submit/';
+
+        var ajaxPromise = ajax.ajax(
+            'POST',
+            uri,
+            {
+            },
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        )
+
+        return ajaxPromise;
+    };
+
+
+   this.getPdfChecklist = function(sessionData, quoteId, fileName, anchor){
+
+        var accountInfo = helpers.getAccountInformation(sessionData);
+
+        var uri = sessionData.apiUrl + '/quote/'+quoteId+'/checklist/PDF';
+
+        var ajaxPromise = ajax.ajaxDownload(
+            uri,
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            },
+            fileName, 
+            anchor
+        )
+
+        return ajaxPromise;
+    };
+
+
+
+
+
+
 }).apply(app.apiservice);
