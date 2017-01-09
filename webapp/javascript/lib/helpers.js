@@ -275,7 +275,6 @@
                 hasSelectedTile = true;
             }
         });
-        console.log(formData.entries());
         return hasSelectedTile;
     };
 
