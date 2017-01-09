@@ -6,19 +6,19 @@
             <div class="chat-message add-top-padding add-bottom-padding">
                 {{#if isFromUser}}
                     <p class="label-message-date add-right-padding text-right">{{date}}</p>
-                    <p class="label-message-content user display-inline-block side-info-blurb">
-                        {{{body}}}
+                    <p id="chat-message-user-body" class="label-message-content user display-inline-block side-info-blurb">
+                        {{{replacedBody}}}
                     </p>
                 {{else if isFromTaxPro}}
                     <div class="i--icon-message-taxplan"></div>
-                    <p class="label-message-content taxpro display-inline-block side-info-blurb">
-                        {{{body}}}
+                    <p id="chat-message-taxpro-body" class="label-message-content taxpro display-inline-block side-info-blurb">
+                        {{{replacedBody}}}
                     </p>
                     <p class="label-message-date add-left-padding">{{date}}</p>
                 {{else}}
                     <div class="i--icon-message-taxplan"></div>
-                    <p class="label-message-content taxplan display-inline-block side-info-blurb">
-                        {{{body}}}
+                    <p id="chat-message-taxplan-body" class="label-message-content taxplan display-inline-block side-info-blurb">
+                        {{{replacedBody}}}
                     </p>
                     <p class="label-message-date add-left-padding">{{date}}</p>
                 {{/if}}
