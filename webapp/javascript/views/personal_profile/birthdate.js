@@ -49,24 +49,25 @@
                   'Authorization': 'Bearer '+ accountInfo.token
                 }
             );
-          }),
-          completedProfileStatusChange = _.map(formData, function (entry, key){
-            body = {
-              statusId: 11
-            };
-          return ajax.ajax(
-            'PUT',
-            sessionData.apiUrl+'/tax_return/'+key+'/status',
-            body,
-            'json',
-            {
-              'Authorization': 'Bearer '+ accountInfo.token
-            }
-          );
           });
-          Promise.all(birthdateRequests, completedProfileStatusChange)
+          Promise.all(birthdateRequests)
                 .then(function(response){
-                    window.location.href = '/dashboard';
+                  window.location.href = '/dashboard';
+                  completedProfileStatusChange = _.map(formData, function (entry, key){
+                    body = {
+                      statusId: 11
+                    };
+                  return ajax.ajax(
+                    'PUT',
+                    sessionData.apiUrl+'/tax_return/'+key+'/status',
+                    body,
+                    'json',
+                    {
+                      'Authorization': 'Bearer '+ accountInfo.token
+                    }
+                  );
+                });
+                  return Promise.all(completedProfileStatusChange);
                 })
                 .catch(function(jqXHR,textStatus,errorThrown){
                     ajax.ajaxCatch(jqXHR,textStatus,errorThrown);

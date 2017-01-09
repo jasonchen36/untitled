@@ -6,6 +6,7 @@
         ajax = app.ajax,
         loginForm = $('#user-login-form'),
         loginSubmit = $('#login-submit'),
+        apiService = app.apiservice,
         loginEmailInput = $('#login-email'),
         loginPasswordInput = $('#login-password'),
         loginErrorLabelEmail = $('#label-error-email'),
@@ -16,6 +17,7 @@
     function submitLogin(){
         if (!loginSubmit.hasClass(disabledClass)) {
             var formData = helpers.getFormData(loginForm);
+                                  // console.log(formData);
             helpers.resetForm(loginForm);
             if (!helpers.isValidEmail(formData.email)) {
                 loginEmailInput.addClass(errorClass);
@@ -39,6 +41,7 @@
 		    { }
                 )
                     .then(function(response){
+                      console.log(response);
                         //todo, show success and then redirect
                         window.location.href = '/personal-profile';
                     })
@@ -52,7 +55,14 @@
 
     this.init = function(){
         if ($('#page-user-login').length > 0){
-
+          // var formData = helpers.getFormData(loginForm);
+          //                       console.log(formData);
+          //                       var personalProfile = app.services.personalProfile;
+          //                       console.log(personalProfile);
+          //                       var sessionData = personalProfile.getPersonalProfileSession();
+          //                       console.log(sessionData);
+          //           var taxReturns = apiService.getTaxReturns(sessionData);
+          //           console.log(taxReturns);
             //listeners
             loginForm.on('submit',function(event){
                 event.preventDefault();
