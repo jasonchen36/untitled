@@ -270,11 +270,11 @@
 
     this.hasSelectedTile = function(formData){
         var hasSelectedTile = false;
-        // _.forOwn(formData, function(value, key) {
-        //     if(Object.values(formData[key]).indexOf(1) !== -1){
-        //         hasSelectedTile = true;
-        //     }
-        // });
+        _.forOwn(formData, function(value, key) {
+            if(Object.values(formData[key]).indexOf(1) !== -1){
+                hasSelectedTile = true;
+            }
+        });
         console.log(formData.entries());
         return hasSelectedTile;
     };
