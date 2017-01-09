@@ -388,11 +388,11 @@
 
 
 
-    this.getChecklist = function(sessionData, quoteId){
+    this.getChecklist = function(sessionData){
 
         var accountInfo = helpers.getAccountInformation(sessionData);
 
-        uri = sessionData.apiUrl + '/quote/' + quoteId + '/checklist';
+        uri = sessionData.apiUrl + '/accountId/' + accountInfo.accountId + 'productId' + accountInfo.productId + '/checklist';
 
         var ajaxPromise = ajax.ajax(
             'GET',
@@ -728,11 +728,11 @@
     };
 
 
-   this.getPdfChecklist = function(sessionData, quoteId, fileName, anchor){
+   this.getPdfChecklist = function(sessionData, fileName, anchor){
 
         var accountInfo = helpers.getAccountInformation(sessionData);
 
-        var uri = sessionData.apiUrl + '/quote/'+quoteId+'/checklist/PDF';
+        var uri = sessionData.apiUrl + '/accountId/' + accountInfo.accountId + 'productId' + accountInfo.productId + '/PDF';
 
         var ajaxPromise = ajax.ajaxDownload(
             uri,

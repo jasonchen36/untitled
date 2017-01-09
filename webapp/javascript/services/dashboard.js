@@ -125,7 +125,7 @@
 
 
     function changePageUpload(){
-        apiservice.getChecklist(userObject, userObject.quoteId)
+        apiservice.getChecklist(userObject)
             .then(function(response){
                 var dataObject = that.getUserSession();
                 dataObject.documentChecklist = getDocumentChecklistObject(response);
