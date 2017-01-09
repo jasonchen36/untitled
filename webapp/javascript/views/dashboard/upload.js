@@ -113,24 +113,12 @@
         window.location.hash = 'modal-tax-return-submit';
     }
 
-    function submitReturn(){
-        var userSession = dashboard.getUserSession(),
-            taxReturnId = userSession.taxReturns[0].taxReturnId;
-        ajax.ajax(
-            'PUT',
-            userSession.apiUrl+'/tax_return/'+taxReturnId+'/status',
-            {
-                statusId: 4//data entry complete
-            }
-        )
-            .then(function(){
-                //update tax return objects in session
-                return apiservice.getTaxReturns(userSession);
-            })
+    function submitReturn(){     
+
+        apiservice.submitReturn(userObject, userObject.quoteId)
             .then(function(data){
-                userSession.taxReturns = data;
                 window.location.hash = '!';
-                dashboard.changePage('my-return',userSession);
+                dashboard.changePage('my-return');
             })
             .catch(function(jqXHR,textStatus,errorThrown){
                 //todo, error message
@@ -148,17 +136,9 @@
         var userSession = dashboard.getUserSession(),
             documentId = currentDeleteFileElement.attr('data-id'),
             quoteId = currentDeleteFileElement.attr('data-quote-id');
-        ajax.ajax(
-            'DELETE',
-            userSession.apiUrl+'/quote/'+quoteId+'/document/'+documentId,
-            {
-            },
-            'json',
-            {
-                'Authorization': 'Bearer '+ userSession.token
-            }
-        )
-            .then(function() {
+
+            apiservice.deleteDocument(userSession, quoteId, documentId)
+                .then(function() {
                 window.location.hash = '!';
                 window.location.reload();
             })
@@ -168,6 +148,25 @@
                 window.location.hash = '!';
             });
     }
+
+    function downloadPdfChecklist(){
+
+ 
+        var anchor = $('.document-checklist-pd');
+        apiservice.getPdfChecklist(userObject, userObject.quoteId, 
+                         "Checklist.pdf", ancor)
+            .then(function() {
+              
+                // todo
+
+            })
+            .catch(function(jqXHR,textStatus,errorThrown){
+                //todo, error message
+                console.log(jqXHR,textStatus,errorThrown);
+                window.location.hash = '!';
+            });
+    }
+
 
     this.init = function(){
 
@@ -184,6 +183,7 @@
             fileUpload = $('#dashboard-upload-input');
             progressBar = $('#dashboard-upload-progress');
             taxReturnSubmit = $('#tax-return-submit');
+            documentChecklistPdf = $('#document-checklist-pdf');
             taxReturnForm = $('#modal-tax-return-submit-form');
             fileUploadSuccess = $('#dashboard-upload-success');
             deleteFileForm = $('#modal-delete-file-submit-form');
@@ -202,6 +202,11 @@
             deleteFileForm.on('submit',function(event){
                 event.preventDefault();
                 deleteFileById();
+            });
+
+            documentChecklistPdf.on('click',function(event){
+                event.preventDefault();
+                downloadPdfChecklist();
             });
 
             $(document)

@@ -4,13 +4,14 @@
         that = app.views.user.authorizedPasswordReset,
         helpers = app.helpers,
         ajax = app.ajax,
+        apiservice = app.apiservice,
         passwordResetForm = $('#authorized-password-reset-form'),
         passwordResetPasswordInput = $('#authorized-password-reset-password'),
         passwordResetSubmit = $('#authorized-password-reset-submit'),
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
-    function submitForgotPassword(){
+    function submitResetPassword(){
         if (!passwordResetSubmit.hasClass(disabledClass)) {
             var formData = helpers.getFormData(passwordResetForm);
             helpers.resetForm(passwordResetForm);
@@ -19,25 +20,30 @@
             }
             if (!helpers.formHasErrors(passwordResetForm)) {
                 passwordResetSubmit.addClass(disabledClass);
-                ajax.ajax(
-                    'PUT',
-                    '/password-reset',
-                    {
-                        action: 'api-authorized-password-reset',
-                        password: formData.password,
-                        token: authToken
-                    },
-                    'json',
-                    { }
-                )
-                    .then(function(response){
+
+
+                return Promise.resolve()
+                    .then(function() {
+                       var promiseArray =  [];
+                 
+                       var ajaxCall = apiservice.putAuthorizedPasswordReset(apiUrl, 
+                                             formData.password,  authToken);
+                       promiseArray.push(ajaxCall);
+                      
+                       return Promise.all(promiseArray);
+
+                    })
+                    .then(function(response) {
+
                         //todo, show success and then redirect
                         window.location.href = '/login';
+
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         passwordResetSubmit.removeClass(disabledClass);
                     });
+
             }
         }
     }
@@ -48,7 +54,7 @@
             //listeners
             passwordResetForm.on('submit',function(event){
                 event.preventDefault();
-                submitForgotPassword();
+                submitResetPassword();
             });
         }
     };

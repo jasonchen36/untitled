@@ -7,6 +7,45 @@
 
 
 
+    this.putRequestReset = function(apiurl, email){
+
+        var uri = apiurl + '/users/reset';
+        var ajaxPromise =ajax.ajax(
+            'PUT',
+            uri,
+            {
+                 email: email
+            },
+            'json-text'
+        );
+
+
+        return ajaxPromise;
+
+    };
+
+
+    this.putAuthorizedPasswordReset = function(apiurl, password, token){
+
+        var uri = apiurl + '/users/reset/' + token ;
+        var ajaxPromise =ajax.ajax(
+            'PUT',
+            uri,
+            {
+                password: password
+            },
+            'json-text'
+        );
+
+
+        return ajaxPromise;
+
+    };
+
+
+
+
+
 
     this.getQuestions = function(sessionData, category){
 
@@ -394,7 +433,7 @@
                     },
                     firstName: entry.first_name,
                     lastName: entry.last_name,
-                    province: entry.province_of_residence,
+                    provinceOfResidence: entry.province_of_residence,
                     dateOfBirth: entry.date_of_birth,
                     canadianCitizen: entry.canadian_citizen,
                     authorizeCRA: entry.authorize_cra,
@@ -466,6 +505,11 @@
                     dependant.day = moment(dependant.date_of_birth).format('DD');
                     dependant.month = moment(dependant.date_of_birth).format('MM');
                     dependant.year = moment(dependant.date_of_birth).format('YYYY');
+                    if(dependant.is_shared === 1) {
+                        dependant.isShared = 'active';
+                    }else{
+                        dependant.isShared = '';
+                    }
                     return dependant;
                 });
                 return Promise.resolve(response);
@@ -494,7 +538,8 @@
                 'firstName': formData.firstName,
                 'lastName': formData.lastName,
                 'dateOfBirth': formData.year+'-'+formData.month+'-'+formData.day,
-                'relationship': formData.relationship
+                'relationship': formData.relationship,
+                'isShared': formData.isShared.toString()
             },
             'json',
             {
@@ -512,7 +557,8 @@
                 'firstName': formData.firstName,
                 'lastName': formData.lastName,
                 'dateOfBirth': formData.year+'-'+formData.month+'-'+formData.day,
-                'relationship': formData.relationship
+                'relationship': formData.relationship,
+                'isShared': formData.isShared.toString()
             },
             'json',
             {
@@ -634,5 +680,75 @@
             }
         );
     };
+
+
+
+    this.deleteDocument = function(sessionData,quoteId, documentId){
+
+        var accountInfo = helpers.getAccountInformation(sessionData);
+
+        var uri = sessionData.apiUrl + '/quote/'+quoteId+'/document/'+documentId;
+
+        var ajaxPromise = ajax.ajax(
+            'DELETE',
+            uri,
+            {
+            },
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        )
+
+        return ajaxPromise;
+    };
+
+
+
+    this.submitReturn = function(sessionData, quoteId){
+
+        var accountInfo = helpers.getAccountInformation(sessionData);
+
+        var uri = sessionData.apiUrl + '/quote/'+quoteId+'/submit/';
+
+        var ajaxPromise = ajax.ajax(
+            'POST',
+            uri,
+            {
+                accountId: accountInfo.accountId,
+                productId: accountInfo.productId
+            },
+            'json-text',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        )
+
+        return ajaxPromise;
+    };
+
+
+   this.getPdfChecklist = function(sessionData, quoteId, fileName, anchor){
+
+        var accountInfo = helpers.getAccountInformation(sessionData);
+
+        var uri = sessionData.apiUrl + '/quote/'+quoteId+'/checklist/PDF';
+
+        var ajaxPromise = ajax.ajaxDownload(
+            uri,
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            },
+            fileName, 
+            anchor
+        )
+
+        return ajaxPromise;
+    };
+
+
+
+
+
 
 }).apply(app.apiservice);
