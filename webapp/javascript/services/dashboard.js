@@ -52,14 +52,10 @@
         if (!userSession) {
             startUserSession();
         }
-        if(dashboardState && dashboardState.hasOwnProperty('currentPage')){
-            return dashboardState.currentPage;
-        } else {
             cookies.setCookie(dashboardStateCookie, {
                 currentPage: that.dashboardOrder[0]
             });
             return that.dashboardOrder[0];
-        }
     }
 
     function changePageHelper(pageName){
@@ -155,7 +151,7 @@
             date: moment(data.date).format('MMM D [-] h:mm A').toString(),
             isFromUser: data.client_id === data.from_id,
             isFromTaxPro: data.from_role === 'Tax Pro', //todo is this the final role name?
-            isFromTaxPlan: data.from_role === 'TAXPlan', // todo is this the final role name?  
+            isFromTaxPlan: data.from_role === 'TAXPlan', // todo is this the final role name?
             isFirst: false
         };
     }
@@ -249,6 +245,8 @@
 
             //shared bindings
             $(document)
+
+
 
                 .on('click', '#dashboard-upload-activate', function (event) {
                     event.preventDefault();
