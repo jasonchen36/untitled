@@ -44,6 +44,7 @@
                       console.log(response);
                         //todo, show success and then redirect
                         window.location.href = '/personal-profile';
+                        console.log(window.location.href.taxReturns);
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
@@ -55,14 +56,16 @@
 
     this.init = function(){
         if ($('#page-user-login').length > 0){
-          // var formData = helpers.getFormData(loginForm);
-          //                       console.log(formData);
-          //                       var personalProfile = app.services.personalProfile;
-          //                       console.log(personalProfile);
-          //                       var sessionData = personalProfile.getPersonalProfileSession();
-          //                       console.log(sessionData);
-          //           var taxReturns = apiService.getTaxReturns(sessionData);
-          //           console.log(taxReturns);
+          var formData = helpers.getFormData(loginForm);
+                                console.log(formData);
+                                var personalProfile = app.services.personalProfile;
+                                console.log(personalProfile);
+                                taxProfile = app.services.taxProfile;
+                                console.log(taxProfile);
+                                var sessionData = personalProfile.getPersonalProfileSession();
+                                console.log(sessionData);
+                    var taxReturns = apiService.getTaxReturns(sessionData);
+                    console.log(taxReturns);
             //listeners
             loginForm.on('submit',function(event){
                 event.preventDefault();
