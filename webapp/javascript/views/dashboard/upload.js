@@ -116,14 +116,9 @@
     function submitReturn(){     
 
         apiservice.submitReturn(userObject, userObject.quoteId)
-            .then(function(){
-                //update tax return objects in session
-                return apiservice.getTaxReturns(userSession);
-            })
             .then(function(data){
-                userSession.taxReturns = data;
                 window.location.hash = '!';
-                dashboard.changePage('my-return',userSession);
+                dashboard.changePage('my-return');
             })
             .catch(function(jqXHR,textStatus,errorThrown){
                 //todo, error message
@@ -159,7 +154,7 @@
  
         var anchor = $('.document-checklist-pd');
         apiservice.getPdfChecklist(userObject, userObject.quoteId, 
-                         "Checklist.pdf”, ancor)
+                         "Checklist.pdf", ancor)
             .then(function() {
               
                 // todo

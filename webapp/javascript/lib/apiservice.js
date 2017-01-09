@@ -715,8 +715,10 @@
             'POST',
             uri,
             {
+                accountId: accountInfo.accountId,
+                productId: accountInfo.productId
             },
-            'json',
+            'json-text',
             {
                 'Authorization': 'Bearer '+ accountInfo.token
             }
