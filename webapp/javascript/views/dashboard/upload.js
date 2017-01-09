@@ -153,8 +153,8 @@
 
  
         var anchor = $('.document-checklist-pd');
-        apiservice.getPdfChecklist(userObject, userObject.quoteId, 
-                         "Checklist.pdf", ancor)
+        apiservice.getPdfChecklist(userObject,
+                         "Checklist.pdf", anchor)
             .then(function() {
               
                 // todo
