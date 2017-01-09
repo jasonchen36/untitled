@@ -35,8 +35,12 @@
             <button id="tax-return-submit" class="green header long {{#compare taxReturns.0.status.id 4 operator=">="}} hidden{{/compare}}">Start My Return</button>
         </div>
         {{#if activeItem}}
-            <h1 class="label-activeItem-name display-inline-block">{{activeItem.name}}</h1>
+            <h1 class="label-activeItem-name display-inline-block no-margin-bottom">{{activeItem.name}}</h1>
             <div class="label-activeItem-subtitle f--futura-book add-margin-left display-inline-block">Statement of Renumeration Paid</div>
+            <div>
+                <p class="f--futura-book display-inline-block">Documents Required for:</p>
+                <p class="f--futura-book font-red display-inline-block add-margin-left">{{#each activeItem.filers}}{{name}}{{/each}}</p>
+            </div>
             <div id="dashboard-upload-progress" class="progress-bar"></div>
             <form id="dashboard-upload-form" enctype="multipart/form-data">
                 <p class="label-instruction-upload">Drop files here to upload</p>
