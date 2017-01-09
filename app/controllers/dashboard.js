@@ -44,8 +44,8 @@ dashboardPages.getDashboardPage = function(req, res, next){
                 dataObject.newMessageCount = 0;
                 dataObject.messages = [];
                 dataObject.quoteId = quoteId;
+                dataObject.taxReturnId = accountData.taxReturns[0].id;
                 dataObject.uploadUrl = userProfile.apiUrl + '/quote/' + quoteId + '/document';
-
 
                 res.render('dashboard/dashboard', {
                     meta: {
