@@ -11,7 +11,7 @@
                 <div id="container-address-form">
                     {{#each taxReturns}}
                         <div class="border-bottom-light-grey add-bottom-padding taxplan-form-container" data-id="{{taxReturnId}}">
-                            <h1 class="filer-name">{{firstName}}:</h1>
+                            <h1 class="filer-name {{#if @index}}border-top-light-gray{{/if}}">{{firstName}}:</h1>
                             {{#compare @index 0 operator="!="}}
                                 <div class="add-bottom-padding checkbox-container">
                                     <div class="checkbox"></div>

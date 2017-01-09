@@ -234,6 +234,10 @@
                 event.preventDefault();
                 toggleCheckboxActiveState($(this));
             });
+
+            $(document).ready(function(){
+                $(this).scrollTop(0);
+            });
         }
     };
 
