@@ -85,16 +85,19 @@
                 var today = moment();
                 var foundToday = false;
                 var pattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-                response.messages.forEach(function(entry){
+                 response.messages.forEach(function(entry){
 
                     dataObject.messages.push(getChatMessageObject(entry));
 
-                    //count unread messages
-                    if(entry.status.toLowerCase() === 'new'){
-                        dataObject.newMessageCount++;
-                    }
+                 });
 
                     for (var i = 0, len = dataObject.messages.length; i < len; i++) {
+                        //count unread messages
+                        if(dataObject.messages[i].status.toLowerCase() === 'new' &&
+                            dataObject.messages[i].isFromUser !== true){
+                            dataObject.newMessageCount++;
+                        }
+
                         //today header
                         if(moment(dataObject.messages[i].rawDate).month() === moment(today).month() &&
                             moment(today).date() === moment(dataObject.messages[i].rawDate).date() &&
@@ -112,7 +115,6 @@
                             dataObject.messages[i].replacedBody = dataObject.messages[i].body;
                         }
                     }
-                });
 
                 if(chat.chatMessageReceived){
                     chat.chatMessageReceived = false;
