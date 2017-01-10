@@ -242,13 +242,11 @@
                     event.preventDefault();
                     event.stopPropagation();
                     $('#dashboard-upload-form').addClass('hover');
-                    console.log('dragging');
                 })
                 .on('dragleave', '#dashboard-upload-form', function (event) {
                     event.preventDefault();
                     event.stopPropagation();
                     $('#dashboard-upload-form').removeClass('hover');
-                    console.log('no dragging');
                 });
 
             //functions
