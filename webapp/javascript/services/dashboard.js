@@ -51,8 +51,9 @@
             dashboardState = cookies.getCookie(dashboardStateCookie);
         if (!userSession) {
             startUserSession();
-        }
-            cookies.setCookie(dashboardStateCookie, {
+        }if(dashboardState && dashboardState.hasOwnProperty('currentPage')){
+           return dashboardState.currentPage;
+        } else {cookies.setCookie(dashboardStateCookie, {
                 currentPage: that.dashboardOrder[0]
             });
             return that.dashboardOrder[0];
@@ -179,7 +180,7 @@
             date: moment(data.date).format('MMM D [-] h:mm A').toString(),
             isFromUser: data.client_id === data.from_id,
             isFromTaxPro: data.from_role === 'Tax Pro', //todo is this the final role name?
-            isFromTaxPlan: data.from_role === 'TAXPlan', // todo is this the final role name?  
+            isFromTaxPlan: data.from_role === 'TAXPlan', // todo is this the final role name?
             isFirst: false,
             replacedBody: "default"
         };
