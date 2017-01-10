@@ -32,6 +32,10 @@
   .label-instruction-upload{
     font-size:1.7rem;
   }
+  
+  &.hover{
+    border: 8px dashed $color-global-yellow;
+  }
 }
 
 #container-upload-explained{
