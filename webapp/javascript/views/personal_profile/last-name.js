@@ -101,15 +101,6 @@
         }
     }
     this.init = function(){
-      var sessionData = personalProfile.getPersonalProfileSession();
-      Promise.all([apiservice.getTaxReturns(sessionData)])
-      .then(function(response){
-        _.each(response[0], function(object){
-          if (object.status.id === 11){
-            window.location.href = '/dashboard';
-          }
-        });
-      });
 
         if ($('#personal-profile-last-name').length > 0) {
 

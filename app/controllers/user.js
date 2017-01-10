@@ -12,14 +12,17 @@ var userPages = {};
 function getPageAfterLogin(req)  {
 
    var profileSession = session.getUserProfileSession(req);
-   profileSession.users.forEach(function(entry) {
-           if (entry.hasOwnProperty('status')) {
-               //TODO  add logic for different pages for by status
-
+   var completedFlow = false;
+   profileSession.taxReturns.forEach(function(entry) {
+           if (entry.status.id === 11) {
+               completedFlow = true;
            }
        });
-
-   return '/personal-profile';
+       if (completedFlow === true){
+         return '/dashboard';
+       } else {
+         return '/personal-profile';
+       }
 
 }
 

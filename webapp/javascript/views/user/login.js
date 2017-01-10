@@ -40,7 +40,6 @@
 		    { }
                 )
                     .then(function(response){
-                      console.log(response);
                         //todo, show success and then redirect
                         window.location.href = response.forward;
                     })
