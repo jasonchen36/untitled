@@ -761,7 +761,23 @@
     };
 
 
+    this.markMessagesAsRead = function(sessionData){
 
+        var accountInfo = helpers.getAccountInformation(sessionData);
+
+        var uri = sessionData.apiUrl + '/messages/markAllRead';
+
+        var ajaxPromise = ajax.ajax(
+            'POST',
+            uri,
+            {},
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
+
+    };
 
 
 
