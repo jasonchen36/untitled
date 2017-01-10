@@ -101,6 +101,7 @@
         }
     }
     this.init = function(){
+
         if ($('#personal-profile-last-name').length > 0) {
 
             //variables

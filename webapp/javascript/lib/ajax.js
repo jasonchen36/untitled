@@ -58,9 +58,9 @@
   this.ajaxDownload = function(url,  token, fileName) {
 
       return new Promise(function(resolve,reject) {
-           
+
           var request = new XMLHttpRequest();
-          request.open("GET", url, true); 
+          request.open("GET", url, true);
           request.responseType = "blob";
           request.onload = function (e) {
 
@@ -71,9 +71,9 @@
                     var anchorSelector = '#export';
                     var fileData = [this.response];
                     blobObject = new Blob(fileData);
-                    window.navigator.msSaveOrOpenBlob(blobObject, fileName);               
-                  } else {            
-              
+                    window.navigator.msSaveOrOpenBlob(blobObject, fileName);
+                  } else {
+
                     // create `objectURL` of `this.response` : `.pdf` as `Blob`
                     var file = window.URL.createObjectURL(this.response);
                     var a = document.createElement("a");
@@ -81,25 +81,25 @@
                     a.download = fileName;
                     document.body.appendChild(a);
                     a.click();
-                    // remove `a` following `Save As` dialog, 
+                    // remove `a` following `Save As` dialog,
                     // `window` regains `focus`
-                    window.onfocus = function () {  
-                   
+                    window.onfocus = function () {
+
                         var element =  document.getElementById("a");
-                        if (typeof(element) != 'undefined' && element != null)
+                        if (typeof(element) != 'undefined' && element !== null)
                         {
                             document.body.removeChild(a);
                         }
-                      }
-                 } 
+                      };
+                 }
 
                  resolve();
 
-             } 
+             }
              else {
                  reject();
              }
-         
+
           };
           request.setRequestHeader("authorization", "Bearer " + token);
           request.send();
@@ -108,5 +108,5 @@
 
    };
 
- 
+
 }).apply(app.ajax);

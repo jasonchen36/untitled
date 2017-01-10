@@ -52,14 +52,10 @@
         if (!userSession) {
             startUserSession();
         }
-        if(dashboardState && dashboardState.hasOwnProperty('currentPage')){
-            return dashboardState.currentPage;
-        } else {
             cookies.setCookie(dashboardStateCookie, {
                 currentPage: that.dashboardOrder[0]
             });
             return that.dashboardOrder[0];
-        }
     }
 
     function changePageHelper(pageName){
