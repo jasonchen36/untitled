@@ -130,7 +130,8 @@ sessionModel.getChatMessageObject = function(data){
         isFromUser: data.client_id === data.from_id,
         isFromTaxPro: data.from_role === 'Tax Pro', //todo is this the final role name?
         isFromTaxPlan: data.from_role === 'TAXPlan', // todo is this the final role name?
-        isFirst: false
+        isFirst: false,
+        replacedBody: "default"
     };
 };
 

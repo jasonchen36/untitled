@@ -35,18 +35,18 @@
             },
             add: function (e, data) {
                 $(fileUploadSelectId).addClass(hiddenClass);
-                $(fileUploadSubmitId).removeClass(hiddenClass);
-                data.context = $(fileUploadSubmitId)
-                    .click(function () {
-                        data.context = $(fileUploadSubmitId).text('Uploading...');
+
+                data.context = $(fileUploadSubmitId).text('Uploading...');
                         $(fileUploadCancelId).removeClass(hiddenClass);
-                        $(fileUploadSubmitId).addClass(hiddenClass);
+                        $(fileUploadSelectId).addClass(hiddenClass);
                         data.submit();
-                    });
             },
             done: function (e, data) {
                 fileUploadSuccess.removeClass(helpers.hiddenClass);
                 resetUploadForm();
+
+                dashboard.refreshPage(userSession);
+
             },
             fail: function (e, data) {
                 resetUploadForm();
@@ -78,17 +78,8 @@
         var userSession = dashboard.getUserSession();
         userSession.isPreview = "";
 
-        if(dashboard.hasOwnProperty('activeItem') || dashboard.activeItem !== dataId) {
-            if (dataId === 0) {
-                //additional documents
-                dashboard.activeItem = {
-                    name: 'Additional Documents',
-                    checklistItemId: 0,
-                    documents: userSession.documentChecklist.additionalDocuments
-                };
-            } else {
-                dashboard.activeItem = _.find(dashboard.checklist.checklistItems, ['checklistItemId', dataId]);
-            } 
+        if(dashboard.hasOwnProperty('activeItem') || dashboard.activeItemId !== dataId) {
+            dashboard.activeItemId = dataId;
             dashboard.refreshPage(userSession);
         }
 
@@ -153,8 +144,8 @@
 
  
         var anchor = $('.document-checklist-pd');
-        apiservice.getPdfChecklist(userObject, userObject.quoteId, 
-                         "Checklist.pdf", ancor)
+        apiservice.getPdfChecklist(userObject,
+                         "Checklist.pdf")
             .then(function() {
               
                 // todo

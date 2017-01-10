@@ -164,13 +164,16 @@ taxProfile.getTaxReturnQuote = function(req){
             const taxProfileSession = session.getTaxProfileSession(req),
                 requestObject = {
                     method: 'POST',
-                    uri: process.env.API_URL+'/tax_return',
+                    uri: process.env.API_URL+'/tax_returns',
                     json: true
                 };
 
             var accountId = taxProfileSession.users[0].id;
             var taxReturnRequestObject,
-                taxReturnRequests = taxProfileSession.users.map(function(entry) {
+                taxReturnBody = [];
+
+
+             taxProfileSession.users.forEach(function(entry) {
                   if (entry.taxReturnId === "") {
                   var filerType = "";
                     if (parseInt(entry.id)) {
@@ -183,19 +186,20 @@ taxProfile.getTaxReturnQuote = function(req){
                       filerType = "other";
                     }
 
-                        taxReturnRequestObject = _.clone(requestObject, true);
-                        taxReturnRequestObject.body = {
+                       taxReturnBody.push({
                             accountId: accountId,
                             productId: process.env.API_PRODUCT_ID,
                             firstName: entry.firstName,
                             filerType: filerType
-                        };
-                        return requestPromise(taxReturnRequestObject);
+                        });
+     
                     }
                 });
 
-            return promise.all(taxReturnRequests)
-                .then(function (response) {
+            requestObject.body =  { "taxReturns": taxReturnBody };
+        
+            return requestPromise(requestObject).then(function (response) {
+
                     var i = 0;
                     taxProfileSession.users.forEach(function(entry){
                         if (response[i] != null && entry.hasOwnProperty('id') && parseInt(entry.id) > 0) {
@@ -204,7 +208,7 @@ taxProfile.getTaxReturnQuote = function(req){
                         i++;
                     });
                     session.setTaxProfileSession(req, taxProfileSession);
-                    return promise.resolve(session.setTaxProfileSession(req, taxProfileSession));
+                    return promise.resolve(session.setTaxProfileSession(req, taxProfileSession)); 
                 })
                 .catch(function (response) {
                     var error = response;
@@ -214,7 +218,10 @@ taxProfile.getTaxReturnQuote = function(req){
                     return promise.reject(new errors.InternalServerError(error));
                 });
         })
-        .then(function(taxProfileSession){
+        .then(function(response){
+
+             var taxProfileSession = session.getTaxProfileSession(req);
+
             //create quote request
             const requestObject = {
                 method: 'POST',

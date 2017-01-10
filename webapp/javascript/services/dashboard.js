@@ -11,7 +11,7 @@
         chat = app.views.dashboard.chat,
         activeClass = helpers.activeClass,
         checklist,
-        activeItem,
+        activeItemId = 0,
         landingPageContainer = $('#dashboard-container'),
         dashboardStateCookie = 'store-dashboard-state';
 
@@ -80,6 +80,7 @@
 
                 var today = moment();
                 var foundToday = false;
+                var pattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
                 response.messages.forEach(function(entry){
 
                     dataObject.messages.push(getChatMessageObject(entry));
@@ -88,11 +89,24 @@
                     if(entry.status.toLowerCase() === 'new'){
                         dataObject.newMessageCount++;
                     }
-                    if(moment(entry.rawDate).month() === moment(today).month() &&
-                        moment(today).date() === moment(entry.rawDate).date() &&
-                        foundToday === false){
-                        entry.isFirst = true;
-                        foundToday = true;
+
+                    for (var i = 0, len = dataObject.messages.length; i < len; i++) {
+                        //today header
+                        if(moment(dataObject.messages[i].rawDate).month() === moment(today).month() &&
+                            moment(today).date() === moment(dataObject.messages[i].rawDate).date() &&
+                            foundToday === false){
+                            dataObject.messages[i].isFirst = true;
+                            foundToday = true;
+                        }
+
+                        //check for link
+                        if(pattern.test(dataObject.messages[i].body)){
+                            dataObject.messages[i].replacedBody = dataObject.messages[i].body.replace(pattern, function(url){
+                                return '<a href="' + url + '">' + url + '</a>';
+                            });
+                        } else {
+                            dataObject.messages[i].replacedBody = dataObject.messages[i].body;
+                        }
                     }
                 });
 
@@ -121,13 +135,27 @@
 
 
     function changePageUpload(){
-        apiservice.getChecklist(userObject, userObject.quoteId)
+        apiservice.getChecklist(userObject)
             .then(function(response){
                 var dataObject = that.getUserSession();
                 dataObject.documentChecklist = getDocumentChecklistObject(response);
                 dataObject.currentPage= "upload";
                 that.checklist = dataObject.documentChecklist;
-                dataObject.activeItem = that.activeItem;
+
+
+                if (that.activeItemId === 0) {
+                   //additional documents
+                   dataObject.activeItem = {
+                       name: 'Additional Documents',
+                       checklistItemId: 0,
+                       documents: userSession.documentChecklist.additionalDocuments
+                   };
+                }
+                else {
+
+                    dataObject.activeItem = _.find(that.checklist.checklistItems, ['checklistItemId', that.activeItemId]);
+                }
+
                 that.changePage('upload', dataObject);
             })
             .catch(function(jqXHR,textStatus,errorThrown){
@@ -151,8 +179,9 @@
             date: moment(data.date).format('MMM D [-] h:mm A').toString(),
             isFromUser: data.client_id === data.from_id,
             isFromTaxPro: data.from_role === 'Tax Pro', //todo is this the final role name?
-            isFromTaxPlan: data.from_role === 'TAXPlan', // todo is this the final role name?
-            isFirst: false
+            isFromTaxPlan: data.from_role === 'TAXPlan', // todo is this the final role name?  
+            isFirst: false,
+            replacedBody: "default"
         };
     }
 
@@ -245,8 +274,6 @@
 
             //shared bindings
             $(document)
-
-
 
                 .on('click', '#dashboard-upload-activate', function (event) {
                     event.preventDefault();
