@@ -551,7 +551,7 @@
     this.completedProfileStatusChange = function(sessionData, accountInfo, formData){
       _.map(formData, function (entry, key){
         body = {
-          statusId: 11
+          statusId: 3
         };
       return ajax.ajax(
         'PUT',
