@@ -8,7 +8,7 @@
         <div class="content-form">
             <form id="credits-form">
                 {{#each taxReturns}}
-                    <h1 class="subtitle">{{firstName}} please select all your credits in 2016:</h1>
+                    <h1 class="subtitle  {{#if @index}}border-top-light-gray{{/if}}">{{firstName}} please select all your credits in 2016:</h1>
                     {{#compare @index 0 operator="=="}}
                         {{>personal-profile-options questions=questions.answers tileContainerId=taxReturnId isPrimaryFiler=true}}
                     {{else}}
@@ -25,4 +25,4 @@ afford you see them both; by continuing their censure of the strength of the sak
 saying something would kill more contracted without him, and her
 sister, &c."}}
 </section>
-{{>personal-profile-popup popupTitle="Credits" popupBlurb="You must select at least one tile that applies" popupImage="i--icon-taxplan-logo"}}
+{{>personal-profile-popup popupTitle="Credits" popupBlurb="You must select at least one tile that applies" popupImage="i--icon-alert"}}

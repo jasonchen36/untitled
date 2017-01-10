@@ -9,7 +9,7 @@
             <form id="dependants-form">
                 {{#each taxReturns}}
                     <div class="border-bottom-light-grey add-bottom-padding taxplan-tile-container taxplan-form-container" data-id="{{taxReturnId}}">
-                        <h1 class="subtitle">{{firstName}}, do you have any children or elderly parents as dependants?</h1>
+                        <h1 class="subtitle  {{#if @index}}border-top-light-gray{{/if}}">{{firstName}}, do you have any children or elderly parents as dependants?</h1>
                         {{>personal-profile-options questions=questions.answers tileContainerId=taxReturnId}}
                         {{#hasDependantsSelected questions.answers}}
                             {{#each dependants}}
@@ -33,7 +33,7 @@
                             {{#if dependantForm}}
                                 {{>personal-profile-dependant-form taxReturns=../taxReturns}}
                             {{else}}
-                                <div class="dependants-button-add border-bottom-light-gray add-bottom-padding add-top-padding" data-tax-return-id="{{taxReturnId}}">
+                                <div class="dependants-button-add add-bottom-padding add-top-padding" data-tax-return-id="{{taxReturnId}}">
                                     <div class="i--icon-add"></div>
                                     <label class="label-add">ADD A DEPENDANT FOR {{firstName}}</label>
                                 </div>
@@ -50,4 +50,4 @@
 	They have my children of good
 	wrestling, which being proud."}}
 </section>
-{{>personal-profile-popup popupTitle="Dependants" popupBlurb="You must select at least one tile that applies" popupImage="i--icon-taxplan-logo"}}
+{{>personal-profile-popup popupTitle="Dependants" popupBlurb="You must select at least one tile that applies" popupImage="i--icon-alert"}}

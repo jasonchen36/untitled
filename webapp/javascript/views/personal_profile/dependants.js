@@ -10,7 +10,7 @@
         dependantsSubmit,
         dependantsBack,
         dependantsTiles,
-        saved = false,
+        saved,
         dependantsEditButtons,
         dependantsDeleteButtons,
         dependantsAddButtons,
@@ -21,10 +21,13 @@
         disabledClass = helpers.disabledClass;
 
     function submitDependants(){
-
-    
-        if ((!dependantsSubmit.hasClass(disabledClass))) {
-
+      var hasAlert = false;
+      if (saved === false){
+        $('#popup-blurb').html('Please Save or Cancel your dependant info before moving forward.');
+        window.location.hash = 'modal-personal-profile-popup';
+        hasAlert = true;
+      }
+        if ((!dependantsSubmit.hasClass(disabledClass)) && ((!saved) || saved === true) && hasAlert === false){
             var formData = helpers.getTileFormDataArray(dependantsForm),
                 sessionData = personalProfile.getPersonalProfileSession(),
                 accountInfo = helpers.getAccountInformation(sessionData),
@@ -497,6 +500,10 @@
             dependantCheckboxes.on('click',function(event){
                 event.preventDefault();
                 shareDependant($(this));
+            });
+
+            $(document).ready(function(){
+                $(this).scrollTop(0);
             });
 
         }

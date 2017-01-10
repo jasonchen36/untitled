@@ -9,7 +9,7 @@
             <form id="deductions-form">
 
                  {{#each taxReturns}}
-                    <h1 class="subtitle">{{firstName}} please select all your 2016 deductions:</h1>
+                    <h1 class="subtitle  {{#if @index}}border-top-light-gray{{/if}}">{{firstName}} please select all your 2016 deductions:</h1>
                      {{#compare @index 0 operator="=="}}
                          {{>personal-profile-options questions=questions.answers tileContainerId=taxReturnId isPrimaryFiler=true}}
                      {{else}}
@@ -24,4 +24,4 @@
 7 But covet thy wages; then can find grace also.
 7 Therefore, as lights in spirit; and said unto him before the damsel, and thirty years, and go."}}
 </section>
-{{>personal-profile-popup popupTitle="Deductions" popupBlurb="You must select at least one tile that applies" popupImage="i--icon-taxplan-logo"}}
+{{>personal-profile-popup popupTitle="Deductions" popupBlurb="You must select at least one tile that applies" popupImage="i--icon-alert"}}

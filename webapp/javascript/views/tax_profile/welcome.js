@@ -62,6 +62,10 @@
                 event.preventDefault();
                 submitWelcome();
             });
+
+            $(document).ready(function(){
+                $(this).scrollTop(0);
+            });
         }
     };
 

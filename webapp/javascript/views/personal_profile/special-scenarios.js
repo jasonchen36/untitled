@@ -18,11 +18,23 @@
             var formData = helpers.getTileFormDataArray(specialScenariosForm);
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
-
-            if(!helpers.hasSelectedTile(formData)){
-                window.location.hash = 'modal-personal-profile-popup';
-            } else if(helpers.noneAppliedMultipleSelectedTiles(formData)){
-            } else {
+            var tileCount = 0;
+            for (index = 0; index < formData.length; index++) {
+                  for (var key in formData[index]) {
+                  if (formData[index].hasOwnProperty(key)) {
+                    if (formData[index][key] === 1){
+                      tileCount++;
+                    }
+                  }
+                }
+              if (tileCount > index) {
+                selectedTile = true;
+              } else {
+                selectedTile = false;
+                break;
+              }
+            }
+            if (selectedTile === true) {
                  return Promise.resolve()
                     .then(function() {
                         var promiseArrayPut = [];
@@ -157,6 +169,8 @@
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         specialScenariosSubmit.removeClass(disabledClass);
                     });
+            } else {
+              window.location.hash = 'modal-personal-profile-popup';
             }
         }
     }
@@ -321,6 +335,10 @@
             specialScenariosBack.on('click',function(event){
                 event.preventDefault();
                 updateSpecialScenarios();
+            });
+
+            $(document).ready(function(){
+                $(this).scrollTop(0);
             });
         }
     };

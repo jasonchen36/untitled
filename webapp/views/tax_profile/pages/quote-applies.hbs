@@ -7,7 +7,7 @@
         </div>
         <div class="content-form">
             <form id="quote-applies-form">
-                <h1 class="subtitle">{{users.0.firstName}} please select all that applied to you in 2016:</h1>
+                <h1 class="subtitle  {{#if @index}}border-top-light-gray{{/if}}">{{users.0.firstName}} please select all that applied to you in 2016:</h1>
                 {{>tax-profile-options questions=questions.quoteApplies activeTiles=users.0.activeTiles.quoteApplies tileContainerId=users.0.id isPrimaryFiler=true}}
                 {{#offsetEach users 1}}
                     {{#if id}}
@@ -23,4 +23,4 @@ LADY MONTAGUE	O, where the gods
 	Our Rome must look to't; for loving hate!
 	O any extraordinary pleasure."}}
 </section>
-{{>personal-profile-popup popupTitle="Quote" popupBlurb="You must select at least one tile that applies" popupImage="i--icon-taxplan-logo"}}
+{{>personal-profile-popup popupTitle="Quote" popupBlurb="You must select at least one tile that applies" popupImage="i--icon-alert"}}

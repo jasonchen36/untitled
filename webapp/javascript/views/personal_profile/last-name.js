@@ -120,6 +120,10 @@
                 event.preventDefault();
                 submitLastName();
             });
+
+            $(document).ready(function(){
+                $(this).scrollTop(0);
+            });
         }
     };
 
