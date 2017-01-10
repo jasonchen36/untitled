@@ -84,6 +84,7 @@
 
                 var today = moment();
                 var foundToday = false;
+                var pattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
                 response.messages.forEach(function(entry){
 
                     dataObject.messages.push(getChatMessageObject(entry));
@@ -92,11 +93,24 @@
                     if(entry.status.toLowerCase() === 'new'){
                         dataObject.newMessageCount++;
                     }
-                    if(moment(entry.rawDate).month() === moment(today).month() &&
-                        moment(today).date() === moment(entry.rawDate).date() &&
-                        foundToday === false){
-                        entry.isFirst = true;
-                        foundToday = true;
+
+                    for (var i = 0, len = dataObject.messages.length; i < len; i++) {
+                        //today header
+                        if(moment(dataObject.messages[i].rawDate).month() === moment(today).month() &&
+                            moment(today).date() === moment(dataObject.messages[i].rawDate).date() &&
+                            foundToday === false){
+                            dataObject.messages[i].isFirst = true;
+                            foundToday = true;
+                        }
+
+                        //check for link
+                        if(pattern.test(dataObject.messages[i].body)){
+                            dataObject.messages[i].replacedBody = dataObject.messages[i].body.replace(pattern, function(url){
+                                return '<a href="' + url + '">' + url + '</a>';
+                            });
+                        } else {
+                            dataObject.messages[i].replacedBody = dataObject.messages[i].body;
+                        }
                     }
                 });
 
@@ -156,7 +170,8 @@
             isFromUser: data.client_id === data.from_id,
             isFromTaxPro: data.from_role === 'Tax Pro', //todo is this the final role name?
             isFromTaxPlan: data.from_role === 'TAXPlan', // todo is this the final role name?  
-            isFirst: false
+            isFirst: false,
+            replacedBody: "default"
         };
     }
 
