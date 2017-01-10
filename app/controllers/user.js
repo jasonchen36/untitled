@@ -12,7 +12,7 @@ var userPages = {};
 function getPageAfterLogin(req)  {
 
    var profileSession = session.getUserProfileSession(req);
-   profileSession.users.forEach(function(entry) {         
+   profileSession.users.forEach(function(entry) {
            if (entry.hasOwnProperty('status')) {
                //TODO  add logic for different pages for by status
 
@@ -21,7 +21,7 @@ function getPageAfterLogin(req)  {
 
    return '/personal-profile';
 
-};
+}
 
 
 
@@ -33,7 +33,7 @@ userPages.getLoginPage = function(req, res, next){
         },
         account: session.getTaxProfileSession(req),
         user: session.getUserProfileSession(req),
-        locals: 
+        locals:
         {
            apiUrl: process.env.API_URL
         }
@@ -65,7 +65,7 @@ userPages.actionLoginUser = function(req, res, next){
                         .then(function(){
 
                             var page = getPageAfterLogin(req);
-                            
+
                             res.status(util.http.status.accepted).json({
                                 action: 'login',
                                 status: 'success',
@@ -161,7 +161,7 @@ userPages.getPasswordResetPage = function(req, res, next){
         },
         account: session.getTaxProfileSession(req),
         user: session.getUserProfileSession(req),
-        locals: 
+        locals:
         {
            apiUrl: process.env.API_URL
         }
