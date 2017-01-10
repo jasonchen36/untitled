@@ -11,7 +11,7 @@
         chat = app.views.dashboard.chat,
         activeClass = helpers.activeClass,
         checklist,
-        activeItem,
+        activeItemId = 0,
         landingPageContainer = $('#dashboard-container'),
         dashboardStateCookie = 'store-dashboard-state';
 
@@ -145,7 +145,21 @@
                 dataObject.documentChecklist = getDocumentChecklistObject(response);
                 dataObject.currentPage= "upload";
                 that.checklist = dataObject.documentChecklist;
-                dataObject.activeItem = that.activeItem;
+
+
+                if (that.activeItemId === 0) {
+                   //additional documents
+                   dataObject.activeItem = {
+                       name: 'Additional Documents',
+                       checklistItemId: 0,
+                       documents: userSession.documentChecklist.additionalDocuments
+                   };
+                }
+                else {
+
+                    dataObject.activeItem = _.find(that.checklist.checklistItems, ['checklistItemId', that.activeItemId]);
+                }
+
                 that.changePage('upload', dataObject);
             })
             .catch(function(jqXHR,textStatus,errorThrown){
