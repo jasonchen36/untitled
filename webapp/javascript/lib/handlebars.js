@@ -156,7 +156,7 @@
                 }
                 return '<i class="fa '+fontAwesomeIcon+'" aria-hidden="true"></i>';
             } else {
-                return '<img class="full-width" src="'+imageUrl+'"/>';
+                return '<img class="full-width full-height" src="'+imageUrl+'"/>';
             }
         });
 
