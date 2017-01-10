@@ -12,10 +12,10 @@ var userPages = {};
 function getPageAfterLogin(req)  {
 
    var profileSession = session.getUserProfileSession(req);
-   var completedFlow = false;
+   var completedFlow = true;
    profileSession.taxReturns.forEach(function(entry) {
-           if (entry.status.id === 11) {
-               completedFlow = true;
+           if (entry.status.id === 2) {
+               completedFlow = false;
            }
        });
        if (completedFlow === true){

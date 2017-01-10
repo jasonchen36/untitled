@@ -53,20 +53,7 @@
           Promise.all(birthdateRequests)
                 .then(function(response){
                   window.location.href = '/dashboard';
-                  completedProfileStatusChange = _.map(formData, function (entry, key){
-                    body = {
-                      statusId: 11
-                    };
-                  return ajax.ajax(
-                    'PUT',
-                    sessionData.apiUrl+'/tax_return/'+key+'/status',
-                    body,
-                    'json',
-                    {
-                      'Authorization': 'Bearer '+ accountInfo.token
-                    }
-                  );
-                });
+                  apiService.completedProfileStatusChange(sessionData, accountInfo, formData);
                   return Promise.all(completedProfileStatusChange);
                 })
                 .catch(function(jqXHR,textStatus,errorThrown){

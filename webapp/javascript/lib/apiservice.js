@@ -548,6 +548,23 @@
         );
     };
 
+    this.completedProfileStatusChange = function(sessionData, accountInfo, formData){
+      _.map(formData, function (entry, key){
+        body = {
+          statusId: 11
+        };
+      return ajax.ajax(
+        'PUT',
+        sessionData.apiUrl+'/tax_return/'+key+'/status',
+        body,
+        'json',
+        {
+          'Authorization': 'Bearer '+ accountInfo.token
+        }
+      );
+    });
+  };
+
     this.createDependant = function(sessionData, taxReturnId, formData){
         var accountInfo = helpers.getAccountInformation(sessionData);
         return ajax.ajax(
