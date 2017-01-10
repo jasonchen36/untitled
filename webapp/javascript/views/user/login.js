@@ -42,7 +42,7 @@
                     .then(function(response){
                       console.log(response);
                         //todo, show success and then redirect
-                        window.location.href = '/personal-profile';
+                        window.location.href = response.forward;
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);

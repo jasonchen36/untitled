@@ -7,6 +7,24 @@ const //packages
 
 var userPages = {};
 
+
+
+function getPageAfterLogin(req)  {
+
+   var profileSession = session.getUserProfileSession(req);
+   profileSession.users.forEach(function(entry) {         
+           if (entry.hasOwnProperty('status')) {
+               //TODO  add logic for different pages for by status
+
+           }
+       });
+
+   return '/personal-profile';
+
+};
+
+
+
 /************ login ************/
 userPages.getLoginPage = function(req, res, next){
     res.render('user/login', {
@@ -45,9 +63,13 @@ userPages.actionLoginUser = function(req, res, next){
                     const responseToken = response.token;
                     session.actionStartUserProfileSession(req,responseToken)
                         .then(function(){
+
+                            var page = getPageAfterLogin(req);
+                            
                             res.status(util.http.status.accepted).json({
                                 action: 'login',
-                                status: 'success'
+                                status: 'success',
+                                forward: page
                             });
                         });
                 } catch(error){
@@ -181,5 +203,10 @@ userPages.actionLogoutUser = function(req, res, next) {
             });
         });
 };
+
+
+
+
+
 
 module.exports = userPages;
