@@ -21,6 +21,10 @@
 
 .label-instruction-header{
   width:30%;
+
+  &.date-uploaded{
+    width:15%;
+  }
 }
 
 #dashboard-upload-form{
@@ -107,7 +111,10 @@
 
 .label-document-name-header{
   font-size: 2.5rem;
+  max-width: 80%;
   margin: 15px 0px 0px 10px;
+  overflow-x: auto;
+  word-wrap: break-word;
 }
 
 .label-document-filers{
@@ -163,8 +170,13 @@
     right: 0;
   }
   .label-document-tile-name{
-    margin-top:25px;
+    margin-top: 15px;
     color: $color-text-teal;
+    font-size: 0.8vw;
+    width: 100%;
+    word-wrap: break-word;
+    overflow-y: hidden;
+    height: 40px;
   }
 }
 
