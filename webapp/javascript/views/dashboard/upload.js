@@ -237,6 +237,16 @@
                     event.preventDefault();
                     event.stopPropagation();
                     confirmDeleteFile($(this));
+                })
+                .on('dragover', '#dashboard-upload-form', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    $('#dashboard-upload-form').addClass('hover');
+                })
+                .on('dragleave', '#dashboard-upload-form', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    $('#dashboard-upload-form').removeClass('hover');
                 });
 
             //functions
