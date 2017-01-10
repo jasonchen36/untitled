@@ -728,7 +728,7 @@
     };
 
 
-   this.getPdfChecklist = function(sessionData, fileName, anchor){
+   this.getPdfChecklist = function(sessionData, fileName){
 
         var accountInfo = helpers.getAccountInformation(sessionData);
 
@@ -736,11 +736,8 @@
 
         var ajaxPromise = ajax.ajaxDownload(
             uri,
-            {
-                'Authorization': 'Bearer '+ accountInfo.token
-            },
-            fileName, 
-            anchor
+            accountInfo.token,
+            fileName
         );
 
         return ajaxPromise;
