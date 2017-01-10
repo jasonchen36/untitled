@@ -6,6 +6,7 @@
         ajax = app.ajax,
         loginForm = $('#user-login-form'),
         loginSubmit = $('#login-submit'),
+        apiService = app.apiservice,
         loginEmailInput = $('#login-email'),
         loginPasswordInput = $('#login-password'),
         loginErrorLabelEmail = $('#label-error-email'),
@@ -40,7 +41,7 @@
                 )
                     .then(function(response){
                         //todo, show success and then redirect
-                        window.location.href = '/personal-profile';
+                        window.location.href = response.forward;
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
@@ -52,6 +53,7 @@
 
     this.init = function(){
         if ($('#page-user-login').length > 0){
+          var formData = helpers.getFormData(loginForm);
 
             //listeners
             loginForm.on('submit',function(event){

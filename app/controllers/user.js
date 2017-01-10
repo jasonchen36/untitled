@@ -7,6 +7,27 @@ const //packages
 
 var userPages = {};
 
+
+
+function getPageAfterLogin(req)  {
+
+   var profileSession = session.getUserProfileSession(req);
+   var completedFlow = true;
+   profileSession.taxReturns.forEach(function(entry) {
+           if (entry.status.id === 2) {
+               completedFlow = false;
+           }
+       });
+       if (completedFlow === true){
+         return '/dashboard';
+       } else {
+         return '/personal-profile';
+       }
+
+}
+
+
+
 /************ login ************/
 userPages.getLoginPage = function(req, res, next){
     res.render('user/login', {
@@ -15,7 +36,7 @@ userPages.getLoginPage = function(req, res, next){
         },
         account: session.getTaxProfileSession(req),
         user: session.getUserProfileSession(req),
-        locals: 
+        locals:
         {
            apiUrl: process.env.API_URL
         }
@@ -45,9 +66,13 @@ userPages.actionLoginUser = function(req, res, next){
                     const responseToken = response.token;
                     session.actionStartUserProfileSession(req,responseToken)
                         .then(function(){
+
+                            var page = getPageAfterLogin(req);
+
                             res.status(util.http.status.accepted).json({
                                 action: 'login',
-                                status: 'success'
+                                status: 'success',
+                                forward: page
                             });
                         });
                 } catch(error){
@@ -139,7 +164,7 @@ userPages.getPasswordResetPage = function(req, res, next){
         },
         account: session.getTaxProfileSession(req),
         user: session.getUserProfileSession(req),
-        locals: 
+        locals:
         {
            apiUrl: process.env.API_URL
         }
@@ -181,5 +206,10 @@ userPages.actionLogoutUser = function(req, res, next) {
             });
         });
 };
+
+
+
+
+
 
 module.exports = userPages;

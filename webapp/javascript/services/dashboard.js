@@ -11,7 +11,7 @@
         chat = app.views.dashboard.chat,
         activeClass = helpers.activeClass,
         checklist,
-        activeItem,
+        activeItemId = 0,
         landingPageContainer = $('#dashboard-container'),
         dashboardStateCookie = 'store-dashboard-state';
 
@@ -53,9 +53,8 @@
             startUserSession();
         }
         if(dashboardState && dashboardState.hasOwnProperty('currentPage')){
-            return dashboardState.currentPage;
-        } else {
-            cookies.setCookie(dashboardStateCookie, {
+           return dashboardState.currentPage;
+        } else {cookies.setCookie(dashboardStateCookie, {
                 currentPage: that.dashboardOrder[0]
             });
             return that.dashboardOrder[0];
@@ -147,7 +146,21 @@
                 dataObject.documentChecklist = getDocumentChecklistObject(response);
                 dataObject.currentPage= "upload";
                 that.checklist = dataObject.documentChecklist;
-                dataObject.activeItem = that.activeItem;
+
+
+                if (that.activeItemId === 0) {
+                   //additional documents
+                   dataObject.activeItem = {
+                       name: 'Additional Documents',
+                       checklistItemId: 0,
+                       documents: userSession.documentChecklist.additionalDocuments
+                   };
+                }
+                else {
+
+                    dataObject.activeItem = _.find(that.checklist.checklistItems, ['checklistItemId', that.activeItemId]);
+                }
+
                 that.changePage('upload', dataObject);
             })
             .catch(function(jqXHR,textStatus,errorThrown){
@@ -171,7 +184,7 @@
             date: moment(data.date).format('MMM D [-] h:mm A').toString(),
             isFromUser: data.client_id === data.from_id,
             isFromTaxPro: data.from_role === 'Tax Pro', //todo is this the final role name?
-            isFromTaxPlan: data.from_role === 'TAXPlan', // todo is this the final role name?  
+            isFromTaxPlan: data.from_role === 'TAXPlan', // todo is this the final role name?
             isFirst: false,
             replacedBody: "default"
         };

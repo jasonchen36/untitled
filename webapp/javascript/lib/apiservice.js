@@ -392,7 +392,7 @@
 
         var accountInfo = helpers.getAccountInformation(sessionData);
 
-        uri = sessionData.apiUrl + '/accountId/' + accountInfo.accountId + '/productId/' + accountInfo.productId + '/checklist';
+        uri = sessionData.apiUrl + '/quote/' + sessionData.quoteId + '/checklist';
 
         var ajaxPromise = ajax.ajax(
             'GET',
@@ -548,6 +548,23 @@
         );
     };
 
+    this.completedProfileStatusChange = function(sessionData, accountInfo, formData){
+      _.map(formData, function (entry, key){
+        body = {
+          statusId: 3
+        };
+      return ajax.ajax(
+        'PUT',
+        sessionData.apiUrl+'/tax_return/'+key+'/status',
+        body,
+        'json',
+        {
+          'Authorization': 'Bearer '+ accountInfo.token
+        }
+      );
+    });
+  };
+
     this.createDependant = function(sessionData, taxReturnId, formData){
         var accountInfo = helpers.getAccountInformation(sessionData);
         return ajax.ajax(
@@ -566,7 +583,7 @@
             }
         );
     };
-    
+
     this.linkDependant = function(sessionData, taxReturnId, dependantId){
         var accountInfo = helpers.getAccountInformation(sessionData);
         return ajax.ajax(
@@ -728,19 +745,16 @@
     };
 
 
-   this.getPdfChecklist = function(sessionData, fileName, anchor){
+   this.getPdfChecklist = function(sessionData, fileName){
 
         var accountInfo = helpers.getAccountInformation(sessionData);
 
-        var uri = sessionData.apiUrl + '/accountId/' + accountInfo.accountId + '/productId/' + accountInfo.productId + '/PDF';
+        var uri = sessionData.apiUrl + '/quote/'+sessionData.quoteId+'/checklist/PDF';
 
         var ajaxPromise = ajax.ajaxDownload(
             uri,
-            {
-                'Authorization': 'Bearer '+ accountInfo.token
-            },
-            fileName, 
-            anchor
+            accountInfo.token,
+            fileName
         );
 
         return ajaxPromise;

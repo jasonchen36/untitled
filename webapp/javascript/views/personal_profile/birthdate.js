@@ -52,7 +52,9 @@
           });
           Promise.all(birthdateRequests)
                 .then(function(response){
-                    window.location.href = '/dashboard';
+                  window.location.href = '/dashboard';
+                  apiService.completedProfileStatusChange(sessionData, accountInfo, formData);
+                  return Promise.all(completedProfileStatusChange);
                 })
                 .catch(function(jqXHR,textStatus,errorThrown){
                     ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
