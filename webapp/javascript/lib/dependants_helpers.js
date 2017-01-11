@@ -11,11 +11,6 @@
       activeClass = helpers.activeClass,
       disabledClass = helpers.disabledClass,
       thisClass = app.dependants_helpers;
-      // formData = helpers.getTileFormDataArray(dependantsForm),
-      // sessionData = personalProfile.getPersonalProfileSession(),
-      // ajaxAnswers = apiservice.getAnswers(sessionData,
-      //                        formData.taxReturnId,9);
-      // console.log(ajaxAnswers);
 
   this.submitDependants = function(dependantsSubmit, dependantsForm){
     var hasAlert = false;
