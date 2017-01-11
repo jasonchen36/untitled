@@ -29,17 +29,17 @@
             //listeners
             dependantsBack.on('click',function(event){
                 event.preventDefault();
-                dependants_helpers.goToPreviousScreen(dependantsSubmit, dependantsForm);
+                dependants_helpers.goToPreviousScreen(dependantsSubmit);
             });
 
             dependantsForm.on('submit',function(event){
                 event.preventDefault();
-                dependants_helpers.submitDependants(dependantsSubmit, dependantsForm);
+                dependants_helpers.submitDependants(dependantsSubmit);
             });
 
             dependantsSubmit.on('click',function(event){
                 event.preventDefault();
-                dependants_helpers.submitDependants(dependantsSubmit, dependantsForm);
+                dependants_helpers.submitDependants($(this));
             });
 
             dependantsTiles.on('click',function(event){

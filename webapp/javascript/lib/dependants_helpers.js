@@ -4,7 +4,6 @@
       that = app.views.personalProfile.dependants,
       helpers = app.helpers,
       personalProfile = app.services.personalProfile,
-      dependantsForm,
       ajax = app.ajax,
       saved,
       apiService = app.apiservice,
@@ -12,7 +11,7 @@
       disabledClass = helpers.disabledClass,
       thisClass = app.dependants_helpers;
 
-  this.submitDependants = function(dependantsSubmit, dependantsForm){
+  this.submitDependants = function(dependantsSubmit){
     var hasAlert = false;
     if (saved === false){
       $('#popup-blurb').html('Please Save or Cancel your dependant info before moving forward.');
@@ -20,18 +19,17 @@
       hasAlert = true;
     }
       if ((!dependantsSubmit.hasClass(disabledClass)) && ((!saved) || saved === true) && hasAlert === false){
-          var formData = helpers.getTileFormDataArray(dependantsForm),
-              sessionData = personalProfile.getPersonalProfileSession(),
+          var sessionData = personalProfile.getPersonalProfileSession(),
               accountInfo = helpers.getAccountInformation(sessionData),
               pageData = personalProfile.getPageSession(),
               nextScreenCategoryId = 2;
           dependantsSubmit.addClass(disabledClass);
-          if(!thisClass.validateDependantsTiles(dependantsForm)) {
+          if(!thisClass.validateDependantsTiles()) {
               window.location.hash = 'modal-personal-profile-popup';
           } else {
               return Promise.resolve()
                   .then(function () {
-                      var promiseSaveAnswers = thisClass.updateTileAnswers(formData),
+                      var promiseSaveAnswers = thisClass.updateTileAnswers(pageData.taxReturns),
                           promiseGetAnswers = [],
                           promiseGetQuestions = apiService.getQuestions(sessionData, nextScreenCategoryId);
                       _.each(pageData.taxReturns, function (entry) {
@@ -62,13 +60,12 @@
       }
   };
 
-  this.updateTileAnswers = function(formData){
+  this.updateTileAnswers = function(pageData){
       var sessionData = personalProfile.getPersonalProfileSession(),
-          pageData = personalProfile.getPageSession(),
           promiseSaveAnswers = [],
           formDataEntry;
       _.each(pageData.taxReturns, function(entry){
-          formDataEntry = _.find(formData,function(dataEntry) {
+          formDataEntry = _.find(pageData,function(dataEntry) {
               return parseInt(dataEntry.taxReturnId) === parseInt(entry.taxReturnId);
           });
           promiseSaveAnswers.push(apiService.postAnswers(sessionData, entry.taxReturnId, formDataEntry));
@@ -76,17 +73,16 @@
       return promiseSaveAnswers;
   };
 
-  this.goToPreviousScreen = function(dependantsSubmit, dependantsForm){
+  this.goToPreviousScreen = function(dependantsSubmit){
       if (!dependantsSubmit.hasClass(disabledClass)) {
-          var formData = helpers.getTileFormDataArray(dependantsForm),
-              sessionData = personalProfile.getPersonalProfileSession(),
+          var sessionData = personalProfile.getPersonalProfileSession(),
               accountInfo = helpers.getAccountInformation(sessionData),
               pageData = personalProfile.getPageSession(),
               previousScreenCategoryId = 8;
           dependantsSubmit.addClass(disabledClass);
           return Promise.resolve()
               .then(function() {
-                  var promiseSaveAnswers = thisClass.updateTileAnswers(formData),
+                  var promiseSaveAnswers = thisClass.updateTileAnswers(pageData.taxReturns),
                       promiseGetQuestions = apiService.getQuestions(sessionData,previousScreenCategoryId),
                       promiseGetAnswers = [];
                   _.each(pageData.taxReturns, function(entry) {
