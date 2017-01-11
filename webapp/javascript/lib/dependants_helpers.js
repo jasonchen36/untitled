@@ -9,9 +9,15 @@
       saved,
       apiService = app.apiservice,
       activeClass = helpers.activeClass,
-      disabledClass = helpers.disabledClass;
+      disabledClass = helpers.disabledClass,
+      thisClass = app.dependants_helpers;
+      // formData = helpers.getTileFormDataArray(dependantsForm),
+      // sessionData = personalProfile.getPersonalProfileSession(),
+      // ajaxAnswers = apiservice.getAnswers(sessionData,
+      //                        formData.taxReturnId,9);
+      // console.log(ajaxAnswers);
 
-  this.submitDependants = function(){
+  this.submitDependants = function(dependantsSubmit, dependantsForm){
     var hasAlert = false;
     if (saved === false){
       $('#popup-blurb').html('Please Save or Cancel your dependant info before moving forward.');
@@ -25,12 +31,12 @@
               pageData = personalProfile.getPageSession(),
               nextScreenCategoryId = 2;
           dependantsSubmit.addClass(disabledClass);
-          if(!validateDependantsTiles()) {
+          if(!thisClass.validateDependantsTiles(dependantsForm)) {
               window.location.hash = 'modal-personal-profile-popup';
           } else {
               return Promise.resolve()
                   .then(function () {
-                      var promiseSaveAnswers = updateTileAnswers(formData),
+                      var promiseSaveAnswers = thisClass.updateTileAnswers(formData),
                           promiseGetAnswers = [],
                           promiseGetQuestions = apiService.getQuestions(sessionData, nextScreenCategoryId);
                       _.each(pageData.taxReturns, function (entry) {
@@ -75,7 +81,7 @@
       return promiseSaveAnswers;
   };
 
-  this.goToPreviousScreen = function(){
+  this.goToPreviousScreen = function(dependantsSubmit, dependantsForm){
       if (!dependantsSubmit.hasClass(disabledClass)) {
           var formData = helpers.getTileFormDataArray(dependantsForm),
               sessionData = personalProfile.getPersonalProfileSession(),
@@ -85,7 +91,7 @@
           dependantsSubmit.addClass(disabledClass);
           return Promise.resolve()
               .then(function() {
-                  var promiseSaveAnswers = updateTileAnswers(formData),
+                  var promiseSaveAnswers = thisClass.updateTileAnswers(formData),
                       promiseGetQuestions = apiService.getQuestions(sessionData,previousScreenCategoryId),
                       promiseGetAnswers = [];
                   _.each(pageData.taxReturns, function(entry) {
@@ -156,7 +162,7 @@
       }
   };
 
-  this.validateDependantsTiles = function(){
+  this.validateDependantsTiles = function(dependantsForm){
       var formData = helpers.getTileFormDataArray(dependantsForm),
           tilesAreValid = true;
       _.each(formData, function(entry){
@@ -222,71 +228,21 @@
 
   this.updateUserDependants = function(selectedTile){
       var pageData = personalProfile.getPageSession(),
-          tileId = parseInt(selectedTile.attr('id')),
-          tileQuestionId = parseInt(selectedTile.attr('data-id')),
-          hasSelectedTile,
-          taxReturnId = parseInt(selectedTile.parent().attr('data-id'));
-      if (!selectedTile.hasClass(activeClass)) {
-          //enforce toggle
-          if(!tileId){
-              //never been answered
-              _.each(pageData.taxReturns, function (taxReturn) {
-                  if (parseInt(taxReturn.taxReturnId) === taxReturnId) {
-                      _.each(taxReturn.questions.answers, function (answer) {
-                          if (answer.question_id === tileQuestionId) {
-                              answer.class = activeClass;
-                          } else {
-                              answer.class = '';
-                          }
-                          return answer;
-                      });
+          tileId = selectedTile.attr('id');
+          _.each(pageData.taxReturns, function (taxReturn) {
+              _.each(taxReturn.questions.answers, function (answer) {
+                  if (answer.tax_return_id.toString() === tileId.substr(tileId.length - 3, tileId.length)){
+                      if (answer.question_id.toString() === tileId.substr(0, tileId.length -4)) {
+                      answer.class = helpers.activeClass;
+                    } else {
+                      answer.class = '';
+                    }
                   }
+                  return answer;
               });
-          } else {
-              _.each(pageData.taxReturns, function (taxReturn) {
-                  hasSelectedTile = false;
-                  _.each(taxReturn.questions.answers, function (answer) {
-                      if (answer.id === tileId) {
-                          answer.class = activeClass;
-                          hasSelectedTile = true;
-                      }
-                      return answer;
-                  });
-                  if (hasSelectedTile) {
-                      //deselect siblings
-                      _.each(taxReturn.questions.answers, function (answer) {
-                          if (answer.id !== tileId) {
-                              answer.class = '';
-                          }
-                          return answer;
-                      });
-                  }
-              });
-          }
+          });
           //refresh page
           personalProfile.refreshPage(pageData);
-      } else {
-        _.each(pageData.taxReturns, function (taxReturn) {
-            hasSelectedTile = true;
-            _.each(taxReturn.questions.answers, function (answer) {
-                if (answer.id === tileId) {
-                    answer.class = '';
-                    hasSelectedTile = false;
-                }
-                return answer;
-            });
-            if (hasSelectedTile) {
-                //deselect siblings
-                _.each(taxReturn.questions.answers, function (answer) {
-                    if (answer.id !== tileId) {
-                        answer.class = '';
-                    }
-                    return answer;
-                });
-            }
-        });
-      }
-      personalProfile.refreshPage(pageData);
   };
 
   this.editDependant = function(element){
@@ -318,7 +274,7 @@
       saved = true;
       var formContainer = element.parent().parent();
       if (!element.hasClass(helpers.disabledClass)){
-          if(validateDependantsFormData(formContainer)){
+          if(thisClass.validateDependantsFormData(formContainer)){
               var sessionData = personalProfile.getPersonalProfileSession(),
                   dependantId = element.attr('data-id'),
                   taxReturnId = parseInt(element.attr('data-tax-return-id')),
@@ -342,7 +298,7 @@
                           }
                       })
                       .then(function(){
-                          return updateDependantsTemplate();
+                          return thisClass.updateDependantsTemplate();
                       });
               } else {
                   //create dependant
@@ -366,7 +322,7 @@
                       })
                       .then(function(){
                           //get updated dependants information
-                          return this.updateDependantsTemplate();
+                          return thisClass.updateDependantsTemplate();
                       });
               }
           }
@@ -406,7 +362,7 @@
           apiService.deleteDependantById(sessionData, taxReturnId, dependantId)
               .then(function(){
                   //get updated dependants information
-                  return updateDependantsTemplate();
+                  return thisClass.updateDependantsTemplate();
               })
               .catch(function(jqXHR,textStatus,errorThrown){
                   ajax.ajaxCatch(jqXHR,textStatus,errorThrown);

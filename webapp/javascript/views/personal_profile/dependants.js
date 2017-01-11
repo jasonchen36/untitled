@@ -9,7 +9,8 @@
         dependantsSaveButtons,
         dependantsCancelButtons,
         dependantCheckboxes,
-        helpers = app.helpers;
+        helpers = app.helpers,
+        dependants_helpers = app.dependants_helpers;
 
     this.init = function(){
         if ($('#personal-profile-dependants').length > 0) {
@@ -28,17 +29,17 @@
             //listeners
             dependantsBack.on('click',function(event){
                 event.preventDefault();
-                dependants_helpers.goToPreviousScreen();
+                dependants_helpers.goToPreviousScreen(dependantsSubmit, dependantsForm);
             });
 
             dependantsForm.on('submit',function(event){
                 event.preventDefault();
-                dependants_helpers.submitDependants();
+                dependants_helpers.submitDependants(dependantsSubmit, dependantsForm);
             });
 
             dependantsSubmit.on('click',function(event){
                 event.preventDefault();
-                dependants_helpers.submitDependants();
+                dependants_helpers.submitDependants(dependantsSubmit, dependantsForm);
             });
 
             dependantsTiles.on('click',function(event){

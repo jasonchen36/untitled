@@ -8,7 +8,6 @@
         <div class="content-form">
             <form id="dependants-form">
                 {{#each taxReturns}}
-                {{debug}}{{debug}}
                     <div class="border-bottom-light-grey add-bottom-padding taxplan-tile-container taxplan-form-container" data-id="{{taxReturnId}}">
                         <h1 class="subtitle  {{#if @index}}border-top-light-gray{{/if}}">{{firstName}}, do you have any children or elderly parents as dependants?</h1>
                         {{>personal-profile-options questions=questions.answers tileContainerId=taxReturnId}}
