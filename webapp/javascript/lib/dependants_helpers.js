@@ -157,15 +157,23 @@
       }
   };
 
-  this.validateDependantsTiles = function(dependantsForm){
-      var formData = helpers.getTileFormDataArray(dependantsForm),
-          tilesAreValid = true;
-      _.each(formData, function(entry){
-          if (_.values(entry).indexOf(1) === -1){
-              tilesAreValid = false;
-          }
-      });
-      return tilesAreValid;
+  this.validateDependantsTiles = function(){
+    var pageData = personalProfile.getPageSession(),
+        tilesAreValid = true,
+        tileCount = 0;
+    _.each(pageData.taxReturns, function(taxReturn){
+      _.each(taxReturn.questions.answers, function (answer) {
+        if (answer.class === "active"){
+          tileCount++;
+        }
+     });
+   });
+         if (tileCount === pageData.taxReturns.length){
+           tilesAreValid = true;
+         } else {
+           tilesAreValid = false;
+         }
+        return tilesAreValid;
   };
 
   this.validateDependantsFormData = function(formContainer){
@@ -233,7 +241,6 @@
                       answer.class = '';
                     }
                   }
-                  return answer;
               });
           });
           //refresh page
