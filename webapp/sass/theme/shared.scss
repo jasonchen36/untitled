@@ -294,14 +294,7 @@ textarea {
   &.active {
     background-color: $color-global-green;
     @extend .i--icon-check;
-  }
-
-  @media (min-width:1025px){ //hover only on desktop breakpoint
-    &:hover{
-      background-color: $color-global-green;
     }
-  }
-
   }
 
 .checkbox-container {
