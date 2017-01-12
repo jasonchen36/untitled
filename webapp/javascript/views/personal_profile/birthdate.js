@@ -23,6 +23,7 @@
         var sessionData = personalProfile.getPersonalProfileSession();
         var accountInfo = helpers.getAccountInformation(sessionData);
         var formData = helpers.getFormData(birthdateForm);
+        console.log(formData);
         helpers.resetForm(birthdateForm);
         $('.'+helpers.formContainerClass).each(function(){
             validateBirthdateFormData($(this));

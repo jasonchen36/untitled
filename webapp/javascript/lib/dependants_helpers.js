@@ -5,28 +5,17 @@
       helpers = app.helpers,
       personalProfile = app.services.personalProfile,
       ajax = app.ajax,
-      saved,
       apiService = app.apiservice,
       activeClass = helpers.activeClass,
       disabledClass = helpers.disabledClass,
       thisClass = app.dependants_helpers;
 
   this.submitDependants = function(dependantsSubmit){
-    var hasAlert = false;
-    if (saved === false){
-      $('#popup-blurb').html('Please Save or Cancel your dependant info before moving forward.');
-      window.location.hash = 'modal-personal-profile-popup';
-      hasAlert = true;
-    }
-      if ((!dependantsSubmit.hasClass(disabledClass)) && ((!saved) || saved === true) && hasAlert === false){
-          var sessionData = personalProfile.getPersonalProfileSession(),
-              accountInfo = helpers.getAccountInformation(sessionData),
-              pageData = personalProfile.getPageSession(),
-              nextScreenCategoryId = 2;
-          dependantsSubmit.addClass(disabledClass);
-          if(!thisClass.validateDependantsTiles()) {
-              window.location.hash = 'modal-personal-profile-popup';
-          } else {
+    var sessionData = personalProfile.getPersonalProfileSession(),
+        accountInfo = helpers.getAccountInformation(sessionData),
+        pageData = personalProfile.getPageSession(),
+        nextScreenCategoryId = 2;
+
               return Promise.resolve()
                   .then(function () {
                       var promiseSaveAnswers = thisClass.updateTileAnswers(pageData.taxReturns),
@@ -56,8 +45,7 @@
                       ajax.ajaxCatch(jqXHR, textStatus, errorThrown);
                       dependantsSubmit.removeClass(disabledClass);
                   });
-          }
-      }
+
   };
 
   this.updateTileAnswers = function(pageData){
@@ -74,12 +62,6 @@
   };
 
   this.goToPreviousScreen = function(dependantsSubmit){
-      if (!dependantsSubmit.hasClass(disabledClass)) {
-          var sessionData = personalProfile.getPersonalProfileSession(),
-              accountInfo = helpers.getAccountInformation(sessionData),
-              pageData = personalProfile.getPageSession(),
-              previousScreenCategoryId = 8;
-          dependantsSubmit.addClass(disabledClass);
           return Promise.resolve()
               .then(function() {
                   var promiseSaveAnswers = thisClass.updateTileAnswers(pageData.taxReturns),
@@ -97,7 +79,6 @@
               })
               .then(function(response) {
                   var data = {};
-
                   data.accountInfo = accountInfo;
                   data.taxReturns = response[3];
                   data.taxReturns.questions = response[2];
@@ -138,11 +119,8 @@
                               }
                           }
                           answerIndex++;
-
-
                       });
                       index++;
-
                   });
                   personalProfile.goToPreviousPage(data);
               })
@@ -150,26 +128,7 @@
                   ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                   dependantsSubmit.removeClass(disabledClass);
               });
-      }
-  };
 
-  this.validateDependantsTiles = function(){
-    var pageData = personalProfile.getPageSession(),
-        tilesAreValid = true,
-        tileCount = 0;
-    _.each(pageData.taxReturns, function(taxReturn){
-      _.each(taxReturn.questions.answers, function (answer) {
-        if (answer.class === "active"){
-          tileCount++;
-        }
-     });
-   });
-         if (tileCount === pageData.taxReturns.length){
-           tilesAreValid = true;
-         } else {
-           tilesAreValid = false;
-         }
-        return tilesAreValid;
   };
 
   this.validateDependantsFormData = function(formContainer){
@@ -225,9 +184,8 @@
       return errors < 1;
   };
 
-  this.updateUserDependants = function(selectedTile){
-      var pageData = personalProfile.getPageSession(),
-          tileId = selectedTile.attr('id');
+  this.toggleDependants = function(tileId){
+      var pageData = personalProfile.getPageSession();
           _.each(pageData.taxReturns, function (taxReturn) {
               _.each(taxReturn.questions.answers, function (answer) {
                   if (answer.tax_return_id.toString() === tileId.substr(tileId.length - 3, tileId.length)){
@@ -240,36 +198,32 @@
               });
           });
           //refresh page
-          personalProfile.refreshPage(pageData);
+          return pageData;
   };
 
-  this.editDependant = function(element){
+  this.editDependant = function(dependantId){
       var pageData = personalProfile.getPageSession(),
-          dependentId = parseInt(element.attr('data-id')),
           hasSelectedDependant;
       _.each(pageData.taxReturns, function(taxReturn){
-          hasSelectedDependant = _.find(taxReturn.dependants, {id: dependentId});
+          hasSelectedDependant = _.find(taxReturn.dependants, {id: dependantId});
           if (hasSelectedDependant){
               taxReturn.dependantForm = hasSelectedDependant;
           }
       });
-      personalProfile.refreshPage(pageData);
+      return pageData;
   };
 
-  this.cancelEditAddDependant = function(element){
-      saved = true;
-      var pageData = personalProfile.getPageSession(),
-          taxReturnId = parseInt(element.attr('data-tax-return-id'));
+  this.cancelEditAddDependant = function(taxReturnId){
+      var pageData = personalProfile.getPageSession();
       _.each(pageData.taxReturns, function(taxReturn){
           if (parseInt(taxReturn.taxReturnId) === taxReturnId){
               delete taxReturn.dependantForm;
           }
       });
-      personalProfile.refreshPage(pageData);
+      return pageData;
   };
 
   this.saveDependant = function(element){
-      saved = true;
       var formContainer = element.parent().parent();
       if (!element.hasClass(helpers.disabledClass)){
           if(thisClass.validateDependantsFormData(formContainer)){
@@ -325,11 +279,7 @@
               }
           }
       }
-  };
-
-    this.shareDependant = function(element){
-        element.find('.checkbox').first().toggleClass(helpers.activeClass);
-    };
+   };
 
    this.updateDependantsTemplate = function(){
       var sessionData = personalProfile.getPersonalProfileSession(),
@@ -351,34 +301,29 @@
           });
   };
 
-   this.deleteDependant = function(element){
-      if (!element.hasClass(helpers.disabledClass)){
-          element.addClass(helpers.disabledClass);
-          var dependantId = parseInt(element.attr('data-id')),
-              taxReturnId = parseInt(element.attr('data-tax-return-id')),
-              sessionData = personalProfile.getPersonalProfileSession();
-          apiService.deleteDependantById(sessionData, taxReturnId, dependantId)
-              .then(function(){
-                  //get updated dependants information
-                  return thisClass.updateDependantsTemplate();
-              })
-              .catch(function(jqXHR,textStatus,errorThrown){
-                  ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
-                  element.removeClass(helpers.disabledClass);
+   this.deleteDependant = function(taxReturnId, dependantId){
+          var sessionData = personalProfile.getPersonalProfileSession(),
+              pageData = personalProfile.getPageSession();
+              _.each(pageData.taxReturns, function(taxReturn){
+                _.each(taxReturn.questions.dependants, function (dependant) {
+                  if (parseInt(taxReturn.taxReturnId) === taxReturnId){
+                    if (dependant.id === dependantId){
+                      dependant = {};
+                    }
+                  }
+                });
               });
-      }
+              return pageData;
   };
 
-   this.addDependant = function(element){
-      saved = false;
-      var pageData = personalProfile.getPageSession(),
-          taxReturnId = parseInt(element.attr('data-tax-return-id'));
+   this.addDependant = function(taxReturnId){
+      var pageData = personalProfile.getPageSession();
       _.each(pageData.taxReturns, function(taxReturn){
           if (parseInt(taxReturn.taxReturnId) === taxReturnId){
               taxReturn.dependantForm = {};
           }
       });
-      personalProfile.refreshPage(pageData);
+      return pageData;
   };
 
 }).apply(app.dependants_helpers);
