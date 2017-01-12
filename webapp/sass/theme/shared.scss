@@ -46,9 +46,11 @@ input {
   height:50px;
   min-width: 50%;
   display:inline-block;
+  padding-left:15px;
   @include transition-with-defaults(border-color);
   &.error {
     border-color: red;
+    background-color:rgba(255,0,0,0.3);
   }
   &.login{
     min-width: 98%;
@@ -60,7 +62,11 @@ input {
   &.inline-input{
     width: 100%;
   }
+  &.password{
+    font-family: Verdana,sans-serif;
+  }
 }
+
 
 button, .button {
   @include transition-with-defaults(opacity);
@@ -88,7 +94,7 @@ button, .button {
   text-decoration: none !important;
   text-transform: none;
   border: 0 none;
-  font-size: 12px;
+  font-size: 14px;
   outline:none;
   &.long{
     width:15vw;
@@ -172,7 +178,7 @@ textarea {
 
 .label-error{
   margin:0;
-  font-size:0.7vw;
+  font-size:1vw;
   color: transparent;
   &.error{
     color:$color-global-red;
@@ -288,14 +294,7 @@ textarea {
   &.active {
     background-color: $color-global-green;
     @extend .i--icon-check;
-  }
-
-  @media (min-width:1025px){ //hover only on desktop breakpoint
-    &:hover{
-      background-color: $color-global-green;
     }
-  }
-
   }
 
 .checkbox-container {
