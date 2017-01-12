@@ -16,36 +16,69 @@
         pageData = personalProfile.getPageSession(),
         nextScreenCategoryId = 2;
 
-              return Promise.resolve()
-                  .then(function () {
-                      var promiseSaveAnswers = thisClass.updateTileAnswers(pageData.taxReturns),
-                          promiseGetAnswers = [],
-                          promiseGetQuestions = apiService.getQuestions(sessionData, nextScreenCategoryId);
-                      _.each(pageData.taxReturns, function (entry) {
-                          promiseGetAnswers.push(apiService.getAddresses(sessionData, entry.taxReturnId));
+        _.each(pageData.taxReturns, function(taxReturn){
+          _.each(taxReturn.questions.dependants, function (dependant) {
+              if (parseInt(dependant.id).length > 0){
+                formData.id = parseInt(dependantId);
+                apiService.updateDependant(sessionData, taxReturnId, formData)
+                .then(function(response){
+                          //get updated dependants information
+                          if(formData.isShared === 1 && sessionData.taxReturns.length > 1){
+                              var sharedReturnId = 0;
+                              if(sessionData.taxReturns[0].taxReturnId === taxReturnId){
+                                  sharedReturnId = sessionData.taxReturns[1].taxReturnId;
+                              }else{
+                                  sharedReturnId = sessionData.taxReturns[0].taxReturnId;
+                              }
+                              return apiService.linkDependant(sessionData, sharedReturnId, formData.id);
+                          }
+                      })
+                      .then(function(){
+                          return thisClass.updateDependantsTemplate();
                       });
-                      return Promise.all([
-                          Promise.all(promiseSaveAnswers),
-                          Promise.all(promiseGetAnswers),
-                          promiseGetQuestions,
-                          apiService.getTaxReturns(sessionData)
-                      ]);
+              } else if (dependant.isEmptyObject()){
+                    apiService.deleteDependantById(sessionData, taxReturnId, dependantId)
+                  .then(function(){
+                      //get updated dependants information
+                      return thisClass.updateDependantsTemplate();
                   })
-                  .then(function (response) {
-                      var data = {};
-                      data.accountInfo = accountInfo;
-                      data.taxReturns = response[3];
-                      data.taxReturns.questions = response[2];
-                      _.each(data.taxReturns, function (taxReturn, index) {
-                          taxReturn.address = response[1][index][0];
-                      });
-                      personalProfile.goToNextPage(data);
-                  })
-                  .catch(function (jqXHR, textStatus, errorThrown) {
-                      ajax.ajaxCatch(jqXHR, textStatus, errorThrown);
-                      dependantsSubmit.removeClass(disabledClass);
+                  .catch(function(jqXHR,textStatus,errorThrown){
+                      ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
+                      element.removeClass(helpers.disabledClass);
                   });
-
+              } else {
+                return Promise.resolve()
+                    .then(function () {
+                        var promiseSaveAnswers = thisClass.updateTileAnswers(pageData.taxReturns),
+                            promiseGetAnswers = [],
+                            promiseGetQuestions = apiService.getQuestions(sessionData, nextScreenCategoryId);
+                        _.each(pageData.taxReturns, function (entry) {
+                            promiseGetAnswers.push(apiService.getAddresses(sessionData, entry.taxReturnId));
+                        });
+                        return Promise.all([
+                            Promise.all(promiseSaveAnswers),
+                            Promise.all(promiseGetAnswers),
+                            promiseGetQuestions,
+                            apiService.getTaxReturns(sessionData)
+                        ]);
+                    })
+                    .then(function (response) {
+                        var data = {};
+                        data.accountInfo = accountInfo;
+                        data.taxReturns = response[3];
+                        data.taxReturns.questions = response[2];
+                        _.each(data.taxReturns, function (taxReturn, index) {
+                            taxReturn.address = response[1][index][0];
+                        });
+                        personalProfile.goToNextPage(data);
+                    })
+                    .catch(function (jqXHR, textStatus, errorThrown) {
+                        ajax.ajaxCatch(jqXHR, textStatus, errorThrown);
+                        dependantsSubmit.removeClass(disabledClass);
+                    });
+              }
+          });
+        });
   };
 
   this.updateTileAnswers = function(pageData){
@@ -62,6 +95,38 @@
   };
 
   this.goToPreviousScreen = function(dependantsSubmit){
+    var pageData = personalProfile.getPageSession();
+    _.each(pageData.taxReturns, function(taxReturn){
+      _.each(taxReturn.questions.dependants, function (dependant) {
+          if (parseInt(dependant.id).length > 0){
+            formData.id = parseInt(dependantId);
+            apiService.updateDependant(sessionData, taxReturnId, formData)
+            .then(function(response){
+                      //get updated dependants information
+                      if(formData.isShared === 1 && sessionData.taxReturns.length > 1){
+                          var sharedReturnId = 0;
+                          if(sessionData.taxReturns[0].taxReturnId === taxReturnId){
+                              sharedReturnId = sessionData.taxReturns[1].taxReturnId;
+                          }else{
+                              sharedReturnId = sessionData.taxReturns[0].taxReturnId;
+                          }
+                          return apiService.linkDependant(sessionData, sharedReturnId, formData.id);
+                      }
+                  })
+                  .then(function(){
+                      return thisClass.updateDependantsTemplate();
+                  });
+          } else if (dependant.isEmptyObject()){
+                apiService.deleteDependantById(sessionData, taxReturnId, dependantId)
+              .then(function(){
+                  //get updated dependants information
+                  return thisClass.updateDependantsTemplate();
+              })
+              .catch(function(jqXHR,textStatus,errorThrown){
+                  ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
+                  element.removeClass(helpers.disabledClass);
+              });
+          } else {
           return Promise.resolve()
               .then(function() {
                   var promiseSaveAnswers = thisClass.updateTileAnswers(pageData.taxReturns),
@@ -128,61 +193,10 @@
                   ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                   dependantsSubmit.removeClass(disabledClass);
               });
-
-  };
-
-  this.validateDependantsFormData = function(formContainer){
-      var errors = 0,
-          formData = helpers.getFormData(formContainer),
-          input;
-
-      //reset form
-      formContainer.find('.'+helpers.errorClass).removeClass(helpers.errorClass);
-
-      //firstName
-      if (helpers.isEmpty(formData.firstName)){
-          input = formContainer.find('[name="firstName"]');
-          input.addClass(helpers.errorClass);
-          input.parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
-          errors++;
-      }
-      //lastName
-      if (helpers.isEmpty(formData.lastName)){
-          input = formContainer.find('[name="lastName"]');
-          input.addClass(helpers.errorClass);
-          input.parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
-          errors++;
-      }
-      //day
-      if (!helpers.isValidDay(formData.day)){
-          input = formContainer.find('[name="day"]');
-          input.addClass(helpers.errorClass);
-          input.parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
-          errors++;
-      }
-      //month
-      if (!helpers.isValidMonth(formData.month)){
-          input = formContainer.find('[name="month"]');
-          input.addClass(helpers.errorClass);
-          input.parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
-          errors++;
-      }
-      //year
-      if (!helpers.isValidFullYear(formData.year)){
-          input = formContainer.find('[name="year"]');
-          input.addClass(helpers.errorClass);
-          input.parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
-          errors++;
-      }
-      //relationship
-      if (helpers.isEmpty(formData.relationship)){
-          input = formContainer.find('[name="relationship"]');
-          input.addClass(helpers.errorClass);
-          input.parent().parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
-          errors++;
-      }
-      return errors < 1;
-  };
+            }
+        });
+      });
+    };
 
   this.toggleDependants = function(tileId){
       var pageData = personalProfile.getPageSession();
@@ -197,7 +211,6 @@
                   }
               });
           });
-          //refresh page
           return pageData;
   };
 
@@ -223,62 +236,40 @@
       return pageData;
   };
 
-  this.saveDependant = function(element){
-      var formContainer = element.parent().parent();
-      if (!element.hasClass(helpers.disabledClass)){
-          if(thisClass.validateDependantsFormData(formContainer)){
+  this.saveDependant = function(dependantId, taxReturnId, formContainer){
               var sessionData = personalProfile.getPersonalProfileSession(),
-                  dependantId = element.attr('data-id'),
-                  taxReturnId = parseInt(element.attr('data-tax-return-id')),
+                  pageData = personalProfile.getPageSession(),
                   formData = helpers.getFormData(formContainer);
-              element.addClass(helpers.disabledClass);
-
               if (dependantId.length > 0){
                   //update dependant
                   formData.id = parseInt(dependantId);
-                  apiService.updateDependant(sessionData, taxReturnId, formData)
-                      .then(function(response){
-                          //get updated dependants information
-                          if(formData.isShared === 1 && sessionData.taxReturns.length > 1){
-                              var sharedReturnId = 0;
-                              if(sessionData.taxReturns[0].taxReturnId === taxReturnId){
-                                  sharedReturnId = sessionData.taxReturns[1].taxReturnId;
-                              }else{
-                                  sharedReturnId = sessionData.taxReturns[0].taxReturnId;
-                              }
-                              return apiService.linkDependant(sessionData, sharedReturnId, formData.id);
-                          }
-                      })
-                      .then(function(){
-                          return thisClass.updateDependantsTemplate();
-                      });
+                  _.each(pageData.taxReturns, function(taxReturn){
+                    _.each(taxReturn.questions.dependants, function (dependant) {
+                      if (parseInt(taxReturn.taxReturnId) === taxReturnId){
+                        if (parseInt(dependant.id) === dependantId){
+                          dependant.id = formData.id;
+                          dependant.first_name = formData.firstName;
+                          dependant.last_name = formData.lastName;
+                          dependant.date_of_birth = formData.dateOfBirth;
+                          dependant.relationship = formData.relationship;
+                          dependant.is_shared = formData.isShared;
+                        }
+                      }
+                    });
+                  });
               } else {
-                  //create dependant
-                  var oldResponse;
-                  apiService.createDependant(sessionData, taxReturnId, formData)
-                      .then(function(response){
-                          oldResponse = response;
-                          return apiService.linkDependant(sessionData, taxReturnId, response.dependantId);
-                      })
-                      .then(function(){
-                          //get updated dependants information
-                          if(formData.isShared === 1 && sessionData.taxReturns.length > 1){
-                              var sharedReturnId = 0;
-                              if(sessionData.taxReturns[0].taxReturnId === taxReturnId){
-                                  sharedReturnId = sessionData.taxReturns[1].taxReturnId;
-                              }else{
-                                  sharedReturnId = sessionData.taxReturns[0].taxReturnId;
-                              }
-                              return apiService.linkDependant(sessionData, sharedReturnId, oldResponse.dependantId);
-                          }
-                      })
-                      .then(function(){
-                          //get updated dependants information
-                          return thisClass.updateDependantsTemplate();
+                _.each(pageData.taxReturns, function(taxReturn){
+                    if (parseInt(taxReturn.taxReturnId) === taxReturnId){
+                      taxReturn.questions.dependants.push({
+                        first_name: formData.firstName,
+                        last_name: formData.lastName,
+                        date_of_birth: formData.dateOfBirth,
+                        relationship: formData.relationship,
+                        is_shared :formData.isShared
                       });
-              }
-          }
-      }
+                  }
+              });
+            }
    };
 
    this.updateDependantsTemplate = function(){
@@ -307,7 +298,7 @@
               _.each(pageData.taxReturns, function(taxReturn){
                 _.each(taxReturn.questions.dependants, function (dependant) {
                   if (parseInt(taxReturn.taxReturnId) === taxReturnId){
-                    if (dependant.id === dependantId){
+                    if (parseInt(dependant.id) === dependantId){
                       dependant = {};
                     }
                   }

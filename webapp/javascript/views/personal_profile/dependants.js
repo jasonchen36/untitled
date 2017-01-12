@@ -35,6 +35,59 @@
               return tilesAreValid;
         };
 
+        validateDependantsFormData = function(formContainer){
+            var errors = 0,
+                formData = helpers.getFormData(formContainer),
+                input;
+
+            //reset form
+            formContainer.find('.'+helpers.errorClass).removeClass(helpers.errorClass);
+
+            //firstName
+            if (helpers.isEmpty(formData.firstName)){
+                input = formContainer.find('[name="firstName"]');
+                input.addClass(helpers.errorClass);
+                input.parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
+                errors++;
+            }
+            //lastName
+            if (helpers.isEmpty(formData.lastName)){
+                input = formContainer.find('[name="lastName"]');
+                input.addClass(helpers.errorClass);
+                input.parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
+                errors++;
+            }
+            //day
+            if (!helpers.isValidDay(formData.day)){
+                input = formContainer.find('[name="day"]');
+                input.addClass(helpers.errorClass);
+                input.parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
+                errors++;
+            }
+            //month
+            if (!helpers.isValidMonth(formData.month)){
+                input = formContainer.find('[name="month"]');
+                input.addClass(helpers.errorClass);
+                input.parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
+                errors++;
+            }
+            //year
+            if (!helpers.isValidFullYear(formData.year)){
+                input = formContainer.find('[name="year"]');
+                input.addClass(helpers.errorClass);
+                input.parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
+                errors++;
+            }
+            //relationship
+            if (helpers.isEmpty(formData.relationship)){
+                input = formContainer.find('[name="relationship"]');
+                input.addClass(helpers.errorClass);
+                input.parent().parent().find('.'+helpers.errorLabelClass).addClass(helpers.errorClass);
+                errors++;
+            }
+            return errors < 1;
+        };
+
     this.init = function(){
         if ($('#personal-profile-dependants').length > 0) {
             //variables
@@ -85,7 +138,7 @@
                     if(!validateDependantsTiles()) {
                         window.location.hash = 'modal-personal-profile-popup';
                     } else {
-                dependants_helpers.submitDependants($(this));
+                        dependants_helpers.submitDependants($(this));
                   }
               }
             });
@@ -98,15 +151,15 @@
 
             dependantsEditButtons.on('click',function(event){
                 event.preventDefault();
-                var dependantId = parseInt(element.attr('data-id'));
+                var dependantId = parseInt(dependantsEditButtons.attr('data-id'));
                 personalProfile.refreshPage(dependants_helpers.editDependant(dependantId));
             });
 
             dependantsDeleteButtons.on('click',function(event){
               var dependantId = parseInt(dependantsDeleteButtons.attr('data-id')),
                   taxReturnId = parseInt(dependantsDeleteButtons.attr('data-tax-return-id'));
-                  if (!element.hasClass(helpers.disabledClass)){
-                      element.addClass(helpers.disabledClass);
+                  if (!dependantsDeleteButtons.hasClass(helpers.disabledClass)){
+                      dependantsDeleteButtons.addClass(helpers.disabledClass);
                     }
                 event.preventDefault();
                 dependants_helpers.deleteDependant(dependentId, taxReturnId);
@@ -122,12 +175,20 @@
             dependantsSaveButtons.on('click',function(event){
                 event.preventDefault();
                 saved = true;
-                dependants_helpers.saveDependant($(this));
+                var dependantId = dependantsSaveButtons.attr('data-id'),
+                taxReturnId = parseInt(dependantsSaveButtons.attr('data-tax-return-id')),
+                formContainer = dependantsSaveButtons.parent().parent();
+                if (!dependantsSaveButtons.hasClass(helpers.disabledClass)){
+                    if(thisClass.validateDependantsFormData(formContainer)){
+                        dependantsSaveButtons.addClass(helpers.disabledClass);
+                dependants_helpers.saveDependant(dependantId, taxReturnId, formContainer);
+                    }
+                }
             });
 
             dependantsCancelButtons.on('click',function(event){
                 event.preventDefault();
-                var taxReturnId = parseInt(element.attr('data-tax-return-id'));
+                var taxReturnId = parseInt(dependantsCancelButtons.attr('data-tax-return-id'));
                 saved = true;
                 personalProfile.refreshPage(dependants_helpers.cancelEditAddDependant(taxReturnId));
             });
