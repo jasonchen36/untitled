@@ -3,12 +3,11 @@
         {{#if sidebarImage}}
             <div class="{{sidebarImage}}"></div>
         {{/if}}
-        <h3 class="font-yellow">{{sidebarTitle}}</h3>
+        <h3 id="tax-profile-sidebar-header" class="font-yellow">{{sidebarTitle}}</h3>
         {{#if true}}
             <p id="tax-profile-instructions" class="side-info-blurb">
-                {{sidebarDescription}}
+                {{questions.quoteApplies.0.category_displaytext}}
             </p>
-            <input type="hidden" id="tax-profile-sidebar-description" value="{{sidebarDescription}}"></input>
         {{else}}
             <!--TODO: Need to iterate over line items for quote breakdown and bind line item and price-->
             <!--TODO: Need hover functionality-->
