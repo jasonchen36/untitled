@@ -28,16 +28,9 @@
                               }
                               return apiService.linkDependant(sessionData, sharedReturnId, dependant.id);
                           }
-                      })
-                .then(function(){
-                    return thisClass.updateDependantsTemplate();
-                });
+                      });
               } else if (dependant.will_delete === true){
-                    apiService.deleteDependantById(sessionData, taxReturn.taxReturnId, dependant.id)
-                  .then(function(){
-                      //get updated dependants information
-                      return thisClass.updateDependantsTemplate();
-                  });
+                    apiService.deleteDependantById(sessionData, taxReturn.taxReturnId, dependant.id);
               } else {
                   apiService.createDependant(sessionData, taxReturn.taxReturnId, dependant)
                       .then(function(response){
@@ -54,10 +47,6 @@
                               }
                               return apiService.linkDependant(sessionData, sharedReturnId, response.dependantId);
                           }
-                      })
-                      .then(function(){
-                          //get updated dependants information
-                          return thisClass.updateDependantsTemplate();
                       });
               }
             });
@@ -146,26 +135,6 @@
             }
             return pageData;
    };
-
-   this.updateDependantsTemplate = function(){
-      var sessionData = personalProfile.getPersonalProfileSession(),
-          pageData = personalProfile.getPageSession(),
-          promiseGetDependants = [];
-      return Promise.resolve()
-          .then(function(){
-              _.each(pageData.taxReturns, function(entry) {
-                  promiseGetDependants.push(apiService.getDependants(sessionData, entry.taxReturnId));
-              });
-              return Promise.all(promiseGetDependants);
-          })
-          .then(function(response){
-              //refresh template
-              _.each(pageData.taxReturns, function(taxReturn, index){
-                  taxReturn.dependants = response[index];
-              });
-              personalProfile.refreshPage(pageData);
-          });
-  };
 
    this.deleteDependant = function(dependantId){
           var sessionData = personalProfile.getPersonalProfileSession(),
