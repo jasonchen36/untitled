@@ -271,8 +271,8 @@
     this.hasSelectedTile = function(formData){
         var hasSelectedTile = false;
         _.forOwn(formData, function(value, key) {
-            _.forOwn(value, function(value1, key1){
-                if(value1 === 1){
+            _.forOwn(value, function(tileValue, tileKey){
+                if(tileValue === 1){
                     hasSelectedTile = true;
                 }
             });
