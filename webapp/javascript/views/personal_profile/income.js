@@ -111,7 +111,6 @@
             var accountInfo = helpers.getAccountInformation(sessionData);
             if(!helpers.hasSelectedTile(formData)){
                 window.location.hash = 'modal-personal-profile-popup';
-            } else if(helpers.noneAppliedMultipleSelectedTiles(formData)){
             } else {
                 return Promise.resolve()
                     .then(function() {
