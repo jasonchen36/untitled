@@ -9,7 +9,7 @@
             <form id="birthdate-form">
                 {{#each taxReturns}}
                     <div id="container-birthdate-form" class="border-bottom-light-gray add-bottom-padding taxplan-form-container"  data-id="{{taxReturnId}}">
-                        <h1 class="filer-name">{{firstName}}:</h1>
+                        <h1 class="filer-name"><span class="capitalize">{{firstName}}:</span></h1>
                         <label class="under">DATE OF BIRTH</label>
                         <div class="container-inline-input short">
                             <input id="dependants-birthday-day-{{taxReturnId}}" name="birthdate_day" type="text" value="{{day}}" class="inline-input text-center" placeholder="DD" maxlength="2" />
