@@ -4,7 +4,6 @@
       that = app.views.personalProfile.dependants,
       helpers = app.helpers,
       personalProfile = app.services.personalProfile,
-      ajax = app.ajax,
       apiService = app.apiservice,
       activeClass = helpers.activeClass,
       disabledClass = helpers.disabledClass,
@@ -13,8 +12,7 @@
   this.submitDependants = function(dependantsSubmit){
     var sessionData = personalProfile.getPersonalProfileSession(),
         accountInfo = helpers.getAccountInformation(sessionData),
-        pageData = personalProfile.getPageSession(),
-        nextScreenCategoryId = 2;
+        pageData = personalProfile.getPageSession();
         _.each(pageData.taxReturns, function(taxReturn){
           _.each(taxReturn.dependants, function (dependant) {
               if ((dependant.create !== true) && (dependant.will_delete !== true)){
@@ -30,7 +28,10 @@
                               }
                               return apiService.linkDependant(sessionData, sharedReturnId, dependant.id);
                           }
-                      });
+                      })
+                .then(function(){
+                    return thisClass.updateDependantsTemplate();
+                });
               } else if (dependant.will_delete === true){
                     apiService.deleteDependantById(sessionData, taxReturn.taxReturnId, dependant.id)
                   .then(function(){
@@ -61,174 +62,7 @@
               }
             });
           });
-                return Promise.resolve()
-                    .then(function () {
-                        var promiseSaveAnswers = thisClass.updateTileAnswers(pageData.taxReturns.questions),
-                            promiseGetAnswers = [],
-                            promiseGetQuestions = apiService.getQuestions(sessionData, nextScreenCategoryId);
-                        _.each(pageData.taxReturns, function (entry) {
-                            promiseGetAnswers.push(apiService.getAddresses(sessionData, entry.taxReturnId));
-                        });
-                        return Promise.all([
-                            Promise.all(promiseSaveAnswers),
-                            Promise.all(promiseGetAnswers),
-                            promiseGetQuestions,
-                            apiService.getTaxReturns(sessionData)
-                        ]);
-                    })
-                    .then(function (response) {
-                        var data = {};
-                        data.accountInfo = accountInfo;
-                        data.taxReturns = response[3];
-                        data.taxReturns.questions = response[2];
-                        _.each(data.taxReturns, function (taxReturn, index) {
-                            taxReturn.address = response[1][index][0];
-                        });
-                        personalProfile.goToNextPage(data);
-                    })
-                    .catch(function (jqXHR, textStatus, errorThrown) {
-                        ajax.ajaxCatch(jqXHR, textStatus, errorThrown);
-                        dependantsSubmit.removeClass(disabledClass);
-                    });
   };
-
-  this.updateTileAnswers = function(dependantsData){
-      var sessionData = personalProfile.getPersonalProfileSession(),
-          pageData = personalProfile.getPageSession(),
-          promiseSaveAnswers = [],
-          answers = {};
-      _.each(pageData.taxReturns, function(entry){
-          if (entry.hasDependants === 1){
-            answers = {135:0, 136:1};
-          } else {
-            answers = {135:1, 136:0};
-          }
-          promiseSaveAnswers.push(apiService.postAnswers(sessionData, entry.taxReturnId, answers));
-      });
-      return promiseSaveAnswers;
-  };
-
-  this.goToPreviousScreen = function(dependantsSubmit){
-    var sessionData = personalProfile.getPersonalProfileSession(),
-        accountInfo = helpers.getAccountInformation(sessionData),
-        pageData = personalProfile.getPageSession(),
-        previousScreenCategoryId = 8;
-    _.each(pageData.taxReturns, function(taxReturn){
-      _.each(taxReturn.dependants, function (dependant) {
-          if (dependant.create !== true){
-            apiService.updateDependant(sessionData, taxReturn.taxReturnId, dependant)
-            .then(function(response){
-                      //get updated dependants information
-                      if(dependant.isShared === 1 && sessionData.taxReturns.length > 1){
-                          var sharedReturnId = 0;
-                          if(sessionData.taxReturns[0].taxReturnId === taxReturn.taxReturnId){
-                              sharedReturnId = sessionData.taxReturns[1].taxReturnId;
-                          }else{
-                              sharedReturnId = sessionData.taxReturns[0].taxReturnId;
-                          }
-                          return apiService.linkDependant(sessionData, sharedReturnId, dependant.id);
-                      }
-                  })
-                  .then(function(){
-                      return thisClass.updateDependantsTemplate();
-                  });
-          } else if (dependant.will_delete === true){
-                apiService.deleteDependantById(sessionData, taxReturn.taxReturnId, dependant.id)
-              .then(function(){
-                  //get updated dependants information
-                  return thisClass.updateDependantsTemplate();
-              });
-          } else {
-            apiService.createDependant(sessionData, taxReturn.taxReturnId, dependant)
-                .then(function(response){
-                    return apiService.linkDependant(sessionData, taxReturn.taxReturnId, response.dependantId);
-                })
-                .then(function(){
-                    //get updated dependants information
-                    if(dependant.isShared === 1 && sessionData.taxReturns.length > 1){
-                        var sharedReturnId = 0;
-                        if(sessionData.taxReturns[0].taxReturnId === taxReturn.taxReturnId){
-                            sharedReturnId = sessionData.taxReturns[1].taxReturnId;
-                        }else{
-                            sharedReturnId = sessionData.taxReturns[0].taxReturnId;
-                        }
-                        return apiService.linkDependant(sessionData, sharedReturnId, response.dependantId);
-                    }
-                })
-                .then(function(){
-                    //get updated dependants information
-                    return thisClass.updateDependantsTemplate();
-                });
-          }
-        });
-      });
-          return Promise.resolve()
-              .then(function() {
-                  var promiseSaveAnswers = thisClass.updateTileAnswers(pageData.taxReturns.questions),
-                      promiseGetQuestions = apiService.getQuestions(sessionData,previousScreenCategoryId),
-                      promiseGetAnswers = [];
-                  _.each(pageData.taxReturns, function(entry) {
-                      promiseGetAnswers.push(apiService.getAnswers(sessionData,entry.taxReturnId,previousScreenCategoryId));
-                  });
-                  return Promise.all([
-                      Promise.all(promiseSaveAnswers),
-                      Promise.all(promiseGetAnswers),
-                      promiseGetQuestions,
-                      apiService.getTaxReturns(sessionData)
-                  ]);
-              })
-              .then(function(response) {
-                  var data = {};
-                  data.accountInfo = accountInfo;
-                  data.taxReturns = response[3];
-                  data.taxReturns.questions = response[2];
-                  var index = 0;
-                  _.each(data.taxReturns, function(taxReturn){
-                      taxReturn.firstName = nameData[index];
-                      taxReturn.accountInfo = accountInfo;
-                      taxReturn.accountInfo.firstName = accountInfo.firstName.toUpperCase();
-                      var answerIndex = 0;
-                      taxReturn.questions = response[1][index];
-                      _.each(taxReturn.questions.answers, function(answer){
-                          if(answerIndex === 0) {
-                              answer.tiles = apiService.getMarriageTiles(taxReturn.taxReturnId, answer.text);
-                              answer.answer = 0;
-                              answer.class = "";
-                              if (!answer.text) {
-                                  answer.answer = 0;
-                                  answer.class = "";
-                              } else if (answer.text === "Yes") {
-                                  answer.answer = 1;
-                                  answer.class = helpers.activeClass;
-                              }
-                          }else if(answerIndex === 1){
-                              answer.answer = 0;
-                              answer.class = "";
-                              if(answer.text === "Yes"){
-                                  answer.answer = 1;
-                                  answer.class = helpers.activeClass;
-                              }
-                          }else{
-                              answer.day = "";
-                              answer.month= "";
-                              if(answer.text) {
-                                  if (answer.text.length === 10) {
-                                      answer.day = moment(answer.text).format('DD');
-                                      answer.month = moment(answer.text).format('MM');
-                                  }
-                              }
-                          }
-                          answerIndex++;
-                      });
-                      index++;
-                  });
-                  personalProfile.goToPreviousPage(data);
-              })
-              .catch(function(jqXHR,textStatus,errorThrown){
-                  ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
-                  dependantsSubmit.removeClass(disabledClass);
-              });
-    };
 
   this.toggleDependants = function(tileId){
       var pageData = personalProfile.getPageSession();

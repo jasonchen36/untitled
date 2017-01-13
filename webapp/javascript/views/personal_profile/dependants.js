@@ -5,9 +5,11 @@
         dependantsTiles,
         dependantsEditButtons,
         dependantsDeleteButtons,
+        ajax = app.ajax,
         personalProfile = app.services.personalProfile,
         dependantsAddButtons,
         saved,
+        apiService = app.apiservice,
         dependantsSaveButtons,
         dependantsCancelButtons,
         dependantCheckboxes,
@@ -33,6 +35,20 @@
                  tilesAreValid = false;
                }
               return tilesAreValid;
+        };
+
+        updateTileAnswers = function(formData){
+          var sessionData = personalProfile.getPersonalProfileSession(),
+              pageData = personalProfile.getPageSession(),
+              promiseSaveAnswers = [],
+              formDataEntry;
+          _.each(pageData.taxReturns, function(entry){
+              formDataEntry = _.find(formData,function(dataEntry) {
+                  return parseInt(dataEntry.taxReturnId) === parseInt(entry.taxReturnId);
+              });
+              promiseSaveAnswers.push(apiService.postAnswers(sessionData, entry.taxReturnId, formDataEntry));
+          });
+          return promiseSaveAnswers;
         };
 
         validateDependantsFormData = function(formContainer){
@@ -93,6 +109,8 @@
             //variables
             dependantsSubmit = $('#dependants-submit');
             dependantsForm = $('#dependants-form');
+            formData = helpers.getTileFormDataArray(dependantsForm);
+            sessionData = personalProfile.getPersonalProfileSession();
             dependantsBack = $('#dependants-back');
             dependantsTiles = $('.'+helpers.tileClass);
             dependantsEditButtons = $('.dependants-button-edit');
@@ -105,10 +123,79 @@
             //listeners
             dependantsBack.on('click',function(event){
                 event.preventDefault();
+                var previousScreenCategoryId = 8,
+                    accountInfo = helpers.getAccountInformation(sessionData),
+                    pageData = personalProfile.getPageSession();
                 if (!dependantsSubmit.hasClass(disabledClass)) {
                     dependantsSubmit.addClass(disabledClass);
-                dependants_helpers.goToPreviousScreen(dependantsSubmit);
+                dependants_helpers.submitDependants(dependantsSubmit);
                 }
+                return Promise.resolve()
+                    .then(function() {
+                        var promiseSaveAnswers = updateTileAnswers(formData),
+                            promiseGetQuestions = apiService.getQuestions(sessionData,previousScreenCategoryId),
+                            promiseGetAnswers = [];
+                        _.each(pageData.taxReturns, function(entry) {
+                            promiseGetAnswers.push(apiService.getAnswers(sessionData,entry.taxReturnId,previousScreenCategoryId));
+                        });
+                        return Promise.all([
+                            Promise.all(promiseSaveAnswers),
+                            Promise.all(promiseGetAnswers),
+                            promiseGetQuestions,
+                            apiService.getTaxReturns(sessionData)
+                        ]);
+                    })
+                    .then(function(response) {
+                        var data = {};
+                        data.accountInfo = accountInfo;
+                        data.taxReturns = response[3];
+                        data.taxReturns.questions = response[2];
+                        var index = 0;
+                        _.each(data.taxReturns, function(taxReturn){
+                            taxReturn.firstName = nameData[index];
+                            taxReturn.accountInfo = accountInfo;
+                            taxReturn.accountInfo.firstName = accountInfo.firstName.toUpperCase();
+                            var answerIndex = 0;
+                            taxReturn.questions = response[1][index];
+                            _.each(taxReturn.questions.answers, function(answer){
+                                if(answerIndex === 0) {
+                                    answer.tiles = apiService.getMarriageTiles(taxReturn.taxReturnId, answer.text);
+                                    answer.answer = 0;
+                                    answer.class = "";
+                                    if (!answer.text) {
+                                        answer.answer = 0;
+                                        answer.class = "";
+                                    } else if (answer.text === "Yes") {
+                                        answer.answer = 1;
+                                        answer.class = helpers.activeClass;
+                                    }
+                                }else if(answerIndex === 1){
+                                    answer.answer = 0;
+                                    answer.class = "";
+                                    if(answer.text === "Yes"){
+                                        answer.answer = 1;
+                                        answer.class = helpers.activeClass;
+                                    }
+                                }else{
+                                    answer.day = "";
+                                    answer.month= "";
+                                    if(answer.text) {
+                                        if (answer.text.length === 10) {
+                                            answer.day = moment(answer.text).format('DD');
+                                            answer.month = moment(answer.text).format('MM');
+                                        }
+                                    }
+                                }
+                                answerIndex++;
+                            });
+                            index++;
+                        });
+                        personalProfile.goToPreviousPage(data);
+                    })
+                    .catch(function(jqXHR,textStatus,errorThrown){
+                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
+                        dependantsSubmit.removeClass(disabledClass);
+                    });
             });
 
             dependantsForm.on('submit',function(event){
@@ -131,6 +218,35 @@
                       dependants_helpers.submitDependants($(this));
                 }
             }
+            return Promise.resolve()
+                .then(function () {
+                    var promiseSaveAnswers = updateTileAnswers(formData),
+                        promiseGetAnswers = [],
+                        promiseGetQuestions = apiService.getQuestions(sessionData, nextScreenCategoryId);
+                    _.each(pageData.taxReturns, function (entry) {
+                        promiseGetAnswers.push(apiService.getAddresses(sessionData, entry.taxReturnId));
+                    });
+                    return Promise.all([
+                        Promise.all(promiseSaveAnswers),
+                        Promise.all(promiseGetAnswers),
+                        promiseGetQuestions,
+                        apiService.getTaxReturns(sessionData)
+                    ]);
+                })
+                .then(function (response) {
+                    var data = {};
+                    data.accountInfo = accountInfo;
+                    data.taxReturns = response[3];
+                    data.taxReturns.questions = response[2];
+                    _.each(data.taxReturns, function (taxReturn, index) {
+                        taxReturn.address = response[1][index][0];
+                    });
+                    personalProfile.goToNextPage(data);
+                })
+                .catch(function (jqXHR, textStatus, errorThrown) {
+                    ajax.ajaxCatch(jqXHR, textStatus, errorThrown);
+                    dependantsSubmit.removeClass(disabledClass);
+                });
             });
 
             dependantsSubmit.on('click',function(event){
@@ -153,6 +269,35 @@
                         dependants_helpers.submitDependants($(this));
                   }
               }
+              return Promise.resolve()
+                  .then(function () {
+                      var promiseSaveAnswers = updateTileAnswers(formData),
+                          promiseGetAnswers = [],
+                          promiseGetQuestions = apiService.getQuestions(sessionData, nextScreenCategoryId);
+                      _.each(pageData.taxReturns, function (entry) {
+                          promiseGetAnswers.push(apiService.getAddresses(sessionData, entry.taxReturnId));
+                      });
+                      return Promise.all([
+                          Promise.all(promiseSaveAnswers),
+                          Promise.all(promiseGetAnswers),
+                          promiseGetQuestions,
+                          apiService.getTaxReturns(sessionData)
+                      ]);
+                  })
+                  .then(function (response) {
+                      var data = {};
+                      data.accountInfo = accountInfo;
+                      data.taxReturns = response[3];
+                      data.taxReturns.questions = response[2];
+                      _.each(data.taxReturns, function (taxReturn, index) {
+                          taxReturn.address = response[1][index][0];
+                      });
+                      personalProfile.goToNextPage(data);
+                  })
+                  .catch(function (jqXHR, textStatus, errorThrown) {
+                      ajax.ajaxCatch(jqXHR, textStatus, errorThrown);
+                      dependantsSubmit.removeClass(disabledClass);
+                  });
             });
 
             dependantsTiles.on('click',function(event){
