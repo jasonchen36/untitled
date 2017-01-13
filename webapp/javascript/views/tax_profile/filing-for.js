@@ -13,7 +13,7 @@
 
     function submitFilingFor(){
         if (!filingForSubmit.hasClass(disabledClass)) {
-            var formData = helpers.getTileFormDataArray(filingForForm);
+            var formData = helpers.getTileFormData(filingForForm);
             if(!helpers.hasSelectedTile(formData)){
                 window.location.hash = 'modal-personal-profile-popup';
             }else {
