@@ -65,6 +65,9 @@ input {
   &.password{
     font-family: Verdana,sans-serif;
   }
+  &.capitalize{
+    text-transform: capitalize;
+  }
 }
 
 
@@ -149,6 +152,7 @@ h1{
     margin-bottom: 40px;
   }
   &.filer-name{
+    text-transform: capitalize;
     text-align: left;
     font-weight:bold;
   }
@@ -249,6 +253,10 @@ textarea {
 
 .font-header-size{
   font-size:$header-text-size;
+}
+
+.capitalize{
+  text-transform: capitalize;
 }
 
 //border classes
