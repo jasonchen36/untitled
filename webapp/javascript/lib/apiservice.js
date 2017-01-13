@@ -148,7 +148,6 @@
         var answerKeys = Object.keys(entry);
         var answers = [];
         var answerIndex = 0;
-
         _.each(entry, function(answer) {
 
             var questionId = answerKeys[answerIndex];
@@ -531,12 +530,15 @@
 
     this.updateDependant = function(sessionData, taxReturnId, formData){
         var accountInfo = helpers.getAccountInformation(sessionData);
+        if (!formData.isShared){
+          formData.isShared = 0;
+        }
         return ajax.ajax(
             'PUT',
             sessionData.apiUrl+'/tax_return/'+taxReturnId+'/dependant/'+formData.id,
             {
-                'firstName': formData.firstName,
-                'lastName': formData.lastName,
+                'firstName': formData.first_name,
+                'lastName': formData.last_name,
                 'dateOfBirth': formData.year+'-'+formData.month+'-'+formData.day,
                 'relationship': formData.relationship,
                 'isShared': formData.isShared.toString()
@@ -567,12 +569,17 @@
 
     this.createDependant = function(sessionData, taxReturnId, formData){
         var accountInfo = helpers.getAccountInformation(sessionData);
+        if (!formData.isShared){
+          formData.isShared = 0;
+        }
+        console.log("this is the create dependant", formData);
+        console.log(taxReturnId);
         return ajax.ajax(
             'POST',
             sessionData.apiUrl+'/tax_return/'+taxReturnId+'/dependant',
             {
-                'firstName': formData.firstName,
-                'lastName': formData.lastName,
+                'firstName': formData.first_name,
+                'lastName': formData.last_name,
                 'dateOfBirth': formData.year+'-'+formData.month+'-'+formData.day,
                 'relationship': formData.relationship,
                 'isShared': formData.isShared.toString()

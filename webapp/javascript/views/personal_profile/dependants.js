@@ -116,8 +116,26 @@
             });
 
             dependantsForm.on('submit',function(event){
-                event.preventDefault();
-                dependants_helpers.submitDependants(dependantsSubmit);
+              event.preventDefault();
+              var hasAlert = false;
+              if (saved === false){
+                $('#popup-blurb').html('Please Save or Cancel your dependant info before moving forward.');
+                window.location.hash = 'modal-personal-profile-popup';
+                hasAlert = true;
+              }
+              if ((!dependantsSubmit.hasClass(disabledClass)) && ((!saved) || saved === true) && hasAlert === false){
+                  var sessionData = personalProfile.getPersonalProfileSession(),
+                      accountInfo = helpers.getAccountInformation(sessionData),
+                      pageData = personalProfile.getPageSession(),
+                      nextScreenCategoryId = 2;
+                      console.log(pageData);
+                  dependantsSubmit.addClass(disabledClass);
+                  if(!validateDependantsTiles()) {
+                      window.location.hash = 'modal-personal-profile-popup';
+                  } else {
+                      dependants_helpers.submitDependants($(this));
+                }
+            }
             });
 
             dependantsSubmit.on('click',function(event){
@@ -145,50 +163,56 @@
 
             dependantsTiles.on('click',function(event){
                 event.preventDefault();
-                var tileId = dependantsTiles.attr('id');
+                var tileId = $(this).attr('id');
                 personalProfile.refreshPage(dependants_helpers.toggleDependants(tileId));
             });
 
             dependantsEditButtons.on('click',function(event){
                 event.preventDefault();
-                var dependantId = parseInt(dependantsEditButtons.attr('data-id'));
+                var dependantId = parseInt($(this).attr('data-id'));
                 personalProfile.refreshPage(dependants_helpers.editDependant(dependantId));
             });
 
             dependantsDeleteButtons.on('click',function(event){
-              var dependantId = parseInt(dependantsDeleteButtons.attr('data-id')),
-                  taxReturnId = parseInt(dependantsDeleteButtons.attr('data-tax-return-id'));
+              var dependantId = parseInt($(this).attr('data-id')),
+                  taxReturnId = parseInt($(this).attr('data-tax-return-id'));
                   if (!dependantsDeleteButtons.hasClass(helpers.disabledClass)){
                       dependantsDeleteButtons.addClass(helpers.disabledClass);
                     }
                 event.preventDefault();
-                dependants_helpers.deleteDependant(dependentId, taxReturnId);
+                dependants_helpers.deleteDependant(dependantId, taxReturnId);
             });
 
             dependantsAddButtons.on('click',function(event){
                 event.preventDefault();
                 saved = false;
-                taxReturnId = parseInt(dependantsAddButtons.attr('data-tax-return-id'));
+                taxReturnId = parseInt($(this).attr('data-tax-return-id'));
+                console.log(taxReturnId);
                 personalProfile.refreshPage(dependants_helpers.addDependant(taxReturnId));
             });
 
             dependantsSaveButtons.on('click',function(event){
+                console.log(dependantsSaveButtons);
                 event.preventDefault();
                 saved = true;
-                var dependantId = dependantsSaveButtons.attr('data-id'),
-                taxReturnId = parseInt(dependantsSaveButtons.attr('data-tax-return-id')),
+                var dependantId = $(this).attr('data-id'),
+                taxReturnId = parseInt($(this).attr('data-tax-return-id')),
                 formContainer = dependantsSaveButtons.parent().parent();
+                console.log("before it goes through stuff", taxReturnId);
                 if (!dependantsSaveButtons.hasClass(helpers.disabledClass)){
-                    if(thisClass.validateDependantsFormData(formContainer)){
+                    if(validateDependantsFormData(formContainer)){
+                      console.log('no errors');
                         dependantsSaveButtons.addClass(helpers.disabledClass);
-                dependants_helpers.saveDependant(dependantId, taxReturnId, formContainer);
+                        personalProfile.refreshPage(dependants_helpers.saveDependant(dependantId, taxReturnId, formContainer));
+                    } else {
+                      console.log('has errors');
                     }
                 }
             });
 
             dependantsCancelButtons.on('click',function(event){
                 event.preventDefault();
-                var taxReturnId = parseInt(dependantsCancelButtons.attr('data-tax-return-id'));
+                var taxReturnId = parseInt($(this).attr('data-tax-return-id'));
                 saved = true;
                 personalProfile.refreshPage(dependants_helpers.cancelEditAddDependant(taxReturnId));
             });
