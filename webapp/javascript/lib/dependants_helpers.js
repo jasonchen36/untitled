@@ -15,16 +15,9 @@
         accountInfo = helpers.getAccountInformation(sessionData),
         pageData = personalProfile.getPageSession(),
         nextScreenCategoryId = 2;
-        console.log('it gets here');
-        console.log(pageData);
         _.each(pageData.taxReturns, function(taxReturn){
-          console.log('it-between loops');
           _.each(taxReturn.dependants, function (dependant) {
-            console.log("I am determining the logic", dependant);
-            console.log(parseInt(dependant.id));
-            console.log(dependant.will_delete === true);
-              if (dependant.create !== true){
-                console.log(dependant);
+              if ((dependant.create !== true) && (dependant.will_delete !== true)){
                 apiService.updateDependant(sessionData, taxReturn.taxReturnId, dependant)
                 .then(function(response){
                           //get updated dependants information
@@ -39,16 +32,12 @@
                           }
                       });
               } else if (dependant.will_delete === true){
-                    console.log('it gets deleted');
                     apiService.deleteDependantById(sessionData, taxReturn.taxReturnId, dependant.id)
                   .then(function(){
                       //get updated dependants information
                       return thisClass.updateDependantsTemplate();
                   });
               } else {
-                  console.log('it gets created');
-                  console.log(taxReturn.taxReturnId, taxReturn);
-                  console.log(dependant);
                   apiService.createDependant(sessionData, taxReturn.taxReturnId, dependant)
                       .then(function(response){
                           return apiService.linkDependant(sessionData, taxReturn.taxReturnId, response.dependantId);
@@ -120,7 +109,10 @@
   };
 
   this.goToPreviousScreen = function(dependantsSubmit){
-    var pageData = personalProfile.getPageSession();
+    var sessionData = personalProfile.getPersonalProfileSession(),
+        accountInfo = helpers.getAccountInformation(sessionData),
+        pageData = personalProfile.getPageSession(),
+        previousScreenCategoryId = 8;
     _.each(pageData.taxReturns, function(taxReturn){
       _.each(taxReturn.dependants, function (dependant) {
           if (dependant.create !== true){
@@ -282,15 +274,14 @@
               var sessionData = personalProfile.getPersonalProfileSession(),
                   pageData = personalProfile.getPageSession(),
                   formData = helpers.getFormData(formContainer);
-                  console.log(taxReturnId);
               if (dependantId){
                   //update dependant
-                  console.log('update');
                   formData.id = parseInt(dependantId);
                   _.each(pageData.taxReturns, function(taxReturn){
                     _.each(taxReturn.dependants, function (dependant) {
                       if (parseInt(taxReturn.taxReturnId) === taxReturnId){
-                        if (parseInt(dependant.id) === dependantId){
+                        delete taxReturn.dependantForm;
+                        if (parseInt(dependant.id) === parseInt(dependantId)){
                           dependant.id = formData.id;
                           dependant.first_name = formData.firstName;
                           dependant.last_name = formData.lastName;
@@ -302,11 +293,9 @@
                     });
                   });
               } else {
-                console.log('create');
                 _.each(pageData.taxReturns, function(taxReturn){
                     if (parseInt(taxReturn.taxReturnId) === taxReturnId){
-                      console.log(taxReturnId);
-                      console.log('it got inside this if');
+                      delete taxReturn.dependantForm;
                       taxReturn.dependants.push({
                         first_name: formData.firstName,
                         last_name: formData.lastName,
@@ -344,17 +333,25 @@
           });
   };
 
-   this.deleteDependant = function(taxReturnId, dependantId){
+   this.deleteDependant = function(dependantId){
           var sessionData = personalProfile.getPersonalProfileSession(),
               pageData = personalProfile.getPageSession();
               _.each(pageData.taxReturns, function(taxReturn){
-                _.each(taxReturn.dependants, function (dependant) {
-                  if (parseInt(taxReturn.taxReturnId) === taxReturnId){
-                    if (parseInt(dependant.id) === dependantId){
-                      dependant.will_delete = true;
+                  hasSelectedDependant = _.find(taxReturn.dependants, {id: dependantId});
+                    if (hasSelectedDependant){
+                      delete hasSelectedDependant.first_name;
+                      delete hasSelectedDependant.last_name;
+                      delete hasSelectedDependant.year;
+                      delete hasSelectedDependant.month;
+                      delete hasSelectedDependant.day;
+                      delete hasSelectedDependant.date_of_birth;
+                      delete hasSelectedDependant.created_at;
+                      delete hasSelectedDependant.updated_at;
+                      delete hasSelectedDependant.relationship;
+                      delete hasSelectedDependant.isShared;
+                      delete hasSelectedDependant.is_shared;
+                      hasSelectedDependant.will_delete = true;
                     }
-                  }
-                });
               });
               return pageData;
   };
@@ -363,11 +360,9 @@
       var pageData = personalProfile.getPageSession();
       _.each(pageData.taxReturns, function(taxReturn){
           if (parseInt(taxReturn.taxReturnId) === taxReturnId){
-              console.log(taxReturn);
               taxReturn.dependantForm = {};
           }
       });
-      console.log(pageData);
       return pageData;
   };
 

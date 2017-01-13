@@ -572,8 +572,6 @@
         if (!formData.isShared){
           formData.isShared = 0;
         }
-        console.log("this is the create dependant", formData);
-        console.log(taxReturnId);
         return ajax.ajax(
             'POST',
             sessionData.apiUrl+'/tax_return/'+taxReturnId+'/dependant',
