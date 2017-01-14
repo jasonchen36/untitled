@@ -159,6 +159,18 @@
                 else {
 
                     dataObject.activeItem = _.find(that.checklist.checklistItems, ['checklistItemId', that.activeItemId]);
+
+                }
+              
+                if(typeof dataObject.activeItem != 'undefined') { 
+                    var canDelete = true;
+                    if(dataObject.taxReturns[0].status.id >= 4)  {
+                       canDelete = false;
+                    }
+
+                    dataObject.activeItem.documents.forEach(function(entry) {
+                        entry.hideDelete = !canDelete;
+                    });
                 }
 
                 that.changePage('upload', dataObject);
