@@ -142,17 +142,6 @@
               _.each(pageData.taxReturns, function(taxReturn){
                   hasSelectedDependant = _.find(taxReturn.dependants, {id: dependantId});
                     if (hasSelectedDependant){
-                      delete hasSelectedDependant.first_name;
-                      delete hasSelectedDependant.last_name;
-                      delete hasSelectedDependant.year;
-                      delete hasSelectedDependant.month;
-                      delete hasSelectedDependant.day;
-                      delete hasSelectedDependant.date_of_birth;
-                      delete hasSelectedDependant.created_at;
-                      delete hasSelectedDependant.updated_at;
-                      delete hasSelectedDependant.relationship;
-                      delete hasSelectedDependant.isShared;
-                      delete hasSelectedDependant.is_shared;
                       hasSelectedDependant.will_delete = true;
                     }
               });
