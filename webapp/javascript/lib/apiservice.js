@@ -589,6 +589,28 @@
         );
     };
 
+    this.updateBirthdate = function(formData, accountInfo){
+      var body;
+      _.each(formData, function(entry, key) {
+          body = {
+              accountId: accountInfo.accountId,
+              productId: accountInfo.productId,
+              dateOfBirth: entry.birthdate_year + "-" + entry.birthdate_month + "-" + entry.birthdate_day,
+              canadianCitizen: entry.canadian_citizen.toString(),
+              authorizeCra: entry.CRA_authorized.toString()
+          };
+          return ajax.ajax(
+              'PUT',
+              sessionData.apiUrl+'/tax_return/'+key,
+              body,
+              'json',
+              {
+                  'Authorization': 'Bearer '+ accountInfo.token
+              }
+          );
+        });
+      };
+
     this.linkDependant = function(sessionData, taxReturnId, dependantId){
         var accountInfo = helpers.getAccountInformation(sessionData);
         return ajax.ajax(
