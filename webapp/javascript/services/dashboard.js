@@ -130,6 +130,7 @@
                     }));
                 }
 
+                dataObject.notUploaded = true;
                 that.changePage('chat', dataObject);
             })
             .catch(function(jqXHR,textStatus,errorThrown){
@@ -161,6 +162,9 @@
                     dataObject.activeItem = _.find(that.checklist.checklistItems, ['checklistItemId', that.activeItemId]);
                 }
 
+                if(typeof dataObject.notUploaded === 'undefined' || dataObject.notUploaded === '' ) {
+                    dataObject.notUploaded = true;
+                }
                 that.changePage('upload', dataObject);
             })
             .catch(function(jqXHR,textStatus,errorThrown){
