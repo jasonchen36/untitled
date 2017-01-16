@@ -84,7 +84,6 @@
                 if (!helpers.formHasNonCheckboxErrors(birthdateForm)) {
                     var body;
                     _.each(formData, function(entry, key) {
-                      console.log(entry);
                         // TODO, put this into an apiservice call
                         body = {
                             accountId: accountInfo.accountId,
