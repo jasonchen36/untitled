@@ -23,7 +23,6 @@
         var sessionData = personalProfile.getPersonalProfileSession();
         var accountInfo = helpers.getAccountInformation(sessionData);
         var formData = helpers.getFormData(birthdateForm);
-        console.log(formData);
         helpers.resetForm(birthdateForm);
         $('.'+helpers.formContainerClass).each(function(){
             validateBirthdateFormData($(this));
@@ -184,10 +183,14 @@
       }
       if (!canadianCitizen.hasClass(helpers.activeClass)){
           canadianCitizen.addClass(errorClass);
+          $('#popup-blurb').html('You need to be a Canadian citizen.');
+          window.location.hash = 'modal-personal-profile-popup';
           errors++;
       }
        if (!CRAAuthorized.hasClass(helpers.activeClass)){
           CRAAuthorized.addClass(errorClass);
+          $('#popup-blurb').html('You have to grant CRA authorization.');
+          window.location.hash = 'modal-personal-profile-popup';
           errors++;
       }
       return errors < 1;
