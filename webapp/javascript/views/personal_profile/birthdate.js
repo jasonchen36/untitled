@@ -30,28 +30,9 @@
         });
         if (!helpers.formHasErrors(birthdateForm)) {
             birthdateSubmit.addClass(disabledClass);
-            var body,
-                taxReturnData,
-                birthdateRequests = _.map(formData, function(entry, key) {
-                    // TODO, put this into an apiservice call
-                    body = {
-                        accountId: accountInfo.accountId,
-                        productId: accountInfo.productId,
-                        dateOfBirth: entry.birthdate_year + "-" + entry.birthdate_month + "-" + entry.birthdate_day,
-                        canadianCitizen: entry.canadian_citizen.toString(),
-                        authorizeCra: entry.CRA_authorized.toString()
-                    };
-            return ajax.ajax(
-                'PUT',
-                sessionData.apiUrl+'/tax_return/'+key,
-                body,
-                'json',
-                {
-                  'Authorization': 'Bearer '+ accountInfo.token
-                }
-            );
-          });
-          Promise.all(birthdateRequests)
+            putBirthdate = apiService.updateBirthdate(formData, accountInfo);
+            promiseSaveAnswers.push(putBirthdate);
+          Promise.all(promiseSaveAnswers)
                 .then(function(response){
                   window.location.href = '/dashboard';
                   apiService.completedProfileStatusChange(sessionData, accountInfo, formData);
@@ -82,27 +63,8 @@
                 });
 
                 if (!helpers.formHasNonCheckboxErrors(birthdateForm)) {
-                    var body;
-                    _.each(formData, function(entry, key) {
-                        // TODO, put this into an apiservice call
-                        body = {
-                            accountId: accountInfo.accountId,
-                            productId: accountInfo.productId,
-                            dateOfBirth: entry.birthdate_year + "-" + entry.birthdate_month + "-" + entry.birthdate_day,
-                            canadianCitizen: entry.canadian_citizen.toString(),
-                            authorizeCra: entry.CRA_authorized.toString()
-                        };
-                        var putBirthdate = ajax.ajax(
-                            'PUT',
-                            sessionData.apiUrl+'/tax_return/'+key,
-                            body,
-                            'json',
-                            {
-                                'Authorization': 'Bearer '+ accountInfo.token
-                            }
-                        );
-                        promiseSaveAnswers.push(putBirthdate);
-                    });
+                    putBirthdate = apiService.updateBirthdate(formData, accountInfo);
+                    promiseSaveAnswers.push(putBirthdate);
                 }
 
                 var ajaxQuestions = apiService.getQuestions(sessionData,2);
