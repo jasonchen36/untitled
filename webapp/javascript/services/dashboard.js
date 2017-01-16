@@ -130,6 +130,7 @@
                     }));
                 }
 
+                dataObject.notUploaded = true;
                 that.changePage('chat', dataObject);
             })
             .catch(function(jqXHR,textStatus,errorThrown){
@@ -173,6 +174,9 @@
                     });
                 }
 
+                if(typeof dataObject.notUploaded === 'undefined' || dataObject.notUploaded === '' ) {
+                    dataObject.notUploaded = true;
+                }
                 that.changePage('upload', dataObject);
             })
             .catch(function(jqXHR,textStatus,errorThrown){
