@@ -3,11 +3,11 @@
         {{#switch type}}
             {{#case "NotSure" break=true}}
                 {{#unless ../isPrimaryFiler}}
-                    {{>personal-profile-tile}}
+                    {{>personal-profile-tile taxReturnId=tileContainerId}}
                 {{/unless}}
             {{/case}}
             {{#default}}
-                {{>personal-profile-tile}}
+                {{>personal-profile-tile taxReturnId=tileContainerId}}
             {{/default}}
         {{/switch}}
     {{/each}}

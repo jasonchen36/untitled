@@ -158,15 +158,17 @@
                         that.removeClass(helpers.activeClass);
                     }
                 })
-                .on('mouseover', '.'+helpers.tileClass+'-instructions', function (event) {
+                .on('mouseover', '.'+helpers.tileClass, function (event) {
                     event.preventDefault();
                     event.stopPropagation();
                     $('#tax-profile-instructions').html($(this).data('instructions'));
+                    $('#tax-profile-sidebar-header').html($(this).data('text'));
                 })
                 .on('mouseleave', '.'+helpers.tileClass, function (event) {
                     event.preventDefault();
                     event.stopPropagation();
-                    $('#tax-profile-instructions').html($('#tax-profile-sidebar-description').val());
+                    $('#tax-profile-instructions').html($(this).data('category_displaytext'));
+                    $('#tax-profile-sidebar-header').html($(this).data('category_name'));
                 });
 
         }

@@ -1,9 +1,9 @@
-{{>dashboard-left-sidebar isChat="true"}}
+{{>dashboard-left-sidebar isChat=true isUpload=false}}
 <section id="dashboard-chat" class="small-7 medium-6">
     <div id="dashboard-chat-container">
         {{#each messages}}
             {{#if isFirst}}<p class="message-today-header line-behind"><span class="hide-line-behind">TODAY</span></p>{{/if}}
-            <div class="chat-message add-top-padding add-bottom-padding">
+            <div class="chat-message">
                 {{#if isFromUser}}
                     <p class="label-message-date add-right-padding text-right">{{date}}</p>
                     <p id="chat-message-user-body" class="label-message-content user display-inline-block side-info-blurb">

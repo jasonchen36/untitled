@@ -42,9 +42,8 @@
                         data.submit();
             },
             done: function (e, data) {
-                fileUploadSuccess.removeClass(helpers.hiddenClass);
                 resetUploadForm();
-
+                userSession.notUploaded = false;
                 dashboard.refreshPage(userSession);
 
             },
@@ -57,7 +56,6 @@
                 resetUploadForm();
             },
             progressall: function (e, data) {
-                fileUploadSuccess.addClass(helpers.hiddenClass);
                 var percentageComplete = parseInt(data.loaded / data.total * 100, 10);
                 animations.animateElement(progressBar,{
                     properties: {
@@ -178,6 +176,7 @@
             taxReturnForm = $('#modal-tax-return-submit-form');
             fileUploadSuccess = $('#dashboard-upload-success');
             deleteFileForm = $('#modal-delete-file-submit-form');
+            var userSession = dashboard.getUserSession();
 
             //listeners
             taxReturnSubmit.on('click',function(event){
@@ -204,6 +203,7 @@
                 .off('click', uploadChecklistItemsClass)
                 .on('click', uploadChecklistItemsClass, function (event) {
                     event.preventDefault();
+                    userSession.notUploaded = true;
                     setActiveItem(parseInt($(this).attr('data-id')));
                 })
                 .off('click', fileUploadCancelId)
@@ -216,6 +216,7 @@
                 .off('click', fileUploadSelectId)
                 .on('click', fileUploadSelectId, function (event) {
                     event.preventDefault();
+                    userSession.notUploaded = true;
                     fileUpload.click();
                 })
                 .off('click', fileUploadSubmitId)

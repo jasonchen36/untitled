@@ -9,9 +9,9 @@
         </div>
         <div id="dashboard-upload-activate" class="sidebar-menu-item">
             <div class="i--icon-upload icon-sidebar-item"></div>
-            <p class="label-sidebar-menu-item font-sidebar-dark-grey">UPLOAD YOUR DOCUMENTS</p>
+            <p class="label-sidebar-menu-item font-sidebar-dark-grey">MY DOCUMENTS</p>
         </div>
-        <div id="dashboard-my-return-activate" class="sidebar-menu-item {{#compare taxReturns.0.status.id 4 operator="<"}} hidden {{/compare}}">
+        <div id="dashboard-my-return-activate" class="sidebar-menu-item {{#compare taxReturns.0.status.id 5 operator="<"}} hidden {{/compare}}">
             <div class="i--icon-return icon-sidebar-item"></div>
             <p class="label-sidebar-menu-item font-sidebar-dark-grey">YOUR TAX RETURN</p>
         </div>
@@ -21,7 +21,7 @@
             <button id="dashboard-get-the-app" type="button" class="green">Get it now</button>
         </div>
     </section>
-{{else}}
+{{else if isUpload}}
     <div id="container-collapsed-sidebar" class="yellow-container">
         <div class="no-margin">
             <div id="dashboard-chat-activate" class="sidebar-menu-item collapsed">
@@ -32,7 +32,7 @@
                 <div class="i--icon-upload icon-sidebar-item collapsed"></div>
                 <p id="dashboard-upload-activate" class="label-sidebar-menu-item collapsed font-sidebar-dark-grey">UPLOAD</p>
             </div>
-            <div id="dashboard-my-return-activate" class="sidebar-menu-item collapsed {{#compare taxReturns.0.status.id 4 operator="<"}} hidden {{/compare}}">
+            <div id="dashboard-my-return-activate" class="sidebar-menu-item collapsed {{#compare taxReturns.0.status.id 5 operator="<"}} hidden {{/compare}}">
                 <div class="i--icon-return icon-sidebar-item collapsed"></div>
                 <p class="label-sidebar-menu-item collapsed font-sidebar-dark-grey">RETURN</p>
             </div>
@@ -42,5 +42,28 @@
             </div>
         </div>
     </div>
+{{else}}
+    <section class="small-2 medium-3 yellow-container">
+        <div id="dashboard-chat-activate" class="sidebar-menu-item">
+            <div class="i--icon-chat icon-sidebar-item"></div>
+            <p class="label-sidebar-menu-item font-sidebar-dark-grey">MESSAGE CENTER</p>
+            {{#if newMessageCount}}
+                <div id="dashboard-chat-message-count" class="label-sidebar-messages-count">{{newMessageCount}}</div>
+            {{/if}}
+        </div>
+        <div id="dashboard-upload-activate" class="sidebar-menu-item">
+            <div class="i--icon-upload icon-sidebar-item"></div>
+            <p class="label-sidebar-menu-item font-sidebar-dark-grey">MY DOCUMENTS</p>
+        </div>
+        <div id="dashboard-my-return-activate" class="sidebar-menu-item {{#compare taxReturns.0.status.id 5 operator="<"}} hidden {{/compare}} active">
+            <div class="i--icon-return icon-sidebar-item"></div>
+            <p class="label-sidebar-menu-item font-sidebar-dark-grey">YOUR TAX RETURN</p>
+        </div>
+        <div id="container-dashboard-sidekick-ad">
+            <div class="i--icon-get-app"></div>
+            <p class="label-sidekick-blurb">Photograph & upload your tax docs with TaxPlan’s FREE Sidekick app.</p>
+            <button id="dashboard-get-the-app" type="button" class="green">Get it now</button>
+        </div>
+    </section>
 {{/if}}
 

@@ -108,7 +108,7 @@
                         //check for link
                         if(pattern.test(dataObject.messages[i].body)){
                             dataObject.messages[i].replacedBody = dataObject.messages[i].body.replace(pattern, function(url){
-                                return '<a href="' + url + '">' + url + '</a>';
+                                return '<a href="' + url + '" target="_blank">' + url + '</a>';
                             });
                         } else {
                             dataObject.messages[i].replacedBody = dataObject.messages[i].body;
@@ -130,6 +130,7 @@
                     }));
                 }
 
+                dataObject.notUploaded = true;
                 that.changePage('chat', dataObject);
             })
             .catch(function(jqXHR,textStatus,errorThrown){
@@ -159,8 +160,23 @@
                 else {
 
                     dataObject.activeItem = _.find(that.checklist.checklistItems, ['checklistItemId', that.activeItemId]);
+
                 }
 
+                if(typeof dataObject.activeItem != 'undefined') {
+                    var canDelete = true;
+                    if(dataObject.taxReturns[0].status.id >= 4)  {
+                       canDelete = false;
+                    }
+
+                    dataObject.activeItem.documents.forEach(function(entry) {
+                        entry.hideDelete = !canDelete;
+                    });
+                }
+
+                if(typeof dataObject.notUploaded === 'undefined' || dataObject.notUploaded === '' ) {
+                    dataObject.notUploaded = true;
+                }
                 that.changePage('upload', dataObject);
             })
             .catch(function(jqXHR,textStatus,errorThrown){
@@ -274,31 +290,35 @@
     };
 
 
+    function updateMessages(){
+
+        var currentPage = getCurrentPage();
+
+        if(currentPage == 'chat') {
+
+            changePageChat();
+        }
+    }
+
+
     this.init = function(){
         if (landingPageContainer.length > 0) {
 
             //shared bindings
             $(document)
-
                 .on('click', '#dashboard-upload-activate', function (event) {
                     event.preventDefault();
                     changePageHelper('upload');
                     $(this).addClass(activeClass);
                     document.getElementById('dashboard-chat-activate').classList.remove('active');
-                    var startMyReturn = document.getElementById('dashboard-my-return-activate');
-                    if(startMyReturn) {
-                        startMyReturn.classList.remove('active');
-                    }
+                    document.getElementById('dashboard-my-return-activate').classList.remove('active');
                 })
                 .on('click', '#dashboard-chat-activate', function (event) {
                     event.preventDefault();
                     changePageHelper('chat');
                     $(this).addClass(activeClass);
                     document.getElementById('dashboard-upload-activate').classList.remove('active');
-                    var startMyReturn = document.getElementById('dashboard-my-return-activate');
-                    if(startMyReturn) {
-                        startMyReturn.classList.remove('active');
-                    }
+                    document.getElementById('dashboard-my-return-activate').classList.remove('active');
                 })
                 .on('click', '#dashboard-my-return-activate', function (event) {
                     event.preventDefault();
@@ -320,6 +340,9 @@
                     // functions
                     that.refreshPage(userSession);
                 });
+
+            setInterval(function(){ updateMessages(); }, 180000);
+
         }
     };
 

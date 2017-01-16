@@ -34,6 +34,7 @@
             if (!helpers.isValidEmail(formData.email)) {
                 registerEmailInput.addClass(errorClass);
                 registerErrorLabelEmail.addClass(errorClass);
+                registerErrorLabelEmail.html("Email must be xxx@xxx.xxx format");
             }
             if (!helpers.isValidPassword(formData.password)) {
                 registerPasswordInput.addClass(errorClass);
@@ -67,6 +68,10 @@
                     .catch(function(jqXHR,textStatus,errorThrown){
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         registerSubmit.removeClass(disabledClass);
+                        registerEmailInput.addClass(errorClass);
+                        registerErrorLabelEmail.addClass(errorClass);
+
+                        registerErrorLabelEmail.html("Email already in use");
                     });
             }
         }

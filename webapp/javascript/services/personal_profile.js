@@ -186,11 +186,13 @@
                     event.preventDefault();
                     event.stopPropagation();
                     $('#personal-profile-instructions').html($(this).data('instructions'));
+                    $('#personal-profile-sidebar-header').html($(this).data('text'));
                 })
                 .on('mouseleave', '.'+helpers.tileClass, function (event) {
                     event.preventDefault();
                     event.stopPropagation();
-                    $('#personal-profile-instructions').html($('#personal-profile-sidebar-description').val());
+                    $('#personal-profile-instructions').html($(this).data('category_displaytext'));
+                    $('#personal-profile-sidebar-header').html($(this).data('category_name'));
                 });
         }
     };
