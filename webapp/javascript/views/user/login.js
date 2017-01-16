@@ -45,6 +45,13 @@
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
+                        loginPasswordInput.addClass(errorClass);
+                        loginEmailInput.addClass(errorClass);
+                        loginErrorLabelPassword.addClass(errorClass);
+                        loginErrorLabelEmail.addClass(errorClass);
+                        loginErrorLabelEmail.html('Please check your e-mail address');
+                        loginErrorLabelPassword.html('Please check your password');
+
                         loginSubmit.removeClass(disabledClass);
                     });
             }
