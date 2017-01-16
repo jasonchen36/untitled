@@ -202,7 +202,7 @@
               event.preventDefault();
               var hasAlert = false;
               var pageData = personalProfile.getPageSession();
-              var hasDependant = 0;
+              var hasDependant = true;
               if (saved === false){
                 $('#popup-blurb').html('Please Save or Cancel your dependant info before moving forward.');
                 window.location.hash = 'modal-personal-profile-popup';
@@ -210,18 +210,16 @@
               }
               _.each(pageData.taxReturns, function (taxReturn) {
                 _.each(taxReturn.questions.answers, function (answer) {
-                  _.each(taxReturn.dependants, function (dependant) {
-                    if ((taxReturn.dependants.length > 0) && (answer.class ==='active')){
-                      hasDependant++;
+                    if (answer.class ==='active' && taxReturn.dependants.length === 0){
+                      hasDependant = false;
                     }
-                  });
+                });
               });
-              });
-              if (hasDependant !== pageData.taxReturns.length){
+              if (hasDependant === false){
                 $('#popup-blurb').html('Please add dependants for each filer with dependants.');
                 window.location.hash = 'modal-personal-profile-popup';
               }
-              if ((!dependantsSubmit.hasClass(disabledClass)) && (hasDependant === pageData.taxReturns.length) && ((!saved) || saved === true) && hasAlert === false){
+              if ((!dependantsSubmit.hasClass(disabledClass)) && (hasDependant === true) && ((!saved) || saved === true) && hasAlert === false){
                   var sessionData = personalProfile.getPersonalProfileSession(),
                       accountInfo = helpers.getAccountInformation(sessionData),
                       nextScreenCategoryId = 2;
@@ -284,11 +282,6 @@
                   $('#popup-blurb').html('Please add dependants for each filer with dependants.');
                   window.location.hash = 'modal-personal-profile-popup';
                 }
-                // if (hasDependant !== pageData.taxReturns.length){
-                //   $('#popup-blurb').html('Please add dependants for each filer with dependants.');
-                //   window.location.hash = 'modal-personal-profile-popup';
-                //
-                // }
                 if ((!dependantsSubmit.hasClass(disabledClass)) && (hasDependant === true) && ((!saved) || saved === true) && hasAlert === false){
                     var sessionData = personalProfile.getPersonalProfileSession(),
                         accountInfo = helpers.getAccountInformation(sessionData),
