@@ -202,19 +202,12 @@
               event.preventDefault();
               var hasAlert = false;
               var pageData = personalProfile.getPageSession();
-              var hasDependant = true;
               if (saved === false){
                 $('#popup-blurb').html('Please Save or Cancel your dependant info before moving forward.');
                 window.location.hash = 'modal-personal-profile-popup';
                 hasAlert = true;
               }
-              _.each(pageData.taxReturns, function (taxReturn) {
-                _.each(taxReturn.questions.answers, function (answer) {
-                    if (answer.class ==='active' && taxReturn.dependants.length === 0){
-                      hasDependant = false;
-                    }
-                });
-              });
+              var hasDependant = dependants_helpers.hasDependant(pageData);
               if (hasDependant === false){
                 $('#popup-blurb').html('Please add dependants for each filer with dependants.');
                 window.location.hash = 'modal-personal-profile-popup';
@@ -265,19 +258,12 @@
                 event.preventDefault();
                 var hasAlert = false;
                 var pageData = personalProfile.getPageSession();
-                var hasDependant = true;
                 if (saved === false){
                   $('#popup-blurb').html('Please Save or Cancel your dependant info before moving forward.');
                   window.location.hash = 'modal-personal-profile-popup';
                   hasAlert = true;
                 }
-                _.each(pageData.taxReturns, function (taxReturn) {
-                  _.each(taxReturn.questions.answers, function (answer) {
-                      if (answer.class ==='active' && taxReturn.dependants.length === 0){
-                        hasDependant = false;
-                      }
-                  });
-                });
+                var hasDependant = dependants_helpers.hasDependant(pageData);
                 if (hasDependant === false){
                   $('#popup-blurb').html('Please add dependants for each filer with dependants.');
                   window.location.hash = 'modal-personal-profile-popup';

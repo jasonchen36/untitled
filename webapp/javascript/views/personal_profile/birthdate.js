@@ -183,7 +183,7 @@
       }
       if (!canadianCitizen.hasClass(helpers.activeClass)){
           canadianCitizen.addClass(errorClass);
-          $('#popup-blurb').html('You need to be a Canadian Citizen.');
+          $('#popup-blurb').html('You need to be a Canadian citizen.');
           window.location.hash = 'modal-personal-profile-popup';
           errors++;
       }
