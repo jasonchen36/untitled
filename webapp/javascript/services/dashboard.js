@@ -161,8 +161,8 @@
                     dataObject.activeItem = _.find(that.checklist.checklistItems, ['checklistItemId', that.activeItemId]);
 
                 }
-              
-                if(typeof dataObject.activeItem != 'undefined') { 
+
+                if(typeof dataObject.activeItem != 'undefined') {
                     var canDelete = true;
                     if(dataObject.taxReturns[0].status.id >= 4)  {
                        canDelete = false;
@@ -343,7 +343,7 @@
                     that.refreshPage(userSession);
                 });
 
-            setInterval(function(){ updateMessages() }, 180000);
+            setInterval(function(){ updateMessages(); }, 180000);
 
         }
     };
