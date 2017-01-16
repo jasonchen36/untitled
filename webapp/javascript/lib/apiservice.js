@@ -592,7 +592,6 @@
     this.updateBirthdate = function(formData, accountInfo){
       var body;
       _.each(formData, function(entry, key) {
-          // TODO, put this into an apiservice call
           body = {
               accountId: accountInfo.accountId,
               productId: accountInfo.productId,
