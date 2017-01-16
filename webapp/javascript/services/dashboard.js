@@ -108,7 +108,7 @@
                         //check for link
                         if(pattern.test(dataObject.messages[i].body)){
                             dataObject.messages[i].replacedBody = dataObject.messages[i].body.replace(pattern, function(url){
-                                return '<a href="' + url + '">' + url + '</a>';
+                                return '<a href="' + url + '" target="_blank">' + url + '</a>';
                             });
                         } else {
                             dataObject.messages[i].replacedBody = dataObject.messages[i].body;
@@ -311,20 +311,14 @@
                     changePageHelper('upload');
                     $(this).addClass(activeClass);
                     document.getElementById('dashboard-chat-activate').classList.remove('active');
-                    var startMyReturn = document.getElementById('dashboard-my-return-activate');
-                    if(startMyReturn) {
-                        startMyReturn.classList.remove('active');
-                    }
+                    document.getElementById('dashboard-my-return-activate').classList.remove('active');
                 })
                 .on('click', '#dashboard-chat-activate', function (event) {
                     event.preventDefault();
                     changePageHelper('chat');
                     $(this).addClass(activeClass);
                     document.getElementById('dashboard-upload-activate').classList.remove('active');
-                    var startMyReturn = document.getElementById('dashboard-my-return-activate');
-                    if(startMyReturn) {
-                        startMyReturn.classList.remove('active');
-                    }
+                    document.getElementById('dashboard-my-return-activate').classList.remove('active');
                 })
                 .on('click', '#dashboard-my-return-activate', function (event) {
                     event.preventDefault();

@@ -8,6 +8,7 @@
         passwordResetForm = $('#password-reset-form'),
         passwordResetEmailInput = $('#password-reset-email'),
         passwordResetSubmit = $('#password-reset-submit'),
+        passwordResetErrorLabel = $('#label-error-password-reset'),
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
@@ -17,6 +18,8 @@
             helpers.resetForm(passwordResetForm);
             if (!helpers.isValidEmail(formData.email)) {
                 passwordResetEmailInput.addClass(errorClass);
+                passwordResetErrorLabel.addClass(errorClass);
+                passwordResetErrorLabel.html('Please check your e-mail address');
             }
             if (!helpers.formHasErrors(passwordResetForm)) {
                passwordResetSubmit.addClass(disabledClass);
@@ -40,6 +43,9 @@
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
+                        passwordResetErrorLabel.addClass(errorClass);
+                        passwordResetEmailInput.addClass(errorClass);
+                        passwordResetErrorLabel.html(jqXHR.errorThrown);
                         passwordResetSubmit.removeClass(disabledClass);
                     });
 
