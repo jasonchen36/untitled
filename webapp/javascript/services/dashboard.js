@@ -108,7 +108,7 @@
                         //check for link
                         if(pattern.test(dataObject.messages[i].body)){
                             dataObject.messages[i].replacedBody = dataObject.messages[i].body.replace(pattern, function(url){
-                                return '<a href="' + url + '">' + url + '</a>';
+                                return '<a href="' + url + '" target="_blank">' + url + '</a>';
                             });
                         } else {
                             dataObject.messages[i].replacedBody = dataObject.messages[i].body;
