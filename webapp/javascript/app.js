@@ -13,6 +13,7 @@ var app = {
     handlebars: {},
     helpers: {},
     apiservice: {},
+    dependants_helpers: {},
     state: {},
     mediaQueries: {},
     services: {
