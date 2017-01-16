@@ -201,15 +201,29 @@
             dependantsForm.on('submit',function(event){
               event.preventDefault();
               var hasAlert = false;
+              var pageData = personalProfile.getPageSession();
+              var hasDependant = 0;
               if (saved === false){
                 $('#popup-blurb').html('Please Save or Cancel your dependant info before moving forward.');
                 window.location.hash = 'modal-personal-profile-popup';
                 hasAlert = true;
               }
-              if ((!dependantsSubmit.hasClass(disabledClass)) && ((!saved) || saved === true) && hasAlert === false){
+              _.each(pageData.taxReturns, function (taxReturn) {
+                _.each(taxReturn.questions.answers, function (answer) {
+                  _.each(taxReturn.dependants, function (dependant) {
+                    if ((taxReturn.dependants.length > 0) && (answer.class ==='active')){
+                      hasDependant++;
+                    }
+                  });
+              });
+              });
+              if (hasDependant !== pageData.taxReturns.length){
+                $('#popup-blurb').html('Please add dependants for each filer with dependants.');
+                window.location.hash = 'modal-personal-profile-popup';
+              }
+              if ((!dependantsSubmit.hasClass(disabledClass)) && (hasDependant === pageData.taxReturns.length) && ((!saved) || saved === true) && hasAlert === false){
                   var sessionData = personalProfile.getPersonalProfileSession(),
                       accountInfo = helpers.getAccountInformation(sessionData),
-                      pageData = personalProfile.getPageSession(),
                       nextScreenCategoryId = 2;
                   dependantsSubmit.addClass(disabledClass);
                   if(!validateDependantsTiles()) {
@@ -252,15 +266,32 @@
             dependantsSubmit.on('click',function(event){
                 event.preventDefault();
                 var hasAlert = false;
+                var pageData = personalProfile.getPageSession();
+                var hasDependant = true;
                 if (saved === false){
                   $('#popup-blurb').html('Please Save or Cancel your dependant info before moving forward.');
                   window.location.hash = 'modal-personal-profile-popup';
                   hasAlert = true;
                 }
-                if ((!dependantsSubmit.hasClass(disabledClass)) && ((!saved) || saved === true) && hasAlert === false){
+                _.each(pageData.taxReturns, function (taxReturn) {
+                  _.each(taxReturn.questions.answers, function (answer) {
+                      if (answer.class ==='active' && taxReturn.dependants.length === 0){
+                        hasDependant = false;
+                      }
+                  });
+                });
+                if (hasDependant === false){
+                  $('#popup-blurb').html('Please add dependants for each filer with dependants.');
+                  window.location.hash = 'modal-personal-profile-popup';
+                }
+                // if (hasDependant !== pageData.taxReturns.length){
+                //   $('#popup-blurb').html('Please add dependants for each filer with dependants.');
+                //   window.location.hash = 'modal-personal-profile-popup';
+                //
+                // }
+                if ((!dependantsSubmit.hasClass(disabledClass)) && (hasDependant === true) && ((!saved) || saved === true) && hasAlert === false){
                     var sessionData = personalProfile.getPersonalProfileSession(),
                         accountInfo = helpers.getAccountInformation(sessionData),
-                        pageData = personalProfile.getPageSession(),
                         nextScreenCategoryId = 2;
                     dependantsSubmit.addClass(disabledClass);
                     if(!validateDependantsTiles()) {
@@ -268,7 +299,7 @@
                     } else {
                         dependants_helpers.submitDependants($(this));
                   }
-              }
+
               return Promise.resolve()
                   .then(function () {
                       var promiseSaveAnswers = updateTileAnswers(formData),
@@ -298,6 +329,7 @@
                       ajax.ajaxCatch(jqXHR, textStatus, errorThrown);
                       dependantsSubmit.removeClass(disabledClass);
                   });
+                }
             });
 
             dependantsTiles.on('click',function(event){
