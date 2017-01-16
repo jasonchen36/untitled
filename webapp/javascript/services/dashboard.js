@@ -286,12 +286,22 @@
     };
 
 
+    function updateMessages(){
+
+        var currentPage = getCurrentPage();
+
+        if(currentPage == 'chat') {
+
+            changePageChat();
+        }
+    }
+
+
     this.init = function(){
         if (landingPageContainer.length > 0) {
 
             //shared bindings
             $(document)
-
                 .on('click', '#dashboard-upload-activate', function (event) {
                     event.preventDefault();
                     changePageHelper('upload');
@@ -332,6 +342,9 @@
                     // functions
                     that.refreshPage(userSession);
                 });
+
+            setInterval(function(){ updateMessages() }, 180000);
+
         }
     };
 
