@@ -4,12 +4,12 @@
             <div class="i--icon-chat icon-sidebar-item"></div>
             <p class="label-sidebar-menu-item font-sidebar-dark-grey">MESSAGE CENTER</p>
             {{#if newMessageCount}}
-                <div id="dashboard-chat-m" class="label-sidebar-messages-count">{{newMessageCount}}</div>
+                <div id="dashboard-chat-message-count" class="label-sidebar-messages-count">{{newMessageCount}}</div>
             {{/if}}
         </div>
         <div id="dashboard-upload-activate" class="sidebar-menu-item">
             <div class="i--icon-upload icon-sidebar-item"></div>
-            <p class="label-sidebar-menu-item font-sidebar-dark-grey">UPLOAD YOUR DOCUMENTS</p>
+            <p class="label-sidebar-menu-item font-sidebar-dark-grey">MY DOCUMENTS</p>
         </div>
         <div id="dashboard-my-return-activate" class="sidebar-menu-item {{#compare taxReturns.0.status.id 4 operator="<"}} hidden {{/compare}}">
             <div class="i--icon-return icon-sidebar-item"></div>

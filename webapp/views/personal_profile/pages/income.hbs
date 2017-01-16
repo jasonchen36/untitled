@@ -7,9 +7,8 @@
         </div>
         <div class="content-form">
             <form id="income-form">
-                {{#debug}}{{/debug}}
                 {{#each taxReturns}}
-                    <h1 class="subtitle {{#if @index}}border-top-light-gray{{/if}}">{{firstName}} please select all your sources of income in 2016:</h1>
+                    <h1 class="subtitle {{#if @index}}border-top-light-gray{{/if}}"><span class="capitalize">{{firstName}}</span> please select all your sources of income in 2016:</h1>
                     {{#compare @index 0 operator="=="}}
                         {{>personal-profile-options questions=questions.answers tileContainerId=taxReturnId isPrimaryFiler=true}}
                     {{else}}

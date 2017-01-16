@@ -3,10 +3,9 @@
         {{#if sidebarImage}}
             <div class="{{sidebarImage}}"></div>
         {{/if}}
-        <h3 class="font-yellow">{{sidebarTitle}}</h3>
+        <h3 id="personal-profile-sidebar-header" class="font-yellow">{{sidebarTitle}}</h3>
         <p id="personal-profile-instructions" class="side-info-blurb">
-            {{sidebarDescription}}
+            {{@root.taxReturns.questions.0.0.category_displaytext}}
         </p>
-        <input type="hidden" id="personal-profile-sidebar-description" value="{{sidebarDescription}}"></input>
     </div>
 </div>

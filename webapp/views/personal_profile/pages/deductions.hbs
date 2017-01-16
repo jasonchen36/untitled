@@ -9,7 +9,7 @@
             <form id="deductions-form">
 
                  {{#each taxReturns}}
-                    <h1 class="subtitle  {{#if @index}}border-top-light-gray{{/if}}">{{firstName}} please select all your 2016 deductions:</h1>
+                     <h1 class="subtitle  {{#if @index}}border-top-light-gray{{/if}}"><span class="capitalize">{{firstName}}</span> please select all your 2016 deductions:</h1>
                      {{#compare @index 0 operator="=="}}
                          {{>personal-profile-options questions=questions.answers tileContainerId=taxReturnId isPrimaryFiler=true}}
                      {{else}}

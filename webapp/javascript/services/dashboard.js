@@ -84,16 +84,19 @@
                 var today = moment();
                 var foundToday = false;
                 var pattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
-                response.messages.forEach(function(entry){
+                 response.messages.forEach(function(entry){
 
                     dataObject.messages.push(getChatMessageObject(entry));
 
-                    //count unread messages
-                    if(entry.status.toLowerCase() === 'new'){
-                        dataObject.newMessageCount++;
-                    }
+                 });
 
                     for (var i = 0, len = dataObject.messages.length; i < len; i++) {
+                        //count unread messages
+                        if(dataObject.messages[i].status.toLowerCase() === 'new' &&
+                            dataObject.messages[i].isFromUser !== true){
+                            dataObject.newMessageCount++;
+                        }
+
                         //today header
                         if(moment(dataObject.messages[i].rawDate).month() === moment(today).month() &&
                             moment(today).date() === moment(dataObject.messages[i].rawDate).date() &&
@@ -111,7 +114,6 @@
                             dataObject.messages[i].replacedBody = dataObject.messages[i].body;
                         }
                     }
-                });
 
                 if(chat.chatMessageReceived){
                     chat.chatMessageReceived = false;
@@ -157,6 +159,18 @@
                 else {
 
                     dataObject.activeItem = _.find(that.checklist.checklistItems, ['checklistItemId', that.activeItemId]);
+
+                }
+              
+                if(typeof dataObject.activeItem != 'undefined') { 
+                    var canDelete = true;
+                    if(dataObject.taxReturns[0].status.id >= 4)  {
+                       canDelete = false;
+                    }
+
+                    dataObject.activeItem.documents.forEach(function(entry) {
+                        entry.hideDelete = !canDelete;
+                    });
                 }
 
                 that.changePage('upload', dataObject);
@@ -272,12 +286,22 @@
     };
 
 
+    function updateMessages(){
+
+        var currentPage = getCurrentPage();
+
+        if(currentPage == 'chat') {
+
+            changePageChat();
+        }
+    }
+
+
     this.init = function(){
         if (landingPageContainer.length > 0) {
 
             //shared bindings
             $(document)
-
                 .on('click', '#dashboard-upload-activate', function (event) {
                     event.preventDefault();
                     changePageHelper('upload');
@@ -318,6 +342,9 @@
                     // functions
                     that.refreshPage(userSession);
                 });
+
+            setInterval(function(){ updateMessages() }, 180000);
+
         }
     };
 
