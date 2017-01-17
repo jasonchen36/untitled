@@ -201,15 +201,20 @@
             dependantsForm.on('submit',function(event){
               event.preventDefault();
               var hasAlert = false;
+              var pageData = personalProfile.getPageSession();
               if (saved === false){
                 $('#popup-blurb').html('Please Save or Cancel your dependant info before moving forward.');
                 window.location.hash = 'modal-personal-profile-popup';
                 hasAlert = true;
               }
-              if ((!dependantsSubmit.hasClass(disabledClass)) && ((!saved) || saved === true) && hasAlert === false){
+              var hasDependant = dependants_helpers.hasDependant(pageData);
+              if (hasDependant === false){
+                $('#popup-blurb').html('Please add dependants for each filer with dependants.');
+                window.location.hash = 'modal-personal-profile-popup';
+              }
+              if ((!dependantsSubmit.hasClass(disabledClass)) && (hasDependant === true) && ((!saved) || saved === true) && hasAlert === false){
                   var sessionData = personalProfile.getPersonalProfileSession(),
                       accountInfo = helpers.getAccountInformation(sessionData),
-                      pageData = personalProfile.getPageSession(),
                       nextScreenCategoryId = 2;
                   dependantsSubmit.addClass(disabledClass);
                   if(!validateDependantsTiles()) {
@@ -252,15 +257,20 @@
             dependantsSubmit.on('click',function(event){
                 event.preventDefault();
                 var hasAlert = false;
+                var pageData = personalProfile.getPageSession();
                 if (saved === false){
                   $('#popup-blurb').html('Please Save or Cancel your dependant info before moving forward.');
                   window.location.hash = 'modal-personal-profile-popup';
                   hasAlert = true;
                 }
-                if ((!dependantsSubmit.hasClass(disabledClass)) && ((!saved) || saved === true) && hasAlert === false){
+                var hasDependant = dependants_helpers.hasDependant(pageData);
+                if (hasDependant === false){
+                  $('#popup-blurb').html('Please add dependants for each filer with dependants.');
+                  window.location.hash = 'modal-personal-profile-popup';
+                }
+                if ((!dependantsSubmit.hasClass(disabledClass)) && (hasDependant === true) && ((!saved) || saved === true) && hasAlert === false){
                     var sessionData = personalProfile.getPersonalProfileSession(),
                         accountInfo = helpers.getAccountInformation(sessionData),
-                        pageData = personalProfile.getPageSession(),
                         nextScreenCategoryId = 2;
                     dependantsSubmit.addClass(disabledClass);
                     if(!validateDependantsTiles()) {
@@ -268,7 +278,7 @@
                     } else {
                         dependants_helpers.submitDependants($(this));
                   }
-              }
+
               return Promise.resolve()
                   .then(function () {
                       var promiseSaveAnswers = updateTileAnswers(formData),
@@ -298,6 +308,7 @@
                       ajax.ajaxCatch(jqXHR, textStatus, errorThrown);
                       dependantsSubmit.removeClass(disabledClass);
                   });
+                }
             });
 
             dependantsTiles.on('click',function(event){

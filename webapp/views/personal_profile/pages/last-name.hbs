@@ -1,12 +1,12 @@
 <section id="personal-profile-last-name" class="full-screen-grid-container main-container">
     <div class="small-12 medium-9">
         <div class="container-header fixed-page-header medium-9">
-            <h1 class="header">Hi <span class="capitalize">{{users.0.firstName}}</span>, welcome to TAXplan</h1>
+            <h1 class="header">Hi <span class="capitalize">{{accountInfo.firstName}}</span>, welcome to TAXplan</h1>
             <button id="last-name-submit" type="submit" class="green header">Next</button>
         </div>
         <div class="content-form">
             <form id="last-name-form">
-                <h1 class="subtitle  {{#if @index}}border-top-light-gray{{/if}}"><span class="capitalize">{{users.0.firstName}}</span>, can you complete the full legal name for all filers?</h1>
+                <h1 class="subtitle  {{#if @index}}border-top-light-gray{{/if}}"><span class="capitalize">{{accountInfo.firstName}}</span>, can you complete the full legal name for all filers?</h1>
                 {{#each taxReturns}}
 
                     <div class="add-top-padding taxplan-form-container" data-id="{{firstName}}">

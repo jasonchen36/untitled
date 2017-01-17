@@ -9,6 +9,18 @@
       disabledClass = helpers.disabledClass,
       thisClass = app.dependants_helpers;
 
+  this.hasDependant = function(pageData){
+    var hasDependant = true;
+    _.each(pageData.taxReturns, function (taxReturn) {
+        _.each(taxReturn.questions.answers, function (answer) {
+            if (answer.class ==='active' && taxReturn.dependants.length === 0){
+              hasDependant = false;
+            }
+        });
+    });
+            return hasDependant;
+  };
+
   this.submitDependants = function(dependantsSubmit){
     var sessionData = personalProfile.getPersonalProfileSession(),
         accountInfo = helpers.getAccountInformation(sessionData),

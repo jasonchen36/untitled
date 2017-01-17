@@ -36,6 +36,8 @@
 
             if(typeof data !== 'object'){
                 data = sessionData;
+                data.accountInfo = helpers.getAccountInformation(sessionData);
+
             } else {
                 pageSessionStore = data;
             }
