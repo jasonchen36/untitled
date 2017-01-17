@@ -189,6 +189,7 @@ module.exports = function(grunt){
                         'webapp/bower_components/store-js/store.min.js',
                         'webapp/bower_components/handlebars/handlebars.min.js',
                         'webapp/bower_components/moment/min/moment.min.js',
+                        'webapp/bower_components/moment-timezone/builds/moment-timezone-with-data.min.js',
                         'webapp/bower_components/velocity/velocity.min.js',
                         'webapp/bower_components/velocity/velocity.ui.min.js',
                         'webapp/bower_components/slick-carousel/slick/slick.min.js',
