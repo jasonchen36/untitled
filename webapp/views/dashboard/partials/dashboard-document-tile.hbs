@@ -1,7 +1,15 @@
 <div id="container-document-tile" class="add-margin-right add-bottom-margin" data-id="{{documentId}}" data-active-item-id="{{checkListItemId}}">
     <!--TODO: Need to bind image and document info-->
     <div class="dashboard-upload-delete i--icon-red-x {{#if hideDelete}} hidden {{/if}}” data-id="{{documentId}}" data-quote-id="{{quoteId}}"></div>
-    {{{documentImageHelper thumbnailUrl name}}}
+    {{#if hasDocThumbnail}}
+        {{{documentImageHelper thumbnailUrl name}}}
+    {{else}}
+        {{#if isTextDoc}}
+            <i class="fa fa-file-text" aria-hidden="true"></i>
+        {{else if isOtherDoc}}
+            <i class="fa fa-file" aria-hidden="true"></i>
+        {{/if}}
+    {{/if}}
     <div id="container-document-tile-info">
         <p class="no-margin f--futura-book label-document-tile-name">{{name}}</p>
         <div class="label-uploaded-info">

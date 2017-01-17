@@ -14,7 +14,7 @@
                     {{#each ../users}}
                         {{#compare taxReturnId ../taxReturnId operator="=="}}
                             <div class="border-bottom-light-gray border-top-light-gray">
-                                <p class="line-item item">Tax Prep. - {{firstName}}</p>
+                                <p class="line-item item">Tax Prep. - <span class="capitalize">{{firstName}}</span></p>
                                 <button class="quote-details green-outline button-details" data-quote-index="{{@index}}">Details</button>
                                 <p class="line-item price">${{../price}}</p>
                             </div>
