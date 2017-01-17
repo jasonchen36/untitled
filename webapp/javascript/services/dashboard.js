@@ -169,6 +169,19 @@
                        canDelete = false;
                     }
 
+                    var jpegPattern = /.+\.(jpg|png)/;
+                    var textPattern = /.+\.(pdf|txt|doc|docx)/;
+
+                    dataObject.activeItem.documents.forEach(function(entry) {
+                        entry.hideDelete = !canDelete;
+                        if(entry.thumbnailUrl.match(jpegPattern) !== null){
+                            entry.hasDocThumbnail = true;
+                        }else if(entry.thumbnailUrl.match(textPattern) !== null){
+                            entry.isTextDoc = true;
+                        }else{
+                            entry.isOtherDoc = true;
+                        }
+                    });
                     dataObject.activeItem.documents.forEach(function(entry) {
                         entry.hideDelete = !canDelete;
                     });
