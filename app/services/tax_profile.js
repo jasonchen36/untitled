@@ -174,10 +174,10 @@ taxProfile.getTaxReturnQuote = function(req){
 
 
              taxProfileSession.users.forEach(function(entry) {
-                  if (entry.taxReturnId === "") {
-                  var filerType = "";
+                 if (entry.taxReturnId === "") {
+                    var filerType = "";
                     if (parseInt(entry.id)) {
-                      filerType = "primary";
+                       filerType = "primary";
                     }
                     if (entry.id.toString().includes("spouse")) {
                       filerType = "spouse";
@@ -194,11 +194,14 @@ taxProfile.getTaxReturnQuote = function(req){
                         });
      
                     }
-                });
+             });
 
             requestObject.body =  { "taxReturns": taxReturnBody };
         
-            return requestPromise(requestObject).then(function (response) {
+
+            if(taxReturnBody.length > 0)
+            {
+                return requestPromise(requestObject).then(function (response) {
 
                     var i = 0;
                     taxProfileSession.users.forEach(function(entry){
@@ -217,6 +220,13 @@ taxProfile.getTaxReturnQuote = function(req){
                     }
                     return promise.reject(new errors.InternalServerError(error));
                 });
+
+            }  else  {
+                return promise.resolve(session.setTaxProfileSession(req, taxProfileSession));   
+            }
+
+
+
         })
         .then(function(response){
 
