@@ -1,14 +1,14 @@
 <section id="tax-profile-filing-for" class="full-screen-grid-container main-container">
     <div class="small-12 medium-9">
         <div class="container-header fixed-page-header medium-9">
-            <h1 class="header">Multiple Filers</h1>
+            <h1 class="header">Get Your Quote</h1>
             <button type="submit" id="filing-for-submit" class="green header">Next</button>
             <button id="filing-for-back" class="grey header">Previous</button>
         </div>
         <div class="content-form">
             <form id="filing-for-form">
                 <h1 class="subtitle">
-                    Hi <span class="capitalize">{{users.0.firstName}}</span>, can you please select all the people you are filing for:
+                    Hi <span class="capitalize">{{users.0.firstName}}</span>, who are you filing a tax return for? Select all that apply:
                 </h1>
                 {{>tax-profile-options questions=questions.filingFor activeTiles=users.0.activeTiles.filingFor  tileContainerId=users.0.id}}
             </form>
