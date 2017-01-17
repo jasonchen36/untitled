@@ -8,7 +8,7 @@
         <div class="content-form">
             <form id="filing-for-form">
                 <h1 class="subtitle">
-                    Hi {{users.0.firstName}}, can you please select all the people you are filing for:
+                    Hi <span class="capitalize">{{users.0.firstName}}</span>, can you please select all the people you are filing for:
                 </h1>
                 {{>tax-profile-options questions=questions.filingFor activeTiles=users.0.activeTiles.filingFor  tileContainerId=users.0.id}}
             </form>
