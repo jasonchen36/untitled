@@ -154,7 +154,7 @@
                    dataObject.activeItem = {
                        name: 'Additional Documents',
                        checklistItemId: 0,
-                       documents: userSession.documentChecklist.additionalDocuments
+                       documents: that.checklist.additionalDocuments
                    };
                 }
                 else {
@@ -163,7 +163,7 @@
 
                 }
 
-                if(typeof dataObject.activeItem != 'undefined') {
+                if(typeof dataObject.activeItem !== 'undefined') {
                     var canDelete = true;
                     if(dataObject.taxReturns[0].status.id >= 4)  {
                        canDelete = false;
@@ -172,6 +172,7 @@
                     var jpegPattern = /.+\.(jpg|png)/;
                     var textPattern = /.+\.(pdf|txt|doc|docx)/;
 
+                    if(typeof dataObject.activeItem.documents !== 'undefined')
                     dataObject.activeItem.documents.forEach(function(entry) {
                         entry.hideDelete = !canDelete;
                         if(entry.thumbnailUrl.match(jpegPattern) !== null){
