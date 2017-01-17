@@ -7,9 +7,12 @@
         </div>
         <div class="content-form">
             <form id="quote-form" class="container-credits-form horizontal-center">
-                <p class="label-blurb">The fee for TAXplan Canada to
-                    prepare your 2015
-                    taxes for 2 filers are:</p>
+                {{#compare @root.quote.lineItems.length 1 operator=">"}}
+                    <p class="label-blurb"><span class="capitalize">{{users.0.firstName}}</span>, the fee for TAXplan Canada to prepare 2016 tax returns for yourself and your other filers is:</p>
+                {{/compare}}
+                {{#compare @root.quote.lineItems.length 1 operator="=="}}
+                    <p class="label-blurb"><span class="capitalize">{{users.0.firstName}}</span>, the fee for TAXplan Canada to prepare your 2016 tax return is:</p>
+                {{/compare}}
                 {{#each quote.lineItems}}
                     {{#each ../users}}
                         {{#compare taxReturnId ../taxReturnId operator="=="}}
@@ -30,8 +33,8 @@
                         <p class="label-total-price">${{quote.totalPrice}}</p>
                         <p class="side-info-blurb label-fine-print tax">Plus Provincial Tax</p>
                     </div>
-                    <p class="label-blurb horizontal-center">You don't need to pay now</p>
-                    <p class="side-info-blurb label-fine-print get-started">You can pay once your taxes are prepared</p>
+                    <p class="label-blurb horizontal-center">You don't need to pay now.</p>
+                    <p class="side-info-blurb label-fine-print get-started">You can pay with any credit card once your tax return(s) have been completed.</p>
                     <button id="quote-submit" type="submit" class="green long">Great! Let's Get Started</button>
                     <p class="side-info-blurb label-fine-print get-started">By clicking "Get Started" you agree to the TAXplan Terms of Service and Privacy Policy</p>
                 </div>
