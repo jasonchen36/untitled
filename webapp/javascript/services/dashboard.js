@@ -182,9 +182,6 @@
                             entry.isOtherDoc = true;
                         }
                     });
-                    dataObject.activeItem.documents.forEach(function(entry) {
-                        entry.hideDelete = !canDelete;
-                    });
                 }
 
                 if(typeof dataObject.notUploaded === 'undefined' || dataObject.notUploaded === '' ) {
