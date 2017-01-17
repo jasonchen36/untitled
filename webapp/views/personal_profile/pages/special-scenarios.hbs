@@ -1,14 +1,20 @@
 <section id="personal-profile-special-scenarios" class="full-screen-grid-container main-container">
     <div class="small-12 medium-9">
         <div class="container-header fixed-page-header medium-9">
-            <h1 class="header">Special Scenarios</h1>
+            <h1 class="header">Special Circumstances</h1>
             <button id="special-scenarios-submit" type="submit" class="green header">Next</button>
             <button id="special-scenarios-back" class="grey header">Previous</button>
         </div>
         <div class="content-form">
             <form id="special-scenarios-form">
                 {{#each taxReturns}}
-                    <h1 class="subtitle  {{#if @index}}border-top-light-gray{{/if}}"><span class="capitalize">{{firstName}}</span> please select all scenarios that applied to you in 2016:</h1>
+                    <h1 class="subtitle  {{#if @index}}border-top-light-gray{{/if}}">
+                        {{#compare @index 0 operator="=="}}
+                            <span class="capitalize">{{firstName}}</span>, sometimes there are special circumstances for tax filers. Did any of these apply to you in 2016? Select all that apply.
+                        {{else}}
+                            Does <span class="capitalize">{{firstName}}</span> have any special circumstances we need to know about? Select all that apply for 2016:
+                        {{/compare}}
+                    </h1>
                     {{#compare @index 0 operator="=="}}
                         {{>personal-profile-options questions=questions.answers tileContainerId=taxReturnId isPrimaryFiler=true}}
                     {{else}}

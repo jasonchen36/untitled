@@ -8,7 +8,13 @@
         <div class="content-form">
             <form id="credits-form">
                 {{#each taxReturns}}
-                    <h1 class="subtitle  {{#if @index}}border-top-light-gray{{/if}}"><span class="capitalize">{{firstName}}</span> please select all your credits in 2016:</h1>
+                    <h1 class="subtitle  {{#if @index}}border-top-light-gray{{/if}}">
+                        {{#compare @index 0 operator="=="}}
+                            <span class="capitalize">{{firstName}}</span> – Let’s see if you qualify for any of the following credits. Select all that applied to you in 2016:
+                        {{else}}
+                            Does <span class="capitalize">{{firstName}}</span> qualify for any credits? Select all that applied to him in 2016:
+                        {{/compare}}
+                    </h1>
                     {{#compare @index 0 operator="=="}}
                         {{>personal-profile-options questions=questions.answers tileContainerId=taxReturnId isPrimaryFiler=true}}
                     {{else}}
