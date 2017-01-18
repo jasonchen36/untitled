@@ -105,8 +105,6 @@
       dayInput = $('#dependants-birthday-day-'+taxReturnId);
       monthInput = $('#dependants-birthday-month-'+taxReturnId);
       yearInput = $('#dependants-birthday-year-'+taxReturnId);
-      var canadianCitizen = $('#canadian-citizen-'+taxReturnId);
-      var CRAAuthorized = $('#CRA-authorized-'+taxReturnId);
 
       birthdateDayLabelError = $('#birthdate-day-label-error-'+taxReturnId);
       birthdateMonthLabelError = $('#birthdate-month-label-error-'+taxReturnId);
@@ -115,8 +113,6 @@
       dayInput.removeClass(errorClass);
       monthInput.removeClass(errorClass);
       yearInput.removeClass(errorClass);
-      canadianCitizen.removeClass(errorClass);
-      CRAAuthorized.removeClass(errorClass);
 
       birthdateDayLabelError.removeClass(errorClass);
       birthdateMonthLabelError.removeClass(errorClass);
@@ -135,18 +131,6 @@
       if (!helpers.isValidFullYear(yearInput.val())){
           yearInput.addClass(errorClass);
           birthdateYearLabelError.addClass(errorClass);
-          errors++;
-      }
-      if (!canadianCitizen.hasClass(helpers.activeClass)){
-          canadianCitizen.addClass(errorClass);
-          $('#popup-blurb').html('You need to be a Canadian citizen.');
-          window.location.hash = 'modal-personal-profile-popup';
-          errors++;
-      }
-       if (!CRAAuthorized.hasClass(helpers.activeClass)){
-          CRAAuthorized.addClass(errorClass);
-          $('#popup-blurb').html('You have to grant CRA authorization.');
-          window.location.hash = 'modal-personal-profile-popup';
           errors++;
       }
       return errors < 1;
