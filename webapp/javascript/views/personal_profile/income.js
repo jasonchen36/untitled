@@ -117,9 +117,12 @@
                         var promiseArrayPut = [];
                         var promiseArrayGet = [];
                         var promiseArrayQuestions = [];
+                        var promiseArrayCategory = [];
 
-                        //todo, product and question category in variable
                         var formData = helpers.getTileFormDataArray(incomeForm);
+
+                        var ajaxCategory = apiservice.getCategoryById(sessionData, 11);
+                        promiseArrayCategory.push(ajaxCategory);
 
                         _.each(formData, function(taxReturn){
                         var ajaxAnswers = apiservice.getTaxReturnLastName(sessionData,taxReturn.taxReturnId);
@@ -140,7 +143,8 @@
 
                       return Promise.all([Promise.all(promiseArrayPut),
                             Promise.all(promiseArrayGet),
-                            Promise.all(promiseArrayQuestions)]);
+                            Promise.all(promiseArrayQuestions),
+                            Promise.all(promiseArrayCategory)]);
 
                     })
                     .then(function(response) {
@@ -148,6 +152,7 @@
                         data.accountInfo = accountInfo;
                         data.taxReturns = formData;
                         data.taxReturns.questions = response[2];
+                        data.taxReturns.category = response[3];
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){
                             taxReturn.questions = response[1][index];

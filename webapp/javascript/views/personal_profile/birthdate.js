@@ -55,6 +55,7 @@
                 var promiseSaveAnswers = [];
                 var promiseGetAnswers = [];
                 var promiseGetQuestions = [];
+                var promiseArrayCategory = [];
 
                 helpers.resetForm(birthdateForm);
                 $('.'+helpers.formContainerClass).each(function(){
@@ -69,6 +70,9 @@
                 var ajaxQuestions = apiService.getQuestions(sessionData,2);
                 promiseGetQuestions.push(ajaxQuestions);
 
+                var ajaxCategory = apiService.getCategoryById(sessionData, 12);
+                promiseArrayCategory.push(ajaxCategory);
+
                 _.each(formData, function (entry, key) {
                     promiseGetAnswers.push(apiService.getAddresses(sessionData, key));
                 });
@@ -77,13 +81,16 @@
                     Promise.all(promiseSaveAnswers),
                     Promise.all(promiseGetAnswers),
                     promiseGetQuestions,
-                    apiService.getTaxReturns(sessionData)]);
+                    apiService.getTaxReturns(sessionData),
+                    Promise.all(promiseArrayCategory)
+                ]);
             })
             .then(function(response) {
                 var data = {};
                 data.accountInfo = accountInfo;
                 data.taxReturns = response[3];
                 data.taxReturns.questions = response[2];
+                data.taxReturns.category = response[4];
                 _.each(data.taxReturns, function (taxReturn, index) {
                     taxReturn.address = response[1][index][0];
                 });
