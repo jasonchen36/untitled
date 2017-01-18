@@ -4,29 +4,16 @@
             <div class="{{sidebarImage}}"></div>
         {{/if}}
         <h3 id="tax-profile-sidebar-header" class="font-yellow">{{sidebarTitle}}</h3>
-        {{#if true}}
             <p id="tax-profile-instructions" class="side-info-blurb">
-                {{questions.quoteApplies.0.category_displaytext}}
+                {{#if hasTiles}}
+                    {{#if isFiliingFor}}
+                        {{@root.questions.filingFor.0.category_displaytext}}
+                    {{else}}
+                        {{@root.questions.quoteApplies.0.category_displaytext}}
+                    {{/if}}
+                {{else}}
+                    {{{sidebarDescription}}}
+                {{/if}}
             </p>
-        {{else}}
-            <!--TODO: Need to iterate over line items for quote breakdown and bind line item and price-->
-            <!--TODO: Need hover functionality-->
-            <div class="display-inline-table full-width">
-                <p class="display-inline-block float-left">Self Employed</p>
-                <p class="display-inline-block float-right">$19.00</p>
-            </div>
-            <div class="display-inline-table full-width">
-                <p class="display-inline-block float-left">Capital Gains</p>
-                <p class="display-inline-block float-right">$19.00</p>
-            </div>
-            <div class="display-inline-table full-width">
-                <p class="display-inline-block float-left">Employee Related Expenses</p>
-                <p class="display-inline-block float-right">$19.00</p>
-            </div>
-            <div class="display-inline-table full-width">
-                <p class="display-inline-block float-left">Total</p>
-                <p class="display-inline-block float-right">$19.00</p>
-            </div>
-        {{/if}}
     </div>
 </div>
