@@ -2,8 +2,18 @@
 {{#if true}}
     <section id="dashboard-my-return" class="small-7 medium-6 full-height overflow-y-auto">
             <div id="container-upload-explained">
-                <h1>Your Taxes Are In Progress</h1>
-                <p class="side-info-blurb">TAXplan taxes are prepared in 1 business day! We will send you an email when we are all wrapped up here.</p>
+                {{#compare taxReturns.0.status.id 5 operator="<"}}
+                    <h1>Your Taxes Are In Progress</h1>
+                    <p class="side-info-blurb">Thank you for submitting your tax documents to TAXplan.
+                        {{#compare taxReturns.length 1 operator=">"}}Your returns are now in progress. {{else}}Your return is now in progress.{{/compare}}
+                        Should we have any questions or notice that you’ve missed something your assigned TAXpro will be in touch through the message board.  We guarantee completion of tax preparation within 48 hours or by the next business day – provided we have everything we need from you to prepare the best possible return.</p>
+                {{else compare taxReturns.0.status.id 7 operator="=="}}
+                    <h1>YOUR RESULTS ARE IN!</h1>
+                    <p class="side-info-blurb"><span class="capitalize">{{users.0.firstName}}</span>, by clicking on details you can see a summary of your tax results. Once payment to TAXplan is made you’ll be able to access a full copy of your tax return for yourself and your other filers.</p>
+                {{else compare taxReturns.0.status.id 8 operator="=="}}
+                    <h1>One Last Step!</h1>
+                    <p class="side-info-blurb">In order for TAXplan to electronically file your tax return results with the CRA we need your authorization to do so. Just sign below where indicated and let us do the rest.</p>
+                {{/compare}}
             </div>
     {{else}}
     <section id="dashboard-my-return" class="small-7 medium-8 full-height overflow-y-auto">
