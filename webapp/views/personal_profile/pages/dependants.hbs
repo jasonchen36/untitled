@@ -9,7 +9,13 @@
             <form id="dependants-form">
                 {{#each taxReturns}}
                     <div class="border-bottom-light-grey add-bottom-padding taxplan-tile-container taxplan-form-container" data-id="{{taxReturnId}}">
-                        <h1 class="subtitle  {{#if @index}}border-top-light-gray{{/if}}"><span class="capitalize">{{firstName}}</span>, do you have any children or elderly parents as dependants?</h1>
+                        <h1 class="subtitle  {{#if @index}}border-top-light-gray{{/if}}">
+                            {{#compare @index 0 operator="=="}}
+                                <span class="capitalize">{{firstName}}</span>, do you or any of your other filers have children or financially support another person?
+                            {{else}}
+                                <span class="capitalize">{{firstName}}</span>, do you have children or financially support another person?
+                            {{/compare}}
+                        </h1>
                         {{>personal-profile-options questions=questions.answers tileContainerId=taxReturnId}}
                         {{#hasDependantsSelected questions.answers}}
                             {{#each dependants}}

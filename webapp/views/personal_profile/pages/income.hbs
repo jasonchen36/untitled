@@ -12,8 +12,10 @@
                     <h1 class="subtitle {{#if @index}}border-top-light-gray{{/if}}">
                         {{#compare @index 0 operator="=="}}
                             <span class="capitalize">{{firstName}}</span>, help us build a TAXprofile for yourself and your other filers.</br>What types of income sources did you have in 2016? Select all that apply:
-                        {{else}}
+                        {{else compare @index 1 operator="=="}}
                             Tell us about <span class="capitalize">{{firstName}}</span>'s income sources in 2016:
+                        {{else}}
+                            Provide income sources for <span class="capitalize">{{firstName}}</span>:
                         {{/compare}}
                     </h1>
                     {{#compare @index 0 operator="=="}}
