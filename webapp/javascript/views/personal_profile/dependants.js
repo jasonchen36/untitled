@@ -283,7 +283,12 @@
                   .then(function () {
                       var promiseSaveAnswers = updateTileAnswers(formData),
                           promiseGetAnswers = [],
+                          promiseArrayCategory = [],
                           promiseGetQuestions = apiService.getQuestions(sessionData, nextScreenCategoryId);
+
+                      var ajaxCategory = apiService.getCategoryById(sessionData, 12);
+                      promiseArrayCategory.push(ajaxCategory);
+
                       _.each(pageData.taxReturns, function (entry) {
                           promiseGetAnswers.push(apiService.getAddresses(sessionData, entry.taxReturnId));
                       });
@@ -291,7 +296,8 @@
                           Promise.all(promiseSaveAnswers),
                           Promise.all(promiseGetAnswers),
                           promiseGetQuestions,
-                          apiService.getTaxReturns(sessionData)
+                          apiService.getTaxReturns(sessionData),
+                          Promise.all(promiseArrayCategory),
                       ]);
                   })
                   .then(function (response) {
@@ -299,6 +305,8 @@
                       data.accountInfo = accountInfo;
                       data.taxReturns = response[3];
                       data.taxReturns.questions = response[2];
+                      data.taxReturns.category = response[4];
+
                       _.each(data.taxReturns, function (taxReturn, index) {
                           taxReturn.address = response[1][index][0];
                       });
