@@ -36,6 +36,10 @@
         }
     }
 
+    function markMessagesAsRead(){
+        apiservice.markMessagesAsRead(userObject);
+    }
+
     this.init = function(){
         if ($('#dashboard-chat').length > 0) {
 
@@ -65,7 +69,7 @@
             });
 
             chatMessageInput.on('input propertychange', function() {
-                //todo, call api to set message status to read
+                markMessagesAsRead();
                 $('#dashboard-chat-message-count').addClass(helpers.hiddenClass);
             });
         }

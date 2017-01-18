@@ -154,7 +154,7 @@
                    dataObject.activeItem = {
                        name: 'Additional Documents',
                        checklistItemId: 0,
-                       documents: userSession.documentChecklist.additionalDocuments
+                       documents: that.checklist.additionalDocuments
                    };
                 }
                 else {
@@ -163,7 +163,7 @@
 
                 }
 
-                if(typeof dataObject.activeItem != 'undefined') {
+                if(typeof dataObject.activeItem !== 'undefined') {
                     var canDelete = true;
                     if(dataObject.taxReturns[0].status.id >= 4)  {
                        canDelete = false;
@@ -172,6 +172,7 @@
                     var jpegPattern = /.+\.(jpg|png)/;
                     var textPattern = /.+\.(pdf|txt|doc|docx)/;
 
+                    if(typeof dataObject.activeItem.documents !== 'undefined')
                     dataObject.activeItem.documents.forEach(function(entry) {
                         entry.hideDelete = !canDelete;
                         if(entry.thumbnailUrl.match(jpegPattern) !== null){
@@ -198,6 +199,7 @@
 
     function getChatMessageObject(data){
 
+        var LOCAL_TIMEZONE = 'America/Toronto';
 
         return {
             status: data.status,
@@ -206,8 +208,8 @@
             clientId: data.client_id,
             fromName: data.fromname,
             fromId: data.from_id,
-            rawDate: moment(data.date),
-            date: moment(data.date).format('MMM D [-] h:mm A').toString(),
+            rawDate: moment(data.date,'MM/DD/YY hh:mm A'),
+            date: moment.utc(data.date, 'MM/DD/YY hh:mm A').tz(LOCAL_TIMEZONE).format('MMM D [-] h:mm A'),
             isFromUser: data.client_id === data.from_id,
             isFromTaxPro: data.from_role === 'Tax Pro', //todo is this the final role name?
             isFromTaxPlan: data.from_role === 'TAXPlan', // todo is this the final role name?
