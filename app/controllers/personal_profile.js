@@ -11,13 +11,20 @@ var personalProfilePages = {};
 
 /************ personal profile ************/
 personalProfilePages.getPersonalProfilePage = function(req, res, next){
-    //todo, if profile is complete, redirect to dashboard
     const requestObject = {
         method: 'GET',
         uri: process.env.API_URL+'/questions/product/'+process.env.API_PRODUCT_ID+'/category/',
         body: {},
         json: true
     };
+
+    const requestCategory = {
+        method: 'GET',
+        uri: process.env.API_URL+'/categories/11',
+        body: {},
+        json: true
+    };
+
     var specialScenariosRequest = _.clone(requestObject, true),
         creditsRequest = _.clone(requestObject, true),
         deductionsRequest = _.clone(requestObject, true),
@@ -36,7 +43,8 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
         requestPromise(deductionsRequest),
         requestPromise(specialScenariosRequest),
         requestPromise(maritalStatusRequest),
-        requestPromise(dependantsRequest)
+        requestPromise(dependantsRequest),
+        requestPromise(requestCategory)
     ])
         .then(function (response) {
             const personalProfileQuestions = {
@@ -46,8 +54,11 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
                     specialScenarios: response[3],
                     maritalStatus: response[4],
                     dependants: response[5]
-                },
-                dataObject = session.getUserProfileSession(req);
+                };
+
+           var dataObject = session.getUserProfileSession(req);
+            dataObject.categories = {};
+            dataObject.categories.displaytext = response[6][0].displaytext;
             try {
                 res.render('personal_profile/personal_profile', {
                     meta: {
