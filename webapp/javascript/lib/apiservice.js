@@ -806,6 +806,24 @@
 
     };
 
+    this.getCategoryById = function(sessionData, categoryId){
 
+        var accountInfo = helpers.getAccountInformation(sessionData);
+
+        var uri = sessionData.apiUrl + '/categories/' + categoryId;
+
+        var ajaxPromise = ajax.ajax(
+            'GET',
+            uri,
+            {},
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
+
+        return ajaxPromise;
+
+    };
 
 }).apply(app.apiservice);
