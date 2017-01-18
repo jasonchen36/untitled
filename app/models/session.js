@@ -60,6 +60,9 @@ sessionModel.getUserProfileObject = function(data){
         token: data.token,
         apiUrl: process.env.API_URL,
         productId: process.env.API_PRODUCT_ID,
+        taxProId: data.taxpro_id,
+        taxProPic: data.taxpro_pic,
+        taxProDesciption: data.taxpro_desc,
         expiry: moment().add(1, 'hour'),
         users: [
             sessionModel.getUserProfileUserObject(data)
