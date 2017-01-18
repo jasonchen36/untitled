@@ -29,12 +29,13 @@
         });
         if (!helpers.formHasErrors(birthdateForm)) {
             birthdateSubmit.addClass(disabledClass);
+            var promiseSaveAnswers = [];
             putBirthdate = apiService.updateBirthdate(formData, accountInfo);
             promiseSaveAnswers.push(putBirthdate);
-          Promise.all(promiseSaveAnswers)
+            Promise.all(promiseSaveAnswers)
                 .then(function(response){
                   window.location.href = '/dashboard';
-                  apiService.completedProfileStatusChange(sessionData, accountInfo, formData);
+                  var completedProfileStatusChange = apiService.completedProfileStatusChange(sessionData, accountInfo, formData);
                   return Promise.all(completedProfileStatusChange);
                 })
                 .catch(function(jqXHR,textStatus,errorThrown){

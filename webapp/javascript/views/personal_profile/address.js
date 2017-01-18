@@ -95,7 +95,7 @@
                 .then(function(response){
                     var data = {};
                     data.accountInfo = accountInfo;
-                    data.taxReturns = response[0];
+                    data.taxReturns = response[0][0];
                     data.taxReturns.category = response[1];
                     _.each(data.taxReturns, function(entry){
                         if(entry.canadianCitizen === 1){
