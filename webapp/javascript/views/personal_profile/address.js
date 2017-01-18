@@ -60,7 +60,8 @@
 
 
                   return Promise.all([Promise.all(promiseSaveAddresses),
-                            Promise.all(promiseUpdateProvinceOfResidence)]);
+                      Promise.all(promiseUpdateProvinceOfResidence)
+                  ]);
 
                 })
                 .then(function(response){
@@ -80,13 +81,22 @@
                 })
                 .then(function(response){
                     var promiseGetReturns = [];
+                    var promiseArrayCategory = [];
+
+                    var ajaxCategory = apiService.getCategoryById(sessionData, 13);
+                    promiseArrayCategory.push(ajaxCategory);
                     promiseGetReturns.push(apiService.getTaxReturns(sessionData));
-                    return Promise.all(promiseGetReturns);
+
+                    return Promise.all([
+                        Promise.all(promiseGetReturns),
+                        Promise.all(promiseArrayCategory)
+                    ]);
                 })
                 .then(function(response){
                     var data = {};
                     data.accountInfo = accountInfo;
                     data.taxReturns = response[0];
+                    data.taxReturns.category = response[1];
                     _.each(data.taxReturns, function(entry){
                         if(entry.canadianCitizen === 1){
                             entry.citizenClass = "active";
