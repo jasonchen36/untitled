@@ -13,7 +13,7 @@
     var hasDependant = true;
     _.each(pageData.taxReturns, function (taxReturn) {
         _.each(taxReturn.questions.answers, function (answer) {
-            if (answer.class ==='active' && taxReturn.dependants.length === 0 && answer.text === "Yes"){
+            if (answer.class ==='active' && taxReturn.dependants.length === 0 && answer.text.toLowerCase() === "Yes".toLowerCase()){
               hasDependant = false;
             }
         });
