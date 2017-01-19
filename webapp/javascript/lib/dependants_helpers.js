@@ -69,15 +69,15 @@
               _.each(taxReturn.questions.answers, function (answer) {
                   if (!answer.tax_return_id){
                         if (answer.question_id.toString() === tileId.substr(0, tileId.length -4)){
-                          answer.addClass(helpers.activeClass);
+                            answer.class = "active";
                         } else {
-                            answer.removeClass(helpers.activeClass);
+                            answer.class = '';
                         }
                   } else if (answer.tax_return_id.toString() === tileId.substr(tileId.length - 3, tileId.length)){
                         if (answer.question_id.toString() === tileId.substr(0, tileId.length -4)){
-                          answer.addClass(helpers.activeClass);
+                          answer.class = "active";
                         } else {
-                          answer.removeClass(helpers.activeClass);
+                          answer.class = '';
                         }
                   }
               });
@@ -151,6 +151,7 @@
    };
 
    this.deleteDependant = function(dependantId){
+     console.log('it gets here', dependantId);
           var sessionData = personalProfile.getPersonalProfileSession(),
               pageData = personalProfile.getPageSession();
               _.each(pageData.taxReturns, function(taxReturn){

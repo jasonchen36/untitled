@@ -17,6 +17,7 @@
                             {{/compare}}
                         </h1>
                         {{>personal-profile-options questions=questions.answers tileContainerId=taxReturnId}}
+                        {{#debug}}{{/debug}}
                         {{#hasDependantsSelected questions.answers}}
                             {{#each dependants}}
                               {{#if will_delete}}
