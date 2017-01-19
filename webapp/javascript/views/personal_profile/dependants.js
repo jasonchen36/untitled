@@ -202,6 +202,9 @@
               event.preventDefault();
               var hasAlert = false;
               var pageData = personalProfile.getPageSession();
+              if(!validateDependantsTiles()) {
+                  window.location.hash = 'modal-personal-profile-popup';
+              } else {
               if (saved === false){
                 $('#popup-blurb').html('Please Save or Cancel your dependant info before moving forward.');
                 window.location.hash = 'modal-personal-profile-popup';
@@ -217,12 +220,7 @@
                       accountInfo = helpers.getAccountInformation(sessionData),
                       nextScreenCategoryId = 2;
                   dependantsSubmit.addClass(disabledClass);
-                  if(!validateDependantsTiles()) {
-                      window.location.hash = 'modal-personal-profile-popup';
-                  } else {
-                      dependants_helpers.submitDependants($(this));
-                }
-            }
+                  dependants_helpers.submitDependants($(this));
             return Promise.resolve()
                 .then(function () {
                     var promiseSaveAnswers = updateTileAnswers(formData),
@@ -252,71 +250,64 @@
                     ajax.ajaxCatch(jqXHR, textStatus, errorThrown);
                     dependantsSubmit.removeClass(disabledClass);
                 });
+                  }
+              }
             });
 
             dependantsSubmit.on('click',function(event){
-                event.preventDefault();
-                var hasAlert = false;
-                var pageData = personalProfile.getPageSession();
-                if (saved === false){
-                  $('#popup-blurb').html('Please Save or Cancel your dependant info before moving forward.');
+              event.preventDefault();
+              var hasAlert = false;
+              var pageData = personalProfile.getPageSession();
+              if(!validateDependantsTiles()) {
                   window.location.hash = 'modal-personal-profile-popup';
-                  hasAlert = true;
-                }
-                var hasDependant = dependants_helpers.hasDependant(pageData);
-                if (hasDependant === false){
-                  $('#popup-blurb').html('Please add dependants for each filer with dependants.');
-                  window.location.hash = 'modal-personal-profile-popup';
-                }
-                if ((!dependantsSubmit.hasClass(disabledClass)) && (hasDependant === true) && ((!saved) || saved === true) && hasAlert === false){
-                    var sessionData = personalProfile.getPersonalProfileSession(),
-                        accountInfo = helpers.getAccountInformation(sessionData),
-                        nextScreenCategoryId = 2;
-                    dependantsSubmit.addClass(disabledClass);
-                    if(!validateDependantsTiles()) {
-                        window.location.hash = 'modal-personal-profile-popup';
-                    } else {
-                        dependants_helpers.submitDependants($(this));
+              } else {
+              if (saved === false){
+                $('#popup-blurb').html('Please Save or Cancel your dependant info before moving forward.');
+                window.location.hash = 'modal-personal-profile-popup';
+                hasAlert = true;
+              }
+              var hasDependant = dependants_helpers.hasDependant(pageData);
+              if (hasDependant === false){
+                $('#popup-blurb').html('Please add dependants for each filer with dependants.');
+                window.location.hash = 'modal-personal-profile-popup';
+              }
+              if ((!dependantsSubmit.hasClass(disabledClass)) && (hasDependant === true) && ((!saved) || saved === true) && hasAlert === false){
+                  var sessionData = personalProfile.getPersonalProfileSession(),
+                      accountInfo = helpers.getAccountInformation(sessionData),
+                      nextScreenCategoryId = 2;
+                  dependantsSubmit.addClass(disabledClass);
+                  dependants_helpers.submitDependants($(this));
+            return Promise.resolve()
+                .then(function () {
+                    var promiseSaveAnswers = updateTileAnswers(formData),
+                        promiseGetAnswers = [],
+                        promiseGetQuestions = apiService.getQuestions(sessionData, nextScreenCategoryId);
+                    _.each(pageData.taxReturns, function (entry) {
+                        promiseGetAnswers.push(apiService.getAddresses(sessionData, entry.taxReturnId));
+                    });
+                    return Promise.all([
+                        Promise.all(promiseSaveAnswers),
+                        Promise.all(promiseGetAnswers),
+                        promiseGetQuestions,
+                        apiService.getTaxReturns(sessionData)
+                    ]);
+                })
+                .then(function (response) {
+                    var data = {};
+                    data.accountInfo = accountInfo;
+                    data.taxReturns = response[3];
+                    data.taxReturns.questions = response[2];
+                    _.each(data.taxReturns, function (taxReturn, index) {
+                        taxReturn.address = response[1][index][0];
+                    });
+                    personalProfile.goToNextPage(data);
+                })
+                .catch(function (jqXHR, textStatus, errorThrown) {
+                    ajax.ajaxCatch(jqXHR, textStatus, errorThrown);
+                    dependantsSubmit.removeClass(disabledClass);
+                });
                   }
-
-              return Promise.resolve()
-                  .then(function () {
-                      var promiseSaveAnswers = updateTileAnswers(formData),
-                          promiseGetAnswers = [],
-                          promiseArrayCategory = [],
-                          promiseGetQuestions = apiService.getQuestions(sessionData, nextScreenCategoryId);
-
-                      var ajaxCategory = apiService.getCategoryById(sessionData, 12);
-                      promiseArrayCategory.push(ajaxCategory);
-
-                      _.each(pageData.taxReturns, function (entry) {
-                          promiseGetAnswers.push(apiService.getAddresses(sessionData, entry.taxReturnId));
-                      });
-                      return Promise.all([
-                          Promise.all(promiseSaveAnswers),
-                          Promise.all(promiseGetAnswers),
-                          promiseGetQuestions,
-                          apiService.getTaxReturns(sessionData),
-                          Promise.all(promiseArrayCategory),
-                      ]);
-                  })
-                  .then(function (response) {
-                      var data = {};
-                      data.accountInfo = accountInfo;
-                      data.taxReturns = response[3];
-                      data.taxReturns.questions = response[2];
-                      data.taxReturns.category = response[4];
-
-                      _.each(data.taxReturns, function (taxReturn, index) {
-                          taxReturn.address = response[1][index][0];
-                      });
-                      personalProfile.goToNextPage(data);
-                  })
-                  .catch(function (jqXHR, textStatus, errorThrown) {
-                      ajax.ajaxCatch(jqXHR, textStatus, errorThrown);
-                      dependantsSubmit.removeClass(disabledClass);
-                  });
-                }
+              }
             });
 
             dependantsTiles.on('click',function(event){
