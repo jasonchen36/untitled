@@ -10,7 +10,7 @@
       thisClass = app.dependants_helpers;
 
   this.hasDependant = function(pageData){
-    var hasDependant = false;
+    var hasDependant = true;
     _.each(pageData.taxReturns, function (taxReturn) {
             if (taxReturn.dependants.length === 0 && taxReturn.questions.answers[0].class.toLowerCase() === "Active".toLowerCase()){
               hasDependant = false;
