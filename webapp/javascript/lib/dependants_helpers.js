@@ -10,15 +10,15 @@
       thisClass = app.dependants_helpers;
 
   this.hasDependant = function(pageData){
-    var hasDependant = true;
+    var hasDependant = false;
     _.each(pageData.taxReturns, function (taxReturn) {
-        _.each(taxReturn.questions.answers, function (answer) {
-            if (answer.class ==='active' && taxReturn.dependants.length === 0 && answer.text.toLowerCase() === "Yes".toLowerCase()){
+            if (taxReturn.dependants.length === 0 && taxReturn.questions.answers[0].class.toLowerCase() === "Active".toLowerCase()){
               hasDependant = false;
+            } else {
+              hasDependant = true;
             }
-        });
     });
-            return hasDependant;
+    return hasDependant;
   };
 
   this.submitDependants = function(dependantsSubmit){

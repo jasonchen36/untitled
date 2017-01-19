@@ -207,7 +207,9 @@
                 window.location.hash = 'modal-personal-profile-popup';
                 hasAlert = true;
               }
+              console.log('went here');
               var hasDependant = dependants_helpers.hasDependant(pageData);
+              console.log(hasDependant);
               if (hasDependant === false){
                 $('#popup-blurb').html('Please add dependants for each filer with dependants.');
                 window.location.hash = 'modal-personal-profile-popup';
