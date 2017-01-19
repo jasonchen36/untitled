@@ -189,12 +189,17 @@
                     event.stopPropagation();
                     $('#personal-profile-instructions').html($(this).data('instructions'));
                     $('#personal-profile-sidebar-header').html($(this).data('text'));
+                    $('#personal-profile-sidebar-image').removeClass();
+                    $('#personal-profile-sidebar-image').addClass('sidebar-image-rollover');
+                    $('#personal-profile-sidebar-image').attr('data-id', $(this).data('id'));
                 })
                 .on('mouseleave', '.'+helpers.tileClass, function (event) {
                     event.preventDefault();
                     event.stopPropagation();
                     $('#personal-profile-instructions').html($(this).data('category_displaytext'));
                     $('#personal-profile-sidebar-header').html($(this).data('category_name'));
+                    $('#personal-profile-sidebar-image').removeClass();
+                    $('#personal-profile-sidebar-image').addClass($('#personal-profile-sidebar-image').data('sidebar-image'));
                 });
         }
     };
