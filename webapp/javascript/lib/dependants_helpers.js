@@ -13,7 +13,7 @@
     var hasDependant = true;
     _.each(pageData.taxReturns, function (taxReturn) {
         _.each(taxReturn.questions.answers, function (answer) {
-            if (answer.class ==='active' && taxReturn.dependants.length === 0){
+            if (answer.class ==='active' && taxReturn.dependants.length === 0 && answer.text === "Yes"){
               hasDependant = false;
             }
         });
@@ -65,17 +65,15 @@
           });
   };
 
-  this.toggleDependants = function(tileId){
+  this.toggleDependants = function(tileId, taxReturnId){
       var pageData = personalProfile.getPageSession();
           _.each(pageData.taxReturns, function (taxReturn) {
               _.each(taxReturn.questions.answers, function (answer) {
-                  if (answer.tax_return_id.toString() === tileId.substr(tileId.length - 3, tileId.length)){
-                      if (answer.question_id.toString() === tileId.substr(0, tileId.length -4)) {
+                  if (answer.tax_return_id.toString() === taxReturnId){
+                      if (answer.question_id.toString() === tileId){
                       answer.class = helpers.activeClass;
-                      taxReturn.hasDependants = 1;
                     } else {
                       answer.class = '';
-                      taxReturn.hasDependants = 0;
                     }
                   }
               });

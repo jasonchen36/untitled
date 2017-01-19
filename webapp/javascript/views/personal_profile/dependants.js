@@ -322,7 +322,8 @@
             dependantsTiles.on('click',function(event){
                 event.preventDefault();
                 var tileId = $(this).attr('id');
-                personalProfile.refreshPage(dependants_helpers.toggleDependants(tileId));
+                var taxReturnId = parseInt($(this).attr('data-tax-return-id'));
+                personalProfile.refreshPage(dependants_helpers.toggleDependants(tileId, taxReturnId));
             });
 
             dependantsEditButtons.on('click',function(event){
