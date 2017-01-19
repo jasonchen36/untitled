@@ -69,15 +69,15 @@
               _.each(taxReturn.questions.answers, function (answer) {
                   if (!answer.tax_return_id){
                         if (answer.question_id.toString() === tileId.substr(0, tileId.length -4)){
-                          answer.class = helpers.activeClass;
+                          answer.addClass(helpers.activeClass);
                         } else {
-                            answer.class = '';
+                            answer.removeClass(helpers.activeClass);
                         }
                   } else if (answer.tax_return_id.toString() === tileId.substr(tileId.length - 3, tileId.length)){
                         if (answer.question_id.toString() === tileId.substr(0, tileId.length -4)){
-                          answer.class = helpers.activeClass;
+                          answer.addClass(helpers.activeClass);
                         } else {
-                          answer.class = '';
+                          answer.removeClass(helpers.activeClass);
                         }
                   }
               });
