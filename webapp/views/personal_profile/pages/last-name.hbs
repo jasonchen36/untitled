@@ -8,17 +8,16 @@
             <form id="last-name-form">
                 <h1 class="subtitle  {{#if @index}}border-top-light-gray{{/if}}"><span class="capitalize">{{accountInfo.firstName}}</span>, please provide your full legal name including middle initials.</h1>
                 {{#each taxReturns}}
-
-                    <div class="add-top-padding taxplan-form-container" data-id="{{firstName}}">
+                    <div class="add-top-padding taxplan-form-container" data-id="{{taxReturnId}}">
                         <div class="container-inline-input long">
-                            <label for=”last-name-{{taxReturnId}}”>FIRST NAME</label>
-                            <input type="text" id="last-name-{{taxReturnId}}" class="inline-input" name="firstName" placeholder="First Name" value="{{firstName}}"/>
-                            <p id="last-name-label-error-first-name" class="label-error">First Name Needed</p>
+                            <label for=”first-name-{{taxReturnId}}”>FIRST NAME</label>
+                            <input type="text" id="first-name-{{taxReturnId}}" class="inline-input" name="firstName" placeholder="First Name" value="{{firstName}}"/>
+                            <p id="first-name-label-error-first-name-{{taxReturnId}}" class="label-error">First Name Needed</p>
                         </div>
                         <div class="container-inline-input long">
                             <label for="last-name">LAST NAME</label>
                             <input type="text" id="last-name-{{taxReturnId}}" class="inline-input" name="lastName" placeholder="Last Name" value="{{lastName}}"/>
-                            <p id="last-name-label-error-last-name" class="label-error">Last Name Needed</p>
+                            <p id="last-name-label-error-first-name-{{taxReturnId}}" class="label-error">Last Name Needed</p>
                         </div>
                         <input type="hidden" id="tax-return-id-{{taxReturnId}}" name="taxReturnId" value="{{taxReturnId}}"/>
 

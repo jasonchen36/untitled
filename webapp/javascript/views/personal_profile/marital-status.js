@@ -99,8 +99,6 @@
             nameData = nameData[0];
 
 
-            validateMaritalStatusFormData(maritalStatusForm);
-
             if(!validateMaritalStatusTiles(maritalStatusForm)){
                 window.location.hash = 'modal-personal-profile-popup';
             } else if (!helpers.formHasErrors(maritalStatusForm)) {

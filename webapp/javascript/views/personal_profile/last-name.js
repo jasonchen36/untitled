@@ -13,6 +13,8 @@
         lastNameBack,
         lastNameInput,
         lastNameErrorLabelLastName,
+        firstNameInput,
+        firstNameErrorLabel,
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
@@ -22,12 +24,32 @@
             helpers.resetForm(lastNameForm);
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
-            //TODO: Add validation for other filers
-            if (helpers.isEmpty(formData[0].lastName)){
-                lastNameInput.addClass(errorClass);
-                lastNameErrorLabelLastName.addClass(errorClass);
-            } else {
-            //if (!helpers.formHasErrors(lastNameForm)) {
+
+            $('.'+helpers.formContainerClass).each(function(){
+                taxReturnId = $(this).attr('data-id');
+
+                firstNameInput = $('#first-name-' + taxReturnId);
+                lastNameInput = $('#last-name-' + taxReturnId);
+
+                firstNameErrorLabel = $('#first-name-label-error-first-name-' + taxReturnId);
+                lastNameErrorLabelLastName = $('#last-name-label-error-first-name-' + taxReturnId);
+
+                firstNameInput.removeClass(helpers.errorClass);
+                firstNameErrorLabel.removeClass(helpers.errorClass);
+                lastNameInput.removeClass(helpers.errorClass);
+                lastNameErrorLabelLastName.removeClass(helpers.errorClass);
+
+                if(helpers.isEmpty(firstNameInput.val())){
+                    firstNameInput.addClass(helpers.errorClass);
+                    firstNameErrorLabel.addClass(helpers.errorClass);
+                }
+                if(helpers.isEmpty(lastNameInput.val())){
+                    lastNameInput.addClass(helpers.errorClass);
+                    lastNameErrorLabelLastName.addClass(helpers.errorClass);
+                }
+            });
+
+            if (!helpers.formHasErrors(lastNameForm)) {
                 lastNameSubmit.addClass(disabledClass);
 
                 return Promise.resolve()

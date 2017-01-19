@@ -247,11 +247,6 @@
                 pageData = personalProfile.getPageSession(),
                 previousScreenCategoryId = 9;
 
-            helpers.resetForm(addressForm);
-            $('.'+helpers.formContainerClass).each(function(){
-                validateAddressFormData($(this));
-            });
-
             if (!helpers.formHasErrors(addressForm)) {
                 addressSubmit.addClass(disabledClass);
                 return Promise.resolve()
