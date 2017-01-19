@@ -14,8 +14,6 @@
     _.each(pageData.taxReturns, function (taxReturn) {
             if (taxReturn.dependants.length === 0 && taxReturn.questions.answers[0].class.toLowerCase() === "Active".toLowerCase()){
               hasDependant = false;
-            } else {
-              hasDependant = true;
             }
     });
     return hasDependant;
