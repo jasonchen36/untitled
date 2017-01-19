@@ -58,10 +58,6 @@
                 var promiseGetQuestions = [];
                 var promiseArrayCategory = [];
 
-                helpers.resetForm(birthdateForm);
-                $('.'+helpers.formContainerClass).each(function(){
-                    validateBirthdateFormData($(this));
-                });
 
                 if (!helpers.formHasNonCheckboxErrors(birthdateForm)) {
                     putBirthdate = apiService.updateBirthdate(formData, accountInfo);

@@ -480,3 +480,187 @@
 .taxplan-tile[data-id="1004"]{
   @extend .i--icon-medical-moving;
 }
+
+//For switching the sidebar image
+//-----------------------------
+
+//Filing for icons
+//-----------------------------
+.sidebar-image-rollover[data-id="126"]{
+  @extend .i--icon-filing-myself;
+}
+
+.sidebar-image-rollover[data-id="127"]{
+  @extend .i--icon-filing-partner;
+}
+
+.sidebar-image-rollover[data-id="128"]{
+  @extend .i--icon-filing-other;
+}
+
+//Question option icons
+//-----------------------------
+.sidebar-image-rollover[data-id="70"], .sidebar-image-rollover[data-id="1006"]{
+  @extend .i--icon-aeroplane;
+}
+
+.sidebar-image-rollover[data-id="71"]{
+  @extend .i--icon-globe;
+}
+
+.sidebar-image-rollover[data-id="72"]{
+  @extend .i--icon-wreath;
+}
+
+.sidebar-image-rollover[data-id="73"]{
+  @extend .i--icon-bible;
+}
+
+.sidebar-image-rollover[data-id="74"]{
+  @extend .i--icon-gavel;
+}
+
+.sidebar-image-rollover[data-id="75"]{
+  @extend .i--icon-firefighter;
+}
+
+.sidebar-image-rollover[data-id="76"]{
+  @extend .i--icon-north-canada;
+}
+
+.sidebar-image-rollover[data-id="77"]{
+  @extend .i--icon-adoption;
+}
+
+.sidebar-image-rollover[data-id="79"]{
+  @extend .i--icon-transit;
+}
+
+.sidebar-image-rollover[data-id="80"]{
+  @extend .i--icon-arts;
+}
+
+.sidebar-image-rollover[data-id="81"]{
+  @extend .i--icon-book-money;
+}
+
+.sidebar-image-rollover[data-id="82"]{
+  @extend .i--icon-money-jar;
+}
+
+.sidebar-image-rollover[data-id="83"]{
+  @extend .i--icon-house;
+}
+
+.sidebar-image-rollover[data-id="84"]{
+  @extend .i--icon-medical;
+}
+
+.sidebar-image-rollover[data-id="85"]{
+  @extend .i--icon-wheelchair;
+}
+
+.sidebar-image-rollover[data-id="86"]{
+  @extend .i--icon-institution-money;
+}
+
+.sidebar-image-rollover[data-id="87"]{
+  @extend .i--icon-keys;
+}
+
+.sidebar-image-rollover[data-id="115"], .sidebar-image-rollover[data-id="1000"]{
+  @extend .i--icon-business;
+}
+
+.sidebar-image-rollover[data-id="116"]{
+  @extend .i--icon-employee-id;
+}
+
+.sidebar-image-rollover[data-id="117"], .sidebar-image-rollover[data-id="1001"]{
+  @extend .i--icon-building;
+}
+
+.sidebar-image-rollover[data-id="118"]{
+  @extend .i--icon-pie-chart;
+}
+
+.sidebar-image-rollover[data-id="119"]{
+  @extend .i--icon-pram;
+}
+
+.sidebar-image-rollover[data-id="120"], .sidebar-image-rollover[data-id="89"]{
+  @extend .i--icon-canada-money;
+}
+
+.sidebar-image-rollover[data-id="121"], .sidebar-image-rollover[data-id="1003"]{
+  @extend .i--icon-house-investments;
+}
+
+.sidebar-image-rollover[data-id="109"], .sidebar-image-rollover[data-id="123"]{
+  @extend .i--icon-spouse-money;
+}
+
+.sidebar-image-rollover[data-id="111"]{
+  @extend .i--icon-palm-sun;
+}
+
+.sidebar-image-rollover[data-id="114"], .sidebar-image-rollover[data-id="88"], .sidebar-image-rollover[data-id="1002"]{
+  @extend .i--icon-grad-money;
+}
+
+.sidebar-image-rollover[data-id="122"], .sidebar-image-rollover[data-id="103"]{
+  @extend .i--icon-piggybank;
+}
+
+.sidebar-image-rollover[data-id="112"]{
+  @extend .i--icon-hands-heart;
+}
+
+.sidebar-image-rollover[data-id="113"]{
+  @extend .i--icon-money-investments;
+}
+
+.sidebar-image-rollover[data-id="145"], .sidebar-image-rollover[data-id="146"], .sidebar-image-rollover[data-id="147"], .sidebar-image-rollover[data-id="148"], .sidebar-image-rollover[data-id="1007"]{
+  @extend .i--icon-none-apply;
+}
+
+.sidebar-image-rollover[data-id="124"], .sidebar-image-rollover[data-id="90"], .sidebar-image-rollover[data-id="110"], .sidebar-image-rollover[data-id="144"]{
+  @extend .i--icon-not-sure;
+}
+
+.sidebar-image-rollover[data-id="104"]{
+  @extend .i--icon-investments;
+}
+
+.sidebar-image-rollover[data-id="105"]{
+  @extend .i--icon-hard-hat;
+}
+
+.sidebar-image-rollover[data-id="106"]{
+  @extend .i--icon-child-care;
+}
+
+.sidebar-image-rollover[data-id="107"]{
+  @extend .i--icon-moving-truck;
+}
+
+.sidebar-image-rollover[data-id="108"], .sidebar-image-rollover[data-id="1005"]{
+  @extend .i--icon-tools;
+}
+
+.sidebar-image-rollover[data-id="125"]{
+  @extend .i--icon-senior;
+}
+
+.sidebar-image-rollover[data-id="78"]{
+  @extend .i--icon-thunder-pig;
+}
+
+.sidebar-image-rollover[data-id="1004"]{
+  @extend .i--icon-medical-moving;
+}
+
+.sidebar-image-rollover{
+  width:100%;
+  height:215px;
+}
