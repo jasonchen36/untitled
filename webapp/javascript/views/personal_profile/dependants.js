@@ -128,7 +128,7 @@
                     pageData = personalProfile.getPageSession();
                 if (!dependantsSubmit.hasClass(disabledClass)) {
                     dependantsSubmit.addClass(disabledClass);
-                dependants_helpers.submitDependants(dependantsSubmit);
+                    dependants_helpers.submitDependants(dependantsSubmit);
                 }
                 return Promise.resolve()
                     .then(function() {
