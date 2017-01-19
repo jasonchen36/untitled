@@ -65,12 +65,12 @@
           });
   };
 
-  this.toggleDependants = function(tileId, taxReturnId){
+  this.toggleDependants = function(tileId){
       var pageData = personalProfile.getPageSession();
           _.each(pageData.taxReturns, function (taxReturn) {
               _.each(taxReturn.questions.answers, function (answer) {
-                  if (answer.tax_return_id.toString() === taxReturnId){
-                      if (answer.question_id.toString() === tileId){
+                  if ((!answer.tax_return_id) || (answer.tax_return_id.toString() === tileId.substr(tileId.length - 3, tileId.length))){
+                      if (answer.question_id.toString() === tileId.substr(0, tileId.length -4)){
                       answer.class = helpers.activeClass;
                     } else {
                       answer.class = '';
