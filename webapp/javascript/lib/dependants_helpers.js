@@ -116,6 +116,7 @@
               var sessionData = personalProfile.getPersonalProfileSession(),
                   pageData = personalProfile.getPageSession(),
                   formData = helpers.getFormData(formContainer);
+                  console.log(firstName, lastName);
               if (dependantId){
                   //update dependant
                   formData.id = parseInt(dependantId);
