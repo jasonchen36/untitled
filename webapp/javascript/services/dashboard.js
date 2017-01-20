@@ -90,6 +90,22 @@
 
                  });
 
+                if(chat.chatMessageReceived){
+                    chat.chatMessageReceived = false;
+                    dataObject.messages.push(getChatMessageObject({
+                        body: 'Your message has been received',//todo, use real copy text
+                        client_id: 1,
+                        date: moment(),
+                        from_id: 0,
+                        from_role: 'TAXPlan',
+                        fromname: 'TAXPlan',
+                        id: 0,
+                        status: 'read',
+                        subject: '',
+                        replacedBody: 'Your message has been received'
+                    }));
+                }
+
                     for (var i = 0, len = dataObject.messages.length; i < len; i++) {
                         //count unread messages
                         if(dataObject.messages[i].status.toLowerCase() === 'new' &&
@@ -115,20 +131,7 @@
                         }
                     }
 
-                if(chat.chatMessageReceived){
-                    chat.chatMessageReceived = false;
-                    dataObject.messages.push(getChatMessageObject({
-                        body: 'Your message has been received',//todo, use real copy text
-                        client_id: 0,
-                        date: moment.now(),
-                        from_id: 32,
-                        from_role: 'TAXPlan',
-                        fromname: 'TAXPlan',
-                        id: 0,
-                        status: 'read',
-                        subject: ''
-                    }));
-                }
+
 
                 dataObject.notUploaded = true;
                 that.changePage('chat', dataObject);
