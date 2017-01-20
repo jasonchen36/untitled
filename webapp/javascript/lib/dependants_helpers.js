@@ -94,7 +94,9 @@
               taxReturn.dependantForm = hasSelectedDependant;
           } else {
             hasSelectedDependant = _.find(taxReturn.dependants, {first_name: firstName, last_name: lastName});
-            taxReturn.dependantForm = hasSelectedDependant;
+            if(hasSelectedDependant){
+              taxReturn.dependantForm = hasSelectedDependant;
+            }
           }
       });
       return pageData;
@@ -110,10 +112,9 @@
       return pageData;
   };
 
-  this.saveDependant = function(dependantId, firstName, lastName, taxReturnId, formContainer){
+  this.saveDependant = function(dependantId, firstName, lastName, taxReturnId, formData){
               var sessionData = personalProfile.getPersonalProfileSession(),
-                  pageData = personalProfile.getPageSession(),
-                  formData = helpers.getFormData(formContainer);
+                  pageData = personalProfile.getPageSession();
               if (dependantId){
                   //update dependant
                   formData.id = parseInt(dependantId);

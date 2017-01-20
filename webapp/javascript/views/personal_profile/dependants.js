@@ -349,11 +349,12 @@
                 firstName = $(this).attr('data-id').split('-')[1],
                 lastName = $(this).attr('data-id').split('-')[2],
                 taxReturnId = parseInt($(this).attr('data-tax-return-id')),
-                formContainer = dependantsSaveButtons.parent().parent();
+                formContainer = dependantsSaveButtons.parent().parent(),
+                formData = helpers.getFormData(formContainer);
                 if (!dependantsSaveButtons.hasClass(helpers.disabledClass)){
                     if(validateDependantsFormData(formContainer)){
                         dependantsSaveButtons.addClass(helpers.disabledClass);
-                        personalProfile.refreshPage(dependants_helpers.saveDependant(dependantId, firstName, lastName, taxReturnId, formContainer));
+                        personalProfile.refreshPage(dependants_helpers.saveDependant(dependantId, firstName, lastName, taxReturnId, formData));
                     }
                 }
             });
