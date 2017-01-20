@@ -55,7 +55,6 @@
                         }else{
                           loginErrorLabelPassword.html('Please check your password');
                         }
-                        console.log(jqXHR.jqXHR.responseJSON.message[0].msg);
                         loginSubmit.removeClass(disabledClass);
                     });
             }
