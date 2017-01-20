@@ -529,6 +529,7 @@ textarea {
   position: fixed;
   background: $color-global-bg;
   width: 77%;
+  z-index: 3;
 }
 
 .fixed-progress-bar{
