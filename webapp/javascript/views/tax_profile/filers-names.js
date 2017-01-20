@@ -16,10 +16,26 @@
     function submitFilersNames(){
         if (!filersNamesSubmit.hasClass(disabledClass)) {
             var formData = helpers.getFormData(filersNamesForm);
-            if(false){
-                //todo, real validation & alert
-                alert('no selected option');
-            } else {
+            var taxProfileId, hasErrors;
+            hasErrors = false;
+            helpers.resetForm(filersNamesForm);
+
+            var accountSess = taxProfile.getAccountSession();
+            accountSess.users.forEach(function(entry){
+                taxProfileId = entry.id;
+                var filerName = $('#filers-names-' + taxProfileId);
+                var filerNameErrorLabel = $('#filers-names-error-name-' + taxProfileId);
+
+                filerNameErrorLabel.removeClass(helpers.errorClass);
+
+                if(helpers.isEmpty(filerName.val())){
+                    filerName.addClass(helpers.errorClass);
+                    filerNameErrorLabel.addClass(helpers.errorClass);
+                    hasErrors = true;
+                }
+            });
+
+            if(!hasErrors){
                 filersNamesSubmit.addClass(disabledClass);
                 ajax.ajax(
                     'POST',
