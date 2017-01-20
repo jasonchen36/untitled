@@ -164,7 +164,9 @@
                       hasSelectedDependant.will_delete = true;
                     }else {
                       hasSelectedDependant = _.find(taxReturn.dependants, {first_name: firstName, last_name: lastName});
-                      hasSelectedDependant.will_delete = true;
+                        if(hasSelectedDependant){
+                            hasSelectedDependant.will_delete = true;
+                        }
                     }
               });
               return pageData;
