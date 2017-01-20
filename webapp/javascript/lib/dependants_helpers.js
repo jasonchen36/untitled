@@ -85,13 +85,16 @@
           return pageData;
   };
 
-  this.editDependant = function(dependantId){
+  this.editDependant = function(dependantId, firstName, lastName){
       var pageData = personalProfile.getPageSession(),
           hasSelectedDependant;
       _.each(pageData.taxReturns, function(taxReturn){
           hasSelectedDependant = _.find(taxReturn.dependants, {id: dependantId});
           if (hasSelectedDependant){
               taxReturn.dependantForm = hasSelectedDependant;
+          } else {
+            hasSelectedDependant = _.find(taxReturn.dependants, {first_name: firstName, last_name: lastName});
+            taxReturn.dependantForm = hasSelectedDependant;
           }
       });
       return pageData;
@@ -150,13 +153,15 @@
             return pageData;
    };
 
-   this.deleteDependant = function(dependantId){
-     console.log('it gets here', dependantId);
+   this.deleteDependant = function(dependantId, firstName, lastName){
           var sessionData = personalProfile.getPersonalProfileSession(),
               pageData = personalProfile.getPageSession();
               _.each(pageData.taxReturns, function(taxReturn){
                   hasSelectedDependant = _.find(taxReturn.dependants, {id: dependantId});
                     if (hasSelectedDependant){
+                      hasSelectedDependant.will_delete = true;
+                    }else {
+                      hasSelectedDependant = _.find(taxReturn.dependants, {first_name: firstName, last_name: lastName});
                       hasSelectedDependant.will_delete = true;
                     }
               });
