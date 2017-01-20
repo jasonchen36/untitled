@@ -317,17 +317,19 @@
             });
 
             dependantsEditButtons.on('click',function(event){
+                console.log($(this));
+                console.log($(this).attr('data-id'));
                 event.preventDefault();
                 var dependantId = parseInt($(this).attr('data-id').split('-')[0]);
-                var firstName = parseInt($(this).attr('data-id').split('-')[1]);
-                var lastName = parseInt($(this).attr('data-id').split('-')[2]);
+                var firstName = $(this).attr('data-id').split('-')[1];
+                var lastName = $(this).attr('data-id').split('-')[2];
                 personalProfile.refreshPage(dependants_helpers.editDependant(dependantId, firstName, lastName));
             });
 
             dependantsDeleteButtons.on('click',function(event){
               var dependantId = parseInt($(this).attr('data-id').split('-')[0]);
-              var firstName = parseInt($(this).attr('data-id').split('-')[1]);
-              var lastName = parseInt($(this).attr('data-id').split('-')[2]);
+              var firstName = $(this).attr('data-id').split('-')[1];
+              var lastName = $(this).attr('data-id').split('-')[2];
                   if (!dependantsDeleteButtons.hasClass(helpers.disabledClass)){
                       dependantsDeleteButtons.addClass(helpers.disabledClass);
                     }
@@ -346,12 +348,14 @@
                 event.preventDefault();
                 saved = true;
                 var dependantId = parseInt($(this).attr('data-id').split('-')[0]),
+                firstName = $(this).attr('data-id').split('-')[1],
+                lastName = $(this).attr('data-id').split('-')[2],
                 taxReturnId = parseInt($(this).attr('data-tax-return-id')),
                 formContainer = dependantsSaveButtons.parent().parent();
                 if (!dependantsSaveButtons.hasClass(helpers.disabledClass)){
                     if(validateDependantsFormData(formContainer)){
                         dependantsSaveButtons.addClass(helpers.disabledClass);
-                        personalProfile.refreshPage(dependants_helpers.saveDependant(dependantId, taxReturnId, formContainer));
+                        personalProfile.refreshPage(dependants_helpers.saveDependant(dependantId, firstName, lastName, taxReturnId, formContainer));
                     }
                 }
             });

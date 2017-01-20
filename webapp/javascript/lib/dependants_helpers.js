@@ -86,6 +86,7 @@
   };
 
   this.editDependant = function(dependantId, firstName, lastName){
+    console.log(dependantId, firstName, lastName);
       var pageData = personalProfile.getPageSession(),
           hasSelectedDependant;
       _.each(pageData.taxReturns, function(taxReturn){
@@ -94,6 +95,7 @@
               taxReturn.dependantForm = hasSelectedDependant;
           } else {
             hasSelectedDependant = _.find(taxReturn.dependants, {first_name: firstName, last_name: lastName});
+            console.log(hasSelectedDependant);
             taxReturn.dependantForm = hasSelectedDependant;
           }
       });
@@ -110,11 +112,11 @@
       return pageData;
   };
 
-  this.saveDependant = function(dependantId, taxReturnId, formContainer){
+  this.saveDependant = function(dependantId, firstName, lastName, taxReturnId, formContainer){
               var sessionData = personalProfile.getPersonalProfileSession(),
                   pageData = personalProfile.getPageSession(),
                   formData = helpers.getFormData(formContainer);
-              if (dependantId){
+              if ((dependantId) || ((firstName) && (lastName))){
                   //update dependant
                   formData.id = parseInt(dependantId);
                   _.each(pageData.taxReturns, function(taxReturn){
