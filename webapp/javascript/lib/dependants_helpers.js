@@ -116,7 +116,7 @@
               var sessionData = personalProfile.getPersonalProfileSession(),
                   pageData = personalProfile.getPageSession(),
                   formData = helpers.getFormData(formContainer);
-              if ((dependantId) || ((firstName) && (lastName))){
+              if (dependantId){
                   //update dependant
                   formData.id = parseInt(dependantId);
                   _.each(pageData.taxReturns, function(taxReturn){
@@ -134,6 +134,21 @@
                       }
                     });
                   });
+              } else if((firstName) && (lastName)){
+                _.each(pageData.taxReturns, function(taxReturn){
+                  _.each(taxReturn.dependants, function (dependant) {
+                    if (parseInt(taxReturn.taxReturnId) === taxReturnId){
+                      delete taxReturn.dependantForm;
+                      if ((dependant.first_name === firstName) && (dependant.last_name === lastName)){
+                        dependant.first_name = formData.firstName;
+                        dependant.last_name = formData.lastName;
+                        dependant.date_of_birth = formData.dateOfBirth;
+                        dependant.relationship = formData.relationship;
+                        dependant.is_shared = formData.isShared;
+                      }
+                    }
+                  });
+                });
               } else {
                 _.each(pageData.taxReturns, function(taxReturn){
                     if (parseInt(taxReturn.taxReturnId) === taxReturnId){
