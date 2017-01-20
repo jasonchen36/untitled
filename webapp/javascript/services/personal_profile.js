@@ -190,9 +190,9 @@
                     $('#personal-profile-instructions').html($(this).data('instructions'));
                     $('#personal-profile-sidebar-header').html($(this).data('text'));
                     if(!($(this).hasClass('small-button'))){
-                        $('#personal-profile-sidebar-image').removeClass();
-                        $('#personal-profile-sidebar-image').addClass('sidebar-image-rollover');
                         $('#personal-profile-sidebar-image').attr('data-id', $(this).data('id'));
+                        $('#personal-profile-sidebar-image').addClass('showfade');
+                        $('#personal-profile-sidebar-image-initial').addClass('showfade');
                     }
                 })
                 .on('mouseleave', '.'+helpers.tileClass, function (event) {
@@ -201,8 +201,8 @@
                     $('#personal-profile-instructions').html($(this).data('category_displaytext'));
                     $('#personal-profile-sidebar-header').html($(this).data('category_name'));
                     if(!($(this).hasClass('small-button'))) {
-                        $('#personal-profile-sidebar-image').removeClass();
-                        $('#personal-profile-sidebar-image').addClass($('#personal-profile-sidebar-image').data('sidebar-image'));
+                        $('#personal-profile-sidebar-image').removeClass('showfade');
+                        $('#personal-profile-sidebar-image-initial').removeClass('showfade');
                     }
                 });
         }
