@@ -15,6 +15,13 @@
   &.active{
     background-color: $color-global-yellow;
   }
+
+  @media (min-width:1025px){ //hover only on desktop breakpoint
+    &:hover {
+      background-color: rgba($color-global-yellow, 0.25);
+    }
+  }
+
 }
 
 .taxplan-tile-label {
