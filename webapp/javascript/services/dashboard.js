@@ -83,6 +83,7 @@
 
                 var today = moment();
                 var foundToday = false;
+                var foundSentToday = false;
                 var pattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
                  response.messages.forEach(function(entry){
 
@@ -90,23 +91,7 @@
 
                  });
 
-                if(chat.chatMessageReceived){
-                    chat.chatMessageReceived = false;
-                    dataObject.messages.push(getChatMessageObject({
-                        body: 'Your message has been received',//todo, use real copy text
-                        client_id: 1,
-                        date: moment(),
-                        from_id: 0,
-                        from_role: 'TAXPlan',
-                        fromname: 'TAXPlan',
-                        id: 0,
-                        status: 'read',
-                        subject: '',
-                        replacedBody: 'Your message has been received'
-                    }));
-                }
-
-                    for (var i = 0, len = dataObject.messages.length; i < len; i++) {
+                    for (var i = 0; i < dataObject.messages.length; i++) {
                         //count unread messages
                         if(dataObject.messages[i].status.toLowerCase() === 'new' &&
                             dataObject.messages[i].isFromUser !== true){
@@ -119,6 +104,28 @@
                             foundToday === false){
                             dataObject.messages[i].isFirst = true;
                             foundToday = true;
+                        }
+
+                        // insert message received response for today's date on first message from user
+                        if(moment(dataObject.messages[i].rawDate).month() === moment(today).month() &&
+                            moment(today).date() === moment(dataObject.messages[i].rawDate).date() &&
+                            foundToday === true && foundSentToday === false && dataObject.messages[i].isFromUser === true){
+
+                            var receivedMessage =  {
+                                body: 'Your message has been received',//todo, use real copy text
+                                client_id: 1,
+                                date: dataObject.messages[i].date,
+                                from_id: 0,
+                                from_role: 'TAXPlan',
+                                fromname: 'TAXPlan',
+                                id: 0,
+                                status: 'read',
+                                subject: '',
+                                replacedBody: 'Your message has been received'
+                            };
+
+                            dataObject.messages.splice(i + 1, 0, receivedMessage);
+                            foundSentToday = true;
                         }
 
                         //check for link
