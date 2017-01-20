@@ -525,6 +525,12 @@ textarea {
   @extend .small-12, .medium-7;
 }
 
+.fixed-upload-header{
+  position: fixed;
+  background: $color-global-bg;
+  width: 77%;
+}
+
 .fixed-progress-bar{
   position: fixed;
   margin-top: $header-height;
