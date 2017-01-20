@@ -317,8 +317,6 @@
             });
 
             dependantsEditButtons.on('click',function(event){
-                console.log($(this));
-                console.log($(this).attr('data-id'));
                 event.preventDefault();
                 var dependantId = parseInt($(this).attr('data-id').split('-')[0]);
                 var firstName = $(this).attr('data-id').split('-')[1];
