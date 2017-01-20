@@ -35,9 +35,7 @@
                 }
             });
 
-            if(hasErrors){
-
-            } else {
+            if(!hasErrors){
                 filersNamesSubmit.addClass(disabledClass);
                 ajax.ajax(
                     'POST',
