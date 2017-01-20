@@ -318,17 +318,21 @@
 
             dependantsEditButtons.on('click',function(event){
                 event.preventDefault();
-                var dependantId = parseInt($(this).attr('data-id'));
-                personalProfile.refreshPage(dependants_helpers.editDependant(dependantId));
+                var dependantId = parseInt($(this).attr('data-id').split('-')[0]);
+                var firstName = $(this).attr('data-id').split('-')[1];
+                var lastName = $(this).attr('data-id').split('-')[2];
+                personalProfile.refreshPage(dependants_helpers.editDependant(dependantId, firstName, lastName));
             });
 
             dependantsDeleteButtons.on('click',function(event){
-              var dependantId = parseInt($(this).attr('data-id'));
+              var dependantId = parseInt($(this).attr('data-id').split('-')[0]);
+              var firstName = $(this).attr('data-id').split('-')[1];
+              var lastName = $(this).attr('data-id').split('-')[2];
                   if (!dependantsDeleteButtons.hasClass(helpers.disabledClass)){
                       dependantsDeleteButtons.addClass(helpers.disabledClass);
                     }
                 event.preventDefault();
-                personalProfile.refreshPage(dependants_helpers.deleteDependant(dependantId));
+                personalProfile.refreshPage(dependants_helpers.deleteDependant(dependantId, firstName, lastName));
             });
 
             dependantsAddButtons.on('click',function(event){
@@ -341,13 +345,16 @@
             dependantsSaveButtons.on('click',function(event){
                 event.preventDefault();
                 saved = true;
-                var dependantId = $(this).attr('data-id'),
+                var dependantId = parseInt($(this).attr('data-id').split('-')[0]),
+                firstName = $(this).attr('data-id').split('-')[1],
+                lastName = $(this).attr('data-id').split('-')[2],
                 taxReturnId = parseInt($(this).attr('data-tax-return-id')),
-                formContainer = dependantsSaveButtons.parent().parent();
+                formContainer = dependantsSaveButtons.parent().parent(),
+                formData = helpers.getFormData(formContainer);
                 if (!dependantsSaveButtons.hasClass(helpers.disabledClass)){
                     if(validateDependantsFormData(formContainer)){
                         dependantsSaveButtons.addClass(helpers.disabledClass);
-                        personalProfile.refreshPage(dependants_helpers.saveDependant(dependantId, taxReturnId, formContainer));
+                        personalProfile.refreshPage(dependants_helpers.saveDependant(dependantId, firstName, lastName, taxReturnId, formData));
                     }
                 }
             });
