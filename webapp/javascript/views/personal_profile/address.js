@@ -226,8 +226,6 @@
                 parentContainer.find('#province-' + taxReturnId).val(formData.province).prop('disabled', true);
                 //country
                 parentContainer.find('#country-' + taxReturnId).val(formData.country).prop('disabled', true);
-                //province of residence
-                parentContainer.find('#province-residence-' + taxReturnId).val(formData.provinceResidence).prop('disabled', true);
             } else {
                 //checkbox
                 checkbox.removeClass(helpers.activeClass);
