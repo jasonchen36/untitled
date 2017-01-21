@@ -165,7 +165,7 @@
                        name: 'Additional Documents',
                        checklistItemId: 0,
                        documents: that.checklist.additionalDocuments
-                   };
+                   }; 
                 }
                 else {
 
@@ -257,7 +257,7 @@
     function getDocumentChecklistObject(data){
         return {
             checklistItems: _.map(data.checklistitems, getDocumentChecklistItemObject),
-         //   additionalDocuments: data.additionalDocuments
+            additionalDocuments: data.additionalDocuments
         };
     }
 
