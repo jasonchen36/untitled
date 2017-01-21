@@ -95,9 +95,6 @@
             var formData = helpers.getMaritalStatusFormDataArray(maritalStatusForm);
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
-            var nameData = helpers.getFormDataArray(maritalStatusForm);
-            nameData = nameData[0];
-
 
             if(!validateMaritalStatusTiles(maritalStatusForm)){
                 window.location.hash = 'modal-personal-profile-popup';
