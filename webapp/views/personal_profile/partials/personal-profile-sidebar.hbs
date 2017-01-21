@@ -1,7 +1,10 @@
 <div class="hide-for-small small-12 medium-3 grid-end white-container position-fixed">
     <div class="wrapper-container side-info {{#if sidebarImage}}has-image{{/if}}">
         {{#if sidebarImage}}
-            <div data-id="" id="personal-profile-sidebar-image" class="{{sidebarImage}}" data-sidebar-image="{{sidebarImage}}"></div>
+            <div>
+                <div data-id="" id="personal-profile-sidebar-image-initial" class="{{sidebarImage}}" data-sidebar-image="{{sidebarImage}}"></div>
+                <div data-id="" id="personal-profile-sidebar-image" class="sidebar-image-rollover" data-sidebar-image="{{sidebarImage}}"></div>
+            </div>
         {{/if}}
         <h3 id="personal-profile-sidebar-header" class="font-yellow">{{sidebarTitle}}</h3>
         <p id="personal-profile-instructions" class="side-info-blurb">

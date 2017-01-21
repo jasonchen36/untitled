@@ -660,7 +660,48 @@
   @extend .i--icon-medical-moving;
 }
 
-.sidebar-image-rollover{
-  width:100%;
-  height:215px;
+#personal-profile-sidebar-image{
+  height: 215px;
+  width: 100%;
+  opacity:0;
+  transition: opacity 0.8s;
+}
+
+#personal-profile-sidebar-image.showfade{
+  opacity:1;
+}
+
+#personal-profile-sidebar-image-initial{
+  position: absolute;
+  height: 215px;
+  width: 80%;
+  opacity:1;
+  transition: opacity 0.8s;
+}
+
+#personal-profile-sidebar-image-initial.showfade{
+  opacity:0;
+}
+
+#tax-profile-sidebar-image{
+  height: 215px;
+  width: 100%;
+  opacity:0;
+  transition: opacity 0.8s;
+}
+
+#tax-profile-sidebar-image.showfade{
+  opacity:1;
+}
+
+#tax-profile-sidebar-image-initial{
+  position: absolute;
+  height: 215px;
+  width: 80%;
+  opacity:1;
+  transition: opacity 0.8s;
+}
+
+#tax-profile-sidebar-image-initial.showfade{
+  opacity:0;
 }

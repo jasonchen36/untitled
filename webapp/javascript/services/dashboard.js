@@ -179,8 +179,8 @@
                        canDelete = false;
                     }
 
-                    var jpegPattern = /.+\.(jpg|png)/;
-                    var textPattern = /.+\.(pdf|txt|doc|docx)/;
+                    var jpegPattern = /.+\.(jpg|png|JPG|PNG)/;
+                    var textPattern = /.+\.(pdf|txt|doc|docx|PDF|TXT|DOC|DOCX)/;
 
                     if(typeof dataObject.activeItem.documents !== 'undefined')
                     dataObject.activeItem.documents.forEach(function(entry) {
