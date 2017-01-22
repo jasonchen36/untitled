@@ -28,7 +28,7 @@
 
                 filerNameErrorLabel.removeClass(helpers.errorClass);
 
-                if(helpers.isEmpty(filerName.val())){
+                if(helpers.isEmpty(filerName.val()) && taxProfileId !== undefined){
                     filerName.addClass(helpers.errorClass);
                     filerNameErrorLabel.addClass(helpers.errorClass);
                     hasErrors = true;
