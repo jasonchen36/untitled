@@ -12,7 +12,7 @@
   this.hasDependant = function(pageData){
     var hasDependant = true;
     _.each(pageData.taxReturns, function (taxReturn) {
-            if (taxReturn.dependants.length === 0 && taxReturn.questions.answers[0].class.toLowerCase() === "Active".toLowerCase()){
+            if (taxReturn.dependants.length === 0 && taxReturn.questions.answers[0].answer === 1){
               hasDependant = false;
             }
     });
@@ -63,22 +63,28 @@
           });
   };
 
-  this.toggleDependants = function(tileId){
+  this.setDependantsOn = function(taxReturnId ,tileId){
       var pageData = personalProfile.getPageSession();
+
           _.each(pageData.taxReturns, function (taxReturn) {
               _.each(taxReturn.questions.answers, function (answer) {
-                  if (!answer.tax_return_id){
-                        if (answer.question_id.toString() === tileId.substr(0, tileId.length -4)){
-                            answer.class = "active";
-                        } else {
-                            answer.class = '';
-                        }
-                  } else if (answer.tax_return_id.toString() === tileId.substr(tileId.length - 3, tileId.length)){
-                        if (answer.question_id.toString() === tileId.substr(0, tileId.length -4)){
-                          answer.class = "active";
-                        } else {
-                          answer.class = '';
-                        }
+                  if (answer.tax_return_id == taxReturnId && answer.question_id == tileId){
+                      
+                      answer.answer = 1;
+                  }
+              });
+          });
+          return pageData;
+  };
+
+  this.setDependantsOff = function(taxReturnId ,tileId){
+      var pageData = personalProfile.getPageSession();
+
+          _.each(pageData.taxReturns, function (taxReturn) {
+              _.each(taxReturn.questions.answers, function (answer) {
+                  if (answer.tax_return_id == taxReturnId && answer.question_id == tileId){
+                      
+                      answer.answer = 0;
                   }
               });
           });
