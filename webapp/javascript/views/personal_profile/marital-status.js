@@ -76,8 +76,12 @@
                                 answer.class = '';
                                 if (answer.text && answer.text.toLowerCase() === 'yes'){
                                     answer.answer = 1;
-                                    answer.class = activeClass;
                                 }
+                                 
+                                // This is needed due to a bug on the server side only for new users
+                                answer.tax_return_id = taxReturn.taxReturnId;
+
+
                             });
                         });
                         personalProfile.goToNextPage(data);
