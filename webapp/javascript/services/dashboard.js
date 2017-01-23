@@ -367,6 +367,9 @@
                 .on('click', '#settings-cancel', function(event){
                     event.preventDefault();
                     changePageHelper('chat');
+                    document.getElementById('dashboard-upload-activate').classList.remove('active');
+                    document.getElementById('dashboard-my-return-activate').classList.remove('active');
+                    document.getElementById('dashboard-chat-activate').classList.add('active');
                 })
                 .on('click', '#dashboard-get-the-app', function (event) {
                     event.preventDefault();
