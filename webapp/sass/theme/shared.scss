@@ -188,6 +188,33 @@ textarea {
     color:$color-global-red;
   }
 }
+
+.button-more-container{
+  position:fixed;
+  bottom:0px;
+  width:100%;
+
+}
+
+.button-more{
+  height: 40px;
+  width: 140px;
+  margin: 0px auto;
+  background: $color-global-purple;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  .label-more{
+    position: absolute;
+    margin: 10px 30px;
+    color: white;
+  }
+  .i--icon-right-arrow{
+    transform: rotate(90deg);
+    margin: 10px 100px;
+    position: absolute;
+  }
+}
+
 //Dropdown styling
 //-----------------------------
 .drop-down {
