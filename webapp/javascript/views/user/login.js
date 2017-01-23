@@ -48,12 +48,12 @@
                         loginPasswordInput.addClass(errorClass);
                         loginEmailInput.addClass(errorClass);
                         loginErrorLabelPassword.addClass(errorClass);
-                        loginErrorLabelEmail.addClass(errorClass);
-                        loginErrorLabelEmail.html('Please check your e-mail address');
                         if (jqXHR.jqXHR.responseJSON.message[0].msg === 'You are a migrated user. Please reset your password.'){
                           loginErrorLabelPassword.html('You are a migrated user. Please reset your password.');
                         }else{
                           loginErrorLabelPassword.html('Please check your password');
+                          loginErrorLabelEmail.addClass(errorClass);
+                          loginErrorLabelEmail.html('Please check your e-mail address');
                         }
                         loginSubmit.removeClass(disabledClass);
                     });
