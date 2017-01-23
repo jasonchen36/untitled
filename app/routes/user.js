@@ -28,4 +28,10 @@ router.route('/logout')
     .get(userController.getLogoutPage)
     .put(userController.actionLogoutUser);
 
+router.route('/privacy-policy')
+    .get(authenticationMiddleware.redirectWithUserSession,userController.getPrivacyPage);
+
+router.route('/terms-conditions')
+    .get(authenticationMiddleware.redirectWithUserSession,userController.getTermsPage);
+
 module.exports = router;
