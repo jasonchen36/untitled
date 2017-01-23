@@ -8,7 +8,7 @@ Use helper classes to style elements that otherwise wouldn't need to have a full
 
 //main styles
 //-----------------------------
-$header-height: 85px;
+$header-height: 65px;
 $header-text-size: 1.5vw;
 
 * {
@@ -523,6 +523,13 @@ textarea {
   border-bottom:1px solid $color-global-border-grey;
   margin-left:20px;
   @extend .small-12, .medium-7;
+}
+
+.fixed-upload-header{
+  position: fixed;
+  background: $color-global-bg;
+  width: 77%;
+  z-index: 3;
 }
 
 .fixed-progress-bar{

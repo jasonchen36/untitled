@@ -163,7 +163,7 @@
         Handlebars.registerHelper('hasDependantsSelected', function(answers, options){
             var hasDependantsSelected = false;
             _.each(answers,function(entry){
-                if(entry.question_text.toLowerCase() === 'yes' && entry.class === 'active'){
+                if(entry.question_text.toLowerCase() === 'yes' && entry.answer == 1){
                     hasDependantsSelected = true;
                 }
             });

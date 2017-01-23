@@ -12,7 +12,7 @@
   this.hasDependant = function(pageData){
     var hasDependant = true;
     _.each(pageData.taxReturns, function (taxReturn) {
-            if (taxReturn.dependants.length === 0 && taxReturn.questions.answers[0].class.toLowerCase() === "Active".toLowerCase()){
+            if (taxReturn.dependants.length === 0 && taxReturn.questions.answers[0].answer === 1){
               hasDependant = false;
             }
     });
@@ -63,35 +63,46 @@
           });
   };
 
-  this.toggleDependants = function(tileId){
+  this.setDependantsOn = function(taxReturnId ,tileId){
       var pageData = personalProfile.getPageSession();
+
           _.each(pageData.taxReturns, function (taxReturn) {
               _.each(taxReturn.questions.answers, function (answer) {
-                  if (!answer.tax_return_id){
-                        if (answer.question_id.toString() === tileId.substr(0, tileId.length -4)){
-                          answer.addClass(helpers.activeClass);
-                        } else {
-                            answer.removeClass(helpers.activeClass);
-                        }
-                  } else if (answer.tax_return_id.toString() === tileId.substr(tileId.length - 3, tileId.length)){
-                        if (answer.question_id.toString() === tileId.substr(0, tileId.length -4)){
-                          answer.addClass(helpers.activeClass);
-                        } else {
-                          answer.removeClass(helpers.activeClass);
-                        }
+                  if (answer.tax_return_id == taxReturnId && answer.question_id == tileId){
+                      
+                      answer.answer = 1;
                   }
               });
           });
           return pageData;
   };
 
-  this.editDependant = function(dependantId){
+  this.setDependantsOff = function(taxReturnId ,tileId){
+      var pageData = personalProfile.getPageSession();
+
+          _.each(pageData.taxReturns, function (taxReturn) {
+              _.each(taxReturn.questions.answers, function (answer) {
+                  if (answer.tax_return_id == taxReturnId && answer.question_id == tileId){
+                      
+                      answer.answer = 0;
+                  }
+              });
+          });
+          return pageData;
+  };
+
+  this.editDependant = function(dependantId, firstName, lastName){
       var pageData = personalProfile.getPageSession(),
           hasSelectedDependant;
       _.each(pageData.taxReturns, function(taxReturn){
           hasSelectedDependant = _.find(taxReturn.dependants, {id: dependantId});
           if (hasSelectedDependant){
               taxReturn.dependantForm = hasSelectedDependant;
+          } else {
+            hasSelectedDependant = _.find(taxReturn.dependants, {first_name: firstName, last_name: lastName});
+            if(hasSelectedDependant){
+              taxReturn.dependantForm = hasSelectedDependant;
+            }
           }
       });
       return pageData;
@@ -107,10 +118,9 @@
       return pageData;
   };
 
-  this.saveDependant = function(dependantId, taxReturnId, formContainer){
+  this.saveDependant = function(dependantId, firstName, lastName, taxReturnId, formData){
               var sessionData = personalProfile.getPersonalProfileSession(),
-                  pageData = personalProfile.getPageSession(),
-                  formData = helpers.getFormData(formContainer);
+                  pageData = personalProfile.getPageSession();
               if (dependantId){
                   //update dependant
                   formData.id = parseInt(dependantId);
@@ -129,6 +139,21 @@
                       }
                     });
                   });
+              } else if((firstName) && (lastName)){
+                _.each(pageData.taxReturns, function(taxReturn){
+                  _.each(taxReturn.dependants, function (dependant) {
+                    if (parseInt(taxReturn.taxReturnId) === taxReturnId){
+                      delete taxReturn.dependantForm;
+                      if ((dependant.first_name === firstName) && (dependant.last_name === lastName)){
+                        dependant.first_name = formData.firstName;
+                        dependant.last_name = formData.lastName;
+                        dependant.date_of_birth = formData.dateOfBirth;
+                        dependant.relationship = formData.relationship;
+                        dependant.is_shared = formData.isShared;
+                      }
+                    }
+                  });
+                });
               } else {
                 _.each(pageData.taxReturns, function(taxReturn){
                     if (parseInt(taxReturn.taxReturnId) === taxReturnId){
@@ -150,13 +175,18 @@
             return pageData;
    };
 
-   this.deleteDependant = function(dependantId){
+   this.deleteDependant = function(dependantId, firstName, lastName){
           var sessionData = personalProfile.getPersonalProfileSession(),
               pageData = personalProfile.getPageSession();
               _.each(pageData.taxReturns, function(taxReturn){
                   hasSelectedDependant = _.find(taxReturn.dependants, {id: dependantId});
                     if (hasSelectedDependant){
                       hasSelectedDependant.will_delete = true;
+                    }else {
+                      hasSelectedDependant = _.find(taxReturn.dependants, {first_name: firstName, last_name: lastName});
+                        if(hasSelectedDependant){
+                            hasSelectedDependant.will_delete = true;
+                        }
                     }
               });
               return pageData;

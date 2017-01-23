@@ -17,6 +17,9 @@
     <div id="upload-checklist-item-0" class="upload-checklist-item" data-id="0">
         <div class="label-document-name float-left display-inline-block">Additional Documents</div>
         <div class="i--icon-right-arrow float-right display-inline-block"></div>
+        <p class="label-document-count display-inline-block float-right">{{count documentChecklist.additionalDocuments}}</p>
+
+
     </div>
 </section>
 {{#if isPreview}}
@@ -30,7 +33,7 @@
     </section>
 {{else}}
     <section id="dashboard-upload" class="add-right-padding">
-        <div class="border-bottom-dark-grey">
+        <div class="border-bottom-dark-grey fixed-upload-header">
             <svg id="dashboard-upload-success" class="checkmark {{#if notUploaded}}hidden{{/if}}" viewBox="0 0 52 52">
                 <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none"></circle>
                 <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"></path>
@@ -38,32 +41,34 @@
             <p id="label-upload-instructions" class="display-inline-block side-info-blurb label-instruction-header">After you have finished uploading all your documents you can submit your uploads to TaxPlan by clicking “Start My Return”</p>
             <button id="tax-return-submit" class="green header long {{#compare taxReturns.0.status.id 4 operator=">="}} hidden{{/compare}}">Start My Return</button>
         </div>
-        {{#if activeItem}}
-            <h1 class="label-activeItem-name display-inline-block no-margin-bottom">{{activeItem.name}}</h1>
-            <div class="label-activeItem-subtitle f--futura-book add-margin-left display-inline-block">Statement of Renumeration Paid</div>
-            <div>
-                <p class="f--futura-book display-inline-block">Documents Required for:</p>
-                <p class="f--futura-book font-red display-inline-block add-margin-left">{{#each activeItem.filers}}{{name}}{{/each}}</p>
-            </div>
-            <div id="dashboard-upload-progress" class="progress-bar"></div>
-            <form id="dashboard-upload-form" enctype="multipart/form-data">
-                <p class="label-instruction-upload">Drop files here to upload</p>
-                <p class="f--futura-book">or</p>
-                <input id="dashboard-upload-input" type="file" name="uploadFileName" data-url="{{uploadUrl}}" >
-                <input id="dashboard-upload-checklist-item" type="hidden" name="checklistItemId" value="{{activeItem.checklistItemId}}" >
-                <button id="dashboard-upload-select" type="button" class="purple long">Select Files</button>
-                <button id="dashboard-upload-submit" type="submit" class="hidden long purple">Upload</button>
-                <button id="dashboard-upload-cancel" type="reset" class="hidden long purple">Cancel</button>
-            </form>
-            {{#each activeItem.documents}}
-                {{>dashboard-document-tile}}
-            {{/each}}
-        {{else}}
-            <div id="container-upload-explained">
-                <h1>Upload Explained</h1>
-                <p class="side-info-blurb">Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis mollis, est non commodo luctus, nisi erat porttitor ligula non commodo luctus.</p>
-            </div>
-        {{/if}}
+        <div class="add-padding-for-header">
+            {{#if activeItem}}
+                <h1 class="label-activeItem-name display-inline-block no-margin-bottom">{{activeItem.name}}</h1>
+                <div class="label-activeItem-subtitle f--futura-book add-margin-left display-inline-block">Statement of Renumeration Paid</div>
+                <div>
+                    <p class="f--futura-book display-inline-block">Documents Required for:</p>
+                    <p class="f--futura-book font-red display-inline-block add-margin-left">{{#each activeItem.filers}}{{name}}{{/each}}</p>
+                </div>
+                <div id="dashboard-upload-progress" class="progress-bar"></div>
+                <form id="dashboard-upload-form" enctype="multipart/form-data">
+                    <p class="label-instruction-upload">Drop files here to upload</p>
+                    <p class="f--futura-book">or</p>
+                    <input id="dashboard-upload-input" type="file" name="uploadFileName" data-url="{{uploadUrl}}" >
+                    <input id="dashboard-upload-checklist-item" type="hidden" name="checklistItemId" value="{{activeItem.checklistItemId}}" >
+                    <button id="dashboard-upload-select" type="button" class="purple long">Select Files</button>
+                    <button id="dashboard-upload-submit" type="submit" class="hidden long purple">Upload</button>
+                    <button id="dashboard-upload-cancel" type="reset" class="hidden long purple">Cancel</button>
+                </form>
+                {{#each activeItem.documents}}
+                    {{>dashboard-document-tile}}
+                {{/each}}
+            {{else}}
+                <div id="container-upload-explained">
+                    <h1>Upload Explained</h1>
+                    <p class="side-info-blurb">Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis mollis, est non commodo luctus, nisi erat porttitor ligula non commodo luctus.</p>
+                </div>
+            {{/if}}
+        </div>
     </section>
 {{/if}}
 {{>dashboard-submit-return-modal}}

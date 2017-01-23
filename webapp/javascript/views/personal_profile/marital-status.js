@@ -76,8 +76,12 @@
                                 answer.class = '';
                                 if (answer.text && answer.text.toLowerCase() === 'yes'){
                                     answer.answer = 1;
-                                    answer.class = activeClass;
                                 }
+                                 
+                                // This is needed due to a bug on the server side only for new users
+                                answer.tax_return_id = taxReturn.taxReturnId;
+
+
                             });
                         });
                         personalProfile.goToNextPage(data);
@@ -95,9 +99,6 @@
             var formData = helpers.getMaritalStatusFormDataArray(maritalStatusForm);
             var sessionData = personalProfile.getPersonalProfileSession();
             var accountInfo = helpers.getAccountInformation(sessionData);
-            var nameData = helpers.getFormDataArray(maritalStatusForm);
-            nameData = nameData[0];
-
 
             if(!validateMaritalStatusTiles(maritalStatusForm)){
                 window.location.hash = 'modal-personal-profile-popup';

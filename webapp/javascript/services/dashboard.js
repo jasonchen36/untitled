@@ -165,7 +165,7 @@
                        name: 'Additional Documents',
                        checklistItemId: 0,
                        documents: that.checklist.additionalDocuments
-                   };
+                   }; 
                 }
                 else {
 
@@ -179,8 +179,8 @@
                        canDelete = false;
                     }
 
-                    var jpegPattern = /.+\.(jpg|png)/;
-                    var textPattern = /.+\.(pdf|txt|doc|docx)/;
+                    var jpegPattern = /.+\.(jpg|png|JPG|PNG)/;
+                    var textPattern = /.+\.(pdf|txt|doc|docx|PDF|TXT|DOC|DOCX)/;
 
                     if(typeof dataObject.activeItem.documents !== 'undefined')
                     dataObject.activeItem.documents.forEach(function(entry) {
@@ -257,7 +257,7 @@
     function getDocumentChecklistObject(data){
         return {
             checklistItems: _.map(data.checklistitems, getDocumentChecklistItemObject),
-         //   additionalDocuments: data.additionalDocuments
+            additionalDocuments: data.additionalDocuments
         };
     }
 

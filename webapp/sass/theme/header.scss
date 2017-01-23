@@ -3,7 +3,7 @@ header {
   .i--icon-logo {
     height: 40px;
     width: 180px;
-    margin: 20px;
+    margin: 10px;
     display: inline-block;
   }
   .i--icon-default-user {
@@ -20,7 +20,7 @@ header {
   float: right;
   color:$color-header-lightgrey;
   font-size: 0.9vw;
-  padding: 15px;
+  padding: 5px;
   &.dark-grey{
     color:$color-global-mid-grey;
   }
