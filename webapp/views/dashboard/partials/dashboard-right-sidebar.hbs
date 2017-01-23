@@ -1,29 +1,29 @@
-<!--TODO: Need show/hide for Taxplan Description, TaxPro Description, or Page Description -->
-{{#if true}}
-<div class="small-3 medium-3 grid-end">
-    <div id="container-dashboard-welcome">
-        <div class="i--icon-logo"></div>
-        <div class="horizontal-center border-top-light-gray add-top-padding add-top-margin label-welcome">
-            WELCOME TO TAXPLAN</div>
-        <p class="side-info-blurb">Hi {{users.0.firstName }}, thank you so much for taking the time to get to know TAXplan. My name is Gennaro and I wanted to introduce myself as co-founder and CEO of TAXplan Canada.  I want to personally welcome you to TAXplan and our growing community of online tax filers who have better things to do than spend time worrying about their tax returns.  We can’t wait to work with you.  We believe that smart tax planning and tax preparation go hand in hand.  We are here to take the guess work out of which tax credits you’re eligible for, how to reduce the amount of tax you owe and get you on your way to receiving the best possible tax results.  With our customized tax item checklist and team of highly trained tax pros and financial planners we ensure expert results at a low fee to you.  Please don’t hesitate to reach out if you have any question or if you simply want to chat with me by phone.  Our toll free telephone number is 1-855-610-PLAN (7526). Hope to hear from you soon.</p>
-    </div>
-</div>
-{{else if false}}
-<div class="small-3 medium-3 grid-end">
-    <div id="container-dashboard-taxpro">
-        <div class="i--icon-message-taxplan"></div>
-        <div class="container-taxpro-introduction">
-            <p class="no-margin label-introduction-line">Your TaxPro</p>
-            <p class="no-margin label-introduction-name font-yellow">Gennaro DeLuca</p>
-            <p class="no-margin label-introduction-line">Certified Something</p>
-            <p class="no-margin description-symbol font-yellow">+</p>
+{{#if taxProId}}
+    <div class="small-3 medium-3 grid-end">
+        <div id="container-dashboard-taxpro">
+            <div class="i--icon-message-taxplan"></div>
+            <div class="container-taxpro-introduction">
+                <p class="no-margin label-introduction-line">Your TaxPro</p>
+                <p class="no-margin label-introduction-name font-yellow">{{taxProName}}</p>
+                <p class="no-margin label-introduction-line">{{taxProTitle}}</p>
+                <p class="no-margin description-symbol font-yellow">+</p>
+            </div>
+            <p class="label-taxpro-description">
+            {{taxProDescription}}
+            </p>
         </div>
-        <p class="label-taxpro-description">
-            Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-        </p>
     </div>
-</div>
-{{else if hasDescription}}
+{{else}}
+    <div class="small-3 medium-3 grid-end">
+        <div id="container-dashboard-welcome">
+            <div class="i--icon-logo"></div>
+            <div class="horizontal-center border-top-light-gray add-top-padding add-top-margin label-welcome">
+                WELCOME TO TAXPLAN</div>
+            <p class="side-info-blurb">Hi {{users.0.firstName }}, thank you so much for taking the time to get to know TAXplan. My name is Gennaro and I wanted to introduce myself as co-founder and CEO of TAXplan Canada.  I want to personally welcome you to TAXplan and our growing community of online tax filers who have better things to do than spend time worrying about their tax returns.  We can’t wait to work with you.  We believe that smart tax planning and tax preparation go hand in hand.  We are here to take the guess work out of which tax credits you’re eligible for, how to reduce the amount of tax you owe and get you on your way to receiving the best possible tax results.  With our customized tax item checklist and team of highly trained tax pros and financial planners we ensure expert results at a low fee to you.  Please don’t hesitate to reach out if you have any question or if you simply want to chat with me by phone.  Our toll free telephone number is 1-855-610-PLAN (7526). Hope to hear from you soon.</p>
+        </div>
+    </div>
+{{/if}}
+{{#if hasDescription}}
 <div class="small-3 medium-3 grid-end white-container">
         <div id="container-dashboard-side-info-description">
             <h3 class="text-left">Direct Deposit</h3>
