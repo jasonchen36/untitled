@@ -163,9 +163,7 @@
             //set initial active item
             if (!initialized){
                 initialized = true;
-                if (dashboard.checklist.checklistItems.length > 0){
-                   setActiveItem(dashboard.checklist.checklistItems[0].checklistItemId);
-                } 
+                setActiveItem(null);
             }
 
             //variables
