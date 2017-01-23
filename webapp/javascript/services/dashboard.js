@@ -364,6 +364,10 @@
                     event.preventDefault();
                     changePageHelper('settings');
                 })
+                .on('click', '#settings-cancel', function(event){
+                    event.preventDefault();
+                    changePageHelper('chat');
+                })
                 .on('click', '#dashboard-get-the-app', function (event) {
                     event.preventDefault();
                     //todo, put in real url
