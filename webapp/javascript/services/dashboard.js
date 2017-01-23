@@ -18,7 +18,8 @@
     this.dashboardOrder = [
         'chat',
         'upload',
-        'my-return'
+        'my-return',
+        'settings'
     ];
 
 
@@ -67,7 +68,10 @@
                 changePageChat();
             } else if(pageName == 'upload')  {
                changePageUpload();
-            }  else  {
+            }else if(pageName == 'settings')  {
+                changePageSettings();
+            }
+            else  {
                 that.changePage(pageName);
             }
         }
@@ -300,8 +304,10 @@
         if(newPage == 'chat')  {
             changePageChat();
         } else if(newPage == 'upload')  {
-           changePageUpload();
-        }  else  {
+            changePageUpload();
+        } else if(newPage == 'settings'){
+            changePageSettings();
+        } else  {
             that.changePage(newPage);
         }
 
@@ -322,6 +328,11 @@
         }
     }
 
+    function changePageSettings() {
+        var dataObject = that.getUserSession();
+        dataObject.currentPage = "settings";
+        that.changePage('settings', dataObject);
+    }
 
     this.init = function(){
         if (landingPageContainer.length > 0) {
@@ -348,6 +359,17 @@
                     $(this).addClass(activeClass);
                     document.getElementById('dashboard-chat-activate').classList.remove('active');
                     document.getElementById('dashboard-upload-activate').classList.remove('active');
+                })
+                .on('click', '#header-settings', function(event){
+                    event.preventDefault();
+                    changePageHelper('settings');
+                })
+                .on('click', '#settings-cancel', function(event){
+                    event.preventDefault();
+                    changePageHelper('chat');
+                    document.getElementById('dashboard-upload-activate').classList.remove('active');
+                    document.getElementById('dashboard-my-return-activate').classList.remove('active');
+                    document.getElementById('dashboard-chat-activate').classList.add('active');
                 })
                 .on('click', '#dashboard-get-the-app', function (event) {
                     event.preventDefault();

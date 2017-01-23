@@ -319,6 +319,13 @@ textarea {
   @extend .add-padding-for-header;
 }
 
+.main-container-no-padding{
+  background: $color-global-bg;
+  position: relative;
+  overflow-y: auto;
+  min-height:100%;
+}
+
 .yellow-container{
   background: $color-global-yellow;
   min-height:100%;
