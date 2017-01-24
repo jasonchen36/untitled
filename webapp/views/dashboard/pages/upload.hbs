@@ -10,13 +10,11 @@
        {{#compare ../activeItem.checklistItemId checklistItemId operator="=="}}active{{/compare}}
          " data-id="{{checklistItemId}}">
             <div class="label-document-name float-left display-inline-block">{{name}}</div>
-            <div class="i--icon-right-arrow float-right display-inline-block"></div>
             <p class="label-document-count display-inline-block float-right">{{count documents}}</p>
         </div>
     {{/each}}
     <div id="upload-checklist-item-0" class="upload-checklist-item" data-id="0">
         <div class="label-document-name float-left display-inline-block">Additional Documents</div>
-        <div class="i--icon-right-arrow float-right display-inline-block"></div>
         <p class="label-document-count display-inline-block float-right">{{count documentChecklist.additionalDocuments}}</p>
 
 
@@ -44,6 +42,7 @@
         <div class="add-padding-for-header">
             {{#if activeItem}}
                 <h1 class="label-activeItem-name display-inline-block no-margin-bottom">{{activeItem.name}}</h1>
+                <div id="upload-checklist-item-info-button" class="i--icon-question"></div>
                 <div class="label-activeItem-subtitle f--futura-book add-margin-left display-inline-block">Statement of Renumeration Paid</div>
                 <div>
                     <p class="f--futura-book display-inline-block">Documents Required for:</p>
@@ -73,3 +72,4 @@
 {{/if}}
 {{>dashboard-submit-return-modal}}
 {{>dashboard-delete-file-modal}}
+{{>dashboard-checklist-description-modal}}

@@ -147,6 +147,15 @@
             $(document).ready(function(){
                 $(this).scrollTop(0);
             });
+
+            $(document).scroll(function() {
+                if($(document)[0].body.clientHeight + $(this).scrollTop()  >= $(this).height()) {
+                   $('#button-more').hide();
+                }else{
+                    $('#button-more').show();
+                }
+            });
+
         }
     };
 

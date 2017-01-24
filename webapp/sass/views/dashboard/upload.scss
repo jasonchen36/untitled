@@ -132,6 +132,7 @@
   display: inline-block;
   width: 218px;
   height: 282px;
+  margin-right: 20px;
   vertical-align: top;
   background: $color-global-white;
   .i--icon-red-x{
@@ -142,6 +143,14 @@
     float: right;
     height:35px;
     width:35px;
+  }
+  .i--icon-garbage-can{
+    display: inline-block;
+    position: absolute;
+    right: -10;
+    bottom: -10;
+    height: 35px;
+    width: 35px;
   }
   .fa {
     font-size: 5rem;
@@ -243,4 +252,12 @@
   100% {
     box-shadow: inset 0px 0px 0px 30px #88AC60;
   }
+}
+
+.i--icon-question{
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+  display: inline-block;
+  cursor: pointer;
 }

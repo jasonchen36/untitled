@@ -22,6 +22,7 @@
         fileUploadSuccess,
         deleteFileForm,
         currentDeleteFileElement,
+        buttonChecklistDescription,
         errorClass = helpers.errorClass,
         hiddenClass = helpers.hiddenClass,
         initialized = false;
@@ -102,6 +103,10 @@
         window.location.hash = 'modal-tax-return-submit';
     }
 
+    function showChecklistDescriptionModal(){
+        window.location.hash = 'modal-checklist-description';
+    }
+
     function submitReturn(){     
 
         apiservice.submitReturn(userObject, userObject.quoteId)
@@ -174,6 +179,7 @@
             taxReturnForm = $('#modal-tax-return-submit-form');
             fileUploadSuccess = $('#dashboard-upload-success');
             deleteFileForm = $('#modal-delete-file-submit-form');
+            buttonChecklistDescription = $('#upload-checklist-item-info-button');
             var userSession = dashboard.getUserSession();
 
             //listeners
@@ -195,6 +201,11 @@
             documentChecklistPdf.on('click',function(event){
                 event.preventDefault();
                 downloadPdfChecklist();
+            });
+
+            buttonChecklistDescription.on('click',function(event){
+                event.preventDefault();
+                showChecklistDescriptionModal();
             });
 
             $(document)

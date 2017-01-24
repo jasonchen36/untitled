@@ -77,15 +77,19 @@
                 .then(function () {
                     var promiseSaveAnswers = updateTileAnswers(formData),
                         promiseGetAnswers = [],
+                        promiseArrayCategory = [],
                         promiseGetQuestions = apiService.getQuestions(sessionData, nextScreenCategoryId);
                     _.each(pageData.taxReturns, function (entry) {
                         promiseGetAnswers.push(apiService.getAddresses(sessionData, entry.taxReturnId));
                     });
+                    var ajaxCategory = apiService.getCategoryById(sessionData, 12);
+                    promiseArrayCategory.push(ajaxCategory);
                     return Promise.all([
                         Promise.all(promiseSaveAnswers),
                         Promise.all(promiseGetAnswers),
                         promiseGetQuestions,
-                        apiService.getTaxReturns(sessionData)
+                        apiService.getTaxReturns(sessionData),
+                        Promise.all(promiseArrayCategory)
                     ]);
                 })
                 .then(function (response) {
@@ -93,6 +97,7 @@
                     data.accountInfo = accountInfo;
                     data.taxReturns = response[3];
                     data.taxReturns.questions = response[2];
+                    data.taxReturns.category = response[4];
                     _.each(data.taxReturns, function (taxReturn, index) {
                         taxReturn.address = response[1][index][0];
                     });
@@ -139,7 +144,8 @@
                         var data = {};
                         data.accountInfo = accountInfo;
                         data.taxReturns = response[3];
-                        data.taxReturns.questions = response[2];
+                        data.taxReturns.questions = [];
+                        data.taxReturns.questions[0] = response[2];
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){
                             taxReturn.firstName = nameData[index];
