@@ -26,7 +26,6 @@
             _.each(taxReturn.questions.answers, function (answer) {
 
               if (answer.answer === 1 || answer.answer === 0){
-                console.log("tileCount");
                 tileCount++;
               }
            });
@@ -58,7 +57,7 @@
            if (!dependantsSubmit.hasClass(disabledClass)) {
               var hasAlert = false;
               var pageData = personalProfile.getPageSession();
-     
+
               if(!validateDependantsTiles()) {
                   window.location.hash = 'modal-personal-profile-popup';
                   hasAlert = true;
@@ -115,7 +114,7 @@
                     ajax.ajaxCatch(jqXHR, textStatus, errorThrown);
                     dependantsSubmit.removeClass(disabledClass);
                 });
-                
+
               }
           }
       }
@@ -199,7 +198,7 @@
                     .catch(function(jqXHR,textStatus,errorThrown){
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         dependantsSubmit.removeClass(disabledClass);
-                    }); 
+                    });
                }
        }
 
