@@ -72,6 +72,32 @@ dashboardPages.getDashboardPage = function(req, res, next){
 
 };
 
+dashboardPages.getPrivacyPage = function(req, res, next){
+    res.render('user/privacy-policy', {
+        meta: {
+            pageTitle: util.globals.metaTitlePrefix+'Privacy Policy'
+        },
+        account: session.getTaxProfileSession(req),
+        user: session.getUserProfileSession(req),
+        locals:
+        {
+            apiUrl: process.env.API_URL
+        }
+    });
+};
 
+dashboardPages.getTermsPage = function(req, res, next){
+    res.render('user/terms-and-conditions', {
+        meta: {
+            pageTitle: util.globals.metaTitlePrefix+'Terms and Conditions'
+        },
+        account: session.getTaxProfileSession(req),
+        user: session.getUserProfileSession(req),
+        locals:
+        {
+            apiUrl: process.env.API_URL
+        }
+    });
+};
 
 module.exports = dashboardPages;

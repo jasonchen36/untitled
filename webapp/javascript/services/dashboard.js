@@ -253,6 +253,7 @@
             checklistItemId: data.checklist_item_id,
             name: data.name,
             documents: data.documents,
+            description: data.description,
             filers: _.map(data.filers, getDocumentChecklistFilerName)
         };
     }
