@@ -24,7 +24,9 @@
               tileCount = 0;
           _.each(pageData.taxReturns, function(taxReturn){
             _.each(taxReturn.questions.answers, function (answer) {
-              if (answer.class === "active"){
+
+              if (answer.answer === 1 || answer.answer === 0){
+                console.log("tileCount");
                 tileCount++;
               }
            });
@@ -57,6 +59,10 @@
               var hasAlert = false;
               var pageData = personalProfile.getPageSession();
      
+              if(!validateDependantsTiles()) {
+                  window.location.hash = 'modal-personal-profile-popup';
+                  hasAlert = true;
+              } else {
               if (saved === false){
                 $('#popup-blurb').html('Please Save or Cancel your dependant info before moving forward.');
                 window.location.hash = 'modal-personal-profile-popup';
@@ -67,6 +73,8 @@
                 $('#popup-blurb').html('Please add dependants for each filer with dependants.');
                 window.location.hash = 'modal-personal-profile-popup';
               }
+              }
+
               if ((!dependantsSubmit.hasClass(disabledClass)) && (hasDependant === true) && ((!saved) || saved === true) && hasAlert === false){
                   var sessionData = personalProfile.getPersonalProfileSession(),
                       accountInfo = helpers.getAccountInformation(sessionData),
