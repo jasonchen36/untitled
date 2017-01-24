@@ -43,6 +43,34 @@ userPages.getLoginPage = function(req, res, next){
     });
 };
 
+userPages.getPrivacyPage = function(req, res, next){
+    res.render('user/privacy-policy', {
+        meta: {
+            pageTitle: util.globals.metaTitlePrefix+'Privacy Policy'
+        },
+        account: session.getTaxProfileSession(req),
+        user: session.getUserProfileSession(req),
+        locals:
+        {
+            apiUrl: process.env.API_URL
+        }
+    });
+};
+
+userPages.getTermsPage = function(req, res, next){
+    res.render('user/terms-and-conditions', {
+        meta: {
+            pageTitle: util.globals.metaTitlePrefix+'Terms and Conditions'
+        },
+        account: session.getTaxProfileSession(req),
+        user: session.getUserProfileSession(req),
+        locals:
+        {
+            apiUrl: process.env.API_URL
+        }
+    });
+};
+
 userPages.actionLoginUser = function(req, res, next){
     req.checkBody('action').notEmpty();
     req.checkBody('password').notEmpty();
