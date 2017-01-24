@@ -53,11 +53,10 @@
         };
 
        function submitDependants(){
-
            if (!dependantsSubmit.hasClass(disabledClass)) {
               var hasAlert = false;
               var pageData = personalProfile.getPageSession();
-
+              var hasDependant = dependants_helpers.hasDependant(pageData);
               if(!validateDependantsTiles()) {
                   window.location.hash = 'modal-personal-profile-popup';
                   hasAlert = true;
@@ -67,7 +66,7 @@
                 window.location.hash = 'modal-personal-profile-popup';
                 hasAlert = true;
               }
-              var hasDependant = dependants_helpers.hasDependant(pageData);
+
               if (hasDependant === false){
                 $('#popup-blurb').html('Please add dependants for each filer with dependants.');
                 window.location.hash = 'modal-personal-profile-popup';
