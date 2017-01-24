@@ -529,6 +529,12 @@ textarea {
   margin: auto 0          !important;
   top: calc(50% - 150px)  !important;
   left: calc(50% - 150px) !important;
+  &.checklist-popup{
+    height: 600px;
+    width: 600px          !important;
+    top: calc(50% - 300px)  !important;
+    left: calc(50% - 300px) !important;
+  }
 }
 
 .label-popup-header{
