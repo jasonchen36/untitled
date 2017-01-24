@@ -1,6 +1,4 @@
-<div id="container-document-tile" class="add-margin-right add-bottom-margin" data-id="{{documentId}}" data-active-item-id="{{checkListItemId}}">
-    <!--TODO: Need to bind image and document info-->
-    <div class="dashboard-upload-delete i--icon-red-x {{#if hideDelete}} hidden {{/if}}" data-id="{{documentId}}" data-quote-id="{{quoteId}}"></div>
+<div id="container-document-tile" class="add-bottom-margin" data-id="{{documentId}}" data-active-item-id="{{checkListItemId}}">
     {{#if hasDocThumbnail}}
         {{{documentImageHelper thumbnailUrl name}}}
     {{else}}
@@ -17,4 +15,5 @@
             <p class="no-margin f--futura-book">{{createdAt}}</p>
         </div>
     </div>
+    <div class="dashboard-upload-delete i--icon-garbage-can {{#if hideDelete}} hidden {{/if}}" data-id="{{documentId}}" data-quote-id="{{quoteId}}"></div>
 </div>
