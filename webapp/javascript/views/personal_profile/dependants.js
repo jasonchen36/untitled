@@ -139,7 +139,8 @@
                         var data = {};
                         data.accountInfo = accountInfo;
                         data.taxReturns = response[3];
-                        data.taxReturns.questions = response[2];
+                        data.taxReturns.questions = [];
+                        data.taxReturns.questions[0] = response[2];
                         var index = 0;
                         _.each(data.taxReturns, function(taxReturn){
                             taxReturn.firstName = nameData[index];
