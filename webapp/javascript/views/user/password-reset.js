@@ -28,10 +28,10 @@
                     .then(function() {
                         var promiseArray =  [];
 
-                       var ajaxCall = apiservice.putRequestReset(apiUrl, 
+                       var ajaxCall = apiservice.putRequestReset(apiUrl,
                                                                  formData.email);
                        promiseArray.push(ajaxCall);
-                      
+
                        return Promise.all(promiseArray);
 
                     })

@@ -24,13 +24,14 @@
 
     };
 
-    this.putEmail = function(userId, apiurl, email){
+    this.putEmailPassword = function(userId, apiurl, email, password){
         var uri = apiurl + 'users/' + userId;
         var ajaxPromise = ajax.ajax(
             'PUT',
             uri,
             {
-                email: email
+                email: email,
+                password: password
             },
             'json-text'
         );
