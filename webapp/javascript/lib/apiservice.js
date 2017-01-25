@@ -24,6 +24,19 @@
 
     };
 
+    this.putEmail = function(userId, apiurl, email){
+        var uri = apiurl + 'users/' + userId;
+        var ajaxPromise = ajax.ajax(
+            'PUT',
+            uri,
+            {
+                email: email
+            },
+            'json-text'
+        );
+        return ajaxPromise;
+    };
+
 
     this.putAuthorizedPasswordReset = function(apiurl, password, token){
 
