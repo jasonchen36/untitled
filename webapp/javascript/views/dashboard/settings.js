@@ -7,13 +7,13 @@
         userSettingsForm = $('#user-settings-form'),
         settingsEmailInput = $('#settings-email'),
         settingsPasswordInput = $('#settings-password'),
-        settingsConfirmPasswordInput = $('settings-confirm-password'),
+        settingsConfirmPasswordInput = $('#settings-confirm-password'),
         settingsSubmit = $('#settings-submit'),
-        settingsCancel = $('settings-cancel'),
+        settingsCancel = $('#settings-cancel'),
         settingsEmailErrorLabel = $('#label-error-settings-email'),
         settingsPasswordErrorLabel = $('#label-error-settings-new-password'),
         settingsConfirmPasswordErrorLabel = $('#label-error-settings-confirm-password'),
-        userId = userSettingsForm.attr('data-id'),
+        userId = userSettingsForm.attr('#data-id'),
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
