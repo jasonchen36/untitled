@@ -18,10 +18,10 @@
                         </h1>
                          <section data-id="{{taxReturnId}}" class="full-screen-grid-container taxplan-tile-container">
 
-                             <div id="yes-{{taxReturnId}}" data-tr-id="{{taxReturnId}}"  data-id="{{{questions.answers.0.question_id}}}" class="taxplan-tile small-button dependants-button-yes {{#if questions.answers.0.answer}}active{{/if}} " data-instructions="{{{questions.answers.0.instructions}}}"  data-text="Yes"  data-type="Bool">
+                             <div id="yes-{{taxReturnId}}" data-tr-id="{{taxReturnId}}"  data-id="{{{questions.answers.0.question_id}}}" class="taxplan-tile small-button dependants-button-yes {{#compare questions.answers.0.answer 1 operator="==="}}active{{/compare}}" data-instructions="{{{questions.answers.0.instructions}}}"  data-text="Yes"  data-type="Bool">
     <span class="taxplan-tile-label">Yes</span>
                             </div>
-                             <div id="no-{{taxReturnId}}"  data-tr-id="{{taxReturnId}}"  data-id="{{{questions.answers.0.question_id}}}" class="taxplan-tile small-button dependants-button-no {{#if questions.answers.0.answer}}{{else}}active{{/if}} " data-instructions="{{{questions.answers.0.instructions}}}" data-text="No"  data-type="Bool">
+                             <div id="no-{{taxReturnId}}"  data-tr-id="{{taxReturnId}}"  data-id="{{{questions.answers.0.question_id}}}" class="taxplan-tile small-button dependants-button-no {{#compare questions.answers.0.answer 0 operator="==="}}active{{/compare}}" data-instructions="{{{questions.answers.0.instructions}}}" data-text="No"  data-type="Bool">
     <span class="taxplan-tile-label">No</span>
                             </div>
            

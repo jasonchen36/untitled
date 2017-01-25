@@ -24,7 +24,8 @@
               tileCount = 0;
           _.each(pageData.taxReturns, function(taxReturn){
             _.each(taxReturn.questions.answers, function (answer) {
-              if (answer.class === "active"){
+
+              if (answer.answer === 1 || answer.answer === 0){
                 tileCount++;
               }
            });
@@ -52,21 +53,26 @@
         };
 
        function submitDependants(){
-
            if (!dependantsSubmit.hasClass(disabledClass)) {
               var hasAlert = false;
               var pageData = personalProfile.getPageSession();
-     
+              var hasDependant = dependants_helpers.hasDependant(pageData);
+              if(!validateDependantsTiles()) {
+                  window.location.hash = 'modal-personal-profile-popup';
+                  hasAlert = true;
+              } else {
               if (saved === false){
                 $('#popup-blurb').html('Please Save or Cancel your dependant info before moving forward.');
                 window.location.hash = 'modal-personal-profile-popup';
                 hasAlert = true;
               }
-              var hasDependant = dependants_helpers.hasDependant(pageData);
+
               if (hasDependant === false){
                 $('#popup-blurb').html('Please add dependants for each filer with dependants.');
                 window.location.hash = 'modal-personal-profile-popup';
               }
+              }
+
               if ((!dependantsSubmit.hasClass(disabledClass)) && (hasDependant === true) && ((!saved) || saved === true) && hasAlert === false){
                   var sessionData = personalProfile.getPersonalProfileSession(),
                       accountInfo = helpers.getAccountInformation(sessionData),
@@ -107,7 +113,7 @@
                     ajax.ajaxCatch(jqXHR, textStatus, errorThrown);
                     dependantsSubmit.removeClass(disabledClass);
                 });
-                
+
               }
           }
       }
@@ -191,7 +197,7 @@
                     .catch(function(jqXHR,textStatus,errorThrown){
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         dependantsSubmit.removeClass(disabledClass);
-                    }); 
+                    });
                }
        }
 

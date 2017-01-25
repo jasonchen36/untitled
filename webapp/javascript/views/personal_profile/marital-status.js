@@ -72,11 +72,15 @@
                             taxReturn.questions = response[1][index];
                             taxReturn.dependants = response[4][index];
                             _.each(taxReturn.questions.answers, function(answer){
-                                answer.answer = 0;
                                 answer.class = '';
                                 if (answer.text && answer.text.toLowerCase() === 'yes'){
                                     answer.answer = 1;
                                 }
+				  else if (answer.text && answer.text.toLowerCase() === 'no')
+                                {
+                                   answer.answer = 0;
+                                }
+
                                  
                                 // This is needed due to a bug on the server side only for new users
                                 answer.tax_return_id = taxReturn.taxReturnId;
