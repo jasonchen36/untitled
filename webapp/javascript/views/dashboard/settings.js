@@ -13,6 +13,7 @@
         settingsEmailErrorLabel = $('#label-error-settings-email'),
         settingsPasswordErrorLabel = $('#label-error-settings-new-password'),
         settingsConfirmPasswordErrorLabel = $('#label-error-settings-confirm-password'),
+        userId = userSettingsForm.attr('data-id'),
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
@@ -43,8 +44,7 @@
                     .then(function() {
                         var promiseArray =  [];
 
-                       var ajaxCall = apiservice.putEmailPassword(apiUrl,
-                                                                 formData.email, formData.password);
+                       var ajaxCall = apiservice.putEmailPassword(userId, apiUrl, formData.email, formData.password);
                        promiseArray.push(ajaxCall);
 
                        return Promise.all(promiseArray);
@@ -77,9 +77,16 @@
 
     this.init = function(){
         if ($('#user-settings').length > 0){
-
+            console.log('it reaches here');
             //listeners
-            userSettingsForm.on('submit',function(event){
+            settingsSubmit.on('submit',function(event){
+                console.log('it goes inside the listener');
+                event.preventDefault();
+                updateEmailPassword();
+            });
+
+            settingsSubmit.on('click',function(event){
+                console.log('it goes inside the listener');
                 event.preventDefault();
                 updateEmailPassword();
             });
