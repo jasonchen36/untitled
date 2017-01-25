@@ -160,6 +160,10 @@
             }
         });
 
+        Handlebars.registerHelper('documentTaxProRoundedHelper', function(imageUrl, documentName){
+            return '<img class="full-width full-height rounded" src="'+imageUrl+'"/>';
+        });
+
         Handlebars.registerHelper('hasDependantsSelected', function(answers, options){
             var hasDependantsSelected = false;
             _.each(answers,function(entry){
