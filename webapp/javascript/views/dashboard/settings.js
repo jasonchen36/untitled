@@ -5,23 +5,28 @@
         ajax = app.ajax,
         apiservice = app.apiservice,
         userSettingsForm = $('#user-settings-form'),
-        passwordResetEmailInput = $('#password-reset-email'),
-        passwordResetSubmit = $('#password-reset-submit'),
-        passwordResetErrorLabel = $('#label-error-password-reset'),
+        settingsEmailInput = $('#settings-email'),
+        settingsPasswordInput = $('#settings-password'),
+        settingsConfirmPasswordInput = $('settings-confirm-password'),
+        settingsSubmit = $('#settings-submit'),
+        settingsCancel = $('settings-cancel'),
+        settingsEmailErrorLabel = $('#label-error-settings-email'),
+        settingsPasswordErrorLabel = $('#label-error-settings-new-password'),
+        settingsConfirmPasswordErrorLabel = $('#label-error-settings-confirm-password'),
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
     function submitForgotPassword(){
-        if (!passwordResetSubmit.hasClass(disabledClass)) {
+        if (!settingsSubmit.hasClass(disabledClass)) {
             var formData = helpers.getFormData(userSettingsForm);
             helpers.resetForm(userSettingsForm);
             if (!helpers.isValidEmail(formData.email)) {
-                passwordResetEmailInput.addClass(errorClass);
-                passwordResetErrorLabel.addClass(errorClass);
-                passwordResetErrorLabel.html('Please check your e-mail address');
+                settingsEmailInput.addClass(errorClass);
+                settingsEmailErrorLabel.addClass(errorClass);
+                settingsEmailErrorLabel.html('Please check your e-mail address');
             }
             if (!helpers.formHasErrors(userSettingsForm)) {
-               passwordResetSubmit.addClass(disabledClass);
+               settingsSubmit.addClass(disabledClass);
 
                return Promise.resolve()
                     .then(function() {
@@ -42,10 +47,10 @@
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
-                        passwordResetErrorLabel.addClass(errorClass);
-                        passwordResetEmailInput.addClass(errorClass);
-                        passwordResetErrorLabel.html(jqXHR.errorThrown);
-                        passwordResetSubmit.removeClass(disabledClass);
+                        settingsEmailErrorLabel.addClass(errorClass);
+                        settingsEmailInput.addClass(errorClass);
+                        settingsEmailErrorLabel.html(jqXHR.errorThrown);
+                        settingsSubmit.removeClass(disabledClass);
                     });
 
 
