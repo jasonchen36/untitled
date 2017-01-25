@@ -1,8 +1,14 @@
 {{#if taxProId}}
     <div class="small-3 medium-3 grid-end">
         <div id="container-dashboard-taxpro">
-            <div class="i--icon-message-taxplan"></div>
             <div class="container-taxpro-introduction">
+                {{#if taxProPic}}
+                    <div class="container-taxpro-pic">
+                        {{{documentImageHelper taxProPic taxProName}}}
+                    </div>
+                {{else}}
+                    <div class="i--icon-message-taxplan"></div>
+                {{/if}}
                 <p class="no-margin label-introduction-line">Your TaxPro</p>
                 <p class="no-margin label-introduction-name font-yellow">{{taxProName}}</p>
                 <p class="no-margin label-introduction-line">{{taxProTitle}}</p>
