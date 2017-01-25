@@ -49,6 +49,7 @@
             chatMessageInput = $('#dashboard-chat-message');
             var taxproShowDescription = $('#taxpro-show-description');
             var taxproDescription = $('#taxpro-description');
+            var taxProContainer = $('#container-dashboard-taxpro');
 
             if(scrollMessages) {
                 $(".chat-message:last-child").velocity("scroll", {
@@ -81,9 +82,11 @@
                 if(currentHTML === '+'){
                     $(this).text('-');
                     taxproDescription.show();
+                    taxProContainer.removeClass('not-open');
                 }else{
                     $(this).text('+');
                     taxproDescription.hide();
+                    taxProContainer.addClass('not-open');
                 }
             });
         }
