@@ -47,7 +47,8 @@
             chatForm = $('#dashboard-chat-form');
             chatSubmit = $('#dashboard-chat-submit');
             chatMessageInput = $('#dashboard-chat-message');
-            var taxproDescription = $('#taxpro-show-description');
+            var taxproShowDescription = $('#taxpro-show-description');
+            var taxproDescription = $('#taxpro-description');
 
             if(scrollMessages) {
                 $(".chat-message:last-child").velocity("scroll", {
@@ -74,13 +75,15 @@
                 $('#dashboard-chat-message-count').addClass(helpers.hiddenClass);
             });
 
-            taxproDescription.on('click',function(event){
+            taxproShowDescription.on('click',function(event){
                 event.preventDefault();
                 var currentHTML = $(this).html();
                 if(currentHTML === '+'){
                     $(this).text('-');
+                    taxproDescription.show();
                 }else{
                     $(this).text('+');
+                    taxproDescription.hide();
                 }
             });
         }
