@@ -47,6 +47,7 @@
             chatForm = $('#dashboard-chat-form');
             chatSubmit = $('#dashboard-chat-submit');
             chatMessageInput = $('#dashboard-chat-message');
+            var taxproDescription = $('#taxpro-show-description');
 
             if(scrollMessages) {
                 $(".chat-message:last-child").velocity("scroll", {
@@ -71,6 +72,16 @@
             chatMessageInput.on('input propertychange', function() {
                 markMessagesAsRead();
                 $('#dashboard-chat-message-count').addClass(helpers.hiddenClass);
+            });
+
+            taxproDescription.on('click',function(event){
+                event.preventDefault();
+                var currentHTML = $(this).html();
+                if(currentHTML === '+'){
+                    $(this).text('-');
+                }else{
+                    $(this).text('+');
+                }
             });
         }
     };
