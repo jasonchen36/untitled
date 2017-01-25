@@ -157,6 +157,9 @@
    height: 80px;
    width: 30%;
  }
+  &.not-open{
+    height:110px;
+  }
 }
 
 #container-collapsed-sidebar{
@@ -193,7 +196,7 @@
 
 .label-taxpro-description{
   margin-top: 100px;
-  display: block;
+  display: none;
   text-align: left;
   padding: 5px;
 }
@@ -202,4 +205,11 @@
  margin: 200px 35px 0px 35px;
 }
 
-
+.container-taxpro-pic{
+  display: inline-block;
+  border-radius: 50%;
+  float: left;
+  height: 80px;
+  width: 80px;
+  padding: 5px;
+}
