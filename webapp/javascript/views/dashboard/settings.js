@@ -4,20 +4,18 @@
         helpers = app.helpers,
         ajax = app.ajax,
         apiservice = app.apiservice,
-        userSettingsForm = $('#user-settings-form'),
-        settingsEmailInput = $('#settings-email'),
-        settingsPasswordInput = $('#settings-password'),
-        settingsConfirmPasswordInput = $('#settings-confirm-password'),
-        settingsSubmit = $('#settings-submit'),
-        settingsCancel = $('#settings-cancel'),
-        settingsEmailErrorLabel = $('#label-error-settings-email'),
-        settingsPasswordErrorLabel = $('#label-error-settings-new-password'),
-        settingsConfirmPasswordErrorLabel = $('#label-error-settings-confirm-password'),
-        userId = userSettingsForm.attr('#data-id'),
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
-    function updateEmailPassword(){
+    function updateEmailPassword(settingsSubmit, userId, apiUrl){
+        var userSettingsForm = $('#user-settings-form'),
+        settingsEmailInput = $('#settings-email'),
+        settingsPasswordInput = $('#settings-password'),
+        settingsConfirmPasswordInput = $('#settings-confirm-password'),
+        settingsEmailErrorLabel = $('#label-error-settings-email'),
+        settingsPasswordErrorLabel = $('#label-error-settings-new-password'),
+        settingsConfirmPasswordErrorLabel = $('#label-error-settings-confirm-password');
+        console.log("this is the userId", userId,apiUrl);
         if (!settingsSubmit.hasClass(disabledClass)) {
             var formData = helpers.getFormData(userSettingsForm);
             console.log(formData);
@@ -30,12 +28,12 @@
             if (!helpers.isValidPassword(formData.password)) {
                 settingsPasswordInput.addClass(errorClass);
                 settingsPasswordErrorLabel.addClass(errorClass);
-                settingsPasswordErrorLabel.html('Please check your e-mail address');
+                settingsPasswordErrorLabel.html('Please check your password');
             }
-            if ((!helpers.isValidPassword(formData.password)) && (formData.password !== formData.password)) {
+            if ((!helpers.isValidPassword(formData.confirmedPassword)) && (formData.confirmedPassword !== formData.password)) {
                 settingsConfirmPasswordInput.addClass(errorClass);
                 settingsConfirmPasswordErrorLabel.addClass(errorClass);
-                settingsConfirmPasswordErrorLabel.html('Please check your e-mail address');
+                settingsConfirmPasswordErrorLabel.html('Please check your confirmed password');
             }
             if (!helpers.formHasErrors(userSettingsForm)) {
                settingsSubmit.addClass(disabledClass);
@@ -53,7 +51,7 @@
                     .then(function(response) {
 
                         //todo, show success and then redirect
-                        //window.location.href = '/dashboard';
+                        window.location.href = '/dashboard';
 
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
@@ -66,7 +64,7 @@
                         settingsPasswordErrorLabel.html(jqXHR.errorThrown);
                         settingsConfirmPasswordErrorLabel.addClass(errorClass);
                         settingsConfirmPasswordInput.addClass(errorClass);
-                        settingsCOnfirmPasswordErrorLabel.html(jqXHR.errorThrown);
+                        settingsConfirmPasswordErrorLabel.html(jqXHR.errorThrown);
                         settingsSubmit.removeClass(disabledClass);
                     });
 
@@ -77,18 +75,30 @@
 
     this.init = function(){
         if ($('#user-settings').length > 0){
-            console.log('it reaches here');
+
+            var settingsSubmit = $('#settings-submit'),
+            settingsCancel = $('#settings-cancel');
             //listeners
             settingsSubmit.on('submit',function(event){
                 event.preventDefault();
-                console.log('it goes inside the listener');
-                updateEmailPassword();
+                var userId = $(this).attr('data-id');
+                var apiUrl = $(this).attr('url');
+                updateEmailPassword($(this), userId, apiUrl);
             });
 
             settingsSubmit.on('click',function(event){
                 event.preventDefault();
-                console.log('it goes inside the listener');
-                updateEmailPassword();
+                var userId = $(this).attr('data-id');
+                var apiUrl = $(this).attr('url');
+                updateEmailPassword($(this), userId, apiUrl);
+            });
+
+            settingsCancel.on('click',function(event){
+                event.preventDefault();
+                changePageHelper('chat');
+                document.getElementById('dashboard-upload-activate').classList.remove('active');
+                document.getElementById('dashboard-my-return-activate').classList.remove('active');
+                document.getElementById('dashboard-chat-activate').classList.add('active');
             });
         }
     };

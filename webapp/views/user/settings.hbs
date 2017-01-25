@@ -5,25 +5,25 @@
             <h1 class="header">Settings</h1>
         </div>
         <div class="small-5 medium-5">
-            <form id="user-settings-form" data-id="{{@root.users.0.id}}">
+            <form id="user-settings-form">
                 <p class="no-margin">
                     <label for="settings-email">Email Address</label>
-                    <input type="email" id="settings-email" name="settings"/>
+                    <input type="email" id="settings-email" name="email"/>
                     <p id="label-error-settings-email" class="label-error">Please enter your email address</p>
                 </p>
                 <p class="no-margin add-top-margin add-top-padding">
                     <label for="settings-email">New Password</label>
-                    <input type="password" id="settings-password" name="settings"/>
+                    <input type="password" id="settings-password" name="password"/>
                 <p id="label-error-settings-new-password" class="label-error">Please enter your password</p>
                 </p>
                 <p class="no-margin">
                     <label for="settings-email">Confirm New Password</label>
-                    <input type="password" id="settings-confirm-password" name="settings"/>
+                    <input type="password" id="settings-confirm-password" name="confirmedPassword"/>
                 <p id="label-error-settings-confirm-password" class="label-error">Please confirm your password</p>
                 </p>
                 <div class="add-top-margin add-top-padding">
                     <button type="submit" id="settings-done" class="purple">Cancel</button>
-                    <button type="submit" id="settings-submit" class="green">Save</button>
+                    <button type="submit" id="settings-submit" data-id="{{@root.users.0.id}}" url={{@root.apiUrl}} class="green">Save</button>
                 </div>
             </form>
         </div>

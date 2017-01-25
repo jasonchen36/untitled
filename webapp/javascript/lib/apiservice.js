@@ -25,7 +25,8 @@
     };
 
     this.putEmailPassword = function(userId, apiurl, email, password){
-        var uri = apiurl + 'users/' + userId;
+        console.log('it gets to apiservice', userId, apiurl, email, password);
+        var uri = apiurl + '/users/' + userId;
         var ajaxPromise = ajax.ajax(
             'PUT',
             uri,
