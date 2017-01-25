@@ -21,10 +21,12 @@
             if (!helpers.isValidEmail(formData.email)) {
                 loginEmailInput.addClass(errorClass);
                 loginErrorLabelEmail.addClass(errorClass);
+                loginErrorLabelEmail.html('Oops! That email / password combination is not valid');
             }
             if (!helpers.isValidPassword(formData.password)) {
                 loginPasswordInput.addClass(errorClass);
                 loginErrorLabelPassword.addClass(errorClass);
+                loginErrorLabelPassword.html('Oops! That email / password combination is not valid');
             }
             if (!helpers.formHasErrors(loginForm)) {
                 loginSubmit.addClass(disabledClass);
