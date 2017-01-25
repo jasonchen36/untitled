@@ -30,7 +30,8 @@ var app = {
         dashboard: {
             upload: {},
             chat: {},
-            myReturn: {}
+            myReturn: {},
+            settings: {}
         },
         personalProfile: {
             lastName: {},

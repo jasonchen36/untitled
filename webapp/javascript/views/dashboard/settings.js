@@ -53,7 +53,7 @@
                     .then(function(response) {
 
                         //todo, show success and then redirect
-                        window.location.href = '/dashboard';
+                        //window.location.href = '/dashboard';
 
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
@@ -80,17 +80,17 @@
             console.log('it reaches here');
             //listeners
             settingsSubmit.on('submit',function(event){
-                console.log('it goes inside the listener');
                 event.preventDefault();
+                console.log('it goes inside the listener');
                 updateEmailPassword();
             });
 
             settingsSubmit.on('click',function(event){
-                console.log('it goes inside the listener');
                 event.preventDefault();
+                console.log('it goes inside the listener');
                 updateEmailPassword();
             });
         }
     };
 
-}).apply(app.views.dashboard.myReturn);
+}).apply(app.views.dashboard.settings);
