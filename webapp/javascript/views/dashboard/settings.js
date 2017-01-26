@@ -7,7 +7,7 @@
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
 
-    function updateEmailPassword(settingsSubmit, userId, apiUrl){
+    function updateEmailPassword(settingsSubmit, userId, apiUrl, token){
         var userSettingsForm = $('#user-settings-form'),
         settingsEmailInput = $('#settings-email'),
         settingsPasswordInput = $('#settings-password'),
@@ -42,7 +42,7 @@
                     .then(function() {
                         var promiseArray =  [];
 
-                       var ajaxCall = apiservice.putEmailPassword(userId, apiUrl, formData.email, formData.password);
+                       var ajaxCall = apiservice.putEmailPassword(userId, apiUrl, formData.email, formData.password, token);
                        promiseArray.push(ajaxCall);
 
                        return Promise.all(promiseArray);
@@ -83,14 +83,16 @@
                 event.preventDefault();
                 var userId = $(this).attr('data-id');
                 var apiUrl = $(this).attr('url');
-                updateEmailPassword($(this), userId, apiUrl);
+                var token = $(this).attr('token');
+                updateEmailPassword($(this), userId, apiUrl, token);
             });
 
             settingsSubmit.on('click',function(event){
                 event.preventDefault();
                 var userId = $(this).attr('data-id');
                 var apiUrl = $(this).attr('url');
-                updateEmailPassword($(this), userId, apiUrl);
+                var token = $(this).attr('token');
+                updateEmailPassword($(this), userId, apiUrl, token);
             });
 
             settingsCancel.on('click',function(event){

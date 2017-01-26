@@ -24,7 +24,7 @@
 
     };
 
-    this.putEmailPassword = function(userId, apiurl, email, password){
+    this.putEmailPassword = function(userId, apiurl, email, password, token){
         console.log('it gets to apiservice', userId, apiurl, email, password);
         var uri = apiurl + '/users/' + userId;
         var ajaxPromise = ajax.ajax(
@@ -34,7 +34,10 @@
                 email: email,
                 password: password
             },
-            'json-text'
+            'json-text',
+            {
+                'Authorization': 'Bearer '+ token
+            }
         );
         return ajaxPromise;
     };
