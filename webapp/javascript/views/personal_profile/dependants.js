@@ -30,7 +30,6 @@
               }
            });
          });
-         console.log(tileCount, pageData.taxReturns.length);
                if (tileCount === (pageData.taxReturns.length * 2)){
                  tilesAreValid = true;
                } else {
