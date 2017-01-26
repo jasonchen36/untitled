@@ -95,16 +95,24 @@
       var pageData = personalProfile.getPageSession(),
           hasSelectedDependant;
       _.each(pageData.taxReturns, function(taxReturn){
-          hasSelectedDependant = _.find(taxReturn.dependants, {id: dependantId});
-          if (hasSelectedDependant){
-              taxReturn.dependantForm = hasSelectedDependant;
-          } else {
-            hasSelectedDependant = _.find(taxReturn.dependants, {first_name: firstName, last_name: lastName});
-            if(hasSelectedDependant){
-              taxReturn.dependantForm = hasSelectedDependant;
-            }
-          }
+          _.each(taxReturn.dependants, function (dependant) {
+              hasSelectedDependant = _.find(taxReturn.dependants, {id: dependantId});
+              if (hasSelectedDependant){
+                  taxReturn.dependantForm = hasSelectedDependant;
+              } else {
+                hasSelectedDependant = _.find(taxReturn.dependants, {first_name: firstName, last_name: lastName});
+                if(hasSelectedDependant){
+                  taxReturn.dependantForm = hasSelectedDependant;
+                }
+              }
+              if(dependant.is_shared === 1) {
+                  dependant.isShared = 'active';
+              }else{
+                  dependant.isShared = '';
+              }
+          });
       });
+
       return pageData;
   };
 
