@@ -10,20 +10,25 @@
     function updateEmailPassword(settingsSubmit, userId, apiUrl, token){
         var userSettingsForm = $('#user-settings-form'),
         settingsEmailInput = $('#settings-email'),
+        settingsConfirmEmailInput = $('#settings-confirm-email'),
         settingsPasswordInput = $('#settings-password'),
         settingsConfirmPasswordInput = $('#settings-confirm-password'),
         settingsEmailErrorLabel = $('#label-error-settings-email'),
+        settingsConfirmEmailLabel = $('#label-error-settings-confirm-email'),
         settingsPasswordErrorLabel = $('#label-error-settings-new-password'),
         settingsConfirmPasswordErrorLabel = $('#label-error-settings-confirm-password');
-        console.log("this is the userId", userId,apiUrl);
         if (!settingsSubmit.hasClass(disabledClass)) {
             var formData = helpers.getFormData(userSettingsForm);
-            console.log(formData);
             helpers.resetForm(userSettingsForm);
             if (!helpers.isValidEmail(formData.email)) {
                 settingsEmailInput.addClass(errorClass);
                 settingsEmailErrorLabel.addClass(errorClass);
                 settingsEmailErrorLabel.html('Please check your e-mail address');
+            }
+            if (!helpers.isValidEmail(formData.confirmedEmail)) {
+                settingsEmailInput.addClass(errorClass);
+                settingsEmailErrorLabel.addClass(errorClass);
+                settingsEmailErrorLabel.html('Please check your confirmed e-mail address');
             }
             if (!helpers.isValidPassword(formData.password)) {
                 settingsPasswordInput.addClass(errorClass);
@@ -81,18 +86,22 @@
             //listeners
             settingsSubmit.on('submit',function(event){
                 event.preventDefault();
-                var userId = $(this).attr('data-id');
-                var apiUrl = $(this).attr('url');
-                var token = $(this).attr('token');
-                updateEmailPassword($(this), userId, apiUrl, token);
+                if (confirm("Are you sure you want to save your changes?") === true) {
+                    var userId = $(this).attr('data-id');
+                    var apiUrl = $(this).attr('url');
+                    var token = $(this).attr('token');
+                    updateEmailPassword($(this), userId, apiUrl, token);
+                }
             });
 
             settingsSubmit.on('click',function(event){
                 event.preventDefault();
-                var userId = $(this).attr('data-id');
-                var apiUrl = $(this).attr('url');
-                var token = $(this).attr('token');
-                updateEmailPassword($(this), userId, apiUrl, token);
+                if (confirm("Are you sure you want to save your changes?") === true) {
+                    var userId = $(this).attr('data-id');
+                    var apiUrl = $(this).attr('url');
+                    var token = $(this).attr('token');
+                    updateEmailPassword($(this), userId, apiUrl, token);
+                }
             });
 
             settingsCancel.on('click',function(event){
