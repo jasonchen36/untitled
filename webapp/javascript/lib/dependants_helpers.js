@@ -69,7 +69,6 @@
           _.each(pageData.taxReturns, function (taxReturn) {
               _.each(taxReturn.questions.answers, function (answer) {
                   if (answer.tax_return_id == taxReturnId && answer.question_id == tileId){
-                      answer.class = "active";
                       answer.answer = 1;
                   }
               });
@@ -83,7 +82,6 @@
           _.each(pageData.taxReturns, function (taxReturn) {
               _.each(taxReturn.questions.answers, function (answer) {
                   if (answer.tax_return_id == taxReturnId && answer.question_id == tileId){
-                      answer.class = "active";
                       answer.answer = 0;
                   }
               });
