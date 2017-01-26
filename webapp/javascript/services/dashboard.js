@@ -299,7 +299,7 @@
             data = that.getUserSession();
         }
         //update session with new data
-        updateUserSession(data, newPage);
+        updateUserSession(data);
 
         newPage = that.dashboardOrder[currentPageIndex];
 
