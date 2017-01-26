@@ -127,6 +127,19 @@ button, .button {
   background: $color-global-green;
 }
 
+.grey-button{
+  border-radius: 30px;
+  color: white;
+  cursor: pointer;
+  padding: 10px 40px;
+  text-decoration: none !important;
+  text-transform: none;
+  border: 0 none;
+  font-size: 12px;
+  outline:none;
+  background: $color-global-mid-grey;
+}
+
 button:active{
   background:grey;
 }
@@ -534,10 +547,10 @@ textarea {
   top: calc(50% - 150px)  !important;
   left: calc(50% - 150px) !important;
   &.checklist-popup{
-    height: 600px;
-    width: 600px          !important;
-    top: calc(50% - 300px)  !important;
-    left: calc(50% - 300px) !important;
+    height: 300px;
+    width: 400px          !important;
+    top: calc(50% - 150px)  !important;
+    left: calc(50% - 200px) !important;
   }
 }
 

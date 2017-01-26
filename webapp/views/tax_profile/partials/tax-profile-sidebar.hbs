@@ -10,9 +10,9 @@
             <p id="tax-profile-instructions" class="side-info-blurb">
                 {{#if hasTiles}}
                     {{#if isFiliingFor}}
-                        {{@root.questions.filingFor.0.category_displaytext}}
+                        {{{@root.questions.filingFor.0.category_displaytext}}}
                     {{else}}
-                        {{@root.questions.quoteApplies.0.category_displaytext}}
+                        {{{@root.questions.quoteApplies.0.category_displaytext}}}
                     {{/if}}
                 {{else}}
                     {{{sidebarDescription}}}
