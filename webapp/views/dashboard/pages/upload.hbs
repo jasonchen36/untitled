@@ -46,16 +46,12 @@
                 <div class="label-activeItem-subtitle f--futura-book add-margin-left display-inline-block">Statement of Renumeration Paid</div>
                 <div>
                     <p class="f--futura-book display-inline-block">Documents Required for:</p>
-                    <p class="f--futura-book font-red display-inline-block add-margin-left">
-                        {{#each activeItem.filers}}
-                            {{#compare activeItem.filers.length 1 operator=">"}}
-                                {{name}},
-                            {{/compare}}
-                            {{#compare activeItem.filers.length 1 operator="=="}}
-                                {{name}}
-                            {{/compare}}
-                        {{/each}}
-                    </p>
+                    {{#compare activeItem.filers.length 1 operator=">"}}
+                        <p class="f--futura-book font-red display-inline-block add-margin-left">{{#each activeItem.filers}}{{name}}, {{/each}}</p>
+                    {{/compare}}
+                    {{#compare activeItem.filers.length 1 operator="=="}}
+                        <p class="f--futura-book font-red display-inline-block add-margin-left">{{#each activeItem.filers}}{{name}}{{/each}}</p>
+                    {{/compare}}
                 </div>
                 <div id="dashboard-upload-progress" class="progress-bar"></div>
                 <form id="dashboard-upload-form" enctype="multipart/form-data">
