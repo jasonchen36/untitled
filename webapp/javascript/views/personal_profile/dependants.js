@@ -25,12 +25,12 @@
           _.each(pageData.taxReturns, function(taxReturn){
             _.each(taxReturn.questions.answers, function (answer) {
 
-              if (answer.answer === 1 || answer.answer === 0){
+              if (answer.class === "active"){
                 tileCount++;
               }
            });
          });
-               if (tileCount === (pageData.taxReturns.length * 2)){
+               if (tileCount === pageData.taxReturns.length){
                  tilesAreValid = true;
                } else {
                  tilesAreValid = false;
