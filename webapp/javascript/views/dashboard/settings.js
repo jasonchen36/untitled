@@ -66,7 +66,10 @@
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         settingsEmailErrorLabel.addClass(errorClass);
                         settingsEmailInput.addClass(errorClass);
+                        settingsConfirmEmailInput.addClass(errorClass);
                         settingsEmailErrorLabel.html(jqXHR.errorThrown);
+                        settingsConfirmEmailLabel.addClass(errorClass);
+                        settingsConfirmEmailLabel.html(jqXHR.errorThrown);
                         settingsPasswordErrorLabel.addClass(errorClass);
                         settingsPasswordInput.addClass(errorClass);
                         settingsPasswordErrorLabel.html(jqXHR.errorThrown);
