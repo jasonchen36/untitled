@@ -47,7 +47,7 @@
                 <div>
                     <p class="f--futura-book display-inline-block">Documents Required for:</p>
                     {{#compare activeItem.filers.length 1 operator=">"}}
-                        <p class="f--futura-book font-red display-inline-block add-margin-left">{{#each activeItem.filers}}{{name}}, {{/each}}</p>
+                        <p class="f--futura-book font-red display-inline-block add-margin-left">{{#each activeItem.filers}}{{name}}{{#unless @last}},{{/unless}} {{/each}}</p>
                     {{/compare}}
                     {{#compare activeItem.filers.length 1 operator="=="}}
                         <p class="f--futura-book font-red display-inline-block add-margin-left">{{#each activeItem.filers}}{{name}}{{/each}}</p>
