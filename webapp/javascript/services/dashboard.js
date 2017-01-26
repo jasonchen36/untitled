@@ -39,6 +39,7 @@
         dashboardViews.upload.init();
         dashboardViews.chat.init();
         dashboardViews.myReturn.init();
+        dashboardViews.settings.init();
     }
 
     function startUserSession(){
@@ -169,7 +170,7 @@
                        name: 'Additional Documents',
                        checklistItemId: 0,
                        documents: that.checklist.additionalDocuments
-                   }; 
+                   };
                 }
                 else {
 

@@ -24,6 +24,24 @@
 
     };
 
+    this.putEmailPassword = function(userId, email, password, sessionData){
+        var accountInfo = helpers.getAccountInformation(sessionData);
+        var uri = sessionData.apiUrl + '/users/' + userId;
+        var ajaxPromise = ajax.ajax(
+            'PUT',
+            uri,
+            {
+                email: email,
+                password: password
+            },
+            'json-text',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
+        return ajaxPromise;
+    };
+
 
     this.putAuthorizedPasswordReset = function(apiurl, password, token){
 
