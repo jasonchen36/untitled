@@ -5,6 +5,7 @@
         ajax = app.ajax,
         apiservice = app.apiservice,
         errorClass = app.helpers.errorClass,
+        dashboard = app.services.dashboard,
         disabledClass = app.helpers.disabledClass;
 
     function updateEmailPassword(settingsSubmit, userId, apiUrl, token){
@@ -56,7 +57,9 @@
                     .then(function(response) {
 
                         //todo, show success and then redirect
-                        window.location.href = '/dashboard';
+                        var dataObject = dashboard.getUserSession();
+                        dataObject.currentPage = "chat";
+                        dashboard.changePage('chat', dataObject);
 
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
@@ -82,7 +85,7 @@
         if ($('#user-settings').length > 0){
 
             var settingsSubmit = $('#settings-submit'),
-            settingsCancel = $('#settings-cancel');
+            settingsCancel = $('#settings-done');
             //listeners
             settingsSubmit.on('submit',function(event){
                 event.preventDefault();
@@ -106,10 +109,9 @@
 
             settingsCancel.on('click',function(event){
                 event.preventDefault();
-                changePageHelper('chat');
-                document.getElementById('dashboard-upload-activate').classList.remove('active');
-                document.getElementById('dashboard-my-return-activate').classList.remove('active');
-                document.getElementById('dashboard-chat-activate').classList.add('active');
+                var dataObject = dashboard.getUserSession();
+                dataObject.currentPage = "chat";
+                dashboard.changePage('chat', dataObject);
             });
         }
     };
