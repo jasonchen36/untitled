@@ -39,7 +39,6 @@
         dashboardViews.upload.init();
         dashboardViews.chat.init();
         dashboardViews.myReturn.init();
-        dashboardViews.settings.init();
     }
 
     function startUserSession(){
