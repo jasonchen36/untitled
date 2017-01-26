@@ -8,7 +8,7 @@
         dashboard = app.services.dashboard,
         disabledClass = app.helpers.disabledClass;
 
-    function updateEmailPassword(settingsSubmit, userId, apiUrl, token){
+    function updateEmailPassword(settingsSubmit, userId, userObject){
         var userSettingsForm = $('#user-settings-form'),
         settingsEmailInput = $('#settings-email'),
         settingsConfirmEmailInput = $('#settings-confirm-email'),
@@ -26,7 +26,7 @@
                 settingsEmailErrorLabel.addClass(errorClass);
                 settingsEmailErrorLabel.html('Please check your e-mail address');
             }
-            if (!helpers.isValidEmail(formData.confirmedEmail)) {
+            if ((!helpers.isValidEmail(formData.confirmedEmail)) || (formData.confirmedEmail !== formData.email)) {
                 settingsEmailInput.addClass(errorClass);
                 settingsEmailErrorLabel.addClass(errorClass);
                 settingsEmailErrorLabel.html('Please check your confirmed e-mail address');
@@ -36,7 +36,7 @@
                 settingsPasswordErrorLabel.addClass(errorClass);
                 settingsPasswordErrorLabel.html('Please check your password');
             }
-            if ((!helpers.isValidPassword(formData.confirmedPassword)) && (formData.confirmedPassword !== formData.password)) {
+            if ((!helpers.isValidPassword(formData.confirmedPassword)) || (formData.confirmedPassword !== formData.password)) {
                 settingsConfirmPasswordInput.addClass(errorClass);
                 settingsConfirmPasswordErrorLabel.addClass(errorClass);
                 settingsConfirmPasswordErrorLabel.html('Please check your confirmed password');
@@ -48,7 +48,7 @@
                     .then(function() {
                         var promiseArray =  [];
 
-                       var ajaxCall = apiservice.putEmailPassword(userId, apiUrl, formData.email, formData.password, token);
+                       var ajaxCall = apiservice.putEmailPassword(userId, formData.email, formData.password, userObject);
                        promiseArray.push(ajaxCall);
 
                        return Promise.all(promiseArray);
@@ -83,7 +83,6 @@
 
     this.init = function(){
         if ($('#user-settings').length > 0){
-
             var settingsSubmit = $('#settings-submit'),
             settingsCancel = $('#settings-done');
             //listeners
@@ -91,9 +90,7 @@
                 event.preventDefault();
                 if (confirm("Are you sure you want to save your changes?") === true) {
                     var userId = $(this).attr('data-id');
-                    var apiUrl = $(this).attr('url');
-                    var token = $(this).attr('token');
-                    updateEmailPassword($(this), userId, apiUrl, token);
+                    updateEmailPassword($(this), userId, userObject);
                 }
             });
 
@@ -101,9 +98,7 @@
                 event.preventDefault();
                 if (confirm("Are you sure you want to save your changes?") === true) {
                     var userId = $(this).attr('data-id');
-                    var apiUrl = $(this).attr('url');
-                    var token = $(this).attr('token');
-                    updateEmailPassword($(this), userId, apiUrl, token);
+                    updateEmailPassword($(this), userId, userObject);
                 }
             });
 

@@ -24,8 +24,9 @@
 
     };
 
-    this.putEmailPassword = function(userId, apiurl, email, password, token){
-        var uri = apiurl + '/users/' + userId;
+    this.putEmailPassword = function(userId, email, password, sessionData){
+        var accountInfo = helpers.getAccountInformation(sessionData);
+        var uri = sessionData.apiUrl + '/users/' + userId;
         var ajaxPromise = ajax.ajax(
             'PUT',
             uri,
@@ -35,7 +36,7 @@
             },
             'json-text',
             {
-                'Authorization': 'Bearer '+ token
+                'Authorization': 'Bearer '+ accountInfo.token
             }
         );
         return ajaxPromise;
