@@ -116,7 +116,7 @@
                             foundToday === true && foundSentToday === false && dataObject.messages[i].isFromUser === true){
 
                             var receivedMessage =  {
-                                body: 'Your message has been received',//todo, use real copy text
+                                body: "Your message has been received, your TAXpro will respond within 24hrs or the next business day",
                                 client_id: 1,
                                 date: dataObject.messages[i].date,
                                 from_id: 0,
