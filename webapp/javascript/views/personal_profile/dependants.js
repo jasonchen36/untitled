@@ -24,7 +24,6 @@
               tileCount = 0;
           _.each(pageData.taxReturns, function(taxReturn){
             _.each(taxReturn.questions.answers, function (answer) {
-
               if (answer.class === "active"){
                 tileCount++;
               }
