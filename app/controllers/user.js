@@ -219,14 +219,14 @@ userPages.getAuthorizedPasswordResetPage = function(req, res, next){
 
 /************ logout ************/
 userPages.getLogoutPage = function(req, res, next) {
-    session.actionDestroyUserProfileSession(req)
+    session.actionDestroyAllSession(req)
         .then(function(){
             res.redirect('/login');
         });
 };
 
 userPages.actionLogoutUser = function(req, res, next) {
-    session.actionDestroyUserProfileSession(req)
+    session.actionDestroyAllSession(req)
         .then(function(){
             res.status(util.http.status.ok).json({
                 action: 'logout',

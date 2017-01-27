@@ -192,6 +192,16 @@ session.actionDestroyUserProfileSession = function(req){
         });
 };
 
+session.actionDestroyAllSession = function(req){
+    return promise.resolve()
+        .then(function(){
+            session.setUserProfileSession(req, {});
+            session.setTaxProfileSession(req, {});
+        });
+};
+
+
+
 session.getUserProfileValue = function(req, key){
     const userSession = session.getUserProfileSession(req);
     return userSession.hasOwnProperty(key) ? userSession[key] : '';
