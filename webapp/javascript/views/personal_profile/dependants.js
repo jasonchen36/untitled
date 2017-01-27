@@ -26,15 +26,17 @@
             _.each(taxReturn.questions.answers, function (answer) {
               if (answer.answer === 1){
                 tileCount++;
+              } else if (answer.answer === 0){
+                tileCount++;
               }
            });
          });
-               if (tileCount === pageData.taxReturns.length){
-                 tilesAreValid = true;
-               } else {
-                 tilesAreValid = false;
-               }
-              return tilesAreValid;
+           if (tileCount === pageData.taxReturns.length){
+             tilesAreValid = true;
+           } else {
+             tilesAreValid = false;
+           }
+           return tilesAreValid;
         };
 
         updateTileAnswers = function(formData){
@@ -44,8 +46,11 @@
               answer = {};
 
           _.each(pageData.taxReturns, function(entry){
-              answer[entry.questions.answers[0].question_id] = entry.questions.answers[0].answer;
-
+              if (entry.questions.answers[0].answer === 1){
+                  answer[entry.questions.answers[0].question_id] = entry.questions.answers[0].answer;
+              } else if (entry.questions.answers[1].answer === 0){
+                  answer[entry.questions.answers[1].question_id] = entry.questions.answers[1].answer;
+              }
               promiseSaveAnswers.push(apiService.postAnswers(sessionData, entry.taxReturnId, answer));
           });
           return promiseSaveAnswers;
