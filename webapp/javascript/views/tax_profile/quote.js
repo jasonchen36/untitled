@@ -21,7 +21,8 @@
             taxProfileSession = taxProfile.getAccountSession(),
             data = {
                 firstName: taxProfileSession.users[quoteDetailIndex].firstName,
-                lineItems: taxProfileSession.quote.lineItems
+                lineItems: taxProfileSession.quote.lineItems,
+                lineIndex: element[0].dataset.quoteIndex
             },
             template = Handlebars.templates['tax-profile-quote'],
             html = template(data);
