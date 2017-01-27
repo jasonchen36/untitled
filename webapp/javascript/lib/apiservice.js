@@ -167,7 +167,6 @@
         var answers = [];
         var answerIndex = 0;
         _.each(entry, function(answer) {
-
             var questionId = answerKeys[answerIndex];
             if(!isNaN(questionId))
             {

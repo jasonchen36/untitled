@@ -29,12 +29,12 @@
               }
            });
          });
-               if (tileCount === pageData.taxReturns.length){
-                 tilesAreValid = true;
-               } else {
-                 tilesAreValid = false;
-               }
-              return tilesAreValid;
+           if (tileCount === pageData.taxReturns.length){
+             tilesAreValid = true;
+           } else {
+             tilesAreValid = false;
+           }
+           return tilesAreValid;
         };
 
         updateTileAnswers = function(formData){
@@ -44,8 +44,13 @@
               answer = {};
 
           _.each(pageData.taxReturns, function(entry){
-              answer[entry.questions.answers[0].question_id] = entry.questions.answers[0].answer;
-
+              if (entry.questions.answers[0].answer === 1){
+                  answer[entry.questions.answers[0].question_id] = entry.questions.answers[0].answer;
+                  answer[entry.questions.answers[1].question_id] = 0;
+              } else if (entry.questions.answers[1].answer === 1){
+                  answer[entry.questions.answers[1].question_id] = entry.questions.answers[1].answer;
+                  answer[entry.questions.answers[0].question_id] = 0;
+              }
               promiseSaveAnswers.push(apiService.postAnswers(sessionData, entry.taxReturnId, answer));
           });
           return promiseSaveAnswers;
@@ -291,14 +296,14 @@
                 event.preventDefault();
                 var tileId = $(this).attr('data-id');
                 var taxReturnId = $(this).attr('data-tr-id');
-                personalProfile.refreshPage(dependants_helpers.setDependantsOn(taxReturnId ,tileId));
+                personalProfile.refreshPage(dependants_helpers.setDependantsToggle(taxReturnId ,tileId));
             });
 
             dependantsNoButtons.on('click',function(event){
                 event.preventDefault();
                 var tileId = $(this).attr('data-id');
                 var taxReturnId = $(this).attr('data-tr-id');
-                personalProfile.refreshPage(dependants_helpers.setDependantsOff(taxReturnId ,tileId));
+                personalProfile.refreshPage(dependants_helpers.setDependantsToggle(taxReturnId ,tileId));
             });
 
             dependantsEditButtons.on('click',function(event){
