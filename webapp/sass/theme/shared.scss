@@ -552,6 +552,13 @@ textarea {
     top: calc(50% - 150px)  !important;
     left: calc(50% - 200px) !important;
   }
+
+  &.quote-popup{
+    height: 400px;
+    width: 400px          !important;
+    top: calc(50% - 200px)  !important;
+    left: calc(50% - 200px) !important;
+  }
 }
 
 .label-popup-header{
