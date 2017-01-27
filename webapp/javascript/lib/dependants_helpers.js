@@ -70,6 +70,8 @@
               _.each(taxReturn.questions.answers, function (answer) {
                   if (answer.tax_return_id == taxReturnId && answer.question_id == tileId){
                       answer.answer = 1;
+                  } else if (answer.tax_return_id == taxReturnId){
+                      answer.answer = 0;
                   }
               });
           });
@@ -82,6 +84,8 @@
           _.each(pageData.taxReturns, function (taxReturn) {
               _.each(taxReturn.questions.answers, function (answer) {
                   if (answer.tax_return_id == taxReturnId && answer.question_id == tileId){
+                      answer.answer = 1;
+                  } else if (answer.tax_return_id == taxReturnId){
                       answer.answer = 0;
                   }
               });
