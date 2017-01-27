@@ -63,22 +63,7 @@
           });
   };
 
-  this.setDependantsOn = function(taxReturnId ,tileId){
-      var pageData = personalProfile.getPageSession();
-
-          _.each(pageData.taxReturns, function (taxReturn) {
-              _.each(taxReturn.questions.answers, function (answer) {
-                  if (answer.tax_return_id == taxReturnId && answer.question_id == tileId){
-                      answer.answer = 1;
-                  } else if (answer.tax_return_id == taxReturnId){
-                      answer.answer = 0;
-                  }
-              });
-          });
-          return pageData;
-  };
-
-  this.setDependantsOff = function(taxReturnId ,tileId){
+  this.setDependantsToggle = function(taxReturnId ,tileId){
       var pageData = personalProfile.getPageSession();
 
           _.each(pageData.taxReturns, function (taxReturn) {
