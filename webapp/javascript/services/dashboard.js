@@ -380,15 +380,19 @@
                 });
 
             var userSession = startUserSession();
-            apiservice.getTaxReturns(userSession)
-                .then(function(data) {
-                    userSession.taxReturns = data;
-                    // functions
-                    that.refreshPage(userSession);
-                });
+            apiservice.getAllTaxpros(userSession).then(function(taxpros) {
+                apiservice.getTaxReturns(userSession)
+                    .then(function (data) {
+                        userSession.taxReturns = data;
+                        userSession.taxPros = taxpros;
+                        // functions
+                        that.refreshPage(userSession);
+                    });
 
-            setInterval(function(){ updateMessages(); }, 180000);
-
+                setInterval(function () {
+                    updateMessages();
+                }, 180000);
+            });
         }
     };
 
