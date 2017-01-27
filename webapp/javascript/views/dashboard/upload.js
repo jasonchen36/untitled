@@ -111,6 +111,7 @@
 
         apiservice.submitReturn(userObject, userObject.quoteId)
             .then(function(data){
+                userObject.taxReturns[0].status.id = 5;
                 window.location.hash = '!';
                 dashboard.changePage('my-return');
             })

@@ -9,7 +9,6 @@
     this.init = function(){
         if ($('#dashboard-my-return').length > 0) {
             //todo
-            console.log('my return init');
         }
     };
 
