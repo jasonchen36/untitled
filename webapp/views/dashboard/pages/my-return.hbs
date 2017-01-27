@@ -2,11 +2,13 @@
 {{#if true}}
     <section id="dashboard-my-return" class="small-7 medium-6 full-height overflow-y-auto">
             <div id="container-upload-explained">
-                {{#compare taxReturns.0.status.id 5 operator="<"}}
+                {{#compare taxReturns.0.status.id 6 operator="<"}}
                     <h1>Your Taxes Are In Progress</h1>
-                    <p class="side-info-blurb">Thank you for submitting your tax documents to TAXplan.
-                        {{#compare taxReturns.length 1 operator=">"}}Your returns are now in progress. {{else}}Your return is now in progress.{{/compare}}
-                        Should we have any questions or notice that you’ve missed something your assigned TAXpro will be in touch through the message board.  We guarantee completion of tax preparation within 48 hours or by the next business day – provided we have everything we need from you to prepare the best possible return.</p>
+                    <p class="side-info-blurb">Well done, <span class="capitalize">{{users.0.firstName}}</span>!
+                        Now that you’ve uploaded your documents to TAXplan, the hardest part is over and your return{{#compare taxReturns.length 1 operator=">"}}s are{{else}} is{{/compare}} in progress.
+                        If your TAXpro has questions or notices a missing document, they’ll be in touch through the message board.
+                        Provided we have all the documents we need, we’ll send you your completed tax return within 2-3 business days.
+                        <br/><br/>While you’re waiting, make sure you check out blog for tax planning tips
                 {{else compare taxReturns.0.status.id 7 operator="=="}}
                     <h1>YOUR RESULTS ARE IN!</h1>
                     <p class="side-info-blurb"><span class="capitalize">{{users.0.firstName}}</span>, by clicking on details you can see a summary of your tax results. Once payment to TAXplan is made you’ll be able to access a full copy of your tax return for yourself and your other filers.</p>
