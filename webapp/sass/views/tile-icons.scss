@@ -475,6 +475,10 @@
   @extend .i--icon-medical-moving;
 }
 
+.taxplan-tile[data-id="1010"], .taxplan-tile[data-id="1011"], .taxplan-tile[data-id="1012"]{
+  @extend .i--icon-not-sure;
+}
+
 //For switching the sidebar image
 //-----------------------------
 
@@ -652,6 +656,10 @@
 
 .sidebar-image-rollover[data-id="1004"]{
   @extend .i--icon-medical-moving;
+}
+
+.sidebar-image-rollover[data-id="1010"], .sidebar-image-rollover[data-id="1011"], .sidebar-image-rollover[data-id="1012"]{
+  @extend .i--icon-not-sure;
 }
 
 #personal-profile-sidebar-image{
