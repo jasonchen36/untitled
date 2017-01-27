@@ -164,6 +164,39 @@
                         is_shared :formData.isShared,
                         create: true
                       });
+                    if (formData.isShared === 1){
+                        if (taxReturn.filerType === "primary"){
+                           if (typeof pageData.taxReturns[1] !== "undefined") {
+                              pageData.taxReturns[1].questions.answers[0].answer = 1;
+                              pageData.taxReturns[1].questions.answers[1].answer = 0;
+                              pageData.taxReturns[1].dependants.push({
+                                  first_name: formData.firstName,
+                                  last_name: formData.lastName,
+                                  tax_return_id: pageData.taxReturns[1].taxReturnId,
+                                  year: formData.year,
+                                  month: formData.month,
+                                  day: formData.day,
+                                  relationship: formData.relationship,
+                                  is_shared :formData.isShared,
+                                  create: true
+                              });
+                          }
+                      } else if (taxReturn.filerType === "spouse"){
+                          pageData.taxReturns[0].questions.answers[0].answer = 1;
+                          pageData.taxReturns[0].questions.answers[1].answer = 0;
+                          pageData.taxReturns[0].dependants.push({
+                              first_name: formData.firstName,
+                              last_name: formData.lastName,
+                              tax_return_id: pageData.taxReturns[0].taxReturnId,
+                              year: formData.year,
+                              month: formData.month,
+                              day: formData.day,
+                              relationship: formData.relationship,
+                              is_shared :formData.isShared,
+                              create: true
+                          });
+                      }
+                    }
                   }
               });
             }
