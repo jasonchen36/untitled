@@ -843,4 +843,23 @@
 
     };
 
+    this.getAllTaxpros = function(sessionData){
+
+        var accountInfo = helpers.getAccountInformation(sessionData);
+
+        var uri = sessionData.apiUrl + '/users/taxpros';
+
+        var ajaxPromise = ajax.ajax(
+            'GET',
+            uri,
+            {},
+            'json',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
+
+        return ajaxPromise;
+    };
+
 }).apply(app.apiservice);
