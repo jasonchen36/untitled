@@ -184,6 +184,9 @@ textarea {
 
 .side-info-blurb{
     font-size: 0.9rem;
+  &.bigger{
+    font-size:1.1rem;
+  }
     @extend .f--futura-book;
 }
 
@@ -390,7 +393,9 @@ textarea {
 .wrapper-container{
   margin-top: 235px;
   &.marketing{
-    margin-top: 400px;
+    margin-top: 300px;
+    margin-left: 130px;
+    margin-right: 130px;
   }
   &.side-info{
     margin-top: 300px;
