@@ -35,7 +35,12 @@
                 </div>
                 <div class="text-center">
                     <div>
-                        <p class="label-total-price">${{quote.totalPrice}}</p>
+                        {{#compare 0 quote.totalPrice operator="=="}}
+                            <p class="label-total-price">Free</p>
+                        {{/compare}}
+                        {{#compare 0 quote.totalPrice operator="!=="}}
+                            <p class="label-total-price">${{quote.totalPrice}}</p>
+                        {{/compare}}
                         <p class="side-info-blurb label-fine-print tax">Plus Provincial Tax</p>
                     </div>
                     <p class="label-blurb horizontal-center">You don't need to pay now.</p>
