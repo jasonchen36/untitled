@@ -170,7 +170,8 @@ taxProfile.getTaxReturnQuote = function(req){
 
             var accountId = taxProfileSession.users[0].id;
             var taxReturnRequestObject,
-                taxReturnBody = [];
+                taxReturnBody = [],
+                userbeingUpdated = [];
 
 
              taxProfileSession.users.forEach(function(entry) {
@@ -192,6 +193,8 @@ taxProfile.getTaxReturnQuote = function(req){
                             firstName: entry.firstName,
                             filerType: filerType
                         });
+
+                       userbeingUpdated.push(entry);
      
                     }
              });
@@ -204,11 +207,12 @@ taxProfile.getTaxReturnQuote = function(req){
                 return requestPromise(requestObject).then(function (response) {
 
                     var i = 0;
-                    taxProfileSession.users.forEach(function(entry){
-                        if (response[i] != null && entry.hasOwnProperty('id') && parseInt(entry.id) > 0) {
+                    userbeingUpdated.forEach(function(entry){
+                        if (response[i] != null && entry.hasOwnProperty('id')) {
                             entry.taxReturnId = response[i].taxReturnId;
                         }
                         i++;
+                    
                     });
                     session.setTaxProfileSession(req, taxProfileSession);
                     return promise.resolve(session.setTaxProfileSession(req, taxProfileSession)); 
