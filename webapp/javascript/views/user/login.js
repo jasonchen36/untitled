@@ -23,11 +23,6 @@
                 loginErrorLabelEmail.addClass(errorClass);
                 loginErrorLabelEmail.html('Oops! That email / password combination is not valid');
             }
-            if (!helpers.isValidPassword(formData.password)) {
-                loginPasswordInput.addClass(errorClass);
-                loginErrorLabelPassword.addClass(errorClass);
-                loginErrorLabelPassword.html('Oops! That email / password combination is not valid');
-            }
             if (!helpers.formHasErrors(loginForm)) {
                 loginSubmit.addClass(disabledClass);
                 ajax.ajax(
@@ -46,6 +41,9 @@
                         window.location.href = response.forward;
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
+
+                  
+
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         loginPasswordInput.addClass(errorClass);
                         loginErrorLabelPassword.addClass(errorClass);
