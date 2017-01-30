@@ -339,6 +339,8 @@
     this.init = function(){
         if (landingPageContainer.length > 0) {
 
+            $('#header-settings').show();
+
             //shared bindings
             $(document)
                 .on('click', '#dashboard-upload-activate', function (event) {

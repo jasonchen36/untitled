@@ -205,6 +205,9 @@
                         $('#personal-profile-sidebar-image-initial').removeClass('showfade');
                     }
                 });
+
+
+            $('#header-settings').hide();
         }
     };
 
