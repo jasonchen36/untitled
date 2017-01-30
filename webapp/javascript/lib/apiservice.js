@@ -87,8 +87,11 @@
     };
 
 
-    this.putTaxReturnLegalName = function(sessionData, taxReturnId, firstName, lastName){
+    this.putTaxReturnLegalName = function(sessionData, taxReturnId, firstName, lastName, middleInitial){
 
+        if (!middleInitial){
+            middleInitial = "";
+        }
         var accountInfo = helpers.getAccountInformation(sessionData);
 
         var uri = sessionData.apiUrl + '/tax_return/' + taxReturnId;
@@ -99,7 +102,8 @@
                 accountId: accountInfo.accountId,
                 productId: accountInfo.productId,
                 firstName: firstName,
-                lastName: lastName
+                lastName: lastName,
+                middleInitial: middleInitial
             },
             'json',
             {
