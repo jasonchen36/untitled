@@ -11,6 +11,7 @@ var userPages = {};
 
 function getPageAfterLogin(req)  {
 
+   console.log(req.session.userProfile.users);
    var profileSession = session.getUserProfileSession(req);
    var completedFlow = true;
    profileSession.taxReturns.forEach(function(entry) {
@@ -93,8 +94,8 @@ userPages.actionLoginUser = function(req, res, next){
                 try{
                     const responseToken = response.token;
                     session.actionStartUserProfileSession(req,responseToken)
-                        .then(function(){
-
+                        .then(function(response){
+                            console.log(response);
                             var page = getPageAfterLogin(req);
 
                             res.status(util.http.status.accepted).json({

@@ -113,6 +113,7 @@ session.actionStartUserProfileSession = function(req, token){
             return requestPromise(options)
                 .then(function (response) {
                     try {
+                        console.log("AFTER ME",response);
                         response.token = token;
                         return promise.resolve(sessionModel.getUserProfileObject(response));
                     } catch(error){
