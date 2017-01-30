@@ -55,12 +55,7 @@
 
                     })
                     .then(function(response) {
-
-                        //todo, show success and then redirect
-                        var dataObject = dashboard.getUserSession();
-                        dataObject.currentPage = "chat";
-                        dashboard.changePage('chat', dataObject);
-
+                        window.location.href = '/logout';
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
