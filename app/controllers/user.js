@@ -11,7 +11,9 @@ var userPages = {};
 
 function getPageAfterLogin(req)  {
 
-   console.log(req.session.userProfile.users);
+   if (req.session.userProfile.users[0].migrated_user === "Yes"){
+       return '/tax-profile';
+   }
    var profileSession = session.getUserProfileSession(req);
    var completedFlow = true;
    profileSession.taxReturns.forEach(function(entry) {
@@ -94,8 +96,7 @@ userPages.actionLoginUser = function(req, res, next){
                 try{
                     const responseToken = response.token;
                     session.actionStartUserProfileSession(req,responseToken)
-                        .then(function(response){
-                            console.log(response);
+                        .then(function(){
                             var page = getPageAfterLogin(req);
 
                             res.status(util.http.status.accepted).json({
