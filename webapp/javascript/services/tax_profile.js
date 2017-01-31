@@ -45,6 +45,7 @@
     }
 
     function startAccountSession(){
+        console.log(accountObject);
         accountSessionStore = accountObject;
         accountSessionStore.questions = questionsObject;
         if(!accountSessionStore.hasOwnProperty('currentPage') || accountSessionStore.currentPage.length < 1){
@@ -60,6 +61,7 @@
     }
 
     function updateAccountSession(data,newPage){
+        console.log('this gets hit on updateAccountSession');
         if(!data || typeof data !== 'object'){
             data = that.getAccountSession();
         }

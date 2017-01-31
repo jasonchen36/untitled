@@ -21,6 +21,7 @@ sessionModel.getTaxProfileUserObject = function(data){
 };
 
 sessionModel.getTaxProfileObject = function(data){
+    console.log("this is teh data", data);
     return {
         hasTaxProfileSession: true,
         apiUrl: data.apiUrl,

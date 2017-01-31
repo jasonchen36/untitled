@@ -11,6 +11,9 @@
         quoteModalContainer,
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
+        sessionModel = '../models/session';
+        test = sessionModel.getUserProfileUserObject(req);
+        console.log(test);
 
     function submitQuote(){
         window.location.href = '/register';
