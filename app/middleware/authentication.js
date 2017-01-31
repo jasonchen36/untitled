@@ -34,11 +34,11 @@ authenticationMiddleware.rejectWithoutTaxProfileSession = function(req, res, nex
 authenticationMiddleware.redirectWithUserSession = function(req, res, next){
     session.hasUserProfileSession(req)
         .then(function(hasSession) {
-            if (hasSession) {
-                res.redirect('/dashboard');
-            } else {
-                next();
-            }
+                if (hasSession) {
+                    next();
+                } else {
+                    next();
+                }
         });
 };
 
