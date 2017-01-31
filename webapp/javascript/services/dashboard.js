@@ -91,8 +91,17 @@
                 var foundSentToday = false;
                 var pattern = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
                  response.messages.forEach(function(entry){
+                     var chatObject = getChatMessageObject(entry);
+                    if(chatObject.isFromTaxPro){
+                        _.each(dataObject.taxPros, function(taxPro){
+                            if(taxPro.id === chatObject.fromId){
+                                chatObject.taxProName = taxPro.first_name;
+                                chatObject.taxProPic = taxPro.taxpro_pic;
+                            }
+                        });
+                    }
 
-                    dataObject.messages.push(getChatMessageObject(entry));
+                    dataObject.messages.push(chatObject);
 
                  });
 
@@ -226,7 +235,7 @@
             rawDate: moment(data.date,'MM/DD/YY hh:mm A'),
             date: moment.utc(data.date, 'MM/DD/YY hh:mm A').tz(LOCAL_TIMEZONE).format('MMM D [-] h:mm A'),
             isFromUser: data.client_id === data.from_id,
-            isFromTaxPro: data.from_role === 'Tax Pro', //todo is this the final role name?
+            isFromTaxPro: data.from_role === 'Tax Pro' || data.from_role === 'TaxPro', //todo is this the final role name?
             isFromTaxPlan: data.from_role === 'TAXPlan', // todo is this the final role name?
             isFirst: false,
             replacedBody: "default"

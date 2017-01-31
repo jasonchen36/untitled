@@ -30,3 +30,8 @@
         <h1 class="wrapper-container marketing">Welcome back to TAXplan! Ready to go? Fantastic. We can’t wait to show you all the new (and simplified) changes we’ve made to the software this year!</h1>
     </div>
 </main>
+<script type="text/javascript">
+    var passwordUrl = '{{locals.webUrl}}';
+</script>
+
+{{>migrated-password-popup popupTitle="Login" forgotPasswordLink=passwordUrl popupImage="i--icon-alert"}}
