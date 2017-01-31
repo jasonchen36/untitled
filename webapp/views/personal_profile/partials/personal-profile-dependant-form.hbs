@@ -51,7 +51,7 @@
     </div>
     {{#compare @root.taxReturns.length 1 operator='==='}}
         <div class="add-top-padding checkbox-container">
-            <div id="shared-{{taxReturnId}}" class="checkbox" data-tax-return-id="{{taxReturnId}}"></div>
+            <div id="shared-{{taxReturnId}}" name="isShared"  class="checkbox {{dependantForm.isShared}}" data-tax-return-id="{{taxReturnId}}"></div>
             <p class="checkbox-label">THIS DEPENDANT IS SHARED</p>
         </div>
     {{/compare}}
