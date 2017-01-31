@@ -10,8 +10,6 @@ var userPages = {};
 
 
 function getPageAfterLogin(req)  {
-
-
    var profileSession = session.getUserProfileSession(req);
    var completedFlow = true;
    profileSession.taxReturns.forEach(function(entry) {
@@ -19,13 +17,15 @@ function getPageAfterLogin(req)  {
                completedFlow = false;
            }
        });
-       if (req.session.userProfile.users[0].migrated_user === "Yes"){
-           return '/tax-profile';
-       }
+       console.log(completedFlow);
        if (completedFlow === true){
-         return '/dashboard';
+          return '/dashboard';
        } else {
-         return '/personal-profile';
+           if (req.session.userProfile.users[0].migrated_user === "Yes"){
+               console.log('it goes in here');
+               return '/tax-profile';
+           }
+           return '/personal-profile';
        }
 
 }
