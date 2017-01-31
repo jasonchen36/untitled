@@ -17,6 +17,7 @@
         buttonClosePreview = '#button-close-preview',
         buttonDeleteFile = '.dashboard-upload-delete',
         taxReturnSubmit,
+        confirmDeleteYes,
         taxReturnForm,
         progressBar,
         fileUploadSuccess,
@@ -181,6 +182,7 @@
             fileUploadSuccess = $('#dashboard-upload-success');
             deleteFileForm = $('#modal-delete-file-submit-form');
             buttonChecklistDescription = $('#upload-checklist-item-info-button');
+            confirmDeleteYes = $('#confirm-delete-button-yes');
             var userSession = dashboard.getUserSession();
 
             //listeners
@@ -195,6 +197,11 @@
             });
 
             deleteFileForm.on('submit',function(event){
+                event.preventDefault();
+                deleteFileById();
+            });
+
+            confirmDeleteYes.on('click',function(event){
                 event.preventDefault();
                 deleteFileById();
             });
