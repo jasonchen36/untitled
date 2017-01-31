@@ -42,7 +42,8 @@ userPages.getLoginPage = function(req, res, next){
         user: session.getUserProfileSession(req),
         locals:
         {
-           apiUrl: process.env.API_URL
+           apiUrl: process.env.API_URL,
+           webUrl: process.env.WEB_URL
         }
     });
 };
