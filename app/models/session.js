@@ -49,6 +49,7 @@ sessionModel.getUserProfileUserObject = function(data){
         birthday: data.birthday,
         resetKey: data.reset_key,
         accountId: data.account_id,
+        migrated_user: data.migrated_user,
         taxReturns: [],
         activeTiles: {}
     };

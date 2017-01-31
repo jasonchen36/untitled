@@ -11,6 +11,7 @@ var userPages = {};
 
 function getPageAfterLogin(req)  {
 
+
    var profileSession = session.getUserProfileSession(req);
    var completedFlow = true;
    profileSession.taxReturns.forEach(function(entry) {
@@ -18,6 +19,9 @@ function getPageAfterLogin(req)  {
                completedFlow = false;
            }
        });
+       if (req.session.userProfile.users[0].migrated_user === "Yes"){
+           return '/tax-profile';
+       }
        if (completedFlow === true){
          return '/dashboard';
        } else {
@@ -94,7 +98,6 @@ userPages.actionLoginUser = function(req, res, next){
                     const responseToken = response.token;
                     session.actionStartUserProfileSession(req,responseToken)
                         .then(function(){
-
                             var page = getPageAfterLogin(req);
 
                             res.status(util.http.status.accepted).json({

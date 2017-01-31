@@ -42,7 +42,7 @@
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
 
-                  
+
 
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         loginPasswordInput.addClass(errorClass);
