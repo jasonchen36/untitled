@@ -8,7 +8,9 @@
         <div class="small-5 medium-5">
             <form id="user-settings-form">
                 <p class="no-margin">
-                    <label for="settings-email">Change Email Address</label>
+                    <label for="settings-email">PLEASE NOTE: For your security, after changing your email and/or
+                        password you will be logged out and will have to log back in with your new credentials.
+                        <br/><br/>Change Email Address</label>
                     <input type="email" id="settings-email" name="email"/>
                     <p id="label-error-settings-email" class="label-error">Please enter your email address</p>
                 </p>
@@ -38,3 +40,4 @@
         </div>
     </div>
 </section>
+{{>settings-confirm-modal}}

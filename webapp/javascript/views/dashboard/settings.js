@@ -15,28 +15,28 @@
         settingsPasswordInput = $('#settings-password'),
         settingsConfirmPasswordInput = $('#settings-confirm-password'),
         settingsEmailErrorLabel = $('#label-error-settings-email'),
-        settingsConfirmEmailLabel = $('#label-error-settings-confirm-email'),
         settingsPasswordErrorLabel = $('#label-error-settings-new-password'),
         settingsConfirmPasswordErrorLabel = $('#label-error-settings-confirm-password');
+        settingsConfirmEmailErrorLabel = $('label-error-settings-confirm-email');
         if (!settingsSubmit.hasClass(disabledClass)) {
             var formData = helpers.getFormData(userSettingsForm);
             helpers.resetForm(userSettingsForm);
-            if (!helpers.isValidEmail(formData.email)) {
+            if (!helpers.isValidEmail(formData.email) && formData.email !== "") {
                 settingsEmailInput.addClass(errorClass);
                 settingsEmailErrorLabel.addClass(errorClass);
                 settingsEmailErrorLabel.html('Please check your e-mail address');
             }
-            if ((!helpers.isValidEmail(formData.confirmedEmail)) || (formData.confirmedEmail !== formData.email)) {
+            if (((!helpers.isValidEmail(formData.confirmedEmail)) || (formData.confirmedEmail !== formData.email)) && formData.confirmedEmail !== "") {
                 settingsEmailInput.addClass(errorClass);
                 settingsEmailErrorLabel.addClass(errorClass);
-                settingsEmailErrorLabel.html('Please check your confirmed e-mail address');
+                settingsConfirmEmailErrorLabel.html('Please check your confirmed e-mail address');
             }
-            if (!helpers.isValidPassword(formData.password)) {
+            if (!helpers.isValidPassword(formData.password) && formData.password !== "") {
                 settingsPasswordInput.addClass(errorClass);
                 settingsPasswordErrorLabel.addClass(errorClass);
                 settingsPasswordErrorLabel.html('Please check your password');
             }
-            if ((!helpers.isValidPassword(formData.confirmedPassword)) || (formData.confirmedPassword !== formData.password)) {
+            if (((!helpers.isValidPassword(formData.confirmedPassword)) || (formData.confirmedPassword !== formData.password)) && formData.confirmedPassword !== "") {
                 settingsConfirmPasswordInput.addClass(errorClass);
                 settingsConfirmPasswordErrorLabel.addClass(errorClass);
                 settingsConfirmPasswordErrorLabel.html('Please check your confirmed password');
@@ -55,6 +55,9 @@
 
                     })
                     .then(function(response) {
+                        var dataObject = dashboard.getUserSession();
+                        dataObject.currentPage = "chat";
+                        dashboard.changePage('chat', dataObject);
                         window.location.href = '/logout';
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
@@ -63,8 +66,8 @@
                         settingsEmailInput.addClass(errorClass);
                         settingsConfirmEmailInput.addClass(errorClass);
                         settingsEmailErrorLabel.html(jqXHR.errorThrown);
-                        settingsConfirmEmailLabel.addClass(errorClass);
-                        settingsConfirmEmailLabel.html(jqXHR.errorThrown);
+                        settingsConfirmEmailErrorLabel.addClass(errorClass);
+                        settingsConfirmEmailErrorLabel.html(jqXHR.errorThrown);
                         settingsPasswordErrorLabel.addClass(errorClass);
                         settingsPasswordInput.addClass(errorClass);
                         settingsPasswordErrorLabel.html(jqXHR.errorThrown);
@@ -82,7 +85,9 @@
     this.init = function(){
         if ($('#user-settings').length > 0){
             var settingsSubmit = $('#settings-submit'),
-            settingsCancel = $('#settings-done');
+            settingsCancel = $('#settings-done'),
+            settingsYesConfirm = $('#settings-confirm-button-yes');
+
             //listeners
             settingsSubmit.on('submit',function(event){
                 event.preventDefault();
@@ -94,10 +99,14 @@
 
             settingsSubmit.on('click',function(event){
                 event.preventDefault();
-                if (confirm("Are you sure you want to save your changes?") === true) {
-                    var userId = $(this).attr('data-id');
-                    updateEmailPassword($(this), userId, userObject);
-                }
+                window.location.hash = 'settings-confirm-modal';
+            });
+
+            settingsYesConfirm.on('click',function(event){
+                event.preventDefault();
+                var userId = $(this).attr('data-id');
+                updateEmailPassword($(this), userId, userObject);
+                window.location.hash = '#!';
             });
 
             settingsCancel.on('click',function(event){
