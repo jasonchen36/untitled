@@ -18,6 +18,10 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
         body: {},
         json: true
     };
+    session.hasUserProfileSession(req).then(function(hasSession){
+        var mySess = session.getUserProfileSession(req);
+        console.log("My Sess", mySess);
+    });
     var filingForRequest = _.clone(requestObject, true),
         quoteRequest = _.clone(requestObject, true);
     filingForRequest.uri += util.questionCategories.filingFor;

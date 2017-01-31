@@ -8,6 +8,7 @@ var authenticationMiddleware = {};
 authenticationMiddleware.redirectWithoutTaxProfileSession = function(req, res, next){
     session.hasTaxProfileSession(req)
         .then(function(hasSession){
+
             if (hasSession){
                 next();
             } else {
@@ -35,7 +36,12 @@ authenticationMiddleware.redirectWithUserSession = function(req, res, next){
     session.hasUserProfileSession(req)
         .then(function(hasSession) {
             if (hasSession) {
-                res.redirect('/dashboard');
+               var gotSession = session.getUserProfileSession(req);
+                if(gotSession.users[0].migrated_user === 'Yes') {
+                    res.redirect('/tax-profile');
+                }else{
+                    res.redirect('/dashboard');
+                }
             } else {
                 next();
             }
