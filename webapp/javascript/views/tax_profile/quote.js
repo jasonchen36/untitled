@@ -11,12 +11,16 @@
         quoteModalContainer,
         errorClass = app.helpers.errorClass,
         disabledClass = app.helpers.disabledClass;
-        sessionModel = '../models/session';
-        test = sessionModel.getUserProfileUserObject(req);
-        console.log(test);
 
-    function submitQuote(){
-        window.location.href = '/register';
+    function submitQuote(element){
+        var quoteDetailIndex = element.attr('data-quote-index');
+        var taxProfileSession = taxProfile.getAccountSession();
+        if (taxProfileSession.users[quoteDetailIndex].migrated_user === "Yes"){
+            taxProfileSession.users[quoteDetailIndex].migrated_user = "No";
+            window.location.href = '/personal-profile';
+        } else {
+            window.location.href = '/register';
+        }
     }
 
     function openQuoteDetails(element){
@@ -45,12 +49,12 @@
             //listeners
             quoteForm.on('submit',function(event){
                 event.preventDefault();
-                submitQuote();
+                submitQuote($(this));
             });
 
             quoteSubmit.on('click',function(event){
                 event.preventDefault();
-                submitQuote();
+                submitQuote($(this));
             });
 
             quoteBack.on('click',function(event){

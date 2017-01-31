@@ -36,12 +36,7 @@ authenticationMiddleware.redirectWithUserSession = function(req, res, next){
     session.hasUserProfileSession(req)
         .then(function(hasSession) {
             if (hasSession) {
-               var gotSession = session.getUserProfileSession(req);
-                if(gotSession.users[0].migrated_user === 'Yes') {
-                    res.redirect('/tax-profile');
-                }else{
-                    res.redirect('/dashboard');
-                }
+                next();
             } else {
                 next();
             }

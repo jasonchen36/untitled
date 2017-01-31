@@ -18,10 +18,6 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
         body: {},
         json: true
     };
-    session.hasUserProfileSession(req).then(function(hasSession){
-        var mySess = session.getUserProfileSession(req);
-        console.log("My Sess", mySess);
-    });
     var filingForRequest = _.clone(requestObject, true),
         quoteRequest = _.clone(requestObject, true);
     filingForRequest.uri += util.questionCategories.filingFor;
@@ -35,7 +31,7 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
                     filingFor: response[0],
                     quoteApplies: response[1]
                 },
-                dataObject = session.getTaxProfileSession(req);
+                dataObject = session.getUserProfileSession(req);
             try {
                 res.render('tax_profile/tax_profile', {
                     layout: 'layout-questionnaire',
