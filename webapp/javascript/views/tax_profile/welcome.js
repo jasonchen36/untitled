@@ -30,7 +30,7 @@
                         firstName: formData.firstName
                     },
                     'json',
-                     { } 
+                     { }
                 )
                     .then(function(response){
                         taxProfile.goToNextPage(response.data);
