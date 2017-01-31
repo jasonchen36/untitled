@@ -11,9 +11,7 @@ var userPages = {};
 
 function getPageAfterLogin(req)  {
 
-   if (req.session.userProfile.users[0].migrated_user === "Yes"){
-       return '/tax-profile';
-   }
+
    var profileSession = session.getUserProfileSession(req);
    var completedFlow = true;
    profileSession.taxReturns.forEach(function(entry) {
@@ -21,6 +19,9 @@ function getPageAfterLogin(req)  {
                completedFlow = false;
            }
        });
+       if (req.session.userProfile.users[0].migrated_user === "Yes"){
+           return '/tax-profile';
+       }
        if (completedFlow === true){
          return '/dashboard';
        } else {
