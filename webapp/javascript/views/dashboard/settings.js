@@ -82,7 +82,9 @@
     this.init = function(){
         if ($('#user-settings').length > 0){
             var settingsSubmit = $('#settings-submit'),
-            settingsCancel = $('#settings-done');
+            settingsCancel = $('#settings-done'),
+            settingsYesConfirm = $('#settings-confirm-button-yes');
+
             //listeners
             settingsSubmit.on('submit',function(event){
                 event.preventDefault();
@@ -94,10 +96,14 @@
 
             settingsSubmit.on('click',function(event){
                 event.preventDefault();
-                if (confirm("Are you sure you want to save your changes?") === true) {
-                    var userId = $(this).attr('data-id');
-                    updateEmailPassword($(this), userId, userObject);
-                }
+                window.location.hash = 'settings-confirm-modal';
+            });
+
+            settingsYesConfirm.on('click',function(event){
+                event.preventDefault();
+                var userId = $(this).attr('data-id');
+                updateEmailPassword($(this), userId, userObject);
+                window.location.hash = '#!';
             });
 
             settingsCancel.on('click',function(event){
