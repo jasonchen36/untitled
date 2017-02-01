@@ -116,7 +116,7 @@ taxReturnPages.actionSaveTaxProfile = function(req, res, next) {
 taxReturnPages.getLogoutPage = function(req, res, next){
     session.actionDestroyTaxProfileSession(req)
         .then(function(){
-            res.redirect('/tax-profile');
+                res.redirect('/tax-profile');
         });
 };
 

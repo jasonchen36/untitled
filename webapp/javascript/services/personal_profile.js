@@ -108,7 +108,7 @@
     function setCurrentPageCookie(newPage){
         cookies.setCookie(helpers.cookieCurrentPage,{
             page: newPage,
-            expiry: moment().add(1, 'hour')
+            expiry: moment().add(15, 'minutes')
         });
         return getCurrentPageCookie();
     }

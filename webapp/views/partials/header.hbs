@@ -6,9 +6,15 @@
             <div class="i--icon-default-user"></div>
             <div class="dropdown-content">
                 <a id="header-settings" href="#">Settings</a>
-                <a href="/logout">Logout</a>
+                <a onclick='clearCookies()' href="/logout">Logout</a>
             </div>
         </div>
     {{/if}}
     <p class="text-header">Got a question and want to speak with someone in person?  Our toll free number is 1-855-610-PLAN (7526)</p>
 </header>
+<script type='text/javascript'>
+    function clearCookies(){
+        var cookies = app.cookies;
+        cookies.clearAllCookies();
+    }
+</script>
