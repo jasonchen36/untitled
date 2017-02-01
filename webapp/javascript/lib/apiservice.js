@@ -89,9 +89,6 @@
 
     this.putTaxReturnLegalName = function(sessionData, taxReturnId, firstName, lastName, middleInitial){
 
-        if (!middleInitial){
-            middleInitial = "";
-        }
         var accountInfo = helpers.getAccountInformation(sessionData);
 
         var uri = sessionData.apiUrl + '/tax_return/' + taxReturnId;
