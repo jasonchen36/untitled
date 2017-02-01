@@ -383,13 +383,7 @@
                     document.getElementById('dashboard-upload-activate').classList.remove('active');
                     document.getElementById('dashboard-my-return-activate').classList.remove('active');
                     document.getElementById('dashboard-chat-activate').classList.add('active');
-                })
-                .on('click', '#dashboard-get-the-app', function (event) {
-                    event.preventDefault();
-                    //todo, put in real url
-                    window.location.href = '#get-the-app';
                 });
-
             var userSession = startUserSession();
             apiservice.getAllTaxpros(userSession).then(function(taxpros) {
                 apiservice.getTaxReturns(userSession)

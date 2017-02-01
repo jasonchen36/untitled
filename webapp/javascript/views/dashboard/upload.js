@@ -88,6 +88,7 @@
 
     function previewDocument(documentId, checklistId){
         var userSession = dashboard.getUserSession();
+        console.log(userSession, checklistId);
         var activeItem = _.find(userSession.documentChecklist.checklistItems, ['checklistItemId', checklistId]);
         userSession.documentItem = _.find(activeItem.documents, ['documentId', documentId]);
         userSession.isPreview = "true";
@@ -108,7 +109,7 @@
         window.location.hash = 'modal-checklist-description';
     }
 
-    function submitReturn(){     
+    function submitReturn(){
 
         apiservice.submitReturn(userObject, userObject.quoteId)
             .then(function(data){
@@ -147,12 +148,12 @@
 
     function downloadPdfChecklist(){
 
- 
+
         var anchor = $('.document-checklist-pd');
         apiservice.getPdfChecklist(userObject,
                          "Checklist.pdf")
             .then(function() {
-              
+
                 // todo
 
             })
