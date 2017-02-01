@@ -453,6 +453,7 @@
                     },
                     firstName: entry.first_name,
                     lastName: entry.last_name,
+                    middleInitial: entry.middle_initial,
                     provinceOfResidence: entry.province_of_residence,
                     dateOfBirth: entry.date_of_birth,
                     canadianCitizen: entry.canadian_citizen,
