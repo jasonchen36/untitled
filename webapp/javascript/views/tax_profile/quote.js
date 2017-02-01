@@ -4,6 +4,7 @@
         that = app.views.taxProfile.quote,
         helpers = app.helpers,
         taxProfile = app.services.taxProfile,
+        userProfile = app.services.userProfile,
         quoteForm,
         quoteSubmit,
         quoteBack,
@@ -13,7 +14,17 @@
         disabledClass = app.helpers.disabledClass;
 
     function submitQuote(){
-        window.location.href = '/register';
+        var taxProfileSession = taxProfile.getAccountSession();
+
+        if (taxProfileSession.users[0] != undefined &&
+            taxProfileSession.users[0].migrated_user === "Yes"){
+            console.log("Migrated user");
+
+            taxProfileSession.users[0].migrated_user = "No";
+            window.location.href = '/personal-profile';
+        } else {
+            window.location.href = '/register';
+        }
     }
 
     function openQuoteDetails(element){

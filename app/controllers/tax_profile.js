@@ -30,8 +30,16 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
             const taxProfileQuestions = {
                     filingFor: response[0],
                     quoteApplies: response[1]
-                },
-                dataObject = session.getTaxProfileSession(req);
+                };
+
+               var dataObject = session.getUserProfileSession(req);
+
+                if(typeof dataObject === 'undefined'  || typeof  dataObject.hasUserProfileSession  === 'undefined')
+                {
+                    dataObject = session.getTaxProfileSession(req);
+                    console.log(JSON.stringify( dataObject ));
+
+                 } 
             try {
                 res.render('tax_profile/tax_profile', {
                     layout: 'layout-questionnaire',
