@@ -88,9 +88,12 @@
 
     function previewDocument(documentId, checklistId){
         var userSession = dashboard.getUserSession();
-        console.log(userSession, checklistId);
-        var activeItem = _.find(userSession.documentChecklist.checklistItems, ['checklistItemId', checklistId]);
-        userSession.documentItem = _.find(activeItem.documents, ['documentId', documentId]);
+        if (checklistId !== 0){
+            var activeItem = _.find(userSession.documentChecklist.checklistItems, ['checklistItemId', checklistId]);
+            userSession.documentItem = _.find(activeItem.documents, ['documentId', documentId]);
+        } else {
+            userSession.documentItem = _.find(userSession.documentChecklist.additionalDocuments, ['documentId', documentId]);
+        }
         userSession.isPreview = "true";
         dashboard.refreshPage(userSession);
     }
