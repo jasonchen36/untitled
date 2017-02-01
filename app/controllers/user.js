@@ -17,12 +17,10 @@ function getPageAfterLogin(req)  {
                completedFlow = false;
            }
        });
-       console.log(completedFlow);
        if (completedFlow === true){
           return '/dashboard';
        } else {
            if (req.session.userProfile.users[0].migrated_user === "Yes"){
-               console.log('it goes in here');
                return '/tax-profile';
            }
            return '/personal-profile';
