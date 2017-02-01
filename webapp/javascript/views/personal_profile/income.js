@@ -158,6 +158,7 @@
                             taxReturn.questions = response[1][index];
                             taxReturn.firstName = nameData[index];
                             taxReturn.lastName = data.taxReturns.questions[index].last_name;
+                            taxReturn.middleInitial = data.taxReturns.questions[index].middle_initial;
                             _.each(taxReturn.questions.answers, function(question){
                               question.answer = 0;
                               question.class = "";
