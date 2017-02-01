@@ -99,7 +99,6 @@ sessionModel.getDocumentChecklistItemObject = function(data){
 sessionModel.getAdditionalDocumentObject = function(data){
     try {
         //todo, urls deleting session
-        console.log(data.thumbnailUrl, data.url);
         return {
             documentId: data.documentId,
             quoteId: data.quoteId,
