@@ -6,7 +6,6 @@ const //packages
     util = require('../services/util'),
     session = require('../services/session'),
     taxProfile = require('../services/tax_profile'),
-    cookies = app.cookies,
     errors = require('../services/errors');
 
 var taxReturnPages = {};
@@ -117,9 +116,7 @@ taxReturnPages.actionSaveTaxProfile = function(req, res, next) {
 taxReturnPages.getLogoutPage = function(req, res, next){
     session.actionDestroyTaxProfileSession(req)
         .then(function(){
-            cookies.clearAllCookies().then(function(){
                 res.redirect('/tax-profile');
-            });
         });
 };
 
