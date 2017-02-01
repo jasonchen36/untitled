@@ -78,7 +78,7 @@
   padding: 15px 5px 5px 5px;
   border-bottom: 1px solid $color-border-light-grey;
   position: relative;
-  cursor: hand;
+  cursor: pointer;
   &.active{
     background: $color-global-yellow;
   }
