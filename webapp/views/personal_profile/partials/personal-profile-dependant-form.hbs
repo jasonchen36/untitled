@@ -61,11 +61,19 @@
                 <div id="shared-{{taxReturnId}}" name="isShared" class="checkbox {{dependantForm.isShared}}" data-tax-return-id="{{taxReturnId}}"></div>
                 <p class="checkbox-label">THIS DEPENDANT IS SHARED WITH SPOUSE/PARTNER</p>
             </div>
+            <div class="add-top-padding checkbox-container">
+                <div id="shared-{{taxReturnId}}" name="isShared" class="checkbox {{dependantForm.isShared}}" data-tax-return-id="{{taxReturnId}}"></div>
+                <p class="checkbox-label">THIS DEPENDANT IS SHARED WITH OTHER</p>
+            </div>
         {{/compare}}
         {{#compare filerType 'spouse' operator='==='}}
             <div class="add-top-padding checkbox-container">
                 <div id="shared-{{taxReturnId}}" name="isShared" class="checkbox {{dependantForm.isShared}}" data-tax-return-id="{{taxReturnId}}"></div>
                 <p class="checkbox-label">THIS DEPENDANT IS SHARED WITH SPOUSE/PARTNER</p>
+            </div>
+            <div class="add-top-padding checkbox-container">
+                <div id="shared-{{taxReturnId}}" name="isShared" class="checkbox {{dependantForm.isShared}}" data-tax-return-id="{{taxReturnId}}"></div>
+                <p class="checkbox-label">THIS DEPENDANT IS SHARED WITH OTHER</p>
             </div>
         {{/compare}}
     {{/compare}}
