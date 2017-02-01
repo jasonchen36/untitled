@@ -7,7 +7,7 @@
         </div>
         <div class="content-form">
             <form id="address-form">
-                <h1 class="subtitle">Almost done – we just need current mailing addresses for yourself & all your other filers:</h1>
+                <h1 class="subtitle">Almost done – we just need current mailing address{{#compare taxReturns.length 1 operator=">"}}es for yourself and all your other filers{{/compare}}:</h1>
                 <div id="container-address-form">
                     {{#each taxReturns}}
                         <div class="border-bottom-light-grey add-bottom-padding taxplan-form-container" data-id="{{taxReturnId}}">

@@ -11,7 +11,7 @@
                     <div class="border-bottom-light-grey add-bottom-padding taxplan-tile-container taxplan-form-container" data-id="{{taxReturnId}}">
                         <h1 class="subtitle  {{#if @index}}border-top-light-gray{{/if}}">
                             {{#compare @index 0 operator="=="}}
-                                <span class="capitalize">{{firstName}}</span>, do you or any of your other filers have children or financially support another person?
+                                <span class="capitalize">{{firstName}}</span>, do you {{#compare taxReturns.length 1 operator=">"}}or any of your other filers {{/compare}}have children or financially support another person?
                             {{else}}
                                 <span class="capitalize">{{firstName}}</span>, do you have children or financially support another person?
                             {{/compare}}
