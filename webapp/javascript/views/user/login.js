@@ -42,12 +42,13 @@
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
 
-                  
+
 
                         ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
                         loginPasswordInput.addClass(errorClass);
                         loginErrorLabelPassword.addClass(errorClass);
                         if (jqXHR.jqXHR.responseJSON.message[0].msg === 'You are a migrated user. Please reset your password.'){
+                          window.location.hash = 'modal-migrated-password-popup';
                           loginErrorLabelPassword.html('You are a migrated user. Please reset your password.');
                         }else{
                           loginEmailInput.addClass(errorClass);

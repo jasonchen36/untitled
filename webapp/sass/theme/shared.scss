@@ -182,8 +182,9 @@ textarea {
   }
 }
 
+//TODO: Nich, Clean this
 .side-info-blurb{
-    font-size: 0.9rem;
+    font-size: 1.1rem;
   &.bigger{
     font-size:1.1rem;
   }
@@ -563,6 +564,13 @@ textarea {
     width: 400px          !important;
     top: calc(50% - 200px)  !important;
     left: calc(50% - 200px) !important;
+  }
+
+  &.delete-popup{
+    height: 200px;
+    width: 300px          !important;
+    top: calc(50% - 100px)  !important;
+    left: calc(50% - 150px) !important;
   }
 }
 
