@@ -1,22 +1,8 @@
 <footer class="grid-container">
     <nav class="dev-nav">
         <!--for dev use-->
-        {{#if data.hasUserProfileSession}}
-            <a href="/dashboard">Dashboard</a>
-            <a href="/personal-profile">Personal Profile</a>
-            <a href="/logout">Logout (user session)</a>
-        {{else}}
-            <a href="/login">Login</a>
-            <a href="/register">Register</a>
-            <a href="/tax-profile">Onboard</a>
-            <a href="/forgot-password">Forgot Password</a>
-        {{/if}}
-
-        {{#if data.hasTaxProfileSession}}
-            <a href="/tax-profile/logout">Logout (tax profile session)</a>
-        {{/if}}
-        <a href="/privacy-policy" target="_blank">Privacy Policy</a>
-        <a href="/terms-conditions" target="_blank">Terms and Conditions</a>
+        <a href="/login">Login</a>
+        <a href="/tax-profile">Onboard</a>
 
     </nav>
     <script type="text/javascript" src="/app.base.min.js"></script>
