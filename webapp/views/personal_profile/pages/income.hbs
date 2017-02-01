@@ -7,7 +7,6 @@
         </div>
         <div class="content-form">
             <form id="income-form">
-                {{#debug}}{{/debug}}
                 {{#each taxReturns}}
                     <h1 class="subtitle {{#if @index}}border-top-light-gray{{/if}}">
                         {{#compare @index 0 operator="=="}}
