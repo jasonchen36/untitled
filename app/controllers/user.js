@@ -3,6 +3,7 @@ const //packages
 //services
     util = require('../services/util'),
     session = require('../services/session'),
+    cookies = app.cookies,
     errors = require('../services/errors');
 
 var userPages = {};
@@ -232,9 +233,11 @@ userPages.getLogoutPage = function(req, res, next) {
 userPages.actionLogoutUser = function(req, res, next) {
     session.actionDestroyAllSession(req)
         .then(function(){
-            res.status(util.http.status.ok).json({
-                action: 'logout',
-                status: 'success'
+            cookies.clearAllCookies().then(function() {
+                res.status(util.http.status.ok).json({
+                    action: 'logout',
+                    status: 'success'
+                });
             });
         });
 };
