@@ -93,7 +93,7 @@
                  response.messages.forEach(function(entry){
                      var chatObject = getChatMessageObject(entry);
                     if(chatObject.isFromTaxPro){
-                        _.each(dataObject.taxPros, function(taxPro){
+                        _.each(dataObject.taxPros.taxPros, function(taxPro){
                             if(taxPro.id === chatObject.fromId){
                                 chatObject.taxProName = taxPro.first_name;
                                 chatObject.taxProPic = taxPro.taxpro_pic;
