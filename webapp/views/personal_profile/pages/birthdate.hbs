@@ -7,7 +7,7 @@
         </div>
         <div class="content-form">
             <form id="birthdate-form">
-                <h1 class="subtitle">Lastly, provide us with a date of birth and citizenship status{{#compare taxReturns.length 1 operator=">"}} for yourself & all your other filers{{/compare}}:</h1>
+                <h1 class="subtitle">Lastly, provide us with a date of birth and citizenship status{{#compare @root.taxReturns.length 1 operator=">"}} for yourself & all your other filers{{/compare}}:</h1>
                 {{#each taxReturns}}
                     <div id="container-birthdate-form" class="border-bottom-light-gray add-bottom-padding taxplan-form-container"  data-id="{{taxReturnId}}">
                         <h1 class="filer-name"><span class="capitalize">{{firstName}}:</span></h1>

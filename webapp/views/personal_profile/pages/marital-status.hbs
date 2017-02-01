@@ -10,7 +10,7 @@
                 {{#each taxReturns}}
                     <h1 class="subtitle display-inline-table full-width  {{#if @index}}border-top-light-gray{{/if}}">
                         {{#compare @index 0 operator="=="}}
-                            <span class="capitalize">{{firstName}}</span>, we’re now going to set up a personal profile for you{{#compare taxReturns.length 1 operator=">"}} and your other filers{{/compare}}.</br> Let’s start with your marital status.</br></br>What was your marital status on Dec. 31, 2016?
+                            <span class="capitalize">{{firstName}}</span>, we’re now going to set up a personal profile for you{{#compare  @root.taxReturns.length 1 operator=">"}} and your other filers{{/compare}}.</br> Let’s start with your marital status.</br></br>What was your marital status on Dec. 31, 2016?
                         {{else}}
                             What was <span class="capitalize">{{firstName}}</span>’s marital status on Dec. 31, 2016?
                         {{/compare}}
