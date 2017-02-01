@@ -88,8 +88,12 @@
 
     function previewDocument(documentId, checklistId){
         var userSession = dashboard.getUserSession();
-        var activeItem = _.find(userSession.documentChecklist.checklistItems, ['checklistItemId', checklistId]);
-        userSession.documentItem = _.find(activeItem.documents, ['documentId', documentId]);
+        if (checklistId !== 0){
+            var activeItem = _.find(userSession.documentChecklist.checklistItems, ['checklistItemId', checklistId]);
+            userSession.documentItem = _.find(activeItem.documents, ['documentId', documentId]);
+        } else {
+            userSession.documentItem = _.find(userSession.documentChecklist.additionalDocuments, ['documentId', documentId]);
+        }
         userSession.isPreview = "true";
         dashboard.refreshPage(userSession);
     }
@@ -108,7 +112,7 @@
         window.location.hash = 'modal-checklist-description';
     }
 
-    function submitReturn(){     
+    function submitReturn(){
 
         apiservice.submitReturn(userObject, userObject.quoteId)
             .then(function(data){
@@ -147,12 +151,12 @@
 
     function downloadPdfChecklist(){
 
- 
+
         var anchor = $('.document-checklist-pd');
         apiservice.getPdfChecklist(userObject,
                          "Checklist.pdf")
             .then(function() {
-              
+
                 // todo
 
             })

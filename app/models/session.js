@@ -25,7 +25,7 @@ sessionModel.getTaxProfileObject = function(data){
         hasTaxProfileSession: true,
         apiUrl: data.apiUrl,
         productId: data.productId,
-        expiry: moment().add(7, 'days'),
+        expiry: moment().add(15, 'minutes'),
         currentPage: 'welcome',
         users: [
             sessionModel.getTaxProfileUserObject(data),
@@ -66,7 +66,7 @@ sessionModel.getUserProfileObject = function(data){
         taxProDescription: data.taxpro_desc,
         taxProName: data.taxpro_name,
         taxProTitle: data.taxpro_title,
-        expiry: moment().add(1, 'hour'),
+        expiry: moment().add(15, 'minutes'),
         users: [
             sessionModel.getUserProfileUserObject(data)
         ]
@@ -99,7 +99,6 @@ sessionModel.getDocumentChecklistItemObject = function(data){
 sessionModel.getAdditionalDocumentObject = function(data){
     try {
         //todo, urls deleting session
-        console.log(data.thumbnailUrl, data.url);
         return {
             documentId: data.documentId,
             quoteId: data.quoteId,

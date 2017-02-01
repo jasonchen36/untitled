@@ -232,10 +232,10 @@ userPages.getLogoutPage = function(req, res, next) {
 userPages.actionLogoutUser = function(req, res, next) {
     session.actionDestroyAllSession(req)
         .then(function(){
-            res.status(util.http.status.ok).json({
-                action: 'logout',
-                status: 'success'
-            });
+                res.status(util.http.status.ok).json({
+                    action: 'logout',
+                    status: 'success'
+                });
         });
 };
 
