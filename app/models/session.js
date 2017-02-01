@@ -105,7 +105,6 @@ sessionModel.getAdditionalDocumentObject = function(data){
             quoteId: data.quoteId,
             taxReturnId: data.taxReturnId,
             firstName: data.firstName,
-            middleInitial: data.middle_initial,
             lastName: data.lastName,
             checklistItemId: data.checkListItemId,
             name: data.name,
