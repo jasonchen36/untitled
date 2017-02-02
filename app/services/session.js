@@ -141,6 +141,15 @@ session.actionStartUserProfileSession = function(req, token){
                 .then(function (response) {
                     try {
                         userProfileSession.taxReturns = _.map(response.taxReturns, sessionModel.getUserTaxReturns);
+
+                        var returns = [];
+                        userProfileSession.taxReturns.forEach(function (entry) {
+                            if(entry.productId  === 10) {
+                                returns.push(entry);
+                            }
+                        });
+
+                        userProfileSession.taxReturns = returns;
                         return promise.resolve(session.setUserProfileSession(req, userProfileSession));
                     } catch(error){
                         if(!error){

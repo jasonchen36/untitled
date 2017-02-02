@@ -45,6 +45,7 @@ sessionModel.getUserProfileUserObject = function(data){
         phone: data.phone,
         username: data.username,
         lastName: data.last_name,
+        middleInitial: data.middle_initial,
         accounts: data.accounts,
         birthday: data.birthday,
         resetKey: data.reset_key,
@@ -99,7 +100,6 @@ sessionModel.getDocumentChecklistItemObject = function(data){
 sessionModel.getAdditionalDocumentObject = function(data){
     try {
         //todo, urls deleting session
-        console.log(data.thumbnailUrl, data.url);
         return {
             documentId: data.documentId,
             quoteId: data.quoteId,
@@ -152,6 +152,7 @@ sessionModel.getUserTaxReturns = function(data){
             displayText: data.status.display_text
         },
         firstName: data.first_name,
+        middleInitial: data.middle_initial,
         lastName: data.last_name,
         province: data.province_of_residence,
         dateOfBirth: data.date_of_birth,

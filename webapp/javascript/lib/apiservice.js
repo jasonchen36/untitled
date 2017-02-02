@@ -102,7 +102,7 @@
     };
 
 
-    this.putTaxReturnLegalName = function(sessionData, taxReturnId, firstName, lastName){
+    this.putTaxReturnLegalName = function(sessionData, taxReturnId, firstName, lastName, middleInitial){
 
         var accountInfo = helpers.getAccountInformation(sessionData);
 
@@ -114,7 +114,8 @@
                 accountId: accountInfo.accountId,
                 productId: accountInfo.productId,
                 firstName: firstName,
-                lastName: lastName
+                lastName: lastName,
+                middleInitial: middleInitial
             },
             'json',
             {
@@ -464,6 +465,7 @@
                     },
                     firstName: entry.first_name,
                     lastName: entry.last_name,
+                    middleInitial: entry.middle_initial,
                     provinceOfResidence: entry.province_of_residence,
                     dateOfBirth: entry.date_of_birth,
                     canadianCitizen: entry.canadian_citizen,

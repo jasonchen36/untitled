@@ -8,10 +8,10 @@
         <div class="content-form">
             <form id="quote-form" class="container-credits-form horizontal-center">
                 {{#compare @root.quote.lineItems.length 1 operator=">"}}
-                    <p class="label-blurb"><span class="capitalize">{{users.0.firstName}}</span>, the fee for TAXplan to prepare your tax return (s) is:</p>
+                    <p class="label-blurb"><span class="capitalize">{{users.0.firstName}}</span>, the fee for TAXplan Canada to prepare 2016 tax returns for yourself and your other filers is:</p>
                 {{/compare}}
                 {{#compare @root.quote.lineItems.length 1 operator="=="}}
-                    <p class="label-blurb"><span class="capitalize">{{users.0.firstName}}</span>, the fee for TAXplan to prepare your tax return (s) is:</p>
+                    <p class="label-blurb"><span class="capitalize">{{users.0.firstName}}</span>, the fee for TAXplan Canada to prepare your 2016 tax return is:</p>
                 {{/compare}}
                 {{#each quote.lineItems}}
                     {{#each ../users}}
