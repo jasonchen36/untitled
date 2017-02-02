@@ -579,6 +579,13 @@ textarea {
     top: calc(50% - 100px)  !important;
     left: calc(50% - 150px) !important;
   }
+
+  &.migrated{
+    height: 350px;
+    width: 400px          !important;
+    top: calc(50% - 225px)  !important;
+    left: calc(50% - 200px) !important;
+  }
 }
 
 .label-popup-header{
