@@ -74,7 +74,7 @@
 }
 
 .upload-checklist-item {
-  height: 60px;
+  height: 65px;
   padding: 15px 5px 5px 5px;
   border-bottom: 1px solid $color-border-light-grey;
   position: relative;
@@ -102,7 +102,7 @@
 }
 
 .label-document-name{
-  font-size: 1.25rem;
+  font-size: calc(10px + 0.5vw);
   max-width:65%;
 }
 
