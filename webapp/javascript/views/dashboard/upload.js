@@ -22,6 +22,7 @@
         progressBar,
         fileUploadSuccess,
         deleteFileForm,
+        confirmSubmitReturnYes,
         currentDeleteFileElement,
         buttonChecklistDescription,
         errorClass = helpers.errorClass,
@@ -187,6 +188,7 @@
             deleteFileForm = $('#modal-delete-file-submit-form');
             buttonChecklistDescription = $('#upload-checklist-item-info-button');
             confirmDeleteYes = $('#confirm-delete-button-yes');
+            confirmSubmitReturnYes = $('#dashboard-submit-return-yes');
             var userSession = dashboard.getUserSession();
 
             //listeners
@@ -196,6 +198,11 @@
             });
 
             taxReturnForm.on('submit',function(event){
+                event.preventDefault();
+                submitReturn();
+            });
+
+            confirmSubmitReturnYes.on('click',function(event){
                 event.preventDefault();
                 submitReturn();
             });
