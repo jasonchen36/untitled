@@ -12,17 +12,20 @@ var userPages = {};
 function getPageAfterLogin(req)  {
    var profileSession = session.getUserProfileSession(req);
    var completedFlow = true;
-   profileSession.taxReturns.forEach(function(entry) {
+    profileSession.taxReturns.forEach(function(entry) {
            if (entry.status.id === 2) {
                completedFlow = false;
            }
        });
-       console.log(completedFlow);
+
+      if(profileSession.taxReturns.length === 0) {
+          completedFlow = false;
+      }
+
        if (completedFlow === true){
           return '/dashboard';
        } else {
            if (req.session.userProfile.users[0].migrated_user === "Yes"){
-               console.log('it goes in here');
                return '/tax-profile';
            }
            return '/personal-profile';

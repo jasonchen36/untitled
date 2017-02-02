@@ -26,6 +26,16 @@ taxProfile.saveName = function(req){
                 return promise.reject('api - tax profile welcome - validation errors');
             } else {
                 const taxProfileSession = session.getTaxProfileSession(req);
+          
+
+                 var dataObject = session.getUserProfileSession(req);
+
+                if(typeof dataObject !== 'undefined'  && typeof  dataObject.hasUserProfileSession  !== 'undefined')
+                {
+
+                    taxProfileSession.users[0].migrated_user = "Yes";
+                }  
+             
                 taxProfileSession.users[0].firstName = req.body.firstName;
                 taxProfileSession.currentPage = getCurrentPage(req.body.action);
                 taxProfileSession.expiry = moment().add(7, 'days');//refresh after update
@@ -117,6 +127,13 @@ taxProfile.saveActiveTiles = function(req){
                         if (parseInt(key) === 127) {//todo, find better way of linking these questions
                             //spouse
                             if (parseInt(value) === 1) {
+
+
+                                if(taxProfileSession.users.length < 2)
+                                {
+                                     taxProfileSession.users.push( { });
+                                }
+
                                 //don't write over existing objects
                                 if (!taxProfileSession.users[1].hasOwnProperty('id')) {
                                     taxProfileSession.users[1] = sessionModel.getTaxProfileUserObject();
@@ -127,6 +144,13 @@ taxProfile.saveActiveTiles = function(req){
                             }
                         } else if (parseInt(key) === 128) {//todo, find better way of linking these questions
                             //other
+
+                                if(taxProfileSession.users.length < 3)
+                                {
+                                     taxProfileSession.users.push( { });
+                                }
+
+
                             if (parseInt(value) === 1) {
                                 //don't write over existing objects
                                 if (!taxProfileSession.users[2].hasOwnProperty('id')) {
@@ -271,7 +295,15 @@ taxProfile.getTaxReturnQuote = function(req){
                 .then(function (response) {
                     taxProfileSession.quote = response;
                     session.setTaxProfileSession(req, taxProfileSession);
-                    return promise.resolve();
+
+                   const accountID = taxProfileSession.users[0].id;
+                   session.updateUserProfileSession(req, accountID ) .then(function (response) {
+
+
+                         var dataObject = session.getUserProfileSession(req);
+                         return promise.resolve();
+
+                       })
                 })
                 .catch(function (response) {
                     var error = response;

@@ -65,9 +65,8 @@
 
                         _.each(formData, function(entry) {
 
-
                              var ajaxUpdate = apiservice.putTaxReturnLegalName(
-                                     sessionData, entry.taxReturnId, entry.firstName, entry.lastName);
+                                     sessionData, entry.taxReturnId, entry.firstName, entry.lastName, entry.middleInitial);
 
 
                              var ajaxAnswers = apiservice.getAnswers(sessionData,

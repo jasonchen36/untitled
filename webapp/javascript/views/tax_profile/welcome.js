@@ -27,7 +27,8 @@
                     '/tax-profile',
                     {
                         action: 'api-tp-welcome',
-                        firstName: formData.firstName
+                        firstName: formData.firstName,
+                        accountId: formData.accountId,
                     },
                     'json',
                      { }

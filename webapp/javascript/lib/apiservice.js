@@ -24,15 +24,14 @@
 
     };
 
-    this.putEmailPassword = function(userId, email, password, sessionData){
+    this.putEmail = function(userId, email, sessionData){
         var accountInfo = helpers.getAccountInformation(sessionData);
         var uri = sessionData.apiUrl + '/users/' + userId;
         var ajaxPromise = ajax.ajax(
             'PUT',
             uri,
             {
-                email: email,
-                password: password
+                email: email
             },
             'json-text',
             {
@@ -42,6 +41,22 @@
         return ajaxPromise;
     };
 
+    this.putPassword = function(userId, password, sessionData){
+        var accountInfo = helpers.getAccountInformation(sessionData);
+        var uri = sessionData.apiUrl + '/users/' + userId +'/password';
+        var ajaxPromise = ajax.ajax(
+            'PUT',
+            uri,
+            {
+                password: password
+            },
+            'json-text',
+            {
+                'Authorization': 'Bearer '+ accountInfo.token
+            }
+        );
+        return ajaxPromise;
+    };
 
     this.putAuthorizedPasswordReset = function(apiurl, password, token){
 
@@ -87,7 +102,7 @@
     };
 
 
-    this.putTaxReturnLegalName = function(sessionData, taxReturnId, firstName, lastName){
+    this.putTaxReturnLegalName = function(sessionData, taxReturnId, firstName, lastName, middleInitial){
 
         var accountInfo = helpers.getAccountInformation(sessionData);
 
@@ -99,7 +114,8 @@
                 accountId: accountInfo.accountId,
                 productId: accountInfo.productId,
                 firstName: firstName,
-                lastName: lastName
+                lastName: lastName,
+                middleInitial: middleInitial
             },
             'json',
             {
@@ -449,6 +465,7 @@
                     },
                     firstName: entry.first_name,
                     lastName: entry.last_name,
+                    middleInitial: entry.middle_initial,
                     provinceOfResidence: entry.province_of_residence,
                     dateOfBirth: entry.date_of_birth,
                     canadianCitizen: entry.canadian_citizen,
