@@ -9,6 +9,21 @@
       disabledClass = helpers.disabledClass,
       thisClass = app.dependants_helpers;
 
+
+  this.setSharedToggle = function(taxReturnId, dependantsForm, isShared){
+      _.each(pageData.taxReturns, function(taxReturn){
+                 if (taxReturn.taxReturnId === taxReturnId){
+                      if (isShared === 1){
+                          dependantShared = dependantsForm.find('#shared-'+taxReturn.taxReturnId);
+                          dependantShared.addClass(activeClass);
+                      } else if (isShared === 0){
+                          dependantShared = dependantsForm.find('#shared-'+taxReturn.taxReturnId);
+                          dependantShared.removeClass(activeClass);
+                      }
+                 }
+      });
+  };
+
   this.hasDependant = function(pageData){
     var hasDependant = true;
     _.each(pageData.taxReturns, function (taxReturn) {

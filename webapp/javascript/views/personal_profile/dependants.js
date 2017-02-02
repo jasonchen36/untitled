@@ -276,16 +276,25 @@
             dependantsSaveButtons = $('.dependants-button-save');
             dependantsCancelButtons = $('.dependants-button-cancel');
             dependantCheckboxes = $('.checkbox-container');
+            dependantShared = $('.checkbox');
             console.log(pageData, dependantsForm);
-            _.each(pageData.taxReturns, function(taxReturn){
-                dependantShared = dependantsForm.find('#shared-'+taxReturn.taxReturnId);
-                dependantShared.on('click',function(event){
-                    console.log('it goes inside the shared');
-                    event.preventDefault();
-                    $(this).toggleClass(activeClass);
-                });
-            });
+            // _.each(pageData.taxReturns, function(taxReturn){
+            //     dependantShared = dependantsForm.find('#shared-'+taxReturn.taxReturnId);
+            //     dependantShared.on('click',function(event){
+            //         console.log('it goes inside the shared');
+            //         event.preventDefault();
+            //         $(this).toggleClass(activeClass);
+            //     });
+            // });
             //listeners
+
+            dependantShared.on('click',function(event){
+                event.preventDefault();
+                console.log('it gets in the shared listener');
+                var taxReturnId = $(this).attr('data-tax-return-id');
+                var isShared = $(this).attr('data-id');
+                personalProfile.refreshPage(dependants_helpers.setSharedToggle(taxReturnId, dependantsForm, isShared));
+            });
 
             dependantsBack.on('click',function(event){
                 event.preventDefault();
