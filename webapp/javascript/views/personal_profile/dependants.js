@@ -266,6 +266,7 @@
             dependantsForm = $('#dependants-form');
             formData = helpers.getTileFormDataArray(dependantsForm);
             sessionData = personalProfile.getPersonalProfileSession();
+            pageData = personalProfile.getPageSession();
             dependantsBack = $('#dependants-back');
             dependantsYesButtons = $('.dependants-button-yes');
             dependantsNoButtons = $('.dependants-button-no');
@@ -275,8 +276,17 @@
             dependantsSaveButtons = $('.dependants-button-save');
             dependantsCancelButtons = $('.dependants-button-cancel');
             dependantCheckboxes = $('.checkbox-container');
-
+            console.log(pageData, dependantsForm);
+            _.each(pageData.taxReturns, function(taxReturn){
+                dependantShared = dependantsForm.find('#shared-'+taxReturn.taxReturnId);
+                dependantShared.on('click',function(event){
+                    console.log('it goes inside the shared');
+                    event.preventDefault();
+                    $(this).toggleClass(activeClass);
+                });
+            });
             //listeners
+
             dependantsBack.on('click',function(event){
                 event.preventDefault();
                 updateDependants();
@@ -308,6 +318,7 @@
 
             dependantsEditButtons.on('click',function(event){
                 event.preventDefault();
+                console.log('edit listener is working');
                 var dependantId = parseInt($(this).attr('data-id').split('-')[0]);
                 var firstName = $(this).attr('data-id').split('-')[1];
                 var lastName = $(this).attr('data-id').split('-')[2];
