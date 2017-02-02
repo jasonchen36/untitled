@@ -17,7 +17,7 @@
         settingsEmailErrorLabel = $('#label-error-settings-email'),
         settingsPasswordErrorLabel = $('#label-error-settings-new-password'),
         settingsConfirmPasswordErrorLabel = $('#label-error-settings-confirm-password');
-        settingsConfirmEmailErrorLabel = $('label-error-settings-confirm-email');
+        settingsConfirmEmailErrorLabel = $('#label-error-settings-confirm-email');
         if (!settingsSubmit.hasClass(disabledClass)) {
             var formData = helpers.getFormData(userSettingsForm);
             helpers.resetForm(userSettingsForm);
@@ -41,6 +41,11 @@
                 settingsConfirmPasswordErrorLabel.addClass(errorClass);
                 settingsConfirmPasswordErrorLabel.html('Please check your confirmed password');
             }
+            if(formData.email === "" && formData.password === ""){
+                settingsEmailInput.addClass(errorClass);
+                settingsEmailErrorLabel.addClass(errorClass);
+                settingsEmailErrorLabel.html('Please enter an email and/or password. Or hit cancel to exit.');
+            }
             if (!helpers.formHasErrors(userSettingsForm)) {
                settingsSubmit.addClass(disabledClass);
 
@@ -48,8 +53,15 @@
                     .then(function() {
                         var promiseArray =  [];
 
-                       var ajaxCall = apiservice.putEmailPassword(userId, formData.email, formData.password, userObject);
-                       promiseArray.push(ajaxCall);
+                        if(formData.confirmedPassword !== ""){
+                            var apiPassword = apiservice.putPassword(userId, formData.password, userObject);
+                            promiseArray.push(apiPassword);
+                        }
+
+                        if(formData.confirmedEmail !== ""){
+                            var apiEmail = apiservice.putEmail(userId, formData.email, userObject);
+                            promiseArray.push(apiEmail);
+                        }
 
                        return Promise.all(promiseArray);
 
@@ -61,19 +73,23 @@
                         window.location.href = '/logout';
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
-                        ajax.ajaxCatch(jqXHR,textStatus,errorThrown);
-                        settingsEmailErrorLabel.addClass(errorClass);
+                        ajax.ajaxCatch(jqXHR, textStatus, errorThrown);
                         settingsEmailInput.addClass(errorClass);
-                        settingsConfirmEmailInput.addClass(errorClass);
-                        settingsEmailErrorLabel.html(jqXHR.errorThrown);
-                        settingsConfirmEmailErrorLabel.addClass(errorClass);
-                        settingsConfirmEmailErrorLabel.html(jqXHR.errorThrown);
-                        settingsPasswordErrorLabel.addClass(errorClass);
-                        settingsPasswordInput.addClass(errorClass);
-                        settingsPasswordErrorLabel.html(jqXHR.errorThrown);
-                        settingsConfirmPasswordErrorLabel.addClass(errorClass);
-                        settingsConfirmPasswordInput.addClass(errorClass);
-                        settingsConfirmPasswordErrorLabel.html(jqXHR.errorThrown);
+                        settingsEmailErrorLabel.addClass(errorClass);
+                        if (jqXHR.jqXHR.responseText === 'Email address already in use') {
+                            settingsEmailErrorLabel.html(jqXHR.jqXHR.responseText);
+                        }else {
+                            settingsConfirmEmailInput.addClass(errorClass);
+                            settingsEmailErrorLabel.html(jqXHR.errorThrown);
+                            settingsConfirmEmailErrorLabel.addClass(errorClass);
+                            settingsConfirmEmailErrorLabel.html(jqXHR.errorThrown);
+                            settingsPasswordErrorLabel.addClass(errorClass);
+                            settingsPasswordInput.addClass(errorClass);
+                            settingsPasswordErrorLabel.html(jqXHR.errorThrown);
+                            settingsConfirmPasswordErrorLabel.addClass(errorClass);
+                            settingsConfirmPasswordInput.addClass(errorClass);
+                            settingsConfirmPasswordErrorLabel.html(jqXHR.errorThrown);
+                        }
                         settingsSubmit.removeClass(disabledClass);
                     });
 
