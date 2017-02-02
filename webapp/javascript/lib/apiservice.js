@@ -564,9 +564,10 @@
 
     this.updateDependant = function(sessionData, taxReturnId, formData){
         var accountInfo = helpers.getAccountInformation(sessionData);
-        if (!formData.isShared){
-          formData.isShared = 0;
+        if (!formData.is_shared){
+          formData.is_shared = 0;
         }
+
         return ajax.ajax(
             'PUT',
             sessionData.apiUrl+'/tax_return/'+taxReturnId+'/dependant/'+formData.id,
@@ -575,7 +576,7 @@
                 'lastName': formData.last_name,
                 'dateOfBirth': formData.year+'-'+formData.month+'-'+formData.day,
                 'relationship': formData.relationship,
-                'isShared': formData.isShared.toString()
+                'isShared': formData.is_shared.toString()
             },
             'json',
             {
@@ -603,8 +604,8 @@
 
     this.createDependant = function(sessionData, taxReturnId, formData){
         var accountInfo = helpers.getAccountInformation(sessionData);
-        if (!formData.isShared){
-          formData.isShared = 0;
+        if (!formData.is_shared){
+          formData.is_shared = 0;
         }
         return ajax.ajax(
             'POST',
@@ -614,7 +615,7 @@
                 'lastName': formData.last_name,
                 'dateOfBirth': formData.year+'-'+formData.month+'-'+formData.day,
                 'relationship': formData.relationship,
-                'isShared': formData.isShared.toString()
+                'isShared': formData.is_shared.toString()
             },
             'json',
             {
