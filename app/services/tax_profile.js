@@ -34,37 +34,7 @@ taxProfile.saveName = function(req){
                 {
 
                     taxProfileSession.users[0].migrated_user = "Yes";
-
-
-             /*       var activities = taxProfileSession.users[0].activities;
-                    taxProfileSession.users = [];
-                    var index = 0;
-                    dataObject.taxReturns.forEach(function (entry) {
-
-                         var migratedTR = {};
-                         migratedTR.id = entry.accountId;
-                         if(index === 1)
-                         {
-                            migratedTR.id =  migratedTR.id + '-spouse';
-                         }
-                         if(index > 1)
-                         {
-                            migratedTR.id =  migratedTR.id + '-other';
-                         }                        
-
-
-                         migratedTR.firstName = entry.firstName;
-                         migratedTR.taxReturnId  = entry.taxReturnId;
-                         migratedTR.migrated_user = "Yes";
-                         migratedTR.activities = activities; 
-                         taxProfileSession.users.push(migratedTR);
-
-                         index++;
-
-                    }); */
-
                 }  
-
              
                 taxProfileSession.users[0].firstName = req.body.firstName;
                 taxProfileSession.currentPage = getCurrentPage(req.body.action);
