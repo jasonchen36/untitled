@@ -47,7 +47,7 @@
                 settingsEmailErrorLabel.html('Please enter an email and/or password. Or hit cancel to exit.');
             }
             if (!helpers.formHasErrors(userSettingsForm)) {
-
+                settingsSubmit.addClass(disabledClass);
 
                return Promise.resolve()
                     .then(function() {
