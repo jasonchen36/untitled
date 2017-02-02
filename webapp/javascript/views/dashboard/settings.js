@@ -73,15 +73,12 @@
                         window.location.href = '/logout';
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
+                        ajax.ajaxCatch(jqXHR, textStatus, errorThrown);
+                        settingsEmailInput.addClass(errorClass);
+                        settingsEmailErrorLabel.addClass(errorClass);
                         if (jqXHR.jqXHR.responseText === 'Email address already in use') {
-                            settingsEmailInput.addClass(errorClass);
-                            settingsEmailErrorLabel.addClass(errorClass);
-                            settingsEmailErrorLabel.html('Email address already in use.');
-                            settingsSubmit.removeClass(disabledClass);
+                            settingsEmailErrorLabel.html(jqXHR.jqXHR.responseText);
                         }else {
-                            ajax.ajaxCatch(jqXHR, textStatus, errorThrown);
-                            settingsEmailErrorLabel.addClass(errorClass);
-                            settingsEmailInput.addClass(errorClass);
                             settingsConfirmEmailInput.addClass(errorClass);
                             settingsEmailErrorLabel.html(jqXHR.errorThrown);
                             settingsConfirmEmailErrorLabel.addClass(errorClass);
