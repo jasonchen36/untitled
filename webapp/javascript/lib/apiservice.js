@@ -576,7 +576,7 @@
                 'lastName': formData.last_name,
                 'dateOfBirth': formData.year+'-'+formData.month+'-'+formData.day,
                 'relationship': formData.relationship,
-                'isShared': formData.is_shared
+                'isShared': formData.is_shared.toString()
             },
             'json',
             {
@@ -615,7 +615,7 @@
                 'lastName': formData.last_name,
                 'dateOfBirth': formData.year+'-'+formData.month+'-'+formData.day,
                 'relationship': formData.relationship,
-                'isShared': formData.is_shared
+                'isShared': formData.is_shared.toString()
             },
             'json',
             {
