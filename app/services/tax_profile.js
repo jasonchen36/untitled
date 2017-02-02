@@ -31,9 +31,31 @@ taxProfile.saveName = function(req){
 
                 if(typeof dataObject !== 'undefined'  && typeof  dataObject.hasUserProfileSession  !== 'undefined')
                 {
-                    taxProfileSession.users = dataObject.users;
-                    taxProfileSession.users.forEach(function (entry) {
-                              entry.taxReturnId = entry.id;
+                    var activities = taxProfileSession.users[0].activities;
+                    taxProfileSession.users = [];
+                    var index = 0;
+                    dataObject.taxReturns.forEach(function (entry) {
+
+                         var migratedTR = {};
+                         migratedTR.id = entry.accountId;
+                         if(index === 1)
+                         {
+                            migratedTR.id =  migratedTR.id + '-spouse';
+                         }
+                         if(index > 1)
+                         {
+                            migratedTR.id =  migratedTR.id + '-other';
+                         }                        
+
+
+                         migratedTR.firstName = entry.firstName;
+                         migratedTR.taxReturnId  = entry.taxReturnId;
+                         migratedTR.migrated_user = "Yes";
+                         migratedTR.activities = activities; 
+                         taxProfileSession.users.push(migratedTR);
+
+                         index++;
+
                     });
 
                 }
