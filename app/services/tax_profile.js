@@ -27,39 +27,14 @@ taxProfile.saveName = function(req){
             } else {
                 const taxProfileSession = session.getTaxProfileSession(req);
           
-                var dataObject = session.getUserProfileSession(req);
+
+                 var dataObject = session.getUserProfileSession(req);
 
                 if(typeof dataObject !== 'undefined'  && typeof  dataObject.hasUserProfileSession  !== 'undefined')
                 {
-                    var activities = taxProfileSession.users[0].activities;
-                    taxProfileSession.users = [];
-                    var index = 0;
-                    dataObject.taxReturns.forEach(function (entry) {
 
-                         var migratedTR = {};
-                         migratedTR.id = entry.accountId;
-                         if(index === 1)
-                         {
-                            migratedTR.id =  migratedTR.id + '-spouse';
-                         }
-                         if(index > 1)
-                         {
-                            migratedTR.id =  migratedTR.id + '-other';
-                         }                        
-
-
-                         migratedTR.firstName = entry.firstName;
-                         migratedTR.taxReturnId  = entry.taxReturnId;
-                         migratedTR.migrated_user = "Yes";
-                         migratedTR.activities = activities; 
-                         taxProfileSession.users.push(migratedTR);
-
-                         index++;
-
-                    });
-
-                }
-
+                    taxProfileSession.users[0].migrated_user = "Yes";
+                }  
              
                 taxProfileSession.users[0].firstName = req.body.firstName;
                 taxProfileSession.currentPage = getCurrentPage(req.body.action);
@@ -320,7 +295,15 @@ taxProfile.getTaxReturnQuote = function(req){
                 .then(function (response) {
                     taxProfileSession.quote = response;
                     session.setTaxProfileSession(req, taxProfileSession);
-                    return promise.resolve();
+
+                   const accountID = taxProfileSession.users[0].id;
+                   session.updateUserProfileSession(req, accountID ) .then(function (response) {
+
+
+                         var dataObject = session.getUserProfileSession(req);
+                         return promise.resolve();
+
+                       })
                 })
                 .catch(function (response) {
                     var error = response;

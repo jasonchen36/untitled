@@ -12,11 +12,16 @@ var userPages = {};
 function getPageAfterLogin(req)  {
    var profileSession = session.getUserProfileSession(req);
    var completedFlow = true;
-   profileSession.taxReturns.forEach(function(entry) {
+    profileSession.taxReturns.forEach(function(entry) {
            if (entry.status.id === 2) {
                completedFlow = false;
            }
        });
+
+      if(profileSession.taxReturns.length === 0) {
+          completedFlow = false;
+      }
+
        if (completedFlow === true){
           return '/dashboard';
        } else {

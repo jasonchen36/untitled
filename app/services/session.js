@@ -23,6 +23,26 @@ session.actionStartTaxProfileSession = function(req){
         })
         .then(function(){
             //create account
+
+             if(typeof req.body.accountId  !== 'undefined' && req.body.accountId  > 0)  {
+                  var account = {
+                         accountId :req.body.accountId,
+                         name :  req.body.firstName
+                      };
+
+
+                   try {
+                        session.setTaxProfileSession(req, sessionModel.getTaxProfileObject(account));
+                        return promise.resolve();
+                    } catch(error){
+                        if(!error){
+                            error = 'Could not create tax profile';
+                        }
+                        return promise.reject(error);
+                    }
+             } 
+             else {
+
             const options = {
                 method: 'POST',
                 uri: process.env.API_URL+'/account',
@@ -51,6 +71,8 @@ session.actionStartTaxProfileSession = function(req){
                     }
                     return promise.reject(error);
                 });
+
+          }
         });
 };
 
@@ -167,6 +189,60 @@ session.actionStartUserProfileSession = function(req, token){
             return promise.reject(error);
         });
 };
+
+
+/************ user ************/
+session.updateUserProfileSession = function(req,accountID){
+      var userProfileSession = session.getUserProfileSession(req);
+
+       var getTaxReturnsRequest = {
+                    method: 'GET',
+                    uri: process.env.API_URL+'/account/'+accountID,
+                    headers: {
+                        'Authorization': 'Bearer '+userProfileSession.token
+                    },
+                    body: {
+                        name: req.body.firstName,
+                        productId: process.env.API_PRODUCT_ID
+                    },
+                    json: true
+                };
+
+       return requestPromise(getTaxReturnsRequest)
+                .then(function (response) {
+                    try {
+
+                        userProfileSession.taxReturns = _.map(response.taxReturns, sessionModel.getUserTaxReturns);
+
+                        var returns = [];
+                        userProfileSession.taxReturns.forEach(function (entry) {
+ 
+                            if(entry.productId  === 10) {
+                                returns.push(entry);
+                            }
+                        });
+
+                        userProfileSession.taxReturns = returns;
+
+                        return promise.resolve(session.setUserProfileSession(req, userProfileSession));
+                    } catch(error){
+                        if(!error){
+                            error = 'Could not get user\'s tax returns';
+                        }
+                        return promise.reject(error);
+                    }
+          
+        })
+        .catch(function (response) {
+            var error = response;
+            if (response && response.hasOwnProperty('error')){
+                error = response.error;
+            }
+            return promise.reject(error);
+        });
+};
+
+
 
 session.hasUserProfileSession = function(req){
     return promise.resolve()
