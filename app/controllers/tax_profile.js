@@ -37,9 +37,7 @@ taxReturnPages.getPageTaxProfile = function(req, res, next){
                 if(typeof dataObject === 'undefined'  || typeof  dataObject.hasUserProfileSession  === 'undefined')
                 {
                     dataObject = session.getTaxProfileSession(req);
-                    console.log(JSON.stringify( dataObject ));
-
-                 } 
+                 }
             try {
                 res.render('tax_profile/tax_profile', {
                     layout: 'layout-questionnaire',
