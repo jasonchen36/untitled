@@ -47,7 +47,7 @@
                 settingsEmailErrorLabel.html('Please enter an email and/or password. Or hit cancel to exit.');
             }
             if (!helpers.formHasErrors(userSettingsForm)) {
-                settingsSubmit.addClass(disabledClass);
+               settingsSubmit.addClass(disabledClass);
 
                return Promise.resolve()
                     .then(function() {
@@ -67,10 +67,10 @@
 
                     })
                     .then(function(response) {
-                            var dataObject = dashboard.getUserSession();
-                            dataObject.currentPage = "chat";
-                            dashboard.changePage('chat', dataObject);
-                            window.location.href = '/logout';
+                        var dataObject = dashboard.getUserSession();
+                        dataObject.currentPage = "chat";
+                        dashboard.changePage('chat', dataObject);
+                        window.location.href = '/logout';
                     })
                     .catch(function(jqXHR,textStatus,errorThrown){
                         if (jqXHR.jqXHR.responseText === 'Email address already in use') {
