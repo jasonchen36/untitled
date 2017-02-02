@@ -27,11 +27,16 @@ taxProfile.saveName = function(req){
             } else {
                 const taxProfileSession = session.getTaxProfileSession(req);
           
-                var dataObject = session.getUserProfileSession(req);
+
+                 var dataObject = session.getUserProfileSession(req);
 
                 if(typeof dataObject !== 'undefined'  && typeof  dataObject.hasUserProfileSession  !== 'undefined')
                 {
-                    var activities = taxProfileSession.users[0].activities;
+
+                    taxProfileSession.users[0].migrated_user = "Yes";
+
+
+             /*       var activities = taxProfileSession.users[0].activities;
                     taxProfileSession.users = [];
                     var index = 0;
                     dataObject.taxReturns.forEach(function (entry) {
@@ -56,9 +61,9 @@ taxProfile.saveName = function(req){
 
                          index++;
 
-                    });
+                    }); */
 
-                }
+                }  
 
              
                 taxProfileSession.users[0].firstName = req.body.firstName;
@@ -320,7 +325,15 @@ taxProfile.getTaxReturnQuote = function(req){
                 .then(function (response) {
                     taxProfileSession.quote = response;
                     session.setTaxProfileSession(req, taxProfileSession);
-                    return promise.resolve();
+
+                   const accountID = taxProfileSession.users[0].id;
+                   session.updateUserProfileSession(req, accountID ) .then(function (response) {
+
+
+                         var dataObject = session.getUserProfileSession(req);
+                         return promise.resolve();
+
+                       })
                 })
                 .catch(function (response) {
                     var error = response;
