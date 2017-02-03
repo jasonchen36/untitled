@@ -105,6 +105,9 @@ button, .button {
   &.short{
     width:98px;
   }
+  &.medium{
+    width:180px;
+  }
   &.green-outline{
     color: $color-global-green;
     background: transparent;
