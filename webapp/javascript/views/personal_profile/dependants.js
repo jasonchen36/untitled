@@ -293,7 +293,7 @@
                 console.log('it gets in the shared listener');
                 var taxReturnId = $(this).attr('data-tax-return-id');
                 var isShared = $(this).attr('data-id');
-                personalProfile.refreshPage(dependants_helpers.setSharedToggle(taxReturnId, dependantsForm, isShared));
+                dependants_helpers.setSharedToggle(taxReturnId, dependantsForm, isShared);
             });
 
             dependantsBack.on('click',function(event){
@@ -328,13 +328,16 @@
             dependantsEditButtons.on('click',function(event){
                 event.preventDefault();
                 console.log('edit listener is working');
+                var taxReturnId = $(this).attr('data-tr-id');
                 var dependantId = parseInt($(this).attr('data-id').split('-')[0]);
                 var firstName = $(this).attr('data-id').split('-')[1];
                 var lastName = $(this).attr('data-id').split('-')[2];
-                personalProfile.refreshPage(dependants_helpers.editDependant(dependantId, firstName, lastName));
+                personalProfile.refreshPage(dependants_helpers.editDependant(taxReturnId , dependantId, firstName, lastName));
             });
 
             dependantsDeleteButtons.on('click',function(event){
+
+              var taxReturnId = $(this).attr('data-tr-id');
               var dependantId = parseInt($(this).attr('data-id').split('-')[0]);
               var firstName = $(this).attr('data-id').split('-')[1];
               var lastName = $(this).attr('data-id').split('-')[2];
@@ -342,7 +345,7 @@
                       dependantsDeleteButtons.addClass(helpers.disabledClass);
                     }
                 event.preventDefault();
-                personalProfile.refreshPage(dependants_helpers.deleteDependant(dependantId, firstName, lastName));
+                personalProfile.refreshPage(dependants_helpers.deleteDependant(taxReturnId,dependantId, firstName, lastName));
             });
 
             dependantsAddButtons.on('click',function(event){

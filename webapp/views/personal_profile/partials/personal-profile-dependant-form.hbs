@@ -51,20 +51,20 @@
     </div>
     {{#compare @root.taxReturns.length 1 operator='==='}}
         <div class="add-top-padding checkbox-container">
-            <div id="shared-{{taxReturnId}}" name="isShared"  class="checkbox"  data-id= "{{dependantForm.isShared}}" data-tax-return-id="{{taxReturnId}}"></div>
+            <div id="shared-{{taxReturnId}}" name="isShared"  class="checkbox {{dependantForm.isSharedClass}}"  data-id= "{{dependantForm.isShared}}" data-tax-return-id="{{taxReturnId}}"></div>
             <p class="checkbox-label">THIS DEPENDANT IS SHARED</p>
         </div>
     {{/compare}}
     {{#compare @root.taxReturns.length 1 operator='>'}}
         {{#compare filerType 'primary' operator='==='}}
             <div class="add-top-padding checkbox-container">
-                <div id="shared-{{taxReturnId}}" name="isShared" class="checkbox" data-id= "{{dependantForm.isShared}}" data-tax-return-id="{{taxReturnId}}"></div>
+                <div id="shared-{{taxReturnId}}" name="isShared" class="checkbox  {{dependantForm.isSharedClass}}"   data-id= "{{dependantForm.isShared}}" data-tax-return-id="{{taxReturnId}}"></div>
                 <p class="checkbox-label">THIS DEPENDANT IS SHARED WITH {{@root.taxReturns.1.firstName}} {{@root.taxReturns.1.lastName}}</p>
             </div>
         {{/compare}}
         {{#compare filerType 'spouse' operator='==='}}
             <div class="add-top-padding checkbox-container">
-                <div id="shared-{{taxReturnId}}" name="isShared" class="checkbox" data-id= "{{dependantForm.isShared}}" data-tax-return-id="{{taxReturnId}}"></div>
+                <div id="shared-{{taxReturnId}}" name="isShared" class="checkbox {{dependantForm.isSharedClass}}" data-id= "{{dependantForm.isShared}}" data-tax-return-id="{{taxReturnId}}"></div>
                 <p class="checkbox-label">THIS DEPENDANT IS SHARED WITH {{@root.taxReturns.0.firstName}} {{@root.taxReturns.0.lastName}}</p>
             </div>
         {{/compare}}
