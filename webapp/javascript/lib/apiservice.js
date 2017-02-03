@@ -453,7 +453,7 @@
                 'Authorization': 'Bearer '+ accountInfo.token
             }
         ).then(function(response){
-            var taxReturns = _.map(response.taxReturns, function(entry){
+            var allTaxReturns = _.map(response.taxReturns, function(entry){
                 return {
                     taxReturnId: entry.id,
                     productId: entry.product_id,
@@ -473,6 +473,15 @@
                     filerType: entry.filer_type
                 };
             });
+
+
+            var taxReturns = [];
+            allTaxReturns.forEach(function (entry) {
+                if(entry.productId  === 10) {
+                    taxReturns.push(entry);
+                }
+            });
+
             return Promise.resolve(taxReturns);
         });
     };
