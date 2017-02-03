@@ -25,7 +25,8 @@ function getPageAfterLogin(req)  {
        if (completedFlow === true){
           return '/dashboard';
        } else {
-           if (req.session.userProfile.users[0].migrated_user === "Yes"){
+           if (req.session.userProfile.users[0].migrated_user === "Yes"  &&
+               req.session.userProfile.taxReturns.length === 0 ){
                return '/tax-profile';
            }
            return '/personal-profile';

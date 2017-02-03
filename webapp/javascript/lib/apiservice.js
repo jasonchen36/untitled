@@ -453,7 +453,7 @@
                 'Authorization': 'Bearer '+ accountInfo.token
             }
         ).then(function(response){
-            var taxReturns = _.map(response.taxReturns, function(entry){
+            var allTaxReturns = _.map(response.taxReturns, function(entry){
                 return {
                     taxReturnId: entry.id,
                     productId: entry.product_id,
@@ -473,6 +473,15 @@
                     filerType: entry.filer_type
                 };
             });
+
+
+            var taxReturns = [];
+            allTaxReturns.forEach(function (entry) {
+                if(entry.productId  === 10) {
+                    taxReturns.push(entry);
+                }
+            });
+
             return Promise.resolve(taxReturns);
         });
     };
@@ -564,9 +573,10 @@
 
     this.updateDependant = function(sessionData, taxReturnId, formData){
         var accountInfo = helpers.getAccountInformation(sessionData);
-        if (!formData.isShared){
-          formData.isShared = 0;
+        if (!formData.is_shared){
+          formData.is_shared = 0;
         }
+
         return ajax.ajax(
             'PUT',
             sessionData.apiUrl+'/tax_return/'+taxReturnId+'/dependant/'+formData.id,
@@ -575,7 +585,7 @@
                 'lastName': formData.last_name,
                 'dateOfBirth': formData.year+'-'+formData.month+'-'+formData.day,
                 'relationship': formData.relationship,
-                'isShared': formData.isShared.toString()
+                'isShared': formData.is_shared.toString()
             },
             'json',
             {
@@ -603,8 +613,8 @@
 
     this.createDependant = function(sessionData, taxReturnId, formData){
         var accountInfo = helpers.getAccountInformation(sessionData);
-        if (!formData.isShared){
-          formData.isShared = 0;
+        if (!formData.is_shared){
+          formData.is_shared = 0;
         }
         return ajax.ajax(
             'POST',
@@ -614,7 +624,7 @@
                 'lastName': formData.last_name,
                 'dateOfBirth': formData.year+'-'+formData.month+'-'+formData.day,
                 'relationship': formData.relationship,
-                'isShared': formData.isShared.toString()
+                'isShared': formData.is_shared.toString()
             },
             'json',
             {

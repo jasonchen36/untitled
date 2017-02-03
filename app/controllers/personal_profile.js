@@ -55,25 +55,31 @@ personalProfilePages.getPersonalProfilePage = function(req, res, next){
                     maritalStatus: response[4],
                     dependants: response[5]
                 };
+            var dataObject = session.getUserProfileSession(req);
+            const accountID = dataObject.users[0].accountId;
+            session.updateUserProfileSession(req, accountID ) 
+               .then(function (response) {
 
-           var dataObject = session.getUserProfileSession(req);
-            dataObject.categories = {};
-            dataObject.categories.displaytext = response[6][0].displaytext;
-            try {
-                res.render('personal_profile/personal_profile', {
-                    meta: {
-                        pageTitle: util.globals.metaTitlePrefix + 'Personal Profile'
-                    },
-                    data: dataObject,
-                    locals: {
-                        personalProfileToString: JSON.stringify(dataObject),
-                        personalProfileQuestionsToString: JSON.stringify(personalProfileQuestions)
-                    },
-                    layout: 'layout-questionnaire'
-                });
-            } catch(error){
-                next(new errors.InternalServerError(error));
-            }
+                var dataObject = session.getUserProfileSession(req);
+
+                dataObject.categories = {};
+                try {
+                    res.render('personal_profile/personal_profile', {
+                        meta: {
+                            pageTitle: util.globals.metaTitlePrefix + 'Personal Profile'
+                        },
+                        data: dataObject,
+                        locals: {
+                            personalProfileToString: JSON.stringify(dataObject),
+                            personalProfileQuestionsToString: JSON.stringify(personalProfileQuestions)
+                        },
+                        layout: 'layout-questionnaire'
+                    });
+                  } catch(error){
+                  next(new errors.InternalServerError(error));
+                }
+           })
+
         })
         .catch(function (response) {
             var error = response;
