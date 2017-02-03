@@ -266,6 +266,7 @@
             dependantsForm = $('#dependants-form');
             formData = helpers.getTileFormDataArray(dependantsForm);
             sessionData = personalProfile.getPersonalProfileSession();
+            pageData = personalProfile.getPageSession();
             dependantsBack = $('#dependants-back');
             dependantsYesButtons = $('.dependants-button-yes');
             dependantsNoButtons = $('.dependants-button-no');
@@ -275,8 +276,26 @@
             dependantsSaveButtons = $('.dependants-button-save');
             dependantsCancelButtons = $('.dependants-button-cancel');
             dependantCheckboxes = $('.checkbox-container');
-
+            dependantShared = $('.checkbox');
+            console.log(pageData, dependantsForm);
+            // _.each(pageData.taxReturns, function(taxReturn){
+            //     dependantShared = dependantsForm.find('#shared-'+taxReturn.taxReturnId);
+            //     dependantShared.on('click',function(event){
+            //         console.log('it goes inside the shared');
+            //         event.preventDefault();
+            //         $(this).toggleClass(activeClass);
+            //     });
+            // });
             //listeners
+
+            dependantShared.on('click',function(event){
+                event.preventDefault();
+                console.log('it gets in the shared listener');
+                var taxReturnId = $(this).attr('data-tax-return-id');
+                var isShared = $(this).attr('data-id');
+                dependants_helpers.setSharedToggle(taxReturnId, dependantsForm, isShared);
+            });
+
             dependantsBack.on('click',function(event){
                 event.preventDefault();
                 updateDependants();
@@ -308,13 +327,17 @@
 
             dependantsEditButtons.on('click',function(event){
                 event.preventDefault();
+                console.log('edit listener is working');
+                var taxReturnId = $(this).attr('data-tr-id');
                 var dependantId = parseInt($(this).attr('data-id').split('-')[0]);
                 var firstName = $(this).attr('data-id').split('-')[1];
                 var lastName = $(this).attr('data-id').split('-')[2];
-                personalProfile.refreshPage(dependants_helpers.editDependant(dependantId, firstName, lastName));
+                personalProfile.refreshPage(dependants_helpers.editDependant(taxReturnId , dependantId, firstName, lastName));
             });
 
             dependantsDeleteButtons.on('click',function(event){
+
+              var taxReturnId = $(this).attr('data-tr-id');
               var dependantId = parseInt($(this).attr('data-id').split('-')[0]);
               var firstName = $(this).attr('data-id').split('-')[1];
               var lastName = $(this).attr('data-id').split('-')[2];
@@ -322,7 +345,7 @@
                       dependantsDeleteButtons.addClass(helpers.disabledClass);
                     }
                 event.preventDefault();
-                personalProfile.refreshPage(dependants_helpers.deleteDependant(dependantId, firstName, lastName));
+                personalProfile.refreshPage(dependants_helpers.deleteDependant(taxReturnId,dependantId, firstName, lastName));
             });
 
             dependantsAddButtons.on('click',function(event){
