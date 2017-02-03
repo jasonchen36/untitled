@@ -27,11 +27,11 @@
 
                         <div class="add-top-padding checkbox-container">
                             <div id="canadian-citizen-{{taxReturnId}}" name="canadian_citizen" class="checkbox {{citizenClass}}"></div>
-                            <p class="checkbox-label">I AM A CANADIAN CITIZEN (if you’re not a Canadian citizen, leave this blank)</p>
+                            <p class="checkbox-label">I AM A CANADIAN CITIZEN<br/>Check here is you are a Canadian Citizen (if not leave blank).</p>
                         </div>
                         <div class="checkbox-container">
                             <div id="CRA-authorized-{{taxReturnId}}" name="CRA_authorized" class="checkbox {{CRAClass}}"></div>
-                            <p class="checkbox-label">CRA AUTHORIZATION (Click here to authorize the Canada Revenue Agency to give your name, address, date of birth, and Canadian citizenship status to Elections Canada)</p>
+                            <p class="checkbox-label">CRA AUTHORIZATION<br/> Check here if you authorize the CRA (Canada Revenue Agency) to give only your name, address, date of birth and Canadian citizenship status to Elections Canada to ensure that your information is up to date (if not leave blank).</p>
                         </div>
                         <p class="side-info-blurb">Check here if you authorize the CRA (Canada Revenue Agency) to give only your name, address, date of birth, and Canadian citizenship status to Elections Canada to ensure that your information is up to date. (if not leave blank)</p>
                     </div>
@@ -39,6 +39,6 @@
             </form>
         </div>
     </div>
-    {{>personal-profile-sidebar hasTiles=false isShortPath=false sidebarImage="i--icon-cake" sidebarTitle="Why do you need my address?" sidebarDescription="We take privacy seriously. Your personal data is encrypted and our servers are held to the highest security standards in the industry. Finally, we won’t sell or share your data. With anyone.  Ever. You have our word on that.  <br>br> Our privacy terms are listed on the website"   }}
+    {{>personal-profile-sidebar hasTiles=false isShortPath=false sidebarImage="" sidebarTitle="" sidebarDescription="We take privacy seriously. Your personal data is encrypted and our servers are held to the highest security standards in the industry. Finally, we won’t sell or share your data. With anyone.  Ever. You have our word on that.  <br>br> Our privacy terms are listed on the website"   }}
 </section>
 {{>more}}

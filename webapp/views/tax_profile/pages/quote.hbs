@@ -8,10 +8,10 @@
         <div class="content-form">
             <form id="quote-form" class="container-credits-form horizontal-center">
                 {{#compare @root.quote.lineItems.length 1 operator=">"}}
-                    <p class="label-blurb"><span class="capitalize">{{users.0.firstName}}</span>, the fee for TAXplan Canada to prepare 2016 tax returns for yourself and your other filers is:</p>
+                    <p class="label-blurb"><span class="capitalize">{{users.0.firstName}}</span>, the fee for TAXplan to prepare your tax returns is:</p>
                 {{/compare}}
                 {{#compare @root.quote.lineItems.length 1 operator="=="}}
-                    <p class="label-blurb"><span class="capitalize">{{users.0.firstName}}</span>, the fee for TAXplan Canada to prepare your 2016 tax return is:</p>
+                    <p class="label-blurb"><span class="capitalize">{{users.0.firstName}}</span>, the fee for TAXplan to prepare your tax return is:</p>
                 {{/compare}}
                 {{#each quote.lineItems}}
                     {{#each ../users}}
@@ -41,10 +41,10 @@
                         {{#compare 0 quote.totalPrice operator="!=="}}
                             <p class="label-total-price">${{quote.totalPrice}}</p>
                         {{/compare}}
-                        <p class="side-info-blurb label-fine-print tax">Plus Provincial Tax</p>
+                        <p class="side-info-blurb label-fine-print tax">+HST</p>
                     </div>
                     <p class="label-blurb horizontal-center">You don't need to pay now.</p>
-                    <p class="side-info-blurb label-fine-print get-started">You can pay with any credit card once your tax return(s) have been completed.</p>
+                    <p class="side-info-blurb label-fine-print get-started">You can pay with any credit card once all your tax returns have been completed.</p>
                     <button id="quote-submit" type="submit" class="green long">Great! Let's Get Started</button>
                     <p class="side-info-blurb label-fine-print get-started">By clicking "Get Started" you agree to the TAXplan <a href="http://taxplancanada.ca/terms-of-use/" target="_blank">Terms of Service</a>
                         and <a href="http://taxplancanada.ca/privacy-policy/" target="_blank">Privacy Policy</a></p>
